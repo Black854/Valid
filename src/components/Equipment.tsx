@@ -1,12 +1,14 @@
-import { Col, Row, Table } from "antd";
+import { Col, Row, Spin, Table } from "antd";
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table';
 import { useDispatch, useSelector } from "react-redux";
-import { getEquipData } from "../redux/equipmentSelectors";
+import { getEquipData, getIsLoading } from "../redux/equipmentSelectors";
 import { getEquipment } from "../redux/equipmentReducer";
 import { Typography } from 'antd';
+import { addMonths } from 'date-fns';
+import { format } from 'date-fns';
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 
 interface DataType {
     sp2: string
@@ -21,14 +23,15 @@ interface DataType {
 let Equipment: React.FC = () => {
     let dispatch = useDispatch()
 
-
     let equipData = useSelector(getEquipData)
-    console.log(equipData)
-    if (equipData.length === 1) {
+    let isLoading = useSelector(getIsLoading)
+
+    if (equipData.length === 0) {
         //@ts-ignore
         dispatch(getEquipment())
     }
     let equipNewData = equipData.map(e => ({
+        key: e.id,
         sp2: e.sp2,
         name: e.name,
         serial: e.serial,
@@ -40,13 +43,13 @@ let Equipment: React.FC = () => {
 
 const columns: ColumnsType<DataType> = [
     {
-        title: 'Наименование',
+        title: <Text strong style={{fontSize: '12pt'}}>Наименование</Text>,
         dataIndex: 'name',
-        render: (text) => <a>{text}</a>,
+        render: (text) => <><Link strong style={{fontSize: '12pt'}}>{text}</Link></>,
         sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-        title: 'Подразделение',
+        title: <Text strong style={{fontSize: '12pt'}}>Подразделение</Text>,
         dataIndex: 'sp2',
         filters: [
             { text: 'МБЛ', value: 'МБЛ' },
@@ -56,14 +59,15 @@ const columns: ColumnsType<DataType> = [
             { text: 'ЦС', value: 'ЦС' },
             { text: 'ГК', value: 'ГК' },
         ],
+        render: (sp) => <Text>{sp}</Text>,
         onFilter: (value: any, record) => record.sp2.indexOf(value) === 0,
         sorter: (a, b) => a.sp2.localeCompare(b.sp2),
         sortDirections: ['descend'],
-        width: '10%',
+        width: '12%',
         align: 'center',
     },
     {
-        title: 'Группа',
+        title: <Text strong style={{fontSize: '12pt'}}>Группа</Text>,
         dataIndex: 'group',
         filters: [
             { text: 'Термостаты', value: 'Термостаты' },
@@ -71,6 +75,7 @@ const columns: ColumnsType<DataType> = [
             { text: 'Лаб. оборудование', value: 'Лаб. оборудование' },
             { text: 'Термоконтейнеры', value: 'Термоконтейнеры' }
         ],
+        render: (text) => <Text>{text}</Text>,
         onFilter: (value: any, record) => record.group.indexOf(value) === 0,
         sorter: (a, b) => a.group.localeCompare(b.group),
         sortDirections: ['descend'],
@@ -78,39 +83,57 @@ const columns: ColumnsType<DataType> = [
         align: 'right',
     },
     {
-        title: 'Дата (до)',
+        title: <Text strong style={{fontSize: '12pt'}}>Дата (до)</Text>,
         dataIndex: 'date',
-        render: (date, record) => { 
-            const currentDate = new Date();
-            const year = currentDate.getFullYear(); // Получаем год (YYYY)
-            const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Получаем месяц (MM)
-            const day = String(currentDate.getDate()).padStart(2, '0'); // Получаем день (DD)
-            
-            const formattedDate = parseInt(`${year}${month}${day}`, 10);
+        render: (date, record) => {
+            let ar = record.ar
+            let monthCount = 0
+            if (ar === '1') { monthCount = 13 }
+            else if (ar === '2') { monthCount = 25 }
+            else if (ar === '3') { monthCount = 37 }
+            else if (ar === '5') { monthCount = 61 }
 
-
-            const dateFromData = new Date(date);
-            const yearFromData = dateFromData.getFullYear(); // Получаем год (YYYY)
-            const monthFromData = String(dateFromData.getMonth() + 1).padStart(2, '0'); // Получаем месяц (MM)
-            const dayFromData = String(dateFromData.getDate()).padStart(2, '0'); // Получаем день (DD)
-
-            let formattedDateFromData = parseInt(`${yearFromData}${monthFromData}${dayFromData}`, 10) + {(record.sp2 === '1') ? '10000' : '2000'};
-            
-            if (formattedDate >= formattedDateFromData) {
-                console.log(formattedDateFromData)
-                console.log(formattedDate)
-                return <Text type="danger">{`${dayFromData}.${monthFromData}.${yearFromData}`}</Text>
-            } else {
-                return <Text strong>{`${dayFromData}.${monthFromData}.${yearFromData}`}</Text>
+            if (date) {
+                const parts = date.split('.'); // Разделяем строку по точкам
+                if (parts.length === 3) {
+                    // Проверяем, что строка содержит три части: день, месяц и год
+                    const day = parts[0];
+                    const month = parts[1];
+                    const year = parts[2];
+                    // Создаем новую дату в формате "yyyy-MM-dd"
+                    date = `${year}-${month}-${day}`;
+                    // console.log(date)
+                }
             }
+            
+            const currentDate = new Date()
+            const formattedCurrentDate = format(currentDate, 'yyyyMMdd'); // Текущая дата для сравнения с датой объекта
+            // console.log('Текущая дата для сравнения - ' + formattedCurrentDate)
+
+            const equipDate = new Date(date)
+            const resultEquipDate = addMonths(equipDate, monthCount); // Прибавляем monthCount месяцев
+            const formattedEquipDate = format(resultEquipDate, 'yyyyMMdd'); // Текущая дата для сравнения с датой объекта
+            // console.log('Дата квалификации объекта для сравнения - ' + formattedEquipDate)
+           
+            let dateForPrint = format(resultEquipDate, 'dd.MM.yyyy');
+            
+            if (ar === '0') { return <Text type="secondary">Не валидируется</Text> }
+            else if (ar==='12') { return <Text type="secondary">Законсервировано</Text> }
+            else if (ar==='15') { return <Text type="secondary">Списано</Text> }
+            else if (ar==='11' || ar==='10') { return <Text type="secondary">До изменений</Text> }
+            else if (record.date === null) { return <Text type="secondary">Новый объект</Text> }
+            else if (formattedCurrentDate >= formattedEquipDate) { return <Text type="danger">{dateForPrint}</Text> }
+            else { return <Text type="success">{dateForPrint}</Text> }
         },
-        width: '8%',
+        width: '10%',
         align: 'center'
     },
     ];
 
     const data: DataType[] = equipNewData
-
+    if (isLoading) {
+        return  <Spin size="large" style={{width: '60px', height: '60px', margin: '30px auto 10px auto'}} />
+    }
     return (
         <Content style={{padding: '20px 0',  marginBottom: '40px'}}>
                 <Row>
@@ -124,7 +147,6 @@ const columns: ColumnsType<DataType> = [
                         /> 
                     </Col>
                 </Row>
-              
         </Content>
     )
 }

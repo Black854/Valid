@@ -20,7 +20,7 @@ const Header1: React.FC = () => {
 
 
     const items: MenuProps['items'] = [
-    {key: '/work', label: 'Квалификация', children: [
+    {key: '1', label: 'Квалификация', children: [
         {key: '/work', label: <Link to='/work'>Рабочий лист</Link>},
         {key: '/monitoring', label: <Link to='/monitoring'>Мониторинг</Link>},
         {key: '/signal', label: <Link to='/signal'>Сигнальный лист</Link>},
@@ -30,7 +30,7 @@ const Header1: React.FC = () => {
         {key: '/processes', label: <Link to='/processes'>Процессы</Link>},
         {key: '/instruments', label: <Link to='/instruments'>Инструменты</Link>}]
     },
-    {key: '/plans', label: `Планы`, children: [
+    {key: '2', label: `Планы`, children: [
         {key: '/monplans', label: <Link to='/monplans'>План на месяц</Link>},
         {key: '/reports', label: <Link to='/reports'>Отчет за месяц</Link>},
         {key: '/vmpl', label: <Link to='/vmpl'>График ВМП ЦС</Link>},
