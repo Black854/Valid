@@ -1,8 +1,12 @@
 import { Col, Row, Table } from "antd";
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getEquipData } from "../redux/equipmentSelectors";
+import { getEquipment } from "../redux/equipmentReducer";
+import { Typography } from 'antd';
+
+const { Text } = Typography;
 
 interface DataType {
     sp2: string
@@ -10,17 +14,28 @@ interface DataType {
     serial: string
     inv: string
     group: string
+    date: string
+    ar: string
   }
   
 let Equipment: React.FC = () => {
+    let dispatch = useDispatch()
+
 
     let equipData = useSelector(getEquipData)
+    console.log(equipData)
+    if (equipData.length === 1) {
+        //@ts-ignore
+        dispatch(getEquipment())
+    }
     let equipNewData = equipData.map(e => ({
         sp2: e.sp2,
         name: e.name,
         serial: e.serial,
         inv: e.inv,
-        group: e.groupp
+        group: e.groupp,
+        date: e.date,
+        ar: e.ar
     }))
 
 const columns: ColumnsType<DataType> = [
@@ -65,16 +80,36 @@ const columns: ColumnsType<DataType> = [
     {
         title: 'Дата (до)',
         dataIndex: 'date',
+        render: (date, record) => { 
+            const currentDate = new Date();
+            const year = currentDate.getFullYear(); // Получаем год (YYYY)
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Получаем месяц (MM)
+            const day = String(currentDate.getDate()).padStart(2, '0'); // Получаем день (DD)
+            
+            const formattedDate = parseInt(`${year}${month}${day}`, 10);
+
+
+            const dateFromData = new Date(date);
+            const yearFromData = dateFromData.getFullYear(); // Получаем год (YYYY)
+            const monthFromData = String(dateFromData.getMonth() + 1).padStart(2, '0'); // Получаем месяц (MM)
+            const dayFromData = String(dateFromData.getDate()).padStart(2, '0'); // Получаем день (DD)
+
+            let formattedDateFromData = parseInt(`${yearFromData}${monthFromData}${dayFromData}`, 10) + {(record.sp2 === '1') ? '10000' : '2000'};
+            
+            if (formattedDate >= formattedDateFromData) {
+                console.log(formattedDateFromData)
+                console.log(formattedDate)
+                return <Text type="danger">{`${dayFromData}.${monthFromData}.${yearFromData}`}</Text>
+            } else {
+                return <Text strong>{`${dayFromData}.${monthFromData}.${yearFromData}`}</Text>
+            }
+        },
         width: '8%',
         align: 'center'
     },
     ];
 
-
-
     const data: DataType[] = equipNewData
-
-
 
     return (
         <Content style={{padding: '20px 0',  marginBottom: '40px'}}>
@@ -84,7 +119,6 @@ const columns: ColumnsType<DataType> = [
                             columns={columns}
                             dataSource={data}
                             bordered
-                            pagination={{ pageSize: 20 }}
                             title={() => 'Оборудование'}
                             // footer={() => 'Footer'}
                         /> 
