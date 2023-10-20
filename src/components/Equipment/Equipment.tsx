@@ -2,15 +2,16 @@ import { Col, Row, Spin, Table } from "antd";
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table';
 import { useDispatch, useSelector } from "react-redux";
-import { getEquipData, getIsLoading } from "../redux/equipmentSelectors";
-import { getEquipment } from "../redux/equipmentReducer";
+import { getEquipData, getIsLoading } from "../../redux/equipmentSelectors";
+import { getEquipment } from "../../redux/equipmentReducer";
 import { Typography } from 'antd';
-import { addMonths } from 'date-fns';
-import { format } from 'date-fns';
+import { RenderDateHelper } from "../helpers/renderDateHelper";
+import { NavLink } from "react-router-dom";
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 
 interface DataType {
+    id: string,
     sp2: string
     name: string
     serial: string
@@ -18,7 +19,7 @@ interface DataType {
     group: string
     date: string
     ar: string
-  }
+}
   
 let Equipment: React.FC = () => {
     let dispatch = useDispatch()
@@ -31,6 +32,7 @@ let Equipment: React.FC = () => {
         dispatch(getEquipment())
     }
     let equipNewData = equipData.map(e => ({
+        id: e.id,
         key: e.id,
         sp2: e.sp2,
         name: e.name,
@@ -45,7 +47,7 @@ const columns: ColumnsType<DataType> = [
     {
         title: <Text strong style={{fontSize: '12pt'}}>Наименование</Text>,
         dataIndex: 'name',
-        render: (text) => <><Link strong style={{fontSize: '12pt'}}>{text}</Link></>,
+        render: (text, record) => <><NavLink  to={record.id} style={{fontSize: '12pt'}}>{text}</NavLink></>,
         sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
@@ -85,46 +87,7 @@ const columns: ColumnsType<DataType> = [
     {
         title: <Text strong style={{fontSize: '12pt'}}>Дата (до)</Text>,
         dataIndex: 'date',
-        render: (date, record) => {
-            let ar = record.ar
-            let monthCount = 0
-            if (ar === '1') { monthCount = 13 }
-            else if (ar === '2') { monthCount = 25 }
-            else if (ar === '3') { monthCount = 37 }
-            else if (ar === '5') { monthCount = 61 }
-
-            if (date) {
-                const parts = date.split('.'); // Разделяем строку по точкам
-                if (parts.length === 3) {
-                    // Проверяем, что строка содержит три части: день, месяц и год
-                    const day = parts[0];
-                    const month = parts[1];
-                    const year = parts[2];
-                    // Создаем новую дату в формате "yyyy-MM-dd"
-                    date = `${year}-${month}-${day}`;
-                    // console.log(date)
-                }
-            }
-            
-            const currentDate = new Date()
-            const formattedCurrentDate = format(currentDate, 'yyyyMMdd'); // Текущая дата для сравнения с датой объекта
-            // console.log('Текущая дата для сравнения - ' + formattedCurrentDate)
-
-            const equipDate = new Date(date)
-            const resultEquipDate = addMonths(equipDate, monthCount); // Прибавляем monthCount месяцев
-            const formattedEquipDate = format(resultEquipDate, 'yyyyMMdd'); // Текущая дата для сравнения с датой объекта
-            // console.log('Дата квалификации объекта для сравнения - ' + formattedEquipDate)
-           
-            let dateForPrint = format(resultEquipDate, 'dd.MM.yyyy');
-            
-            if (ar === '0') { return <Text type="secondary">Не валидируется</Text> }
-            else if (ar==='12') { return <Text type="secondary">Законсервировано</Text> }
-            else if (ar==='15') { return <Text type="secondary">Списано</Text> }
-            else if (ar==='11' || ar==='10') { return <Text type="secondary">До изменений</Text> }
-            else if (record.date === null) { return <Text type="secondary">Новый объект</Text> }
-            else if (formattedCurrentDate >= formattedEquipDate) { return <Text type="danger">{dateForPrint}</Text> }
-            else { return <Text type="success">{dateForPrint}</Text> }
-        },
+        render: (date, record) => { return <RenderDateHelper date={date} record={record} /> },
         width: '10%',
         align: 'center'
     },
@@ -142,7 +105,7 @@ const columns: ColumnsType<DataType> = [
                             columns={columns}
                             dataSource={data}
                             bordered
-                            title={() => 'Оборудование'}
+                            title={() => <Text style={{fontSize: '14pt'}}>Оборудование</Text>}
                             // footer={() => 'Footer'}
                         /> 
                     </Col>
