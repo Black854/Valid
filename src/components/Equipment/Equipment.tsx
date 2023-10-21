@@ -1,4 +1,4 @@
-import { Col, Row, Spin, Table } from "antd";
+import { Avatar, Col, Image, Row, Spin, Table } from "antd";
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table';
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,9 @@ import { getEquipData, getIsLoading } from "../../redux/equipmentSelectors";
 import { getEquipment } from "../../redux/equipmentReducer";
 import { Typography } from 'antd';
 import { RenderDateHelper } from "../helpers/renderDateHelper";
+import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom";
+import React from "react";
 
 const { Text } = Typography;
 
@@ -19,6 +21,7 @@ interface DataType {
     group: string
     date: string
     ar: string
+    foto: string
 }
   
 let Equipment: React.FC = () => {
@@ -27,7 +30,7 @@ let Equipment: React.FC = () => {
     let equipData = useSelector(getEquipData)
     let isLoading = useSelector(getIsLoading)
 
-    if (equipData.length === 0) {
+    if (equipData.length === 0 && isLoading===false) {
         //@ts-ignore
         dispatch(getEquipment())
     }
@@ -40,15 +43,32 @@ let Equipment: React.FC = () => {
         inv: e.inv,
         group: e.groupp,
         date: e.date,
-        ar: e.ar
+        ar: e.ar,
+        foto: e.foto
     }))
 
 const columns: ColumnsType<DataType> = [
     {
         title: <Text strong style={{fontSize: '12pt'}}>Наименование</Text>,
         dataIndex: 'name',
-        render: (text, record) => <><NavLink  to={record.id} style={{fontSize: '12pt'}}>{text}</NavLink></>,
+        render: (text, record) => (
+        <Row>
+            <Col span={1}>
+                <Image style={{
+                    maxWidth: '30px',
+                    maxHeight: '30px',
+                    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
+                    borderRadius: '3px',
+                    overflow: 'hidden'}} 
+                    src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
+                />
+            </Col>
+            <Col span={23}>
+                <NavLink to={record.id} style={{fontSize: '12pt', marginLeft: '10px'}}>{text}</NavLink>
+            </Col>  
+        </Row>),
         sorter: (a, b) => a.name.localeCompare(b.name),
+        defaultSortOrder: 'ascend',
     },
     {
         title: <Text strong style={{fontSize: '12pt'}}>Подразделение</Text>,
@@ -69,6 +89,12 @@ const columns: ColumnsType<DataType> = [
         align: 'center',
     },
     {
+        title: <Text strong style={{fontSize: '12pt'}}>Учетный номер</Text>,
+        dataIndex: 'inv',
+        render: (inv, record) => <Text>{inv}</Text>,
+        sorter: (a, b) => a.name.localeCompare(b.name),
+    },
+    {
         title: <Text strong style={{fontSize: '12pt'}}>Группа</Text>,
         dataIndex: 'group',
         filters: [
@@ -80,7 +106,7 @@ const columns: ColumnsType<DataType> = [
         render: (text) => <Text>{text}</Text>,
         onFilter: (value: any, record) => record.group.indexOf(value) === 0,
         sorter: (a, b) => a.group.localeCompare(b.group),
-        sortDirections: ['descend'],
+        sortDirections: ['ascend'],
         width: '12%',
         align: 'right',
     },
@@ -99,19 +125,20 @@ const columns: ColumnsType<DataType> = [
     }
     return (
         <Content style={{padding: '20px 0',  marginBottom: '40px'}}>
-                <Row>
-                    <Col span={22} push={1}>
-                        <Table
-                            columns={columns}
-                            dataSource={data}
-                            bordered
-                            title={() => <Text style={{fontSize: '14pt'}}>Оборудование</Text>}
-                            // footer={() => 'Footer'}
-                        /> 
-                    </Col>
+            <Row>
+                <Col span={22} push={1}>
+                    <Table
+                        columns={columns}
+                        dataSource={data}
+                        bordered
+                        pagination={{defaultPageSize: 20}}
+                        title={() => <Text style={{fontSize: '14pt'}}>Оборудование</Text>}
+                        // footer={() => 'Footer'}
+                    /> 
+                </Col>
                 </Row>
         </Content>
     )
 }
 
-export default Equipment
+export default React.memo(Equipment)

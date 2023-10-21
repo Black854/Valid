@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import CustomFooter from './components/Footer/Footer';
-import { EquipCard } from './components/Equipment/EquipCard';
+import EquipCard from './components/Equipment/EquipCard/EquipCard';
 import './App.css';
 
 
@@ -33,4 +33,4 @@ function App() {
   );
 }
 
-export default App;
+export default React.memo(App);

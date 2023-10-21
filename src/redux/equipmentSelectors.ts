@@ -8,6 +8,10 @@ export const getIsLoading = (state: AppStateType) => {
     return (state.equipment.isLoading)
 }
 
+export const getReestrDataSelector = (state: AppStateType) => {
+    return (state.equipment.reestrData)
+}
+
 export const getEquipById = (state: AppStateType, id: string | undefined ='0') => {
     const allEquipmentData = getEquipData(state); // Используем существующий селектор для получения всего массива данных
   
@@ -15,4 +19,4 @@ export const getEquipById = (state: AppStateType, id: string | undefined ='0') =
     const equipWithId = allEquipmentData.find(e => e.id === id);
   
     return equipWithId; // Возвращаем объект или null, если не найден
-  };
+};

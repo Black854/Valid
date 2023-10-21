@@ -20,6 +20,7 @@ type DataType = {
 
 let initialState = {
     data: [] as Array<DataType>,
+    reestrData: [],
     isLoading: false
 }
 
@@ -31,6 +32,8 @@ const equipmentReducer = (state = initialState, action: any): InitialStateType =
             return {...state, data: action.data, isLoading: false}
         case 'IS_LOADING':
             return {...state, isLoading: true}
+        case 'PUSH_REESTR_DATA':
+            return {...state, reestrData: action.data}
         default:
             return state
     }
@@ -42,9 +45,31 @@ export const getEquipment = () => async (dispatch: any) => {
     dispatch (pushEquipmentData(data.items))
 }
 
+export const getReestrData = (id: string) => async (dispatch: any) => {
+    let data = await equipmentAPI.getReestrData(id)
+    dispatch (pushReestrData(data.items))
+}
+
+export const uploadMainPhoto = (id:string, file: File) => async (dispatch: any) => {
+    let data = await equipmentAPI.uploadMainPhoto(id, file)
+    dispatch (getEquipment())
+}
+
+export const deleteMainPhoto = (id:string) => async (dispatch: any) => {
+    let data = await equipmentAPI.deleteMainPhoto(id)
+    dispatch (getEquipment())
+}
+
 const pushEquipmentData = (data: any) => {
     return {
         type: 'PUSH_EQ_DATA',
+        data
+    }
+}
+
+const pushReestrData = (data: any) => {
+    return {
+        type: 'PUSH_REESTR_DATA',
         data
     }
 }
