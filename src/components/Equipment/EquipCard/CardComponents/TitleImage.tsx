@@ -46,6 +46,7 @@ const TitleImage: React.FC<TitleImagePropsType> = ({equipObject}) => {
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px'}}>
             <Image
                 src={equipObject.foto ? "http://10.85.10.212/ov/" + equipObject.foto : empty}
+                preview = { equipObject.foto ? true : false }
                 style={{
                     maxWidth: '100%',
                     maxHeight: '50vh',

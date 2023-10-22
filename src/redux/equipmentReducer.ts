@@ -21,7 +21,8 @@ type DataType = {
 let initialState = {
     data: [] as Array<DataType>,
     reestrData: [],
-    isLoading: false
+    isLoading: false,
+    technicalInfo: ''
 }
 
 type InitialStateType = typeof initialState
@@ -33,7 +34,9 @@ const equipmentReducer = (state = initialState, action: any): InitialStateType =
         case 'IS_LOADING':
             return {...state, isLoading: true}
         case 'PUSH_REESTR_DATA':
-            return {...state, reestrData: action.data}
+            return {...state, reestrData: action.data}            
+        case 'SET_TECH_INFO':
+            return {...state, technicalInfo: action.text}
         default:
             return state
     }
@@ -50,14 +53,49 @@ export const getReestrData = (id: string) => async (dispatch: any) => {
     dispatch (pushReestrData(data.items))
 }
 
-export const uploadMainPhoto = (id:string, file: File) => async (dispatch: any) => {
+export const uploadMainPhoto = (id: string, file: File) => async (dispatch: any) => {
     let data = await equipmentAPI.uploadMainPhoto(id, file)
-    dispatch (getEquipment())
+    dispatch (pushEquipmentData(data.items))
 }
 
-export const deleteMainPhoto = (id:string) => async (dispatch: any) => {
+export const deleteMainPhoto = (id: string) => async (dispatch: any) => {
     let data = await equipmentAPI.deleteMainPhoto(id)
-    dispatch (getEquipment())
+    dispatch (pushEquipmentData(data.items))
+}
+
+export const updateNomer = (id: string, nomer: string) => async (dispatch: any) => { //обновление данных о местоположении
+    let data = await equipmentAPI.updateDescription(id, nomer)
+    dispatch (pushEquipmentData(data.items))
+}
+
+export const updateManufacturer = (id: string, manufacturer: string) => async (dispatch: any) => { //обновление данных о местоположении
+    let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, manufacturer)
+    dispatch (pushEquipmentData(data.items))
+}
+
+export const updateManufacturDate = (id: string, manufacturDate: string) => async (dispatch: any) => { //обновление данных о местоположении
+    let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, manufacturDate)
+    dispatch (pushEquipmentData(data.items))
+}
+
+export const updateSerial = (id: string, serial: string) => async (dispatch: any) => { //обновление данных о местоположении
+    let data = await equipmentAPI.updateDescription(id, undefined, serial)
+    dispatch (pushEquipmentData(data.items))
+}
+
+export const updateInv = (id: string, inv: string) => async (dispatch: any) => { //обновление данных о местоположении
+    let data = await equipmentAPI.updateDescription(id, undefined, undefined, inv)
+    dispatch (pushEquipmentData(data.items))
+}
+
+export const getTechnicalInfo = (id: string) => async (dispatch: any) => { 
+    let data = await equipmentAPI.getTechnicalInfo(id)
+    dispatch(setTechnicalInfo(data.tech))
+}
+
+export const updateTechnicalInfo = (id: string, text: string) => async (dispatch: any) => { 
+    let data = await equipmentAPI.updateTechnicalInfo(id, text)
+    dispatch(setTechnicalInfo(data.tech))
 }
 
 const pushEquipmentData = (data: any) => {
@@ -77,6 +115,13 @@ const pushReestrData = (data: any) => {
 const setIsLoading = () => {
     return {
         type: 'IS_LOADING'
+    }
+}
+
+const setTechnicalInfo = (text: string) => {
+    return {
+        type: 'SET_TECH_INFO',
+        text
     }
 }
 
