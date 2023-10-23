@@ -146,7 +146,7 @@ const EquipCard = () => {
                     <TechnicalInfo id={equipObject.id} />
                 </Col>
                 <Col span={10} push={3}>
-                    <PhotosBlock />
+                    <PhotosBlock id={equipObject.id} />
                 </Col>
             </Row>
             </>

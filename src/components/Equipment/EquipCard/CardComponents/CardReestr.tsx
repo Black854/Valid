@@ -33,8 +33,6 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isLoading}) => {
         dispatch(getReestrData(id))
     }, [id, isLoading])
     
-   
-    console.log(reestrData)
     const columns: ColumnsType<reestrDataItemType> = [
         {
             title: <Text strong style={{fontSize: '12pt'}}>Протокол</Text>,

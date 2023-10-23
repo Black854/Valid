@@ -18,11 +18,19 @@ type DataType = {
     date: string
 }
 
+type PhotosType = {
+    id: string,
+    idfromtable: string,
+    src: string,
+    name: string
+}
+
 let initialState = {
     data: [] as Array<DataType>,
     reestrData: [],
     isLoading: false,
-    technicalInfo: ''
+    technicalInfo: '',
+    photos: [] as Array<PhotosType>
 }
 
 type InitialStateType = typeof initialState
@@ -37,6 +45,8 @@ const equipmentReducer = (state = initialState, action: any): InitialStateType =
             return {...state, reestrData: action.data}            
         case 'SET_TECH_INFO':
             return {...state, technicalInfo: action.text}
+        case 'SET_PHOTOS':
+            return {...state, photos: action.data}
         default:
             return state
     }
@@ -98,6 +108,11 @@ export const updateTechnicalInfo = (id: string, text: string) => async (dispatch
     dispatch(setTechnicalInfo(data.tech))
 }
 
+export const getPhotos = (id: string) => async (dispatch: any) => { 
+    let data = await equipmentAPI.getPhotos(id)
+    dispatch(setPhotosData(data.photos))
+}
+
 const pushEquipmentData = (data: any) => {
     return {
         type: 'PUSH_EQ_DATA',
@@ -122,6 +137,13 @@ const setTechnicalInfo = (text: string) => {
     return {
         type: 'SET_TECH_INFO',
         text
+    }
+}
+
+const setPhotosData = (data: Array<PhotosType>) => {
+    return {
+        type: 'SET_PHOTOS',
+        data
     }
 }
 

@@ -55,5 +55,12 @@ export const equipmentAPI = {
         return instance.post(`updateTechnicalInfo.php`, data).then (response => {
             return response.data
         })
+    },
+    getPhotos (id: string) {
+        let data = new FormData()
+        data.append("id", id)
+        return instance.post(`getPhotos.php`, data).then (response => {
+            return response.data
+        })
     }
 }

@@ -16,6 +16,10 @@ export const getTechInfo = (state: AppStateType) => {
     return (state.equipment.technicalInfo)
 }
 
+export const getPhotosSelector = (state: AppStateType) => {
+    return (state.equipment.photos)
+}
+
 export const getEquipById = (state: AppStateType, id: string | undefined ='0') => {
     const allEquipmentData = getEquipData(state); // Используем существующий селектор для получения всего массива данных
   
