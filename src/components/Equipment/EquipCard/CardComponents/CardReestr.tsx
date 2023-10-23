@@ -94,7 +94,7 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isLoading}) => {
             bordered
             title={() => <Text style={{fontSize: '14pt', color: '#4096ff'}}>Перечень валидационных работ</Text>}
             pagination={false} // Скрыть пагинацию, если есть
-            style={{marginBottom: '80px'}}
+            style={{marginBottom: '30px'}}
             rowKey='id'
         />
     )

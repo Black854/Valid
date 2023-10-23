@@ -1,11 +1,12 @@
-import { Col, Image, Row, Table } from "antd"
+import { Avatar, Button, Col, Image, Row, Space, Table, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { getPhotosSelector } from "../../../../redux/equipmentSelectors"
 import { useEffect } from "react"
-import { getPhotos } from "../../../../redux/equipmentReducer"
+import { deletePhoto, getPhotos, uploadPhotos } from "../../../../redux/equipmentReducer"
 import Link from "antd/es/typography/Link"
+import { DeleteOutlined, FileAddOutlined } from '@ant-design/icons';
 import pdf from './../../../../img/pdfi.png'
-import s from './PhotosBlock.module.css'
+const {Text} = Typography
 
 type PhotosBlockPropsType = {
     id: string
@@ -14,28 +15,86 @@ type PhotosBlockPropsType = {
 const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
     const dispatch = useDispatch()
     const photos = useSelector(getPhotosSelector)
-    console.log(photos)
+    const addObjectToPhotos = {
+        id: '99999',
+        idfromtable: '',
+        src: '',
+        name: ''
+    }
     useEffect(
         () => {
             //@ts-ignore
             dispatch(getPhotos(id))
         }, []
     )
+
+    useEffect(
+        () => {
+            photos.unshift(addObjectToPhotos);
+        }, [photos]
+    )
+
+    let fileInputRef: any = null
+
+    const onSelectPhoto = (e: any) => {
+        //@ts-ignore
+        dispatch(uploadPhotos(id, e.currentTarget.files[0]))
+    }
+
+    const handleDeletePhoto = (id: string, photoId: string) => {
+        //@ts-ignore
+        dispatch(deletePhoto(id, photoId))
+    }
     const photosData = photos.map ((e: any) => {
-        
         if (e.src.endsWith('.pdf')) {
-            return <Image src={pdf} preview={false} style={{width: '33.3%', padding: '3px', boxSizing: 'border-box', objectFit: 'cover', objectPosition: 'center', maxHeight: '100%'}} />
-                {/* </Link> */}
+            return  <Col key={e.id} xs={24} sm={12} md={8} lg={8} style={{padding: '4px'}}>
+                        <Text editable style={{position: 'absolute', top: '3%', left: '3%', width: '85%', zIndex: '1'}}>{e.name}</Text>
+                        <Link href={'http://10.85.10.212/ov/' + e.src}>
+                            <Image preview={false} src={pdf} height='100%' style={{objectFit: 'cover'}} />
+                        </Link>
+                        <Button size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'relative', bottom: '98%', left: '85%'}} />
+                    </Col>
+        } else if (e.id === '99999') {
+            return  <Col key={e.id} xs={24} sm={12} md={8} lg={8} style={{padding: '4px'}}>
+                        <Avatar shape='square' 
+                                icon={<FileAddOutlined style={{fontSize: '150pt', marginTop: '50%'}} />} 
+                                style={{objectFit: 'cover', height: '100%', width: '100%', cursor: 'pointer'}} 
+                                onClick={() => fileInputRef.click()}
+                        />
+                        <input id="uploadPhoto" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
+                    </Col>
         } else {
-            return  <Image src={'http://10.85.10.212/ov/' + e.src} style={{width: '33.3%', padding: '3px', boxSizing: 'border-box', objectFit: 'cover', objectPosition: 'center', maxHeight: '100%'}} />
+            return  <Col key={e.id} xs={24} sm={12} md={8} lg={8} style={{padding: '4px'}}>
+                        <Image src={'http://10.85.10.212/ov/' + e.src} height='100%' style={{objectFit: 'cover'}} />
+                        <Button onClick={() => {handleDeletePhoto(id, e.id)}} size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'relative', bottom: '98%', left: '85%'}} />
+                    </Col>
         }
+        
     })
-    
+
+    const data = [
+        {
+            value: photosData
+        }           
+    ]
+
+    const columns = [
+        {
+          dataIndex: 'value',
+          render: (value: string) => <Row gutter={8} style={{marginBottom: '100px'}}>{value}</Row>,
+        }
+    ]
     
     return (
-        <div style={{display: 'flex', flexWrap: 'wrap'}} >
-            {photosData}
-        </div>
+        <Table 
+            title={() => <Text style={{fontSize: '14pt', color: '#4096ff'}}>Фотографии</Text>} 
+            columns={columns}
+            dataSource={data}
+            bordered
+            pagination={false} // Скрыть пагинацию, если есть
+            showHeader={false} // Скрыть заголовки, если есть
+            rowKey='value'
+        />
     )
 }
 

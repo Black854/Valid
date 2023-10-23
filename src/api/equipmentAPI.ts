@@ -62,5 +62,22 @@ export const equipmentAPI = {
         return instance.post(`getPhotos.php`, data).then (response => {
             return response.data
         })
-    }
+    },
+    uploadPhotos (id: string, file: any) {
+        let formData = new FormData()
+        formData.append("id", id)
+        formData.append("image", file)
+        formData.append("table", "equipment")
+        return instance.post(`uploadPhotos.php`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
+            return response.data
+        })
+    },
+    deletePhoto (id: string, photoId: string) {
+        let formData = new FormData()
+        formData.append("id", id)
+        formData.append("photoId", photoId)
+        return instance.post(`deletePhoto.php`, formData, {}).then (response => {
+            return response.data
+        })
+    },
 }

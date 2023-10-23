@@ -113,6 +113,16 @@ export const getPhotos = (id: string) => async (dispatch: any) => {
     dispatch(setPhotosData(data.photos))
 }
 
+export const uploadPhotos = (id: string, file: any) => async (dispatch: any) => { 
+    let data = await equipmentAPI.uploadPhotos(id, file)
+    dispatch(setPhotosData(data.photos))
+}
+
+export const deletePhoto = (id: string, photoId: string) => async (dispatch: any) => { 
+    let data = await equipmentAPI.deletePhoto(id, photoId)
+    dispatch(setPhotosData(data.photos))
+}
+
 const pushEquipmentData = (data: any) => {
     return {
         type: 'PUSH_EQ_DATA',
