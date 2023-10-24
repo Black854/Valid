@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Equipment from './components/Equipment/Equipment'
-import { Layout, ConfigProvider } from 'antd'
+import { Layout, ConfigProvider, theme } from 'antd'
 import Header from './components/Header/Header'
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom'
 import { Provider } from 'react-redux'
@@ -15,7 +15,7 @@ function App() {
   return (
     <Router>
       <Provider store={store}>
-        <ConfigProvider theme={{}} >
+        <ConfigProvider theme={{ algorithm: theme.defaultAlgorithm}} >
           <Layout className="layout">
             <Header />
             <Layout className="layout">
