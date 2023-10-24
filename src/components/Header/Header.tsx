@@ -1,6 +1,6 @@
 import React from "react"
 import {Link, useLocation} from 'react-router-dom'
-import { Layout, Menu, MenuProps, theme } from 'antd'
+import { Button, Layout, Menu, MenuProps, theme } from 'antd'
 const { Header } = Layout;
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -41,11 +41,11 @@ const Header1: React.FC = () => {
     {key: '/paperplanes', label: <Link to='/paperplanes'>Схемы</Link>},
     {key: '/docs', label: <Link to='/docs'>Документация</Link>}
     ]
+
     return <>
         <Header style={{ alignItems: 'center' }}>
             <div className="demo-logo" />
             <Menu
-                theme="dark"
                 mode="horizontal"
                 selectedKeys={[getPathnameWithoutTrailingSlash(location.pathname)]}
                 items={items}

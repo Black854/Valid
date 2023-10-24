@@ -14,7 +14,7 @@ const EquipDescriptions: React.FC<EquipDescriptionsPropsType> = ({columns, data,
                 columns={columns}
                 dataSource={data}
                 bordered
-                title={() => <Text style={{fontSize: '14pt', color: '#4096ff'}}>{name}</Text>}
+                // title={() => <Text style={{fontSize: '14pt', color: '#4096ff'}}>{name}</Text>}
                 pagination={false} // Скрыть пагинацию, если есть
                 showHeader={false} // Скрыть заголовки, если есть
                 rowKey='rowName'

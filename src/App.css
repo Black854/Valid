@@ -1,3 +1,19 @@
 .ant-image-mask {
   border-radius: 10px; /* Скругляем углы для маски Preview */
 }
+
+.theme-light {
+  --primary-color: #1890ff; 
+  --text-color: #333;
+}
+
+.theme-dark {
+  --primary-color: #001529; 
+  --text-color: #fff;
+}
+
+/* Пример глобальных стилей */
+body {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}

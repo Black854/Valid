@@ -1,4 +1,4 @@
-import { Button, Col, Image, Row, Spin, Table, Typography } from "antd"
+import { Button, Col, Image, Row, Spin, Table, Tabs, TabsProps, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
 import { getEquipById, getEquipData, getIsLoading } from "../../../redux/equipmentSelectors";
@@ -126,27 +126,41 @@ const EquipCard = () => {
             },
         ]
 
+        const items: TabsProps['items'] = [
+            {
+              key: '1',
+              label: 'Описание',
+              children: <EquipDescriptions columns={columns} data={data} name={equipObject.name} />,
+            },
+            {
+              key: '2',
+              label: 'Перечень валидационных работ',
+              children: <CardReestr id={equipObject.id} isLoading={isLoading} />,
+            },
+            {
+              key: '3',
+              label: 'Техническая информация',
+              children: <TechnicalInfo id={equipObject.id} />,
+            },
+            {
+              key: '4',
+              label: 'Фотографии',
+              children: <PhotosBlock id={equipObject.id} />,
+            },
+          ];
+
         return (
             <>
             <Row style={{padding: '10px 0'}}>
-                <Col span={5} push={1} style={{textAlign: 'center'}}>
-                    <TitleImage equipObject={equipObject} />
+                <Col span={3} push={1} style={{textAlign: 'center'}}>
+                    <TitleImage equipObject={equipObject}/>
                 </Col>
-                <Col span={16} push={2}>
-                    <EquipDescriptions columns={columns} data={data} name={equipObject.name} />
-                </Col>
-            </Row>
-            <Row>
-                <Col span={22} push={1}>
-                    <CardReestr id={equipObject.id} isLoading={isLoading} />
-                </Col>
-            </Row>
-            <Row>
-                <Col span={10} push={1}>
-                    <TechnicalInfo id={equipObject.id} />
-                </Col>
-                <Col span={10} push={3}>
-                    <PhotosBlock id={equipObject.id} />
+                <Col span={18} push={2}>
+                    <Tabs
+                        defaultActiveKey="1"
+                        items={items}
+                        indicatorSize={(origin) => origin - 16}
+                    />
                 </Col>
             </Row>
             </>

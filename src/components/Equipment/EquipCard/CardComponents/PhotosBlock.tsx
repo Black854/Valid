@@ -47,7 +47,7 @@ const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
     }
     const photosData = photos.map ((e: any) => {
         if (e.src.endsWith('.pdf')) {
-            return  <Col key={e.id} xs={24} sm={12} md={8} lg={8} style={{padding: '4px'}}>
+            return  <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{padding: '4px'}}>
                         <Text editable style={{position: 'absolute', top: '3%', left: '3%', width: '85%', zIndex: '1'}}>{e.name}</Text>
                         <Link href={'http://10.85.10.212/ov/' + e.src}>
                             <Image preview={false} src={pdf} height='100%' style={{objectFit: 'cover'}} />
@@ -55,7 +55,7 @@ const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                         <Button size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'relative', bottom: '98%', left: '85%'}} />
                     </Col>
         } else if (e.id === '99999') {
-            return  <Col key={e.id} xs={24} sm={12} md={8} lg={8} style={{padding: '4px'}}>
+            return  <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{padding: '4px'}}>
                         <Avatar shape='square' 
                                 icon={<FileAddOutlined style={{fontSize: '150pt', marginTop: '50%'}} />} 
                                 style={{objectFit: 'cover', height: '100%', width: '100%', cursor: 'pointer'}} 
@@ -64,7 +64,7 @@ const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                         <input id="uploadPhoto" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
                     </Col>
         } else {
-            return  <Col key={e.id} xs={24} sm={12} md={8} lg={8} style={{padding: '4px'}}>
+            return  <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{padding: '4px'}}>
                         <Image src={'http://10.85.10.212/ov/' + e.src} height='100%' style={{objectFit: 'cover'}} />
                         <Button onClick={() => {handleDeletePhoto(id, e.id)}} size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'relative', bottom: '98%', left: '85%'}} />
                     </Col>
@@ -86,15 +86,16 @@ const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
     ]
     
     return (
-        <Table 
-            title={() => <Text style={{fontSize: '14pt', color: '#4096ff'}}>Фотографии</Text>} 
-            columns={columns}
-            dataSource={data}
-            bordered
-            pagination={false} // Скрыть пагинацию, если есть
-            showHeader={false} // Скрыть заголовки, если есть
-            rowKey='value'
-        />
+        // <Table 
+        //     // title={() => <Text style={{fontSize: '14pt', color: '#4096ff'}}>Фотографии</Text>} 
+        //     columns={columns}
+        //     dataSource={data}
+        //     bordered
+        //     pagination={false} // Скрыть пагинацию, если есть
+        //     showHeader={false} // Скрыть заголовки, если есть
+        //     rowKey='value'
+        // />
+        <Row gutter={4} style={{marginBottom: '100px'}}>{photosData}</Row>
     )
 }
 

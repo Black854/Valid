@@ -40,7 +40,6 @@ const TechnicalInfo: React.FC<TechnicalInfoPropsType> = ({ id }) => {
             columns={columns}
             dataSource={data}
             bordered
-            title={() => <Text style={{fontSize: '14pt', color: '#4096ff'}}>Техническая информация</Text>}
             pagination={false} // Скрыть пагинацию, если есть
             showHeader={false} // Скрыть заголовки, если есть
             rowKey='value'

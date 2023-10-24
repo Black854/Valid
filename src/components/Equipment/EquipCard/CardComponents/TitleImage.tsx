@@ -1,9 +1,10 @@
-import { Button, Image } from "antd"
+import { Button, Image, Typography } from "antd"
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import empty from './../../../../img/empty.png'
 import { useDispatch, useSelector } from "react-redux";
 import { deleteMainPhoto, uploadMainPhoto } from "../../../../redux/equipmentReducer";
 import { useParams } from "react-router-dom";
+const {Text} = Typography
 
 interface DataType {
     ar: string
@@ -43,18 +44,20 @@ const TitleImage: React.FC<TitleImagePropsType> = ({equipObject}) => {
 
     return (
         <>
-            <div style={{width: '100%', textAlign: 'center', marginBottom: '20px'}}>
-            <Image
-                src={equipObject.foto ? "http://10.85.10.212/ov/" + equipObject.foto : empty}
-                preview = { equipObject.foto ? true : false }
-                style={{
-                    maxWidth: '100%',
-                    maxHeight: '50vh',
-                    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
-                    borderRadius: '10px',
-                    overflow: 'hidden'
-                }}
-            />
+            <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
+                <Text strong style={{color: '#167afe', fontSize: '12pt'}}>{equipObject.name}</Text>
+                <Image
+                    src={equipObject.foto ? "http://10.85.10.212/ov/" + equipObject.foto : empty}
+                    preview = { equipObject.foto ? true : false }
+                    style={{
+                        maxWidth: '100%',
+                        maxHeight: '45vh',
+                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
+                        borderRadius: '10px',
+                        overflow: 'hidden',
+                        marginTop: '20px'
+                    }}
+                />
             </div>
             { !equipObject.foto && <>
                 <input id="uploadPhoto" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />

@@ -92,7 +92,6 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isLoading}) => {
             columns={columns}
             dataSource={reestrData}
             bordered
-            title={() => <Text style={{fontSize: '14pt', color: '#4096ff'}}>Перечень валидационных работ</Text>}
             pagination={false} // Скрыть пагинацию, если есть
             style={{marginBottom: '30px'}}
             rowKey='id'
