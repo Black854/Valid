@@ -27,12 +27,9 @@ const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
             dispatch(getPhotos(id))
         }, []
     )
-
-    useEffect(
-        () => {
-            photos.unshift(addObjectToPhotos);
-        }, [photos]
-    )
+    let photosRenderArray = []
+    photosRenderArray.unshift(...photos);
+    photosRenderArray.unshift(addObjectToPhotos);
 
     let fileInputRef: any = null
 
@@ -45,7 +42,7 @@ const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
         //@ts-ignore
         dispatch(deletePhoto(id, photoId))
     }
-    const photosData = photos.map ((e: any) => {
+    const photosData = photosRenderArray.map ((e: any) => {
         if (e.src.endsWith('.pdf')) {
             return  <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{padding: '4px'}}>
                         <Text editable style={{position: 'absolute', top: '3%', left: '3%', width: '85%', zIndex: '1'}}>{e.name}</Text>
@@ -71,30 +68,8 @@ const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
         }
         
     })
-
-    const data = [
-        {
-            value: photosData
-        }           
-    ]
-
-    const columns = [
-        {
-          dataIndex: 'value',
-          render: (value: string) => <Row gutter={8} style={{marginBottom: '100px'}}>{value}</Row>,
-        }
-    ]
     
     return (
-        // <Table 
-        //     // title={() => <Text style={{fontSize: '14pt', color: '#4096ff'}}>Фотографии</Text>} 
-        //     columns={columns}
-        //     dataSource={data}
-        //     bordered
-        //     pagination={false} // Скрыть пагинацию, если есть
-        //     showHeader={false} // Скрыть заголовки, если есть
-        //     rowKey='value'
-        // />
         <Row gutter={4} style={{marginBottom: '100px'}}>{photosData}</Row>
     )
 }

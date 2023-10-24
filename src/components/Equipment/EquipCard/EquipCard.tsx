@@ -155,11 +155,12 @@ const EquipCard = () => {
                 <Col span={3} push={1} style={{textAlign: 'center'}}>
                     <TitleImage equipObject={equipObject}/>
                 </Col>
-                <Col span={18} push={2}>
+                <Col span={18} push={2} style={{minHeight: '89vh', display: "flex", flexDirection: 'column'}}>
                     <Tabs
                         defaultActiveKey="1"
                         items={items}
                         indicatorSize={(origin) => origin - 16}
+                        style={{flex: 1}}
                     />
                 </Col>
             </Row>
