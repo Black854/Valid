@@ -1,8 +1,10 @@
 import {applyMiddleware, combineReducers, compose, legacy_createStore as createStore} from 'redux';
 import thunkMiddleWare from 'redux-thunk'
 import equipmentReducer from './equipmentReducer';
+import appReducer from './appReducer';
 
 let rootReducer = combineReducers({
+  app: appReducer,
   equipment: equipmentReducer
 })
 

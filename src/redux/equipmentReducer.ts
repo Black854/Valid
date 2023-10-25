@@ -30,7 +30,10 @@ let initialState = {
     reestrData: [],
     isLoading: false,
     technicalInfo: '',
-    photos: [] as Array<PhotosType>
+    photos: [] as Array<PhotosType>,
+    isDepartmentLoading: false,
+    isVMPDepartmentLoading: false,
+    isGroupLoading: false,
 }
 
 type InitialStateType = typeof initialState
@@ -47,6 +50,12 @@ const equipmentReducer = (state = initialState, action: any): InitialStateType =
             return {...state, technicalInfo: action.text}
         case 'SET_PHOTOS':
             return {...state, photos: action.data}
+        case 'SET_IS_DEPARTMENT_LOADING':
+            return {...state, isDepartmentLoading: action.data}
+        case 'SET_IS_VMP_DEPARTMENT_LOADING':
+            return {...state, isVMPDepartmentLoading: action.data}
+        case 'SET_IS_GROUP_LOADING':
+            return {...state, isGroupLoading: action.data}
         default:
             return state
     }
@@ -103,6 +112,13 @@ export const updateName = (id: string, name: string) => async (dispatch: any) =>
     dispatch (pushEquipmentData(data.items))
 }
 
+export const updateGroup = (id: string, group: string) => async (dispatch: any) => {
+    dispatch (setIsGroupLoading(true))
+    let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, group)
+    dispatch (pushEquipmentData(data.items))
+    dispatch (setIsGroupLoading(false))
+}
+
 export const getTechnicalInfo = (id: string) => async (dispatch: any) => { 
     let data = await equipmentAPI.getTechnicalInfo(id)
     dispatch(setTechnicalInfo(data.tech))
@@ -131,6 +147,20 @@ export const deletePhoto = (id: string, photoId: string) => async (dispatch: any
 export const updatePdfDescription = (photoId: string, text: string, id: string) => async (dispatch: any) => { 
     let data = await equipmentAPI.updatePdfDescription(photoId, text, id)
     dispatch(setPhotosData(data.photos))
+}
+
+export const updateDepartment = (id: string, department: string) => async (dispatch: any) => {
+    dispatch (setIsDepartmentLoading(true))
+    let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, department)
+    dispatch (pushEquipmentData(data.items))
+    dispatch (setIsDepartmentLoading(false))
+}
+
+export const updateVMPDepartment = (id: string, VMPdepartment: string) => async (dispatch: any) => {
+    dispatch (setIsVMPDepartmentLoading(true))
+    let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, VMPdepartment)
+    dispatch (pushEquipmentData(data.items))
+    dispatch (setIsVMPDepartmentLoading(false))
 }
 
 const pushEquipmentData = (data: any) => {
@@ -163,6 +193,27 @@ const setTechnicalInfo = (text: string) => {
 const setPhotosData = (data: Array<PhotosType>) => {
     return {
         type: 'SET_PHOTOS',
+        data
+    }
+}
+
+const setIsDepartmentLoading = (data: boolean) => {
+    return {
+        type: 'SET_IS_DEPARTMENT_LOADING',
+        data
+    }
+}
+
+const setIsVMPDepartmentLoading = (data: boolean) => {
+    return {
+        type: 'SET_IS_VMP_DEPARTMENT_LOADING',
+        data
+    }
+}
+
+const setIsGroupLoading = (data: boolean) => {
+    return {
+        type: 'SET_IS_GROUP_LOADING',
         data
     }
 }

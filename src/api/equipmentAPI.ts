@@ -1,14 +1,14 @@
 import axios from "axios"
 
 const instance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/',
+    baseURL: 'http://10.85.10.212/ov/api/equip/',
     // withCredentials: true,
     // headers: {"API-KEY": "4f3d39e5-214f-420c-9ab3-f8c322bdb13c"}
 });
 
 export const equipmentAPI = {
     getEquipment () {
-        return instance.get(`equip.php`).then (response => {
+        return instance.get(`getEquipList.php`).then (response => {
             return response.data
         })
     },
@@ -29,7 +29,17 @@ export const equipmentAPI = {
             return response.data
         })
     },
-    updateDescription (id: string, nomer?: string, serial?: string, inv?: string, manufacturer?: string, manufacturDate?: string, name?: string) {
+    updateDescription (id: string,
+            nomer?: string,
+            serial?: string,
+            inv?: string,
+            manufacturer?: string,
+            manufacturDate?: string,
+            name?: string,
+            group?: string,
+            department?: string,
+            VMPDepartment?: string
+        ) {
         let data = new FormData()
         data.append("id", id)
         data.append("table", 'equipment')
@@ -39,8 +49,11 @@ export const equipmentAPI = {
         name !== undefined && data.append("name", name)
         manufacturer !== undefined && data.append("manufacturer", manufacturer)
         manufacturDate !== undefined && data.append("manufacturdate", manufacturDate)
+        group !== undefined && data.append("group", group)
+        department !== undefined && data.append("department", department)
+        VMPDepartment !== undefined && data.append("VMPDepartment", VMPDepartment)
         
-        return instance.post(`updateData.php`, data, {}).then (response => {
+        return instance.post(`updateDescription.php`, data, {}).then (response => {
             return response.data
         })
     },

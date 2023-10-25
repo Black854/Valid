@@ -27,4 +27,16 @@ export const getEquipById = (state: AppStateType, id: string | undefined ='0') =
     const equipWithId = allEquipmentData.find(e => e.id === id);
   
     return equipWithId; // Возвращаем объект или null, если не найден
-};
+}
+
+export const getIsDepartmentLoading = (state: AppStateType) => {
+    return (state.equipment.isDepartmentLoading)
+}
+
+export const getIsVMPDepartmentLoading = (state: AppStateType) => {
+    return (state.equipment.isVMPDepartmentLoading)
+}
+
+export const getIsGroupLoading = (state: AppStateType) => {
+    return (state.equipment.isGroupLoading)
+}
