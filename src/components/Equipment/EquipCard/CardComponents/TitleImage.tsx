@@ -1,9 +1,10 @@
-import { Button, Image, Typography } from "antd"
+import { Button, Image, Popconfirm, Typography } from "antd"
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import empty from './../../../../img/empty.png'
-import { useDispatch, useSelector } from "react-redux";
-import { deleteMainPhoto, uploadMainPhoto } from "../../../../redux/equipmentReducer";
+import { useDispatch } from "react-redux";
+import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/equipmentReducer";
 import { useParams } from "react-router-dom";
+import { EyeOutlined} from '@ant-design/icons';
 const {Text} = Typography
 
 interface DataType {
@@ -35,9 +36,14 @@ const TitleImage: React.FC<TitleImagePropsType> = ({equipObject}) => {
         //@ts-ignore
         dispatch(uploadMainPhoto(id, e.currentTarget.files[0]))
     }
-    const deleteFoto = () => {
+    const handleDeleteFoto = () => {
         //@ts-ignore
         dispatch(deleteMainPhoto(id))
+    }
+
+    const handleUpdateName = (text: string) => {
+        //@ts-ignore
+        dispatch(updateName(id, text))
     }
 
     let fileInputRef: any = null;
@@ -45,18 +51,18 @@ const TitleImage: React.FC<TitleImagePropsType> = ({equipObject}) => {
     return (
         <>
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
-                <Text strong style={{color: '#167afe', fontSize: '12pt'}}>{equipObject.name}</Text>
+                <Text strong editable={{onChange: (text: string) => handleUpdateName(text)}} style={{color: '#167afe', fontSize: '12pt', display: 'block', marginBottom: '20px'}}>{equipObject.name}</Text>
                 <Image
                     src={equipObject.foto ? "http://10.85.10.212/ov/" + equipObject.foto : empty}
-                    preview = { equipObject.foto ? true : false }
+                    preview = { equipObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }
                     style={{
                         maxWidth: '100%',
                         maxHeight: '45vh',
                         boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
                         borderRadius: '10px',
-                        overflow: 'hidden',
-                        marginTop: '20px'
+                        overflow: 'hidden'
                     }}
+                    rootClassName="titleImage"
                 />
             </div>
             { !equipObject.foto && <>
@@ -64,7 +70,17 @@ const TitleImage: React.FC<TitleImagePropsType> = ({equipObject}) => {
                 <Button htmlType="submit" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
                 </>
             }
-            { equipObject.foto && id && <Button icon={<DeleteOutlined style={{fontSize: '12pt'}} />} danger onClick={deleteFoto} >Удалить фото</Button> }
+            { equipObject.foto && id && <>
+                    <Popconfirm
+                        title='Подтвердите удаление'
+                        description='Вы уверены, что хотите удалить фотографию?'
+                        okText='Да'
+                        cancelText='Нет'
+                        onConfirm={handleDeleteFoto}
+                    >
+                        <Button icon={<DeleteOutlined style={{fontSize: '12pt'}} />} danger>Удалить фото</Button>
+                    </Popconfirm>
+                </>  }
         </>
     )
 }

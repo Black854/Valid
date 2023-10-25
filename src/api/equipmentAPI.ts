@@ -29,13 +29,14 @@ export const equipmentAPI = {
             return response.data
         })
     },
-    updateDescription (id: string, nomer?: string, serial?: string, inv?: string, manufacturer?: string, manufacturDate?: string) {
+    updateDescription (id: string, nomer?: string, serial?: string, inv?: string, manufacturer?: string, manufacturDate?: string, name?: string) {
         let data = new FormData()
         data.append("id", id)
         data.append("table", 'equipment')
         nomer !== undefined && data.append("nomer", nomer)
         serial !== undefined && data.append("serial", serial)
         inv !== undefined && data.append("inv", inv)
+        name !== undefined && data.append("name", name)
         manufacturer !== undefined && data.append("manufacturer", manufacturer)
         manufacturDate !== undefined && data.append("manufacturdate", manufacturDate)
         
@@ -77,6 +78,15 @@ export const equipmentAPI = {
         formData.append("id", id)
         formData.append("photoId", photoId)
         return instance.post(`deletePhoto.php`, formData, {}).then (response => {
+            return response.data
+        })
+    },
+    updatePdfDescription (photoId: string, text: string, id: string) {
+        let data = new FormData()
+        data.append("photoId", photoId)
+        data.append("text", text)
+        data.append("id", id)
+        return instance.post(`updatePdfDescription.php`, data, {}).then (response => {
             return response.data
         })
     },

@@ -1,10 +1,10 @@
-import { Avatar, Col, Image, Row, Spin, Table } from "antd";
+import { Typography, Col, Image, Row, Spin, Table } from "antd";
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table';
 import { useDispatch, useSelector } from "react-redux";
 import { getEquipData, getIsLoading } from "../../redux/equipmentSelectors";
 import { getEquipment } from "../../redux/equipmentReducer";
-import { Typography } from 'antd';
+import { EyeOutlined} from '@ant-design/icons';
 import { RenderDateHelper } from "../helpers/renderDateHelper";
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom";
@@ -61,6 +61,7 @@ const columns: ColumnsType<DataType> = [
                     borderRadius: '3px',
                     overflow: 'hidden'}} 
                     src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
+                    preview = {{mask: <EyeOutlined style={{fontSize: '12pt'}} />}}
                 />
             </Col>
             <Col span={23}>

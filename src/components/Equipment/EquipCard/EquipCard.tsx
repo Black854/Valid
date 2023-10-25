@@ -73,17 +73,17 @@ const EquipCard = () => {
 
         const data = [
             {
-                rowName: 'Структурное подразделение (по ВМП)',
+                rowName: 'Подразделение (по ВМП)',
                 value: equipObject.sp
             },
             {
-                rowName: 'Структурное подразделение (по ответственности)',
+                rowName: 'Подразделение (по ответственности)',
                 value: equipObject.sp2
             },
             {
                 rowName: 'Местонахождение',
                 value:  equipObject.nomer ? <Text editable={{ onChange: (text) => {updateDataNomer(text)}, text: equipObject.nomer}}>Помещение № { equipObject.nomer}</Text>:
-                                            <Text type="danger" editable={{ onChange: (text) => {updateDataNomer(text)}}}>Не указано</Text>
+                                            <Text type="danger" editable={{ onChange: (text) => {updateDataNomer(text)}, text: ''}}>Не указано</Text>
             },
             {
                 rowName: 'Группа',
@@ -92,25 +92,25 @@ const EquipCard = () => {
             {
                 rowName: 'Производитель',
                 value: equipObject.manufacturer ? <Text editable={{ onChange: (text) => {updateDataManufacturer(text)}}}>{equipObject.manufacturer}</Text> :
-                <Text type="danger" editable={{ onChange: (text) => {updateDataManufacturer(text)}}}>Не указано</Text>
+                <Text type="danger" editable={{ onChange: (text) => {updateDataManufacturer(text)}, text: ''}}>Не указано</Text>
             },
             {
                 rowName: 'Год изготовления',
                 value: equipObject.manufacturdate ? <Text editable={{ onChange: (text) => {updateDataManufacturdate(text)}}}>{equipObject.manufacturdate}</Text> :
-                <Text type="danger" editable={{ onChange: (text) => {updateDataManufacturdate(text)}}}>Не указано</Text>
+                <Text type="danger" editable={{ onChange: (text) => {updateDataManufacturdate(text)}, text: ''}}>Не указано</Text>
             },
             {
                 rowName: 'Серийный номер',
                 value: equipObject.serial ? <Text editable={{ onChange: (text) => {updateDataSerial(text)}}}>{equipObject.serial}</Text> :
-                <Text type="danger" editable={{ onChange: (text) => {updateDataSerial(text)}}}>Не указано</Text>
+                <Text type="danger" editable={{ onChange: (text) => {updateDataSerial(text)}, text: ''}}>Не указано</Text>
             },
             {
                 rowName: 'Учетный номер',
                 value: equipObject.inv ? <Text editable={{ onChange: (text) => {updateDataInv(text)}}}>{equipObject.inv}</Text> :
-                <Text type="danger" editable={{ onChange: (text) => {updateDataInv(text)}}}>Не указано</Text>
+                <Text type="danger" editable={{ onChange: (text) => {updateDataInv(text)}, text: ''}}>Не указано</Text>
             },
             {
-                rowName: 'Периодичность квалификации по анализу рисков',
+                rowName: 'Периодичность реквалификации',
                 value: <ArHelper ar={equipObject.ar} /> 
             }            
         ]
@@ -130,7 +130,7 @@ const EquipCard = () => {
             {
               key: '1',
               label: 'Описание',
-              children: <EquipDescriptions columns={columns} data={data} name={equipObject.name} />,
+              children: <EquipDescriptions columns={columns} data={data} />,
             },
             {
               key: '2',
@@ -152,15 +152,16 @@ const EquipCard = () => {
         return (
             <>
             <Row style={{padding: '10px 0'}}>
-                <Col span={3} push={1} style={{textAlign: 'center'}}>
+                <Col span={5} push={1} style={{textAlign: 'center'}}>
                     <TitleImage equipObject={equipObject}/>
                 </Col>
-                <Col span={18} push={2} style={{minHeight: '89vh', display: "flex", flexDirection: 'column'}}>
+                <Col span={16} push={2} style={{minHeight: '89vh', display: "flex", flexDirection: 'column'}}>
                     <Tabs
                         defaultActiveKey="1"
                         items={items}
                         indicatorSize={(origin) => origin - 16}
                         style={{flex: 1}}
+                        type="card"
                     />
                 </Col>
             </Row>

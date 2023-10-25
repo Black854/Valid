@@ -35,7 +35,7 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isLoading}) => {
     
     const columns: ColumnsType<reestrDataItemType> = [
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Протокол</Text>,
+            title: <Text strong style={{fontSize: '12pt'}}>Код протокола</Text>,
             dataIndex: 'nvp',
             render: (nvp, record) => {
                 if (record.vp) {
@@ -49,11 +49,11 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isLoading}) => {
             title: <Text strong style={{fontSize: '12pt'}}>Дата утв. протокола</Text>,
             dataIndex: 'dvp',
             render: (dvp) => { return <ConvertDate date={dvp} /> },
-            width: '12%',
+            // width: '13%',
             align: 'center',
         },
         {
-            title: <Text strong style={{fontSize: '12pt', textAlign: 'center'}}>Отчет</Text>,
+            title: <Text strong style={{fontSize: '12pt', textAlign: 'center'}}>Код отчета</Text>,
             dataIndex: 'nvo',
             render: (nvo, record) => {
                 if (record.vo) {
@@ -75,7 +75,7 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isLoading}) => {
             render: (dvo) => { return <ConvertDate date={dvo} /> },
             sortDirections: ['ascend', 'descend'],
             defaultSortOrder: 'descend',
-            width: '12%',
+            // width: '12%',
             align: 'center'
         },
         {

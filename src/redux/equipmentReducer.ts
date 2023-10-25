@@ -98,6 +98,11 @@ export const updateInv = (id: string, inv: string) => async (dispatch: any) => {
     dispatch (pushEquipmentData(data.items))
 }
 
+export const updateName = (id: string, name: string) => async (dispatch: any) => { //обновление данных о местоположении
+    let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, name)
+    dispatch (pushEquipmentData(data.items))
+}
+
 export const getTechnicalInfo = (id: string) => async (dispatch: any) => { 
     let data = await equipmentAPI.getTechnicalInfo(id)
     dispatch(setTechnicalInfo(data.tech))
@@ -120,6 +125,11 @@ export const uploadPhotos = (id: string, file: any) => async (dispatch: any) => 
 
 export const deletePhoto = (id: string, photoId: string) => async (dispatch: any) => { 
     let data = await equipmentAPI.deletePhoto(id, photoId)
+    dispatch(setPhotosData(data.photos))
+}
+
+export const updatePdfDescription = (photoId: string, text: string, id: string) => async (dispatch: any) => { 
+    let data = await equipmentAPI.updatePdfDescription(photoId, text, id)
     dispatch(setPhotosData(data.photos))
 }
 

@@ -1,6 +1,6 @@
 import React from "react"
-import {Link, useLocation} from 'react-router-dom'
-import { Button, Col, Layout, Menu, MenuProps, Row, Space, Switch, theme } from 'antd'
+import {Link, NavLink, useLocation} from 'react-router-dom'
+import { Button, Col, Flex, Layout, Menu, MenuProps, Row, Space, Switch, theme } from 'antd'
 import { Header } from "antd/es/layout/layout";
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -14,8 +14,8 @@ const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
     let location = useLocation()
 
     const getPathnameWithoutTrailingSlash = (pathname: string) => {
-        if (pathname.includes("/profile")) {
-            return "/profile"
+        if (pathname.includes("/equipment")) {
+            return "/equipment"
         }
         if (pathname.includes("/dialogs")) {
             return "/dialogs"
@@ -29,7 +29,7 @@ const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
             {key: '/monitoring', label: <Link to='/monitoring'>Мониторинг</Link>},
             {key: '/signal', label: <Link to='/signal'>Сигнальный лист</Link>},
             {key: '/premises', label: <Link to='/premises'>Помещения</Link>},
-            {key: '/equipment', label: <Link to='/equipment'>Оборудование</Link>},
+            {key: '/equipment', label: <NavLink to='/equipment'>Оборудование</NavLink>},
             {key: '/systems', label: <Link to='/systems'>Системы</Link>},
             {key: '/processes', label: <Link to='/processes'>Процессы</Link>},
             {key: '/instruments', label: <Link to='/instruments'>Инструменты</Link>}]
@@ -49,7 +49,7 @@ const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
     return <>
         <Header >
             <Row>
-                <Col span={23}>
+                <Col span={22}>
                     <Menu
                         theme="dark"
                         mode="horizontal"
@@ -58,8 +58,8 @@ const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
                         style={{backgroundColor: 'none'}}
                     />
                 </Col>
-                <Col>
-                    <Switch checked={typeTheme === 'light' && true} onChange={swithTheme} />
+                <Col span={2} style={{ textAlign: 'right'}}>
+                    <Switch checked={typeTheme === 'light'} onChange={swithTheme} />
                 </Col>
             </Row>
         </Header>
