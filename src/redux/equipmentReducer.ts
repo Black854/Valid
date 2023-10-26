@@ -1,233 +1,217 @@
+import { ThunkAction } from "redux-thunk"
 import { equipmentAPI } from "../api/equipmentAPI"
+import { AppStateType, InferActionsTypes } from "./store"
 
 type DataType = {
-    id: string,
-    sp: string,
-    sp2: string,
-    nomer: string,
-    name: string,
-    groupp: string,
-    fio: string,
-    manual: string,
-    foto: string,
-    manufacturer: string,
-    manufacturdate: string,
-    serial: string,
-    inv: string,
-    ar: string,
+    id: string
+    sp: string
+    sp2: string
+    nomer: string
+    name: string
+    groupp: string
+    fio: string
+    manual: string
+    foto: string
+    manufacturer: string
+    manufacturdate: string
+    serial: string
+    inv: string
+    ar: string
     date: string
 }
 
 type PhotosType = {
-    id: string,
-    idfromtable: string,
-    src: string,
+    id: string
+    idfromtable: string
+    src: string
     name: string
 }
 
+type ReestrType = {
+    dvo: string
+    dvp: string
+    et: string
+    id: string
+    idfromtable: string
+    nvo: string
+    nvp: string
+    pam: string
+    pam2: string
+    period: string
+    season: string
+    typeval: string
+    vo: string
+    vp: string
+
+}
+
 let initialState = {
-    data: [] as Array<DataType>,
-    reestrData: [],
+    data: [] as DataType[],
+    reestrData: [] as ReestrType[],
     isLoading: false,
     technicalInfo: '',
-    photos: [] as Array<PhotosType>,
+    photos: [] as PhotosType[],
     isDepartmentLoading: false,
     isVMPDepartmentLoading: false,
     isGroupLoading: false,
-    isReestrDataLoading: false
+    isReestrDataLoading: false,
+    isIntervalLoading: false
 }
 
 type InitialStateType = typeof initialState
 
-const equipmentReducer = (state = initialState, action: any): InitialStateType => {
+const equipmentReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
-        case 'PUSH_EQ_DATA':
+        case 'equip/PUSH_EQ_DATA':
             return {...state, data: action.data, isLoading: false}
-        case 'IS_LOADING':
+        case 'equip/IS_LOADING':
             return {...state, isLoading: true}
-        case 'PUSH_REESTR_DATA':
+        case 'equip/PUSH_REESTR_DATA':
             return {...state, reestrData: action.data}            
-        case 'SET_TECH_INFO':
+        case 'equip/SET_TECH_INFO':
             return {...state, technicalInfo: action.text}
-        case 'SET_PHOTOS':
+        case 'equip/SET_PHOTOS':
             return {...state, photos: action.data}
-        case 'SET_IS_DEPARTMENT_LOADING':
+        case 'equip/SET_IS_DEPARTMENT_LOADING':
             return {...state, isDepartmentLoading: action.data}
-        case 'SET_IS_VMP_DEPARTMENT_LOADING':
+        case 'equip/SET_IS_VMP_DEPARTMENT_LOADING':
             return {...state, isVMPDepartmentLoading: action.data}
-        case 'SET_IS_GROUP_LOADING':
+        case 'equip/SET_IS_GROUP_LOADING':
             return {...state, isGroupLoading: action.data}
-        case 'SET_IS_REESTR_DATA_LOADING':
+        case 'equip/SET_IS_REESTR_DATA_LOADING':
             return {...state, isReestrDataLoading: action.data}
+        case 'equip/SET_IS_INTERVAL_LOADING':
+            return {...state, isIntervalLoading: action.data}
         default:
             return state
     }
 }
 
-export const getEquipment = () => async (dispatch: any) => {
-    dispatch (setIsLoading())
+export const getEquipment = (): ThunkType => async (dispatch) => {
+    dispatch (equipActions.setIsLoading())
     let data = await equipmentAPI.getEquipment()
-    dispatch (pushEquipmentData(data.items))
+    dispatch (equipActions.pushEquipmentData(data.items))
 }
 
-export const getReestrData = (id: string) => async (dispatch: any) => {
-    dispatch (setIsReestrDataLoading(true))
+export const getReestrData = (id: string): ThunkType => async (dispatch) => {
+    dispatch (equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.getReestrData(id)
-    dispatch (pushReestrData(data.items))
-    dispatch (setIsReestrDataLoading(false))
+    dispatch (equipActions.pushReestrData(data.items))
+    dispatch (equipActions.setIsReestrDataLoading(false))
 }
 
-export const uploadMainPhoto = (id: string, file: File) => async (dispatch: any) => {
+export const uploadMainPhoto = (id: string, file: File): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.uploadMainPhoto(id, file)
-    dispatch (pushEquipmentData(data.items))
+    dispatch (equipActions.pushEquipmentData(data.items))
 }
 
-export const deleteMainPhoto = (id: string) => async (dispatch: any) => {
+export const deleteMainPhoto = (id: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.deleteMainPhoto(id)
-    dispatch (pushEquipmentData(data.items))
+    dispatch (equipActions.pushEquipmentData(data.items))
 }
 
-export const updateNomer = (id: string, nomer: string) => async (dispatch: any) => { //обновление данных о местоположении
+export const updateNomer = (id: string, nomer: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.updateDescription(id, nomer)
-    dispatch (pushEquipmentData(data.items))
+    dispatch (equipActions.pushEquipmentData(data.items))
 }
 
-export const updateManufacturer = (id: string, manufacturer: string) => async (dispatch: any) => { //обновление данных о местоположении
+export const updateManufacturer = (id: string, manufacturer: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, manufacturer)
-    dispatch (pushEquipmentData(data.items))
+    dispatch (equipActions.pushEquipmentData(data.items))
 }
 
-export const updateManufacturDate = (id: string, manufacturDate: string) => async (dispatch: any) => { //обновление данных о местоположении
+export const updateManufacturDate = (id: string, manufacturDate: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, manufacturDate)
-    dispatch (pushEquipmentData(data.items))
+    dispatch (equipActions.pushEquipmentData(data.items))
 }
 
-export const updateSerial = (id: string, serial: string) => async (dispatch: any) => { //обновление данных о местоположении
+export const updateSerial = (id: string, serial: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.updateDescription(id, undefined, serial)
-    dispatch (pushEquipmentData(data.items))
+    dispatch (equipActions.pushEquipmentData(data.items))
 }
 
-export const updateInv = (id: string, inv: string) => async (dispatch: any) => { //обновление данных о местоположении
+export const updateInv = (id: string, inv: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, inv)
-    dispatch (pushEquipmentData(data.items))
+    dispatch (equipActions.pushEquipmentData(data.items))
 }
 
-export const updateName = (id: string, name: string) => async (dispatch: any) => { //обновление данных о местоположении
+export const updateName = (id: string, name: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, name)
-    dispatch (pushEquipmentData(data.items))
+    dispatch (equipActions.pushEquipmentData(data.items))
 }
 
-export const updateGroup = (id: string, group: string) => async (dispatch: any) => {
-    dispatch (setIsGroupLoading(true))
+export const updateGroup = (id: string, group: string): ThunkType => async (dispatch) => {
+    dispatch (equipActions.setIsGroupLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, group)
-    dispatch (pushEquipmentData(data.items))
-    dispatch (setIsGroupLoading(false))
+    dispatch (equipActions.pushEquipmentData(data.items))
+    dispatch (equipActions.setIsGroupLoading(false))
 }
 
-export const getTechnicalInfo = (id: string) => async (dispatch: any) => { 
+export const getTechnicalInfo = (id: string): ThunkType => async (dispatch) => { 
     let data = await equipmentAPI.getTechnicalInfo(id)
-    dispatch(setTechnicalInfo(data.tech))
+    dispatch(equipActions.setTechnicalInfo(data.tech))
 }
 
-export const updateTechnicalInfo = (id: string, text: string) => async (dispatch: any) => { 
+export const updateTechnicalInfo = (id: string, text: string): ThunkType => async (dispatch) => { 
     let data = await equipmentAPI.updateTechnicalInfo(id, text)
-    dispatch(setTechnicalInfo(data.tech))
+    dispatch(equipActions.setTechnicalInfo(data.tech))
 }
 
-export const getPhotos = (id: string) => async (dispatch: any) => { 
+export const getPhotos = (id: string): ThunkType => async (dispatch) => { 
     let data = await equipmentAPI.getPhotos(id)
-    dispatch(setPhotosData(data.photos))
+    dispatch(equipActions.setPhotosData(data.photos))
 }
 
-export const uploadPhotos = (id: string, file: any) => async (dispatch: any) => { 
+export const uploadPhotos = (id: string, file: any): ThunkType => async (dispatch) => { 
     let data = await equipmentAPI.uploadPhotos(id, file)
-    dispatch(setPhotosData(data.photos))
+    dispatch(equipActions.setPhotosData(data.photos))
 }
 
-export const deletePhoto = (id: string, photoId: string) => async (dispatch: any) => { 
+export const deletePhoto = (id: string, photoId: string): ThunkType => async (dispatch) => { 
     let data = await equipmentAPI.deletePhoto(id, photoId)
-    dispatch(setPhotosData(data.photos))
+    dispatch(equipActions.setPhotosData(data.photos))
 }
 
-export const updatePdfDescription = (photoId: string, text: string, id: string) => async (dispatch: any) => { 
+export const updatePdfDescription = (photoId: string, text: string, id: string): ThunkType => async (dispatch) => { 
     let data = await equipmentAPI.updatePdfDescription(photoId, text, id)
-    dispatch(setPhotosData(data.photos))
+    dispatch(equipActions.setPhotosData(data.photos))
 }
 
-export const updateDepartment = (id: string, department: string) => async (dispatch: any) => {
-    dispatch (setIsDepartmentLoading(true))
+export const updateDepartment = (id: string, department: string): ThunkType => async (dispatch) => {
+    dispatch (equipActions.setIsDepartmentLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, department)
-    dispatch (pushEquipmentData(data.items))
-    dispatch (setIsDepartmentLoading(false))
+    dispatch (equipActions.pushEquipmentData(data.items))
+    dispatch (equipActions.setIsDepartmentLoading(false))
 }
 
-export const updateVMPDepartment = (id: string, VMPdepartment: string) => async (dispatch: any) => {
-    dispatch (setIsVMPDepartmentLoading(true))
+export const updateVMPDepartment = (id: string, VMPdepartment: string): ThunkType => async (dispatch) => {
+    dispatch (equipActions.setIsVMPDepartmentLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, VMPdepartment)
-    dispatch (pushEquipmentData(data.items))
-    dispatch (setIsVMPDepartmentLoading(false))
+    dispatch (equipActions.pushEquipmentData(data.items))
+    dispatch (equipActions.setIsVMPDepartmentLoading(false))
 }
 
-const pushEquipmentData = (data: any) => {
-    return {
-        type: 'PUSH_EQ_DATA',
-        data
-    }
+export const updateInterval = (id: string, interval: string): ThunkType => async (dispatch) => {
+    dispatch (equipActions.setIsIntervalLoading(true))
+    let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, interval)
+    dispatch (equipActions.pushEquipmentData(data.items))
+    dispatch (equipActions.setIsIntervalLoading(false))
 }
 
-const pushReestrData = (data: any) => {
-    return {
-        type: 'PUSH_REESTR_DATA',
-        data
-    }
-}
+type ActionTypes = InferActionsTypes<typeof equipActions>
+type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
-const setIsLoading = () => {
-    return {
-        type: 'IS_LOADING'
-    }
-}
-
-const setTechnicalInfo = (text: string) => {
-    return {
-        type: 'SET_TECH_INFO',
-        text
-    }
-}
-
-const setPhotosData = (data: Array<PhotosType>) => {
-    return {
-        type: 'SET_PHOTOS',
-        data
-    }
-}
-
-const setIsDepartmentLoading = (data: boolean) => {
-    return {
-        type: 'SET_IS_DEPARTMENT_LOADING',
-        data
-    }
-}
-
-const setIsVMPDepartmentLoading = (data: boolean) => {
-    return {
-        type: 'SET_IS_VMP_DEPARTMENT_LOADING',
-        data
-    }
-}
-
-const setIsGroupLoading = (data: boolean) => {
-    return {
-        type: 'SET_IS_GROUP_LOADING',
-        data
-    }
-}
-
-const setIsReestrDataLoading = (data: boolean) => {
-    return {
-        type: 'SET_IS_REESTR_DATA_LOADING',
-        data
-    }
+const equipActions = {
+    pushEquipmentData: (data: DataType[]) => ({ type: 'equip/PUSH_EQ_DATA', data } as const),
+    pushReestrData: (data: ReestrType[]) => ({ type: 'equip/PUSH_REESTR_DATA', data } as const),
+    setIsLoading: () => ({ type: 'equip/IS_LOADING' } as const),
+    setTechnicalInfo: (text: string) => ({ type: 'equip/SET_TECH_INFO', text } as const),
+    setPhotosData: (data: PhotosType[]) => ({ type: 'equip/SET_PHOTOS', data } as const),
+    setIsDepartmentLoading: (data: boolean) => ({ type: 'equip/SET_IS_DEPARTMENT_LOADING', data } as const),
+    setIsVMPDepartmentLoading: (data: boolean) => ({ type: 'equip/SET_IS_VMP_DEPARTMENT_LOADING', data } as const),
+    setIsGroupLoading: (data: boolean) => ({ type: 'equip/SET_IS_GROUP_LOADING', data } as const),
+    setIsReestrDataLoading: (data: boolean) => ({ type: 'equip/SET_IS_REESTR_DATA_LOADING', data } as const),
+    setIsIntervalLoading: (data: boolean) => ({ type: 'equip/SET_IS_INTERVAL_LOADING', data } as const),
 }
 
 export default equipmentReducer

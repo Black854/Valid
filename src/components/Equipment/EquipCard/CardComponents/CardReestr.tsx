@@ -30,12 +30,6 @@ type CardReestrPropsType = {
 }
 
 const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, reestrData}) => {
-    const dispatch = useDispatch()
-    useEffect (() => {
-        //@ts-ignore
-        dispatch(getReestrData(id))
-    }, [id])
-    
     const columns: ColumnsType<reestrDataItemType> = [
         {
             title: <Text strong style={{fontSize: '12pt'}}>Код протокола</Text>,

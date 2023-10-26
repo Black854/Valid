@@ -38,7 +38,8 @@ export const equipmentAPI = {
             name?: string,
             group?: string,
             department?: string,
-            VMPDepartment?: string
+            VMPDepartment?: string,
+            interval?: string
         ) {
         let data = new FormData()
         data.append("id", id)
@@ -52,6 +53,7 @@ export const equipmentAPI = {
         group !== undefined && data.append("group", group)
         department !== undefined && data.append("department", department)
         VMPDepartment !== undefined && data.append("VMPDepartment", VMPDepartment)
+        interval !== undefined && data.append("interval", interval)
         
         return instance.post(`updateDescription.php`, data, {}).then (response => {
             return response.data

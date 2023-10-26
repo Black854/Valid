@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
 import { getEquipById, getEquipData, getIsDepartmentLoading, getIsGroupLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading, getReestrDataSelector } from "../../../redux/equipmentSelectors";
 import { AppStateType } from "../../../redux/store";
-import { getEquipment, updateDepartment, updateGroup, updateInv, updateManufacturDate, updateManufacturer, updateNomer, updateSerial, updateVMPDepartment } from "../../../redux/equipmentReducer";
+import { getEquipment, getReestrData, updateDepartment, updateGroup, updateInv, updateManufacturDate, updateManufacturer, updateNomer, updateSerial, updateVMPDepartment } from "../../../redux/equipmentReducer";
 import { ColumnsType } from "antd/es/table";
 import { ArHelper } from "../../helpers/arHelper";
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -15,13 +15,14 @@ import TechnicalInfo from "./CardComponents/TechnicalInfo";
 import PhotosBlock from "./CardComponents/PhotosBlock";
 import { getDepartmentsSelector, getEquipGroupsSelector, getVMPDepartmentsSelector } from "../../../redux/appSelectors";
 import { getDepartments, getEquipGroups, getVMPDepartments } from "../../../redux/appReducer";
+import CurrentStatus from "../../common/CurrentStatus";
 const { Text, Paragraph } = Typography
 
 const EquipCard = () => {
     const { id } = useParams();
 
     const dispatch = useDispatch()
-
+    
     const equipData = useSelector(getEquipData)
     const isLoading = useSelector(getIsLoading)
     const equipObject = useSelector((state: AppStateType) => getEquipById(state, id));
@@ -49,7 +50,10 @@ const EquipCard = () => {
           dispatch(getVMPDepartments());
         }
     }, [dispatch, equipData, equipGroups, departments, VMPDepartments]);
-    
+    useEffect (() => {
+        //@ts-ignore
+        dispatch(getReestrData(id))
+    }, [id])
     let filteredEquipGroups = equipGroups.filter(e => e.isactive !== '1');
     let groupsData = filteredEquipGroups.map((e: any) => ({ value: e.name, label: e.name }))
 
@@ -138,7 +142,7 @@ const EquipCard = () => {
                 rowName: 'Подразделение (по ответственности)',
                 value: <Select
                         style={{paddingRight: '20px', marginLeft: '-7px'}}
-                        // dropdownStyle={{width: 'auto'}}
+                        dropdownStyle={{width: '120px'}}
                         defaultValue={equipObject.sp2}
                         onChange={handleUpdateDepartment}
                         size="small"
@@ -186,9 +190,13 @@ const EquipCard = () => {
                 <Text type="danger" editable={{ onChange: (text) => {updateDataInv(text)}, text: ''}}>Не указано</Text>
             },
             {
-                rowName: 'Периодичность реквалификации',
-                value: <ArHelper ar={equipObject.ar} /> 
-            }            
+                rowName: 'Интервал оценки/реквалификации',
+                value: <ArHelper ar={equipObject.ar} id={equipObject.id} /> 
+            },
+            {
+                rowName: 'Валидационный статус',
+                value: <CurrentStatus ar={equipObject.ar}  fio={equipObject.fio} /> 
+            }
         ]
         
         const columns = [
@@ -216,7 +224,7 @@ const EquipCard = () => {
             {
               key: '3',
               label: 'Техническая информация',
-              children: <TechnicalInfo id={equipObject.id} />,
+              children: <TechnicalInfo id={equipObject.id}/>,
             },
             {
               key: '4',

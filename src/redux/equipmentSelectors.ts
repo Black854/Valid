@@ -44,3 +44,7 @@ export const getIsGroupLoading = (state: AppStateType) => {
 export const getIsReestrDataLoading = (state: AppStateType) => {
     return (state.equipment.isReestrDataLoading)
 }
+
+export const getIsIntervalLoading = (state: AppStateType) => {
+    return (state.equipment.isIntervalLoading)
+}
