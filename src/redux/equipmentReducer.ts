@@ -34,6 +34,7 @@ let initialState = {
     isDepartmentLoading: false,
     isVMPDepartmentLoading: false,
     isGroupLoading: false,
+    isReestrDataLoading: false
 }
 
 type InitialStateType = typeof initialState
@@ -56,6 +57,8 @@ const equipmentReducer = (state = initialState, action: any): InitialStateType =
             return {...state, isVMPDepartmentLoading: action.data}
         case 'SET_IS_GROUP_LOADING':
             return {...state, isGroupLoading: action.data}
+        case 'SET_IS_REESTR_DATA_LOADING':
+            return {...state, isReestrDataLoading: action.data}
         default:
             return state
     }
@@ -68,8 +71,10 @@ export const getEquipment = () => async (dispatch: any) => {
 }
 
 export const getReestrData = (id: string) => async (dispatch: any) => {
+    dispatch (setIsReestrDataLoading(true))
     let data = await equipmentAPI.getReestrData(id)
     dispatch (pushReestrData(data.items))
+    dispatch (setIsReestrDataLoading(false))
 }
 
 export const uploadMainPhoto = (id: string, file: File) => async (dispatch: any) => {
@@ -214,6 +219,13 @@ const setIsVMPDepartmentLoading = (data: boolean) => {
 const setIsGroupLoading = (data: boolean) => {
     return {
         type: 'SET_IS_GROUP_LOADING',
+        data
+    }
+}
+
+const setIsReestrDataLoading = (data: boolean) => {
+    return {
+        type: 'SET_IS_REESTR_DATA_LOADING',
         data
     }
 }

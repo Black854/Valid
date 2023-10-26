@@ -40,3 +40,7 @@ export const getIsVMPDepartmentLoading = (state: AppStateType) => {
 export const getIsGroupLoading = (state: AppStateType) => {
     return (state.equipment.isGroupLoading)
 }
+
+export const getIsReestrDataLoading = (state: AppStateType) => {
+    return (state.equipment.isReestrDataLoading)
+}

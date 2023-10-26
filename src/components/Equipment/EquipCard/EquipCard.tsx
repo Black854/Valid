@@ -1,7 +1,7 @@
 import { Button, Col, Image, Row, Select, Spin, Table, Tabs, TabsProps, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
-import { getEquipById, getEquipData, getIsDepartmentLoading, getIsGroupLoading, getIsLoading, getIsVMPDepartmentLoading } from "../../../redux/equipmentSelectors";
+import { getEquipById, getEquipData, getIsDepartmentLoading, getIsGroupLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading, getReestrDataSelector } from "../../../redux/equipmentSelectors";
 import { AppStateType } from "../../../redux/store";
 import { getEquipment, updateDepartment, updateGroup, updateInv, updateManufacturDate, updateManufacturer, updateNomer, updateSerial, updateVMPDepartment } from "../../../redux/equipmentReducer";
 import { ColumnsType } from "antd/es/table";
@@ -31,6 +31,8 @@ const EquipCard = () => {
     const isDepartmentLoading = useSelector(getIsDepartmentLoading)
     const isVMPDepartmentLoading = useSelector(getIsVMPDepartmentLoading)
     const isGroupLoading = useSelector(getIsGroupLoading)
+    const isReestrDataLoading = useSelector(getIsReestrDataLoading)
+    const reestrData = useSelector(getReestrDataSelector)
 
     useEffect(() => {
         if (equipData.length === 0) {
@@ -209,7 +211,7 @@ const EquipCard = () => {
             {
               key: '2',
               label: 'Перечень валидационных работ',
-              children: <CardReestr id={equipObject.id} isLoading={isLoading} />,
+              children: <CardReestr id={equipObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} />,
             },
             {
               key: '3',
@@ -218,7 +220,7 @@ const EquipCard = () => {
             },
             {
               key: '4',
-              label: 'Фотографии',
+              label: 'Фотографии/Документы',
               children: <PhotosBlock id={equipObject.id} />,
             },
           ];

@@ -9,29 +9,32 @@ import { ConvertDate } from "../../../helpers/convertDate"
 import { FileWordOutlined, DeleteOutlined } from '@ant-design/icons';
 const { Text, Link } = Typography
 
-type CardReestrPropsType = {
+
+type reestrDataItemType = {
     id: string
-    isLoading: boolean
+    nvo: string
+    vo: string
+    dvo: string
+    nvp: string
+    vp: string
+    dvp: string
+    pam: string
 }
 
-const CardReestr: React.FC<CardReestrPropsType> = ({id, isLoading}) => {
+type DataType = Array<reestrDataItemType>
+
+type CardReestrPropsType = {
+    id: string
+    isReestrDataLoading: boolean
+    reestrData: DataType
+}
+
+const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, reestrData}) => {
     const dispatch = useDispatch()
-    type reestrDataItemType = {
-        id: string
-        nvo: string
-        vo: string
-        dvo: string
-        nvp: string
-        vp: string
-        dvp: string
-        pam: string
-    }
-    type DataType = Array<reestrDataItemType> 
-    const reestrData:DataType = useSelector(getReestrDataSelector)
     useEffect (() => {
         //@ts-ignore
         dispatch(getReestrData(id))
-    }, [id, isLoading])
+    }, [id])
     
     const columns: ColumnsType<reestrDataItemType> = [
         {
@@ -95,6 +98,7 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isLoading}) => {
             pagination={false} // Скрыть пагинацию, если есть
             style={{marginBottom: '30px'}}
             rowKey='id'
+            loading={isReestrDataLoading}
         />
     )
 }
