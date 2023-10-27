@@ -1,4 +1,6 @@
-import { Typography } from 'antd';
+import { DatePicker, Input, Popconfirm, Typography } from 'antd';
+import dayjs from 'dayjs';
+import { useState } from 'react';
 const { Text } = Typography;
 
 type ConvertDateType = {
@@ -6,6 +8,13 @@ type ConvertDateType = {
 }
 
 export const ConvertDate: React.FC<ConvertDateType> = ({date}) => {
+    const [isPopconfirmVisible, setPopconfirmVisible] = useState(false);
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+        // Открываем Popconfirm после изменения даты
+        setPopconfirmVisible(true);
+      };
+
     if (date) {
         let parts = date.split('.'); // Разделяем строку по точкам
         if (parts.length === 3) {
@@ -28,7 +37,19 @@ export const ConvertDate: React.FC<ConvertDateType> = ({date}) => {
             // Создаем новую дату в формате "dd.MM.yyyy"
             const date = `${day}.${month}.${year}`;
             // console.log(date)
-            return <Text>{date}</Text>
+            // return <Text>{date}</Text>
+            
+            let dateFormat ="DD.MM.YYYY"
+            return <Popconfirm
+                        title="Delete the task"
+                        description="Are you sure to delete this task?"
+                        onConfirm={handleDateChange}
+                        okText="Yes"
+                        cancelText="No"
+                        visible={isPopconfirmVisible}
+                    >
+                        <DatePicker format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false}  />
+                    </Popconfirm>
         }
     }
     return <></>

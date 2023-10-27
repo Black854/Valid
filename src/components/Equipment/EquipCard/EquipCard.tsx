@@ -128,28 +128,28 @@ const EquipCard = () => {
             {
                 rowName: 'Подразделение (по ВМП)',
                 value: <Select
-                        style={{paddingRight: '20px', marginLeft: '-7px'}}
-                        dropdownStyle={{width: 'auto'}}
-                        defaultValue={equipObject.sp}
-                        onChange={handleUpdateVMPDepartment}
-                        size="small"
-                        bordered={false}
-                        options={VMPDepartmentData}
-                        loading={isVMPDepartmentLoading}
-                    />
+                            style={{paddingRight: '20px', marginLeft: '-7px'}}
+                            dropdownStyle={{width: 'auto'}}
+                            defaultValue={equipObject.sp}
+                            onChange={handleUpdateVMPDepartment}
+                            size="small"
+                            bordered={false}
+                            options={VMPDepartmentData}
+                            loading={isVMPDepartmentLoading}
+                        />
             },
             {
                 rowName: 'Подразделение (по ответственности)',
                 value: <Select
-                        style={{paddingRight: '20px', marginLeft: '-7px'}}
-                        dropdownStyle={{width: '120px'}}
-                        defaultValue={equipObject.sp2}
-                        onChange={handleUpdateDepartment}
-                        size="small"
-                        bordered={false}
-                        options={departmentData}
-                        loading={isDepartmentLoading}
-                    />
+                            style={{paddingRight: '20px', marginLeft: '-7px'}}
+                            dropdownStyle={{width: '120px'}}
+                            defaultValue={equipObject.sp2}
+                            onChange={handleUpdateDepartment}
+                            size="small"
+                            bordered={false}
+                            options={departmentData}
+                            loading={isDepartmentLoading}
+                        />
             },
             {
                 rowName: 'Местонахождение',
