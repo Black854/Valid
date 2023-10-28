@@ -105,4 +105,44 @@ export const equipmentAPI = {
             return response.data
         })
     },
+    updateReestrDate (id: string, equipId: string, date: string, dateType: 'dvo' | 'dvp') {
+        let data = new FormData()
+        data.append("id", id)
+        data.append("equipId", equipId)
+        data.append("date", date)
+        data.append("dateType", dateType)
+        return instance.post(`updateReestrDate.php`, data, {}).then (response => {
+            return response.data
+        })
+    },
+    updateReestrDocsCode (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp') {
+        let data = new FormData()
+        data.append("id", id)
+        data.append("recordId", recordId)
+        data.append("text", text)
+        data.append("dataType", dataType)
+        return instance.post(`updateReestrDocsCode.php`, data, {}).then (response => {
+            return response.data
+        })
+    },
+    uploadDocument (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any) {
+        let data = new FormData()
+        data.append("objectId", objectId)
+        data.append("recordId", recordId)
+        data.append("dataType", dataType)
+        data.append("file", file)
+        return instance.post(`uploadDocument.php`, data, { headers: {'Content-Type': 'multipart/form-data'} }).then (response => {
+            return response.data
+        })
+    },
+    deleteDocument (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', url: string) {
+        let data = new FormData()
+        data.append("objectId", objectId)
+        data.append("recordId", recordId)
+        data.append("dataType", dataType)
+        data.append("url", url)
+        return instance.post(`deleteDocument.php`, data, {}).then (response => {
+            return response.data
+        })
+    },
 }

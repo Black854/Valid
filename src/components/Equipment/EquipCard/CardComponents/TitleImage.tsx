@@ -46,7 +46,7 @@ const TitleImage: React.FC<TitleImagePropsType> = ({equipObject}) => {
         dispatch(updateName(id, text))
     }
 
-    let fileInputRef: any = null;
+    let fileInputRef: any = null
 
     return (
         <>

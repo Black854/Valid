@@ -55,7 +55,8 @@ let initialState = {
     isVMPDepartmentLoading: false,
     isGroupLoading: false,
     isReestrDataLoading: false,
-    isIntervalLoading: false
+    isIntervalLoading: false,
+    isReestrLoading: false
 }
 
 type InitialStateType = typeof initialState
@@ -196,6 +197,34 @@ export const updateInterval = (id: string, interval: string): ThunkType => async
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, interval)
     dispatch (equipActions.pushEquipmentData(data.items))
     dispatch (equipActions.setIsIntervalLoading(false))
+}
+
+export const updateReestrDate = (id: string, equipId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
+    dispatch (equipActions.setIsReestrDataLoading(true))
+    let data = await equipmentAPI.updateReestrDate(id, equipId, date, dateType)
+    dispatch (equipActions.pushReestrData(data.items))
+    dispatch (equipActions.setIsReestrDataLoading(false))
+}
+
+export const updateReestrDocsCode = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
+    dispatch (equipActions.setIsReestrDataLoading(true))
+    let data = await equipmentAPI.updateReestrDocsCode(id, recordId, text, dataType)
+    dispatch (equipActions.pushReestrData(data.items))
+    dispatch (equipActions.setIsReestrDataLoading(false))
+}
+
+export const uploadDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
+    dispatch (equipActions.setIsReestrDataLoading(true))
+    let data = await equipmentAPI.uploadDocument(objectId, recordId, dataType, file)
+    dispatch (equipActions.pushReestrData(data.items))
+    dispatch (equipActions.setIsReestrDataLoading(false))
+}
+
+export const deleteDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', url: string): ThunkType => async (dispatch) => {
+    dispatch (equipActions.setIsReestrDataLoading(true))
+    let data = await equipmentAPI.deleteDocument(objectId, recordId, dataType, url)
+    dispatch (equipActions.pushReestrData(data.items))
+    dispatch (equipActions.setIsReestrDataLoading(false))
 }
 
 type ActionTypes = InferActionsTypes<typeof equipActions>

@@ -1,19 +1,42 @@
 import { DatePicker, Input, Popconfirm, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { format } from 'date-fns';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateReestrDate } from '../../redux/equipmentReducer';
 const { Text } = Typography;
 
 type ConvertDateType = {
     date: string | undefined
+    id: string
+    equipId: string
+    dateType: string
 }
 
-export const ConvertDate: React.FC<ConvertDateType> = ({date}) => {
+export const ConvertDate: React.FC<ConvertDateType> = ({id, equipId, date, dateType}) => {
     const [isPopconfirmVisible, setPopconfirmVisible] = useState(false);
-    const handleDateChange = (date) => {
+    const [selectedDate, setSelectedDate] = useState('');
+    const dispatch = useDispatch()
+
+
+    const handleDateChange = (date: any) => {
         setSelectedDate(date);
-        // Открываем Popconfirm после изменения даты
         setPopconfirmVisible(true);
-      };
+    }
+
+    const handleConfirm = () => {
+        const date = new Date(selectedDate)
+        const formattedSelectedDate = format(date, 'yyyy-MM-dd'); // Текущая дата для сравнения с датой объекта
+        console.log('Selected Date:', formattedSelectedDate);
+        //@ts-ignore
+        dispatch(updateReestrDate(id, equipId, formattedSelectedDate, dateType))
+        // Закрыть Popconfirm после подтверждения
+        setPopconfirmVisible(false);
+    }
+
+    const handleCancel = () => {
+        setPopconfirmVisible(false);
+    }
 
     if (date) {
         let parts = date.split('.'); // Разделяем строку по точкам
@@ -41,14 +64,16 @@ export const ConvertDate: React.FC<ConvertDateType> = ({date}) => {
             
             let dateFormat ="DD.MM.YYYY"
             return <Popconfirm
-                        title="Delete the task"
-                        description="Are you sure to delete this task?"
-                        onConfirm={handleDateChange}
-                        okText="Yes"
-                        cancelText="No"
-                        visible={isPopconfirmVisible}
+                        title="Подтверждение изменений"
+                        description="Вы уверены, что хотите изменить данные?"
+                        onConfirm={handleConfirm}
+                        onCancel={handleCancel}
+                        okText="Да"
+                        cancelText="Нет"
+                        open={isPopconfirmVisible}
+
                     >
-                        <DatePicker format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false}  />
+                        <DatePicker style={{width: '100%'}} suffixIcon={null} allowClear={false} format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false} onChange={(date) => handleDateChange(date)}  />
                     </Popconfirm>
         }
     }

@@ -1,12 +1,12 @@
-import { Button, Col, Row, Table, Typography } from "antd"
+import { Button, Col, Popconfirm, Row, Table, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { getReestrData } from "../../../../redux/equipmentReducer"
+import { deleteDocument, getReestrData, updateReestrDocsCode, uploadDocument } from "../../../../redux/equipmentReducer"
 import React, { useEffect } from "react"
 import { getIsLoading, getReestrDataSelector } from "../../../../redux/equipmentSelectors"
 import { ColumnsType } from "antd/es/table"
 import { RenderDateHelper } from "../../../helpers/renderDateHelper"
 import { ConvertDate } from "../../../helpers/convertDate"
-import { FileWordOutlined, DeleteOutlined } from '@ant-design/icons';
+import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
 const { Text, Link } = Typography
 
 
@@ -30,23 +30,55 @@ type CardReestrPropsType = {
 }
 
 const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, reestrData}) => {
+    const dispatch = useDispatch()
+    const handleUpdateDocsCode = (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
+        //@ts-ignore
+        dispatch(updateReestrDocsCode(id, recordId, text, dataType))
+    }
     const columns: ColumnsType<reestrDataItemType> = [
         {
             title: <Text strong style={{fontSize: '12pt'}}>Код протокола</Text>,
             dataIndex: 'nvp',
             render: (nvp, record) => {
                 if (record.vp) {
-                    return <Link href={'http://10.85.10.212/ov/' + record.vp}>{nvp}</Link>
+                    const handleDeleteDocument = () => {
+                        //@ts-ignore
+                        dispatch(deleteDocument(id, record.id, 'vp', record.vp))
+                    }
+                    return  <>
+                                <Text style={{width: '90%'}} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp')}}>
+                                    {nvp}
+                                </Text>
+                                <Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + record.vp} />
+                                <Popconfirm
+                                    title='Подтвердите удаление'
+                                    description='Вы уверены, что хотите удалить документ?'
+                                    okText='Да'
+                                    cancelText='Нет'
+                                    onConfirm={handleDeleteDocument}
+                                >
+                                    <Button danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="link" />
+                                </Popconfirm>
+                            </>
+                } else if (record.nvp !== '') {
+                    let uploadDocumentRef: any = null
+                    const onSelectDocument = (e: any) => {
+                        //@ts-ignore
+                        dispatch(uploadDocument(id, record.id, 'vp', e.currentTarget.files[0]))
+                    }
+                    return <><Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp')}}>{nvp}</Text>
+                    <input id="uploadDocument" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                    <Button icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
                 } else {
                     return <Text>{nvp}</Text>
                 }
             },
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Дата утв. протокола</Text>,
+            title: <Text strong style={{fontSize: '12pt'}}>Дата</Text>,
             dataIndex: 'dvp',
-            render: (dvp) => { return <ConvertDate date={dvp} /> },
-            // width: '13%',
+            render: (dvp, record) => { return <ConvertDate date={dvp} equipId={id} dateType='dvp' id={record.id} key={record.id} /> },
+            width: '10%',
             align: 'center',
         },
         {
@@ -54,32 +86,86 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, ree
             dataIndex: 'nvo',
             render: (nvo, record) => {
                 if (record.vo) {
-                    return <Link href={'http://10.85.10.212/ov/' + record.vo}>{nvo}</Link>
+                    const handleDeleteDocument = () => {
+                        //@ts-ignore
+                        dispatch(deleteDocument(id, record.id, 'vo', record.vo))
+                    }
+                    return  <>
+                                <Text style={{width: '95%'}} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo')}}>{nvo}</Text>
+                                <Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + record.vo} />
+                                <Popconfirm
+                                    title='Подтвердите удаление'
+                                    description='Вы уверены, что хотите удалить документ?'
+                                    okText='Да'
+                                    cancelText='Нет'
+                                    onConfirm={handleDeleteDocument}
+                                >
+                                    <Button danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="link" />
+                                </Popconfirm>
+                            </>
+                } else if (record.nvo !== '') {
+                    let uploadDocumentRef: any = null
+                    const onSelectDocument = (e: any) => {
+                        //@ts-ignore
+                        dispatch(uploadDocument(id, record.id, 'vo', e.currentTarget.files[0]))
+                    }
+                    return  <>
+                                <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo')}}>{nvo}</Text>
+                                <input id="uploadDocument" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                                <Button icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
                 } else {
                     return <Text>{nvo}</Text>
                 }
             },
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Дата утв. отчета</Text>,
+            title: <Text strong style={{fontSize: '12pt'}}>Дата</Text>,
             dataIndex: 'dvo',
             sorter: (a, b) => {
                 // Используйте функцию сравнения дат для сортировки
-                const dateA:any = new Date(a.dvo);
-                const dateB:any = new Date(b.dvo);
+                const dateA: any = new Date(a.dvo);
+                const dateB: any = new Date(b.dvo);
                 return dateA - dateB;
             },
-            render: (dvo) => { return <ConvertDate date={dvo} /> },
+            render: (dvo, record) => { return <ConvertDate date={dvo} equipId={id} dateType='dvo' id={record.id} key={record.id} /> },
             sortDirections: ['ascend', 'descend'],
             defaultSortOrder: 'descend',
-            // width: '12%',
+            width: '10%',
             align: 'center'
         },
         {
             title: <Text strong style={{fontSize: '12pt'}}>Памятка</Text>,
             dataIndex: 'pam',
-            render: (pam) => { return pam ? <Button icon={<FileWordOutlined style={{fontSize: '16pt'}} />} type="link" href={'http://10.85.10.212/ov/' + pam}>Просмотр</Button> : <Text type="danger">Отсутствует</Text>},
-            width: '10%',
+            render: (pam, record) =>  {
+                if (pam) {
+                    const handleDeleteDocument = () => {
+                        //@ts-ignore
+                        dispatch(deleteDocument(id, record.id, 'pam', pam))
+                    }
+                    return  <>
+                                <Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + pam}>Просмотр</Button>
+                                <Popconfirm
+                                    title='Подтвердите удаление'
+                                    description='Вы уверены, что хотите удалить документ?'
+                                    okText='Да'
+                                    cancelText='Нет'
+                                    onConfirm={handleDeleteDocument}
+                                >
+                                    <Button danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="link" />
+                                </Popconfirm>
+                            </>
+                } else {
+                    let uploadDocumentRef: any = null
+                    const onSelectDocument = (e: any) => {
+                        //@ts-ignore
+                        dispatch(uploadDocument(id, record.id, 'pam', e.currentTarget.files[0]))
+                    }
+                    return <>
+                    <input id="uploadDocument" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                    <Button icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} /><Text type="secondary">Загрузить</Text></>
+                }
+            },
+            width: '12%',
             align: 'center'
         },
     ];

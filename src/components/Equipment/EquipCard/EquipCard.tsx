@@ -16,7 +16,7 @@ import PhotosBlock from "./CardComponents/PhotosBlock";
 import { getDepartmentsSelector, getEquipGroupsSelector, getVMPDepartmentsSelector } from "../../../redux/appSelectors";
 import { getDepartments, getEquipGroups, getVMPDepartments } from "../../../redux/appReducer";
 import CurrentStatus from "../../common/CurrentStatus";
-const { Text, Paragraph } = Typography
+const { Text } = Typography
 
 const EquipCard = () => {
     const { id } = useParams();
