@@ -54,7 +54,7 @@ const initialState = {
 }
 
 type InitialStateType = typeof initialState
-const appReducer = (state = initialState, action: ActionTypes): InitialStateType => {
+export const appReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case 'app/SET_EQUIP_GROUPS':
             return {...state, equipGroups: action.data}
@@ -90,5 +90,3 @@ const appActions = {
     setDepartments: ( data: DepartmentsType[] ) => ({type: 'app/SET_DEPARTMENTS', data} as const),
     setVMPDepartments: ( data: VMPDepartmentsType[] ) => ({type: 'app/SET_VMP_DEPARTMENTS', data} as const)
 }
-
-export default appReducer

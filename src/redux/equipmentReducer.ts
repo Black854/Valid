@@ -61,7 +61,7 @@ let initialState = {
 
 type InitialStateType = typeof initialState
 
-const equipmentReducer = (state = initialState, action: ActionTypes): InitialStateType => {
+export const equipmentReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case 'equip/PUSH_EQ_DATA':
             return {...state, data: action.data, isLoading: false}
@@ -242,6 +242,3 @@ const equipActions = {
     setIsReestrDataLoading: (data: boolean) => ({ type: 'equip/SET_IS_REESTR_DATA_LOADING', data } as const),
     setIsIntervalLoading: (data: boolean) => ({ type: 'equip/SET_IS_INTERVAL_LOADING', data } as const),
 }
-
-export default equipmentReducer
-

@@ -1,11 +1,11 @@
-import { Table, Typography } from "antd"
+import { Table } from "antd"
 
 type EquipDescriptionsPropsType = {
     columns: any
     data: any
 }
 
-const EquipDescriptions: React.FC<EquipDescriptionsPropsType> = ({columns, data}) => {
+export const EquipDescriptions: React.FC<EquipDescriptionsPropsType> = ({columns, data}) => {
     return (
         <>
             <Table
@@ -19,5 +19,3 @@ const EquipDescriptions: React.FC<EquipDescriptionsPropsType> = ({columns, data}
         </>
     )
 }
-
- export default EquipDescriptions

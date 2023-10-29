@@ -1,66 +1,62 @@
-import { DatePicker, Input, Popconfirm, Typography } from 'antd';
-import dayjs from 'dayjs';
-import { format } from 'date-fns';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { updateReestrDate } from '../../redux/equipmentReducer';
-const { Text } = Typography;
+import { DatePicker, Input, Popconfirm, Typography } from 'antd'
+import dayjs from 'dayjs'
+import { format } from 'date-fns'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { updateReestrDate } from '../../redux/equipmentReducer'
+import { AppDispatch } from '../../redux/store'
+const { Text } = Typography
 
 type ConvertDateType = {
     date: string | undefined
     id: string
     equipId: string
-    dateType: string
+    dateType: 'dvp' | 'dvo'
 }
 
 export const ConvertDate: React.FC<ConvertDateType> = ({id, equipId, date, dateType}) => {
-    const [isPopconfirmVisible, setPopconfirmVisible] = useState(false);
-    const [selectedDate, setSelectedDate] = useState('');
-    const dispatch = useDispatch()
+    const [isPopconfirmVisible, setPopconfirmVisible] = useState(false)
+    const [selectedDate, setSelectedDate] = useState('')
+    const dispatch: AppDispatch = useDispatch()
 
 
     const handleDateChange = (date: any) => {
-        setSelectedDate(date);
-        setPopconfirmVisible(true);
+        setSelectedDate(date)
+        setPopconfirmVisible(true)
     }
 
     const handleConfirm = () => {
         const date = new Date(selectedDate)
-        const formattedSelectedDate = format(date, 'yyyy-MM-dd'); // Текущая дата для сравнения с датой объекта
-        console.log('Selected Date:', formattedSelectedDate);
-        //@ts-ignore
+        const formattedSelectedDate = format(date, 'yyyy-MM-dd') // Текущая дата для сравнения с датой объекта
         dispatch(updateReestrDate(id, equipId, formattedSelectedDate, dateType))
         // Закрыть Popconfirm после подтверждения
-        setPopconfirmVisible(false);
+        setPopconfirmVisible(false)
     }
 
     const handleCancel = () => {
-        setPopconfirmVisible(false);
+        setPopconfirmVisible(false)
     }
 
     if (date) {
-        let parts = date.split('.'); // Разделяем строку по точкам
+        let parts = date.split('.') // Разделяем строку по точкам
         if (parts.length === 3) {
             // Проверяем, что строка содержит три части: день, месяц и год
-            const day = parts[0];
-            const month = parts[1];
-            const year = parts[2];
+            const day = parts[0]
+            const month = parts[1]
+            const year = parts[2]
             // Создаем новую дату в формате "dd.MM.yyyy"
-            const date = `${day}.${month}.${year}`;
-            // console.log(date)
+            const date = `${day}.${month}.${year}`
             return <Text>{date}</Text>
         }
     
-        parts = date.split('-'); // Разделяем строку по точкам
+        parts = date.split('-') // Разделяем строку по точкам
         if (parts.length === 3) {
             // Проверяем, что строка содержит три части: день, месяц и год
-            const year = parts[0];
-            const month = parts[1];
-            const day = parts[2];
+            const year = parts[0]
+            const month = parts[1]
+            const day = parts[2]
             // Создаем новую дату в формате "dd.MM.yyyy"
-            const date = `${day}.${month}.${year}`;
-            // console.log(date)
-            // return <Text>{date}</Text>
+            const date = `${day}.${month}.${year}`
             
             let dateFormat ="DD.MM.YYYY"
             return <Popconfirm

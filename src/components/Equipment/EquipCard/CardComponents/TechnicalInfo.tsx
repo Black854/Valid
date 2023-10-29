@@ -3,21 +3,20 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getTechInfo } from "../../../../redux/equipmentSelectors"
 import { getTechnicalInfo, updateTechnicalInfo } from "../../../../redux/equipmentReducer"
+import { AppDispatch } from "../../../../redux/store"
 const {Text} = Typography
 type TechnicalInfoPropsType = {
     id: string
 }
 
-const TechnicalInfo: React.FC<TechnicalInfoPropsType> = ({ id }) => {
-    const dispatch = useDispatch()
+export const TechnicalInfo: React.FC<TechnicalInfoPropsType> = ({ id }) => {
+    const dispatch: AppDispatch= useDispatch()
     const techInfo = useSelector(getTechInfo)
     useEffect (() => {
-        //@ts-ignore
         dispatch(getTechnicalInfo(id))
     }, [])
 
     const updateTechInfo = (text: string) => {
-        //@ts-ignore
         dispatch(updateTechnicalInfo(id, text))
     }
 
@@ -46,5 +45,3 @@ const TechnicalInfo: React.FC<TechnicalInfoPropsType> = ({ id }) => {
         />
     )
 }
-
-export default TechnicalInfo

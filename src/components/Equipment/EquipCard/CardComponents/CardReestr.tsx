@@ -1,13 +1,12 @@
-import { Button, Col, Popconfirm, Row, Table, Typography } from "antd"
-import { useDispatch, useSelector } from "react-redux"
-import { deleteDocument, getReestrData, updateReestrDocsCode, uploadDocument } from "../../../../redux/equipmentReducer"
-import React, { useEffect } from "react"
-import { getIsLoading, getReestrDataSelector } from "../../../../redux/equipmentSelectors"
+import { Button, Popconfirm, Table, Typography } from "antd"
+import { useDispatch } from "react-redux"
+import { deleteDocument, updateReestrDocsCode, uploadDocument } from "../../../../redux/equipmentReducer"
+import React from "react"
 import { ColumnsType } from "antd/es/table"
-import { RenderDateHelper } from "../../../helpers/renderDateHelper"
 import { ConvertDate } from "../../../helpers/convertDate"
 import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
-const { Text, Link } = Typography
+import { AppDispatch } from "../../../../redux/store"
+const { Text } = Typography
 
 
 type reestrDataItemType = {
@@ -29,10 +28,9 @@ type CardReestrPropsType = {
     reestrData: DataType
 }
 
-const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, reestrData}) => {
-    const dispatch = useDispatch()
+export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, reestrData}) => {
+    const dispatch: AppDispatch = useDispatch()
     const handleUpdateDocsCode = (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
-        //@ts-ignore
         dispatch(updateReestrDocsCode(id, recordId, text, dataType))
     }
     const columns: ColumnsType<reestrDataItemType> = [
@@ -42,7 +40,6 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, ree
             render: (nvp, record) => {
                 if (record.vp) {
                     const handleDeleteDocument = () => {
-                        //@ts-ignore
                         dispatch(deleteDocument(id, record.id, 'vp', record.vp))
                     }
                     return  <>
@@ -63,7 +60,6 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, ree
                 } else if (record.nvp !== '') {
                     let uploadDocumentRef: any = null
                     const onSelectDocument = (e: any) => {
-                        //@ts-ignore
                         dispatch(uploadDocument(id, record.id, 'vp', e.currentTarget.files[0]))
                     }
                     return <><Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp')}}>{nvp}</Text>
@@ -87,7 +83,6 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, ree
             render: (nvo, record) => {
                 if (record.vo) {
                     const handleDeleteDocument = () => {
-                        //@ts-ignore
                         dispatch(deleteDocument(id, record.id, 'vo', record.vo))
                     }
                     return  <>
@@ -106,7 +101,6 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, ree
                 } else if (record.nvo !== '') {
                     let uploadDocumentRef: any = null
                     const onSelectDocument = (e: any) => {
-                        //@ts-ignore
                         dispatch(uploadDocument(id, record.id, 'vo', e.currentTarget.files[0]))
                     }
                     return  <>
@@ -139,7 +133,6 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, ree
             render: (pam, record) =>  {
                 if (pam) {
                     const handleDeleteDocument = () => {
-                        //@ts-ignore
                         dispatch(deleteDocument(id, record.id, 'pam', pam))
                     }
                     return  <>
@@ -157,7 +150,6 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, ree
                 } else {
                     let uploadDocumentRef: any = null
                     const onSelectDocument = (e: any) => {
-                        //@ts-ignore
                         dispatch(uploadDocument(id, record.id, 'pam', e.currentTarget.files[0]))
                     }
                     return <>
@@ -182,5 +174,3 @@ const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, ree
         />
     )
 }
-
-export default React.memo(CardReestr)

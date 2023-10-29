@@ -1,7 +1,7 @@
-import {applyMiddleware, combineReducers, compose, legacy_createStore as createStore} from 'redux';
-import thunkMiddleWare from 'redux-thunk'
-import equipmentReducer from './equipmentReducer';
-import appReducer from './appReducer';
+import {AnyAction, applyMiddleware, combineReducers, compose, legacy_createStore as createStore} from 'redux';
+import thunkMiddleWare, { ThunkDispatch } from 'redux-thunk'
+import { appReducer } from './appReducer';
+import { equipmentReducer } from './equipmentReducer';
 
 let rootReducer = combineReducers({
   app: appReducer,
@@ -10,6 +10,7 @@ let rootReducer = combineReducers({
 
 type RootReducerType = typeof rootReducer
 export type AppStateType = ReturnType<RootReducerType>
+export type AppDispatch = ThunkDispatch<AppStateType, unknown, AnyAction>
 
 type PropertiesTypes<T> = T extends {[key: string]: infer U } ? U : never
 export type InferActionsTypes<T extends {[key: string]: (...args: any[]) => any}> = ReturnType<PropertiesTypes<T>>
@@ -22,9 +23,8 @@ declare global {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(
+export const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(
     applyMiddleware(thunkMiddleWare)
 ))
 
 window.store = store
-export default store

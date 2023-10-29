@@ -9,6 +9,7 @@ import { RenderDateHelper } from "../helpers/renderDateHelper";
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom";
 import React from "react";
+import { AppDispatch } from "../../redux/store";
 
 const { Text } = Typography;
 
@@ -24,17 +25,16 @@ interface DataType {
     foto: string
 }
   
-let Equipment: React.FC = () => {
-    let dispatch = useDispatch()
+export const Equipment: React.FC = () => {
+    const dispatch: AppDispatch = useDispatch()
 
-    let equipData = useSelector(getEquipData)
-    let isLoading = useSelector(getIsLoading)
+    const equipData = useSelector(getEquipData)
+    const isLoading = useSelector(getIsLoading)
 
     if (equipData.length === 0 && isLoading===false) {
-        //@ts-ignore
         dispatch(getEquipment())
     }
-    let equipNewData = equipData.map(e => ({
+    const equipNewData = equipData.map(e => ({
         id: e.id,
         key: e.id,
         sp2: e.sp2,
@@ -47,78 +47,84 @@ let Equipment: React.FC = () => {
         foto: e.foto
     }))
 
-const columns: ColumnsType<DataType> = [
-    {
-        title: <Text strong style={{fontSize: '12pt'}}>Наименование</Text>,
-        dataIndex: 'name',
-        render: (text, record) => (
-        <Row>
-            <Col span={1}>
-                <Image style={{
-                    maxWidth: '30px',
-                    maxHeight: '30px',
-                    boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
-                    borderRadius: '3px',
-                    overflow: 'hidden'}} 
-                    src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
-                    preview = {{mask: <EyeOutlined style={{fontSize: '12pt'}} />}}
-                />
-            </Col>
-            <Col span={23}>
-                <NavLink to={record.id} style={{fontSize: '12pt', marginLeft: '10px'}}>{text}</NavLink>
-            </Col>  
-        </Row>),
-        sorter: (a, b) => a.name.localeCompare(b.name),
-        defaultSortOrder: 'ascend',
-    },
-    {
-        title: <Text strong style={{fontSize: '12pt'}}>Подразделение</Text>,
-        dataIndex: 'sp2',
-        filters: [
-            { text: 'МБЛ', value: 'МБЛ' },
-            { text: 'БХЛ', value: 'БХЛ' },
-            { text: 'ФХЛ', value: 'ФХЛ' },
-            { text: 'ЛИП', value: 'ЛИП' },
-            { text: 'ЦС', value: 'ЦС' },
-            { text: 'ГК', value: 'ГК' },
-        ],
-        render: (sp) => <Text>{sp}</Text>,
-        onFilter: (value: any, record) => record.sp2.indexOf(value) === 0,
-        sorter: (a, b) => a.sp2.localeCompare(b.sp2),
-        sortDirections: ['descend'],
-        width: '12%',
-        align: 'center',
-    },
-    {
-        title: <Text strong style={{fontSize: '12pt'}}>Учетный номер</Text>,
-        dataIndex: 'inv',
-        render: (inv, record) => <Text>{inv}</Text>,
-        sorter: (a, b) => a.name.localeCompare(b.name),
-    },
-    {
-        title: <Text strong style={{fontSize: '12pt'}}>Группа</Text>,
-        dataIndex: 'group',
-        filters: [
-            { text: 'Термостаты', value: 'Термостаты' },
-            { text: 'Тех. оборудование', value: 'Тех. оборудование' },
-            { text: 'Лаб. оборудование', value: 'Лаб. оборудование' },
-            { text: 'Термоконтейнеры', value: 'Термоконтейнеры' }
-        ],
-        render: (text) => <Text>{text}</Text>,
-        onFilter: (value: any, record) => record.group.indexOf(value) === 0,
-        sorter: (a, b) => a.group.localeCompare(b.group),
-        sortDirections: ['ascend'],
-        width: '12%',
-        align: 'right',
-    },
-    {
-        title: <Text strong style={{fontSize: '12pt'}}>Дата (до)</Text>,
-        dataIndex: 'date',
-        render: (date, record) => { return <RenderDateHelper date={date} record={record} /> },
-        width: '10%',
-        align: 'center'
-    },
-    ];
+    const columns: ColumnsType<DataType> = [
+        {
+            title: <Text strong style={{fontSize: '12pt'}}>Наименование</Text>,
+            dataIndex: 'name',
+            render: (text, record) => (
+            <Row>
+                <Col span={1}>
+                    <Image style={{
+                        maxWidth: '30px',
+                        maxHeight: '30px',
+                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
+                        borderRadius: '3px',
+                        overflow: 'hidden'}} 
+                        src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
+                        preview = {{mask: <EyeOutlined style={{fontSize: '12pt'}} />}}
+                    />
+                </Col>
+                <Col span={23}>
+                    <NavLink to={record.id} style={{fontSize: '12pt', marginLeft: '10px'}}>{text}</NavLink>
+                </Col>  
+            </Row>),
+            sorter: (a, b) => a.name.localeCompare(b.name)
+        },
+        {
+            title: <Text strong style={{fontSize: '12pt'}}>Подразделение</Text>,
+            dataIndex: 'sp2',
+            filters: [
+                { text: 'МБЛ', value: 'МБЛ' },
+                { text: 'БХЛ', value: 'БХЛ' },
+                { text: 'ФХЛ', value: 'ФХЛ' },
+                { text: 'ЛИП', value: 'ЛИП' },
+                { text: 'ЦС', value: 'ЦС' },
+                { text: 'ГК', value: 'ГК' },
+            ],
+            render: (sp) => <Text>{sp}</Text>,
+            onFilter: (value: any, record) => record.sp2.indexOf(value) === 0,
+            sorter: (a, b) => a.sp2.localeCompare(b.sp2),
+            sortDirections: ['descend'],
+            width: '12%',
+            align: 'center',
+        },
+        {
+            title: <Text strong style={{fontSize: '12pt'}}>Учетный номер</Text>,
+            dataIndex: 'inv',
+            render: (inv) => {
+                if (inv !== '') {
+                    return <Text>{inv}</Text>
+                } else {
+                    return <Text type="danger">Отсутствует</Text>
+                }
+            },
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            align: 'center'
+        },
+        {
+            title: <Text strong style={{fontSize: '12pt'}}>Группа</Text>,
+            dataIndex: 'group',
+            filters: [
+                { text: 'Термостаты', value: 'Термостаты' },
+                { text: 'Тех. оборудование', value: 'Тех. оборудование' },
+                { text: 'Лаб. оборудование', value: 'Лаб. оборудование' },
+                { text: 'Термоконтейнеры', value: 'Термоконтейнеры' }
+            ],
+            render: (text) => <Text>{text}</Text>,
+            onFilter: (value: any, record) => record.group.indexOf(value) === 0,
+            sorter: (a, b) => a.group.localeCompare(b.group),
+            sortDirections: ['ascend'],
+            width: '12%',
+            align: 'center',
+        },
+        {
+            title: <Text strong style={{fontSize: '12pt'}}>Дата (до)</Text>,
+            dataIndex: 'date',
+            render: (date, record) => { return <RenderDateHelper date={date} record={record} /> },
+            width: '10%',
+            align: 'center'
+        },
+    ]
 
     const data: DataType[] = equipNewData
     if (isLoading) {
@@ -134,12 +140,9 @@ const columns: ColumnsType<DataType> = [
                         bordered
                         pagination={{defaultPageSize: 20}}
                         title={() => <Text style={{fontSize: '14pt'}}>Оборудование</Text>}
-                        // footer={() => 'Footer'}
                     /> 
                 </Col>
-                </Row>
+            </Row>
         </Content>
     )
 }
-
-export default React.memo(Equipment)

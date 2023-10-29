@@ -1,25 +1,20 @@
 import React from "react"
 import {Link, NavLink, useLocation} from 'react-router-dom'
-import { Button, Col, Flex, Layout, Menu, MenuProps, Row, Space, Switch, theme } from 'antd'
-import { Header } from "antd/es/layout/layout";
-
-type MenuItem = Required<MenuProps>['items'][number];
+import { Col, Menu, MenuProps, Row, Switch } from 'antd'
+import { Header } from "antd/es/layout/layout"
 
 type HeaderPropsType = {
     swithTheme: (checked: boolean) => void
     typeTheme: string
 }
 
-const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
-    let location = useLocation()
+export const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
+    const location = useLocation()
 
     const getPathnameWithoutTrailingSlash = (pathname: string) => {
         if (pathname.includes("/equipment")) {
             return "/equipment"
         }
-        if (pathname.includes("/dialogs")) {
-            return "/dialogs"
-        } 
         return pathname
     }
 
@@ -59,11 +54,9 @@ const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
                     />
                 </Col>
                 <Col span={2} style={{ textAlign: 'right'}}>
-                    <Switch checked={typeTheme === 'light'} onChange={swithTheme} />
+                    <Switch checked={typeTheme === 'dark'} onChange={swithTheme} />
                 </Col>
             </Row>
         </Header>
     </>
 }
-
-export default Header1

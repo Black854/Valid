@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, Image, Popconfirm, Row, Space, Table, Typography, Upload, message } from "antd"
+import { Avatar, Button, Col, Image, Popconfirm, Row, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { getPhotosSelector } from "../../../../redux/equipmentSelectors"
 import { useEffect, useState } from "react"
@@ -7,13 +7,14 @@ import Link from "antd/es/typography/Link"
 import { DeleteFilled, EyeOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import pdf from './../../../../img/pdfi.png'
 import { RcFile } from "antd/es/upload"
+import { AppDispatch } from "../../../../redux/store"
 const {Text} = Typography
 
 type PhotosBlockPropsType = {
     id: string
 }
 
-const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
+export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
     const beforeUpload = (file: RcFile) => {
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
@@ -35,7 +36,7 @@ const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
       );
 
 
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     const photos = useSelector(getPhotosSelector)
     const addObjectToPhotos = {
         id: '99999',
@@ -45,7 +46,6 @@ const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
     }
     useEffect(
         () => {
-            //@ts-ignore
             dispatch(getPhotos(id))
         }, []
     )
@@ -56,17 +56,14 @@ const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
     let fileInputRef: any = null
 
     const onSelectPhoto = (e: any) => {
-        //@ts-ignore
         dispatch(uploadPhotos(id, e.currentTarget.files[0]))
     }
 
     const handleDeletePhoto = (id: string, photoId: string) => {
-        //@ts-ignore
         dispatch(deletePhoto(id, photoId))
     }
 
     const setPdfDescription = (photoId: string, text: string) => {
-        //@ts-ignore
         dispatch(updatePdfDescription(photoId, text, id))
     }
 
@@ -139,5 +136,3 @@ const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
         <Row gutter={4} style={{marginBottom: '100px'}}>{photosData}</Row>
     )
 }
-
-export default PhotosBlock

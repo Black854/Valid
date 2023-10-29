@@ -12,7 +12,7 @@ type CurrentStatusPropsType = {
     fio: string
 }
 
-const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio}) => {
+export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio}) => {
     const interval = useSelector((state: AppStateType) => getIntervalsByAr(state, ar))
     const reestrData = useSelector(getReestrDataSelector)
     if ( reestrData.length !== 0 ) {
@@ -63,5 +63,3 @@ const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio}) => {
     }
     
 }
-
-export default CurrentStatus

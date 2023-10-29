@@ -1,31 +1,34 @@
-import { Button, Col, Image, Row, Select, Spin, Table, Tabs, TabsProps, Typography } from "antd"
-import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useParams } from "react-router-dom";
-import { getEquipById, getEquipData, getIsDepartmentLoading, getIsGroupLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading, getReestrDataSelector } from "../../../redux/equipmentSelectors";
-import { AppStateType } from "../../../redux/store";
-import { getEquipment, getReestrData, updateDepartment, updateGroup, updateInv, updateManufacturDate, updateManufacturer, updateNomer, updateSerial, updateVMPDepartment } from "../../../redux/equipmentReducer";
-import { ColumnsType } from "antd/es/table";
-import { ArHelper } from "../../helpers/arHelper";
-import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
-import TitleImage from "./CardComponents/TitleImage";
-import EquipDescriptions from "./CardComponents/EquipDescription";
-import CardReestr from "./CardComponents/CardReestr";
-import React, { useEffect } from "react";
-import TechnicalInfo from "./CardComponents/TechnicalInfo";
-import PhotosBlock from "./CardComponents/PhotosBlock";
-import { getDepartmentsSelector, getEquipGroupsSelector, getVMPDepartmentsSelector } from "../../../redux/appSelectors";
-import { getDepartments, getEquipGroups, getVMPDepartments } from "../../../redux/appReducer";
-import CurrentStatus from "../../common/CurrentStatus";
+import { Col, Row, Select, Spin, Tabs, TabsProps, Typography } from "antd"
+import { useDispatch, useSelector } from "react-redux"
+import { useParams } from "react-router-dom"
+import { getEquipById, getEquipData, getIsDepartmentLoading, getIsGroupLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading, getReestrDataSelector } from "../../../redux/equipmentSelectors"
+import { AppDispatch, AppStateType } from "../../../redux/store"
+import { getEquipment, getReestrData, updateDepartment, updateGroup, updateInv, updateManufacturDate, updateManufacturer, updateNomer, updateSerial, updateVMPDepartment } from "../../../redux/equipmentReducer"
+import { ArHelper } from "../../helpers/arHelper"
+import React, { useEffect } from "react"
+import { getDepartmentsSelector, getEquipGroupsSelector, getVMPDepartmentsSelector } from "../../../redux/appSelectors"
+import { getDepartments, getEquipGroups, getVMPDepartments } from "../../../redux/appReducer"
+import { TitleImage } from "./CardComponents/TitleImage"
+import { EquipDescriptions } from "./CardComponents/EquipDescription"
+import { CardReestr } from "./CardComponents/CardReestr"
+import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
+import { PhotosBlock } from "./CardComponents/PhotosBlock"
+import { CurrentStatus } from "../../common/CurrentStatus"
 const { Text } = Typography
 
-const EquipCard = () => {
-    const { id } = useParams();
-
-    const dispatch = useDispatch()
+export const EquipCard = () => {
+    const dispatch: AppDispatch = useDispatch()
+    const params = useParams()
+    let id: string
+    if (params.id === undefined) {
+        id = 'none'
+    } else {
+        id = params.id
+    }
     
     const equipData = useSelector(getEquipData)
     const isLoading = useSelector(getIsLoading)
-    const equipObject = useSelector((state: AppStateType) => getEquipById(state, id));
+    const equipObject = useSelector((state: AppStateType) => getEquipById(state, id))
     const equipGroups = useSelector(getEquipGroupsSelector)
     const departments = useSelector(getDepartmentsSelector)
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
@@ -37,30 +40,25 @@ const EquipCard = () => {
 
     useEffect(() => {
         if (equipData.length === 0) {
-            //@ts-ignore
-          dispatch(getEquipment());
+          dispatch(getEquipment())
         } else if (equipGroups.length === 0) {
-            //@ts-ignore
-          dispatch(getEquipGroups('active'));
+          dispatch(getEquipGroups('active'))
         } else if (departments.length === 0) {
-            //@ts-ignore
-          dispatch(getDepartments());
+          dispatch(getDepartments())
         } else if (VMPDepartments.length === 0) {
-            //@ts-ignore
-          dispatch(getVMPDepartments());
+          dispatch(getVMPDepartments())
         }
-    }, [dispatch, equipData, equipGroups, departments, VMPDepartments]);
+    }, [dispatch, equipData, equipGroups, departments, VMPDepartments])
     useEffect (() => {
-        //@ts-ignore
         dispatch(getReestrData(id))
     }, [id])
     let filteredEquipGroups = equipGroups.filter(e => e.isactive !== '1');
     let groupsData = filteredEquipGroups.map((e: any) => ({ value: e.name, label: e.name }))
 
-    let filteredDepartments = departments.filter(e => e.stat === '1');
+    let filteredDepartments = departments.filter(e => e.stat === '1')
     let departmentData = filteredDepartments.map((e: any) => ({ value: e.name, label: e.name }))
 
-    let filteredVMPDepartments = VMPDepartments.filter(e => e.isactive !== '1');
+    let filteredVMPDepartments = VMPDepartments.filter(e => e.isactive !== '1')
     let VMPDepartmentData = filteredVMPDepartments.map((e: any) => ({ value: e.vmpname1, label: e.vmpname1 }))
     
     if (isLoading) {
@@ -85,42 +83,34 @@ const EquipCard = () => {
         }
         
         const updateDataNomer = (nomer: string) => {
-            //@ts-ignore
             dispatch(updateNomer(equipObject.id, nomer))
         }
 
         const updateDataManufacturer = (manufacturer: string) => {
-            //@ts-ignore
             dispatch(updateManufacturer(equipObject.id, manufacturer))
         }
 
         const updateDataManufacturdate = (manufacturDate: string) => {
-            //@ts-ignore
             dispatch(updateManufacturDate(equipObject.id, manufacturDate))
         }
 
         const updateDataInv = (inv: string) => {
-            //@ts-ignore
             dispatch(updateInv(equipObject.id, inv))
         }
 
         const updateDataSerial = (serial: string) => {
-            //@ts-ignore
             dispatch(updateSerial(equipObject.id, serial))
         }
 
         const handleUpdateGroup = (text: string) => {
-            //@ts-ignore
             dispatch(updateGroup(id, text))
         }
 
         const handleUpdateDepartment = (text: string) => {
-            //@ts-ignore
             dispatch(updateDepartment(id, text))
         }
 
         const handleUpdateVMPDepartment = (text: string) => {
-            //@ts-ignore
             dispatch(updateVMPDepartment(id, text))
         }
 
@@ -195,14 +185,14 @@ const EquipCard = () => {
             },
             {
                 rowName: 'Валидационный статус',
-                value: <CurrentStatus ar={equipObject.ar}  fio={equipObject.fio} /> 
+                value: <CurrentStatus ar={equipObject.ar} fio={equipObject.fio} /> 
             }
         ]
         
         const columns = [
             {
               dataIndex: 'rowName',
-              render: (rowName: string) => <Text style={{fontSize: '12pt'}}>{rowName}</Text>,
+              render: (rowName: string) => <Text style={{fontSize: '12pt'}} >{rowName}</Text>,
             },
             {
               dataIndex: 'value',
@@ -224,22 +214,22 @@ const EquipCard = () => {
             {
               key: '3',
               label: 'Техническая информация',
-              children: <TechnicalInfo id={equipObject.id}/>,
+              children: <TechnicalInfo id={equipObject.id} />,
             },
             {
               key: '4',
               label: 'Фотографии/Документы',
               children: <PhotosBlock id={equipObject.id} />,
             },
-          ];
+          ]
 
         return (
             <>
-            <Row style={{padding: '10px 0'}}>
-                <Col span={5} push={1} style={{textAlign: 'center'}}>
-                    <TitleImage equipObject={equipObject}/>
+            <Row style={{padding: '10px 0'}} >
+                <Col span={5} push={1} style={{textAlign: 'center'}} >
+                    <TitleImage equipObject={equipObject} id={id} />
                 </Col>
-                <Col span={16} push={2} style={{minHeight: '89vh', display: "flex", flexDirection: 'column'}}>
+                <Col span={16} push={2} style={{minHeight: '89vh', display: "flex", flexDirection: 'column'}} >
                     <Tabs
                         defaultActiveKey="1"
                         items={items}
@@ -258,5 +248,3 @@ const EquipCard = () => {
     }
     
 }
-
-export default React.memo(EquipCard)

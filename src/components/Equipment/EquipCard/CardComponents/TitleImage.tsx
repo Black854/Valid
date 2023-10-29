@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/equipmentReducer";
 import { useParams } from "react-router-dom";
 import { EyeOutlined} from '@ant-design/icons';
+import { AppDispatch } from "../../../../redux/store";
 const {Text} = Typography
 
 interface DataType {
@@ -27,22 +28,19 @@ interface DataType {
 
 type TitleImagePropsType = {
     equipObject: DataType
+    id: string
 }
 
-const TitleImage: React.FC<TitleImagePropsType> = ({equipObject}) => {
-    const dispatch = useDispatch()
-    const { id } = useParams();
+export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => {
+    const dispatch: AppDispatch = useDispatch()
     const onSelectPhoto = (e: any) => {
-        //@ts-ignore
         dispatch(uploadMainPhoto(id, e.currentTarget.files[0]))
     }
     const handleDeleteFoto = () => {
-        //@ts-ignore
         dispatch(deleteMainPhoto(id))
     }
 
     const handleUpdateName = (text: string) => {
-        //@ts-ignore
         dispatch(updateName(id, text))
     }
 
@@ -84,5 +82,3 @@ const TitleImage: React.FC<TitleImagePropsType> = ({equipObject}) => {
         </>
     )
 }
-
-export default TitleImage

@@ -1,9 +1,9 @@
-import { Select, Typography } from "antd"
+import { Select } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { getIsIntervalLoading } from "../../redux/equipmentSelectors"
 import { getIntervals } from "../../redux/appSelectors"
 import { updateInterval } from "../../redux/equipmentReducer"
-const { Text } = Typography
+import { AppDispatch } from "../../redux/store"
 
 type ArHelperPropsType = {
     ar: string
@@ -12,10 +12,9 @@ type ArHelperPropsType = {
 
 export const ArHelper: React.FC<ArHelperPropsType> = ({ar, id}) => {
     const data = useSelector(getIntervals)
-    const dispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     const isIntervalLoading = useSelector(getIsIntervalLoading)
     const handleUpdateInterval = (interval: string) => {
-        //@ts-ignore
         dispatch(updateInterval(id, interval))
     }
 
