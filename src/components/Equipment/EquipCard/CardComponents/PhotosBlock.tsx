@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, Image, Popconfirm, Row, Typography, message } from "antd"
+import { Avatar, Button, Col, Image, Modal, Popconfirm, Row, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { getPhotosSelector } from "../../../../redux/equipmentSelectors"
 import { useEffect, useState } from "react"
@@ -15,6 +15,7 @@ type PhotosBlockPropsType = {
 }
 
 export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
+    const [modalStates, setModalStates] = useState(Array<string>)
     const beforeUpload = (file: RcFile) => {
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
@@ -69,11 +70,27 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
 
     const photosData = photosRenderArray.map ((e: any) => {
         if (e.src.endsWith('.pdf')) {
+            const handleCancel = (id: string) => {
+                setModalStates(modalStates.filter(elem => elem !== id))
+            }
+            
+            const showModal = (id: string) => {
+                setModalStates([...modalStates, id])
+            }
+            let isModalOpen: boolean
+            if (modalStates.find(elem => elem === e.id)) {
+                isModalOpen = true
+            } else {
+                isModalOpen = false
+            }
             return  <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{padding: '4px'}}>
                         <Text editable={{ onChange: (text) => {setPdfDescription(e.id, text)}}} style={{color: 'black', position: 'absolute', top: '3%', left: '5%', width: '80%', zIndex: '1'}}>{e.name}</Text>
-                        <Link href={'http://10.85.10.212/ov/' + e.src}>
-                            <Image preview={false} src={pdf} height='100%' style={{objectFit: 'cover'}} />
-                        </Link>
+                        <Image preview={false} src={pdf} height='100%' style={{objectFit: 'cover', cursor: 'pointer'}} onClick={() => showModal(e.id)} />
+                        <Modal title="Просмотр документа" open={isModalOpen} onCancel={() => handleCancel(e.id)} footer={[ <Button key="close" onClick={() => handleCancel(e.id)} type="primary">Закрыть</Button> ]} >
+                            <object data={'http://10.85.10.212/ov/' + e.src} type="application/pdf" width="100%" height="600px">
+                                <p>Ваш браузер не поддерживает отображение PDF. Вы можете <a href={'http://10.85.10.212/ov/' + e.src}>скачать его</a>.</p>
+                            </object>
+                        </Modal>
                         <Popconfirm
                             title='Подтвердите удаление'
                             description='Вы уверены, что хотите удалить документ?'
