@@ -1,4 +1,4 @@
-import { Button, Popconfirm, Table, Typography } from "antd"
+import { Button, Popconfirm, Table, Typography, message } from "antd"
 import { useDispatch } from "react-redux"
 import { deleteDocument, updateReestrDocsCode, uploadDocument } from "../../../../redux/equipmentReducer"
 import React from "react"
@@ -33,10 +33,17 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
     const reestrDataWithoutEmptyRows = reestrData.filter(e => e.dvo !== '')
 
     const dispatch: AppDispatch = useDispatch()
+    const [messageApi, contextHolder] = message.useMessage()
+    const error = (fileName: string) => {
+        messageApi.open({
+          type: 'error',
+          content: `Расширение файла ${fileName} не соответствует разрешенным`,
+        })
+    }
     const handleUpdateDocsCode = (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
         dispatch(updateReestrDocsCode(id, recordId, text, dataType))
     }
-    const columns: ColumnsType<reestrDataItemType> = [
+    let columns: ColumnsType<reestrDataItemType> = [
         {
             title: <Text strong style={{fontSize: '12pt'}}>Код протокола</Text>,
             dataIndex: 'nvp',
@@ -63,10 +70,25 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 } else if (record.nvp !== '') {
                     let uploadDocumentRef: any = null
                     const onSelectDocument = (e: any) => {
-                        dispatch(uploadDocument(id, record.id, 'vp', e.currentTarget.files[0]))
+                        if (e.currentTarget.files.length > 0) {
+                            const fileName = e.currentTarget.files[0].name
+                            // Получите расширение файла, разделенное точкой
+                            const fileExtension = fileName.split('.').pop()
+                
+                            // Список разрешенных расширений
+                            const allowedExtensions = ['doc', 'docx']
+                
+                            if (allowedExtensions.includes(fileExtension.toLowerCase())) {
+                                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
+                                dispatch(uploadDocument(id, record.id, 'vp', e.currentTarget.files[0]))
+                            } else {
+                                // Файл имеет недопустимое расширение
+                                error(fileName)
+                            }
+                        }
                     }
                     return <><Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp')}}>{nvp}</Text>
-                    <input id="uploadDocument" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                    <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
                     <Button icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
                 } else {
                     return <Text>{nvp}</Text>
@@ -104,11 +126,26 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 } else if (record.nvo !== '') {
                     let uploadDocumentRef: any = null
                     const onSelectDocument = (e: any) => {
-                        dispatch(uploadDocument(id, record.id, 'vo', e.currentTarget.files[0]))
+                        if (e.currentTarget.files.length > 0) {
+                            const fileName = e.currentTarget.files[0].name
+                            // Получите расширение файла, разделенное точкой
+                            const fileExtension = fileName.split('.').pop()
+                
+                            // Список разрешенных расширений
+                            const allowedExtensions = ['doc', 'docx']
+                
+                            if (allowedExtensions.includes(fileExtension.toLowerCase())) {
+                                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
+                                dispatch(uploadDocument(id, record.id, 'vo', e.currentTarget.files[0]))
+                            } else {
+                                // Файл имеет недопустимое расширение
+                                error(fileName)
+                            }
+                        }
                     }
                     return  <>
                                 <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo')}}>{nvo}</Text>
-                                <input id="uploadDocument" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                                <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
                                 <Button icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
                 } else {
                     return <Text>{nvo}</Text>
@@ -157,10 +194,25 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
             } else {
                 let uploadDocumentRef: any = null
                 const onSelectDocument = (e: any) => {
-                    dispatch(uploadDocument(id, record.id, 'pam', e.currentTarget.files[0]))
+                    if (e.currentTarget.files.length > 0) {
+                        const fileName = e.currentTarget.files[0].name
+                        // Получите расширение файла, разделенное точкой
+                        const fileExtension = fileName.split('.').pop()
+            
+                        // Список разрешенных расширений
+                        const allowedExtensions = ['doc', 'docx']
+            
+                        if (allowedExtensions.includes(fileExtension.toLowerCase())) {
+                            // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
+                            dispatch(uploadDocument(id, record.id, 'pam', e.currentTarget.files[0]))
+                        } else {
+                            // Файл имеет недопустимое расширение
+                            error(fileName)
+                        }
+                    }
                 }
                 return <>
-                <input id="uploadDocument" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
                 <Button icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} /><Text type="secondary">Загрузить</Text></>
             }
         },
@@ -168,19 +220,22 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
         align: 'center'
     }]
 
-    if (group === '') {
-        
+    if (group === 'Термостаты' || group === 'Термоконтейнеры') {
+        columns=columns.concat(pamColumn)
     }
 
     return (
-        <Table
-            columns={columns}
-            dataSource={reestrDataWithoutEmptyRows}
-            bordered
-            pagination={false} // Скрыть пагинацию, если есть
-            style={{marginBottom: '30px'}}
-            rowKey='id'
-            loading={isReestrDataLoading}
-        />
+        <>
+            {contextHolder}
+            <Table
+                columns={columns}
+                dataSource={reestrDataWithoutEmptyRows}
+                bordered
+                pagination={false} // Скрыть пагинацию, если есть
+                style={{marginBottom: '30px'}}
+                rowKey='id'
+                loading={isReestrDataLoading}
+            />
+        </>
     )
 }

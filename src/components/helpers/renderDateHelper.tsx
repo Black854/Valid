@@ -1,4 +1,4 @@
-import { addMonths } from 'date-fns'
+import { addMonths, subMonths } from 'date-fns'
 import { format } from 'date-fns'
 import { Typography } from 'antd'
 const { Text } = Typography
@@ -36,7 +36,10 @@ export const RenderDateHelper: React.FC<renderDateHelperType> = ({date, record})
 
     const equipDate = new Date(date)
     const resultEquipDate = addMonths(equipDate, monthCount) // Прибавляем monthCount месяцев
-    const formattedEquipDate = format(resultEquipDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
+    const formattedEquipDate = format(resultEquipDate, 'yyyyMMdd') // дата объекта для сравнения
+
+    const resultEquipDateWithoutOneMonth = subMonths(resultEquipDate, 1) // Прибавляем monthCount месяцев
+    const formattedEquipDateWithoutOneMonth = format(resultEquipDateWithoutOneMonth, 'yyyyMMdd') // дата объекта минус 1 месяц для сравнения
    
     let dateForPrint = format(resultEquipDate, 'dd.MM.yyyy')
     if (ar === '0') { return <Text type="secondary">Не валидируется</Text> }
@@ -45,5 +48,6 @@ export const RenderDateHelper: React.FC<renderDateHelperType> = ({date, record})
     else if (ar==='11' || ar==='10') { return <Text type="secondary">До изменений</Text> }
     else if (record.date === null) { return <Text type="danger">Нет данных</Text> }
     else if (formattedCurrentDate >= formattedEquipDate) { return <Text type="danger">{dateForPrint}</Text> }
+    else if (formattedEquipDate > formattedCurrentDate && formattedCurrentDate >= formattedEquipDateWithoutOneMonth) { return <Text type="warning">{dateForPrint}</Text> }
     else { return <Text type="success">{dateForPrint}</Text> }
 }

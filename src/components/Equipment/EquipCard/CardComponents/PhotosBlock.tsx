@@ -1,11 +1,12 @@
 import { Avatar, Button, Col, Image, Modal, Popconfirm, Row, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { getPhotosSelector } from "../../../../redux/equipmentSelectors"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/equipmentReducer"
 import Link from "antd/es/typography/Link"
 import { DeleteFilled, EyeOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import pdf from './../../../../img/pdfi.png'
+import video from './../../../../img/video.png'
 import { RcFile } from "antd/es/upload"
 import { AppDispatch } from "../../../../redux/store"
 const {Text} = Typography
@@ -16,26 +17,15 @@ type PhotosBlockPropsType = {
 
 export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
     const [modalStates, setModalStates] = useState(Array<string>)
-    const beforeUpload = (file: RcFile) => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isJpgOrPng) {
-          message.error('You can only upload JPG/PNG file!');
-        }
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-          message.error('Image must smaller than 2MB!');
-        }
-        return isJpgOrPng && isLt2M;
-      };
-      const [loading, setLoading] = useState(false);
-      const [imageUrl, setImageUrl] = useState<string>();
-      const uploadButton = (
-        <div>
-          {loading ? <LoadingOutlined /> : <PlusOutlined />}
-          <div style={{ marginTop: 8 }}>Upload</div>
-        </div>
-      );
-
+    const videoRef = useRef<HTMLVideoElement | null>(null)
+    const [messageApi, contextHolder] = message.useMessage()
+    
+    const error = (fileName: string) => {
+        messageApi.open({
+          type: 'error',
+          content: `Расширение файла ${fileName} не соответствует разрешенным`,
+        })
+    }
 
     const dispatch: AppDispatch = useDispatch()
     const photos = useSelector(getPhotosSelector)
@@ -58,7 +48,20 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
 
     const onSelectPhoto = (e: any) => {
         if (e.currentTarget.files.length > 0) {
-            dispatch(uploadPhotos(id, e.currentTarget.files[0]))
+            const fileName = e.currentTarget.files[0].name
+            // Получите расширение файла, разделенное точкой
+            const fileExtension = fileName.split('.').pop()
+
+            // Список разрешенных расширений
+            const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'mp4']
+
+            if (allowedExtensions.includes(fileExtension.toLowerCase())) {
+                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
+                dispatch(uploadPhotos(id, e.currentTarget.files[0]))
+            } else {
+                // Файл имеет недопустимое расширение
+                error(fileName)
+            }
         }
     }
 
@@ -71,7 +74,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
     }
 
     const photosData = photosRenderArray.map ((e: any) => {
-        if (e.src.endsWith('.pdf')) {
+        if (e.src.endsWith('.pdf') || e.src.endsWith('.PDF')) {
             const handleCancel = (id: string) => {
                 setModalStates(modalStates.filter(elem => elem !== id))
             }
@@ -100,11 +103,48 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                             cancelText='Нет'
                             onConfirm={() => {handleDeletePhoto(id, e.id)}}
                         >
-                            <Button size="small" danger icon={<DeleteFilled />} shape="circle" style={{ position: 'relative', bottom: '98%', left: '87%'}} />
+                            <Button size="small" danger icon={<DeleteFilled />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1'}} />
+                        </Popconfirm>
+                    </Col>
+        } else if (e.src.endsWith('.mp4') || e.src.endsWith('.MP4')) {
+            const handleCancel = (id: string) => {
+                setModalStates(modalStates.filter(elem => elem !== id))
+                if (videoRef.current) {
+                    videoRef.current.pause();
+                }
+            }
+            const showModal = (id: string) => {
+                setModalStates([...modalStates, id])
+            }
+            let isModalOpen: boolean
+            if (modalStates.find(elem => elem === e.id)) {
+                isModalOpen = true
+            } else {
+                isModalOpen = false
+            }
+            return  <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{padding: '4px'}}>
+                        <Text editable={{ onChange: (text) => {setPdfDescription(e.id, text)}}} style={{color: 'black', position: 'absolute', top: '3%', left: '5%', width: '80%', zIndex: '1'}}>{e.name}</Text>
+                        <Image preview={false} src={video} height='100%' style={{objectFit: 'cover', cursor: 'pointer'}} onClick={() => showModal(e.id)} />
+                        <Modal title="Просмотр видеозаписи" open={isModalOpen} onCancel={() => handleCancel(e.id)} footer={[ <Button key="close" onClick={() => handleCancel(e.id)} type="primary">Закрыть</Button> ]} >
+                        <video controls width="100%" height="600" ref={videoRef}>
+                            <source src={`http://10.85.10.212/ov/${e.src}`} type="video/mp4" />
+                            Ваш браузер не поддерживает отображение видео. Вы можете{" "}
+                            <a href={`http://10.85.10.212/ov/${e.src}`}>скачать его</a>.
+                        </video>
+                        </Modal>
+                        <Popconfirm
+                            title='Подтвердите удаление'
+                            description='Вы уверены, что хотите удалить видеозапись?'
+                            okText='Да'
+                            cancelText='Нет'
+                            onConfirm={() => {handleDeletePhoto(id, e.id)}}
+                        >
+                            <Button size="small" danger icon={<DeleteFilled />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1'}} />
                         </Popconfirm>
                     </Col>
         } else if (e.id === '99999') {
             return  <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{padding: '4px'}}>
+                        {contextHolder}
                         <Avatar 
                             shape='square'
                             icon={
@@ -112,7 +152,6 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                                     <Text style={{fontSize: '20pt' }}>+</Text>
                                     <Text>Загрузить</Text>
                                 </>
-                                
                             }
                             children={<Text>Загрузить</Text>}
                             style={{objectFit: 'cover',
@@ -123,11 +162,15 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                                     backgroundColor: 'rgb(0 0 0 / 2%)',
                                     border: '1px dashed #d9d9d9',
                                     borderRadius: '8px',
-                                    display: 'flex', flexDirection: 'column', justifyContent: 'center',alignItems: 'center',textAlign: 'center'
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    textAlign: 'center'
                                 }} 
                             onClick={() => fileInputRef.click()}
                         />
-                        <input id="uploadPhoto" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
+                        <input id="uploadPhoto" accept="image/jpeg, image/png, application/pdf, video/mp4" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
                     </Col>
         } else {
             return  <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{padding: '4px'}}>
@@ -137,15 +180,15 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                             height='100%'
                             style={{objectFit: 'cover'}}
                         />
-                        <Popconfirm
-                            title='Подтвердите удаление'
-                            description='Вы уверены, что хотите удалить фотографию?'
-                            okText='Да'
-                            cancelText='Нет'
-                            onConfirm={() => {handleDeletePhoto(id, e.id)}}
-                        >
-                            <Button size="small" danger icon={<DeleteFilled />} shape="circle" style={{ position: 'relative', bottom: '98%', left: '87%'}} />
-                        </Popconfirm>
+                            <Popconfirm
+                                title='Подтвердите удаление'
+                                description='Вы уверены, что хотите удалить фотографию?'
+                                okText='Да'
+                                cancelText='Нет'
+                                onConfirm={() => {handleDeletePhoto(id, e.id)}}
+                            >
+                                <Button size="small" danger icon={<DeleteFilled />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1'}} />
+                            </Popconfirm>
                     </Col>
         }
     })

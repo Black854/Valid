@@ -218,7 +218,7 @@ export const EquipCard = () => {
             },
             {
               key: '4',
-              label: 'Фотографии/Документы',
+              label: 'Медиа файлы',
               children: <PhotosBlock id={equipObject.id} />,
             },
           ]
