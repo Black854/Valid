@@ -95,7 +95,7 @@ export const Equipment: React.FC = () => {
                 if (inv !== '') {
                     return <Text>{inv}</Text>
                 } else {
-                    return <Text type="danger">Отсутствует</Text>
+                    return <Text type="warning">Отсутствует</Text>
                 }
             },
             sorter: (a, b) => a.name.localeCompare(b.name),
@@ -139,7 +139,7 @@ export const Equipment: React.FC = () => {
                         dataSource={data}
                         bordered
                         pagination={{defaultPageSize: 20}}
-                        title={() => <Text style={{fontSize: '14pt'}}>Оборудование</Text>}
+                        title={() => <Text style={{fontSize: '14pt'}}>Оборудование (всего {equipData.length} объектов)</Text>}
                     /> 
                 </Col>
             </Row>

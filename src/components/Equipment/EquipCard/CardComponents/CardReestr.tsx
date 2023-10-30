@@ -26,9 +26,12 @@ type CardReestrPropsType = {
     id: string
     isReestrDataLoading: boolean
     reestrData: DataType
+    group: string
 }
 
-export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, reestrData}) => {
+export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, reestrData, group}) => {
+    const reestrDataWithoutEmptyRows = reestrData.filter(e => e.dvo !== '')
+
     const dispatch: AppDispatch = useDispatch()
     const handleUpdateDocsCode = (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
         dispatch(updateReestrDocsCode(id, recordId, text, dataType))
@@ -127,45 +130,52 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
             width: '10%',
             align: 'center'
         },
-        {
-            title: <Text strong style={{fontSize: '12pt'}}>Памятка</Text>,
-            dataIndex: 'pam',
-            render: (pam, record) =>  {
-                if (pam) {
-                    const handleDeleteDocument = () => {
-                        dispatch(deleteDocument(id, record.id, 'pam', pam))
-                    }
-                    return  <>
-                                <Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + pam}>Просмотр</Button>
-                                <Popconfirm
-                                    title='Подтвердите удаление'
-                                    description='Вы уверены, что хотите удалить документ?'
-                                    okText='Да'
-                                    cancelText='Нет'
-                                    onConfirm={handleDeleteDocument}
-                                >
-                                    <Button danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="link" />
-                                </Popconfirm>
-                            </>
-                } else {
-                    let uploadDocumentRef: any = null
-                    const onSelectDocument = (e: any) => {
-                        dispatch(uploadDocument(id, record.id, 'pam', e.currentTarget.files[0]))
-                    }
-                    return <>
-                    <input id="uploadDocument" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
-                    <Button icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} /><Text type="secondary">Загрузить</Text></>
-                }
-            },
-            width: '12%',
-            align: 'center'
-        },
     ];
+
+
+    
+    const pamColumn: ColumnsType<reestrDataItemType> = [{
+        title: <Text strong style={{fontSize: '12pt'}}>Памятка</Text>,
+        dataIndex: 'pam',
+        render: (pam, record) =>  {
+            if (pam) {
+                const handleDeleteDocument = () => {
+                    dispatch(deleteDocument(id, record.id, 'pam', pam))
+                }
+                return  <>
+                            <Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + pam}>Просмотр</Button>
+                            <Popconfirm
+                                title='Подтвердите удаление'
+                                description='Вы уверены, что хотите удалить документ?'
+                                okText='Да'
+                                cancelText='Нет'
+                                onConfirm={handleDeleteDocument}
+                            >
+                                <Button danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="text" />
+                            </Popconfirm>
+                        </>
+            } else {
+                let uploadDocumentRef: any = null
+                const onSelectDocument = (e: any) => {
+                    dispatch(uploadDocument(id, record.id, 'pam', e.currentTarget.files[0]))
+                }
+                return <>
+                <input id="uploadDocument" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                <Button icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} /><Text type="secondary">Загрузить</Text></>
+            }
+        },
+        width: '12%',
+        align: 'center'
+    }]
+
+    if (group === '') {
+        
+    }
 
     return (
         <Table
             columns={columns}
-            dataSource={reestrData}
+            dataSource={reestrDataWithoutEmptyRows}
             bordered
             pagination={false} // Скрыть пагинацию, если есть
             style={{marginBottom: '30px'}}

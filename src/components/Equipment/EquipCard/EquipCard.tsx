@@ -209,7 +209,7 @@ export const EquipCard = () => {
             {
               key: '2',
               label: 'Перечень валидационных работ',
-              children: <CardReestr id={equipObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} />,
+              children: <CardReestr id={equipObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={equipObject.groupp} />,
             },
             {
               key: '3',

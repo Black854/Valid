@@ -57,7 +57,9 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
     let fileInputRef: any = null
 
     const onSelectPhoto = (e: any) => {
-        dispatch(uploadPhotos(id, e.currentTarget.files[0]))
+        if (e.currentTarget.files.length > 0) {
+            dispatch(uploadPhotos(id, e.currentTarget.files[0]))
+        }
     }
 
     const handleDeletePhoto = (id: string, photoId: string) => {
@@ -146,7 +148,6 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                         </Popconfirm>
                     </Col>
         }
-        
     })
     
     return (

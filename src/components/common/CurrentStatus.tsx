@@ -59,7 +59,7 @@ export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio}) => {
             return <Text type="danger">Объект имеет несуществующий тип интервала</Text>
         }
     } else {
-        return <Text type="danger">Ошибка! Массив с данными о валидационных работых пуст</Text>
+        return <Text type="warning">Отсутствуют данные о валидационных работах</Text>
     }
     
 }
