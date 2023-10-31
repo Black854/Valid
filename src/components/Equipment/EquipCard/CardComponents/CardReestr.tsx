@@ -99,7 +99,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
             title: <Text strong style={{fontSize: '12pt'}}>Дата</Text>,
             dataIndex: 'dvp',
             render: (dvp, record) => { return <ConvertDate date={dvp} equipId={id} dateType='dvp' id={record.id} key={record.id} /> },
-            width: '10%',
+            width: '11%',
             align: 'center',
         },
         {
@@ -164,13 +164,11 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
             render: (dvo, record) => { return <ConvertDate date={dvo} equipId={id} dateType='dvo' id={record.id} key={record.id} /> },
             sortDirections: ['ascend', 'descend'],
             defaultSortOrder: 'descend',
-            width: '10%',
+            width: '11%',
             align: 'center'
         },
     ];
 
-
-    
     const pamColumn: ColumnsType<reestrDataItemType> = [{
         title: <Text strong style={{fontSize: '12pt'}}>Памятка</Text>,
         dataIndex: 'pam',

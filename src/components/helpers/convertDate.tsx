@@ -69,7 +69,7 @@ export const ConvertDate: React.FC<ConvertDateType> = ({id, equipId, date, dateT
                         open={isPopconfirmVisible}
 
                     >
-                        <DatePicker style={{width: '100%'}} suffixIcon={null} allowClear={false} format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false} onChange={(date) => handleDateChange(date)}  />
+                        <DatePicker size='small'  allowClear={false} format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false} onChange={(date) => handleDateChange(date)}  />
                     </Popconfirm>
         }
     }

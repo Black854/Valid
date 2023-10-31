@@ -13,8 +13,11 @@ type CurrentStatusPropsType = {
 }
 
 export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio}) => {
+    // console.log('ar - ' + ar)
+    // console.log('fio - ' + fio)
     const interval = useSelector((state: AppStateType) => getIntervalsByAr(state, ar))
     const reestrData = useSelector(getReestrDataSelector)
+    // console.log('length - ' + reestrData.length)
     if ( reestrData.length !== 0 ) {
         const maxDateObject = reestrData.reduce((max, obj) => {
             // Преобразовываем дату dvo в объект Date
@@ -53,7 +56,6 @@ export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio}) => {
                 } else {
                     return <Text type="success">Действителен до {dateForPrint} (в работе у {fio})</Text>
                 }
-                
             }
         } else {
             return <Text type="danger">Объект имеет несуществующий тип интервала</Text>
