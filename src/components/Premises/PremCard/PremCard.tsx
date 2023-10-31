@@ -1,22 +1,22 @@
 import { Col, Row, Select, Spin, Tabs, TabsProps, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
-import { getEquipById, getEquipData, getEquipReestrDataSelector, getIsDepartmentLoading, getIsGroupLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading } from "../../../redux/equipmentSelectors"
 import { AppDispatch, AppStateType } from "../../../redux/store"
-import { getEquipment, getReestrData, updateDepartment, updateGroup, updateInv, updateManufacturDate, updateManufacturer, updateNomer, updateSerial, updateVMPDepartment } from "../../../redux/equipmentReducer"
 import { ArHelper } from "../../helpers/arHelper"
 import React, { useEffect } from "react"
-import { getDepartmentsSelector, getEquipGroupsSelector, getVMPDepartmentsSelector } from "../../../redux/appSelectors"
-import { getDepartments, getEquipGroups, getVMPDepartments } from "../../../redux/appReducer"
+import { getDepartmentsSelector, getPremClassesGroups, getVMPDepartmentsSelector } from "../../../redux/appSelectors"
+import { getDepartments, getVMPDepartments } from "../../../redux/appReducer"
 import { TitleImage } from "./CardComponents/TitleImage"
-import { EquipDescriptions } from "./CardComponents/EquipDescription"
+import { PremDescriptions } from "./CardComponents/PremDescription"
 import { CardReestr } from "./CardComponents/CardReestr"
 import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
+import { getIsClassLoading, getIsDepartmentLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading, getPremById, getPremData, getPremReestrDataSelector } from "../../../redux/premisesSelectors"
+import { getPremises, getReestrData, updateClass, updateDepartment, updateNomer, updateVMPDepartment } from "../../../redux/premisesReducer"
 const { Text } = Typography
 
-export const EquipCard = () => {
+export const PremCard = () => {
     const dispatch: AppDispatch = useDispatch()
     const params = useParams()
     let id: string
@@ -26,34 +26,35 @@ export const EquipCard = () => {
         id = params.id
     }
     
-    const equipData = useSelector(getEquipData)
+    const premData = useSelector(getPremData)
     const isLoading = useSelector(getIsLoading)
-    const equipObject = useSelector((state: AppStateType) => getEquipById(state, id))
-    const equipGroups = useSelector(getEquipGroupsSelector)
+    const premObject = useSelector((state: AppStateType) => getPremById(state, id))
+    const classesGroups = useSelector(getPremClassesGroups)
     const departments = useSelector(getDepartmentsSelector)
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
     const isDepartmentLoading = useSelector(getIsDepartmentLoading)
     const isVMPDepartmentLoading = useSelector(getIsVMPDepartmentLoading)
-    const isGroupLoading = useSelector(getIsGroupLoading)
+    const isClassLoading = useSelector(getIsClassLoading)
     const isReestrDataLoading = useSelector(getIsReestrDataLoading)
-    const reestrData = useSelector(getEquipReestrDataSelector)
+    const reestrData = useSelector(getPremReestrDataSelector)
 
     useEffect(() => {
-        if (equipData.length === 0) {
-          dispatch(getEquipment())
-        } else if (equipGroups.length === 0) {
-          dispatch(getEquipGroups('active'))
+        if (premData.length === 0) {
+          dispatch(getPremises())
         } else if (departments.length === 0) {
           dispatch(getDepartments())
         } else if (VMPDepartments.length === 0) {
           dispatch(getVMPDepartments())
         }
-    }, [dispatch, equipData, equipGroups, departments, VMPDepartments])
+    }, [dispatch, premData, classesGroups, departments, VMPDepartments])
     useEffect (() => {
         dispatch(getReestrData(id))
     }, [id])
-    let filteredEquipGroups = equipGroups.filter(e => e.isactive !== '1');
-    let groupsData = filteredEquipGroups.map((e: any) => ({ value: e.name, label: e.name }))
+    let classesData = [
+        {id: '1', value: 'Контролируемые'},
+        {id: '2', value: 'Складские'},
+        {id: '3', value: 'Чистые'}
+    ]
 
     let filteredDepartments = departments.filter(e => e.stat === '1')
     let departmentData = filteredDepartments.map((e: any) => ({ value: e.name, label: e.name }))
@@ -63,47 +64,13 @@ export const EquipCard = () => {
     
     if (isLoading) {
         return  <Spin size="large" style={{width: '60px', height: '60px', margin: '30px auto 10px auto'}} />
-    } else if (equipObject) {
-        interface DataType {
-            ar: string
-            date: string
-            fio: string
-            foto: string
-            groupp: string
-            id: string
-            inv: string
-            manual: string
-            manufacturdate: string
-            manufacturer: string
-            name: string
-            nomer: string
-            sp: string
-            sp2: string
-            serial: string
-        }
-        
+    } else if (premObject) {        
         const updateDataNomer = (nomer: string) => {
-            dispatch(updateNomer(equipObject.id, nomer))
-        }
-
-        const updateDataManufacturer = (manufacturer: string) => {
-            dispatch(updateManufacturer(equipObject.id, manufacturer))
-        }
-
-        const updateDataManufacturdate = (manufacturDate: string) => {
-            dispatch(updateManufacturDate(equipObject.id, manufacturDate))
-        }
-
-        const updateDataInv = (inv: string) => {
-            dispatch(updateInv(equipObject.id, inv))
-        }
-
-        const updateDataSerial = (serial: string) => {
-            dispatch(updateSerial(equipObject.id, serial))
+            dispatch(updateNomer(premObject.id, nomer))
         }
 
         const handleUpdateGroup = (text: string) => {
-            dispatch(updateGroup(id, text))
+            dispatch(updateClass(id, text))
         }
 
         const handleUpdateDepartment = (text: string) => {
@@ -120,7 +87,7 @@ export const EquipCard = () => {
                 value: <Select
                             style={{paddingRight: '20px', marginLeft: '-7px'}}
                             dropdownStyle={{width: 'auto'}}
-                            defaultValue={equipObject.sp}
+                            defaultValue={premObject.sp}
                             onChange={handleUpdateVMPDepartment}
                             size="small"
                             bordered={false}
@@ -133,7 +100,7 @@ export const EquipCard = () => {
                 value: <Select
                             style={{paddingRight: '20px', marginLeft: '-7px'}}
                             dropdownStyle={{width: '120px'}}
-                            defaultValue={equipObject.sp2}
+                            defaultValue={premObject.sp2}
                             onChange={handleUpdateDepartment}
                             size="small"
                             bordered={false}
@@ -142,50 +109,30 @@ export const EquipCard = () => {
                         />
             },
             {
-                rowName: 'Местонахождение',
-                value:  equipObject.nomer ? <Text editable={{ onChange: (text) => {updateDataNomer(text)}, text: equipObject.nomer}}>Помещение № { equipObject.nomer}</Text>:
+                rowName: 'Номер помещения',
+                value:  premObject.nomer ? <Text editable={{ onChange: (text) => {updateDataNomer(text)}, text: premObject.nomer}}>Помещение { premObject.nomer}</Text>:
                                             <Text type="danger" editable={{ onChange: (text) => {updateDataNomer(text)}, text: ''}}>Не указано</Text>
             },
             {
                 rowName: 'Группа',
                 value: <Select
-                            defaultValue={equipObject.groupp}
+                            defaultValue={premObject.class}
                             onChange={handleUpdateGroup}
                             size="small"
                             style={{paddingRight: '20px', marginLeft: '-7px'}}
                             dropdownStyle={{width: 'auto'}}
                             bordered={false}
-                            options={groupsData}
-                            loading={isGroupLoading}
+                            options={classesData}
+                            loading={isClassLoading}
                         />
             },
             {
-                rowName: 'Производитель',
-                value: equipObject.manufacturer ? <Text editable={{ onChange: (text) => {updateDataManufacturer(text)}}}>{equipObject.manufacturer}</Text> :
-                <Text type="danger" editable={{ onChange: (text) => {updateDataManufacturer(text)}, text: ''}}>Не указано</Text>
-            },
-            {
-                rowName: 'Год изготовления',
-                value: equipObject.manufacturdate ? <Text editable={{ onChange: (text) => {updateDataManufacturdate(text)}}}>{equipObject.manufacturdate}</Text> :
-                <Text type="danger" editable={{ onChange: (text) => {updateDataManufacturdate(text)}, text: ''}}>Не указано</Text>
-            },
-            {
-                rowName: 'Серийный номер',
-                value: equipObject.serial ? <Text editable={{ onChange: (text) => {updateDataSerial(text)}}}>{equipObject.serial}</Text> :
-                <Text type="danger" editable={{ onChange: (text) => {updateDataSerial(text)}, text: ''}}>Не указано</Text>
-            },
-            {
-                rowName: 'Учетный номер',
-                value: equipObject.inv ? <Text editable={{ onChange: (text) => {updateDataInv(text)}}}>{equipObject.inv}</Text> :
-                <Text type="danger" editable={{ onChange: (text) => {updateDataInv(text)}, text: ''}}>Не указано</Text>
-            },
-            {
                 rowName: 'Интервал оценки/реквалификации',
-                value: <ArHelper ar={equipObject.ar} id={equipObject.id} table='equipment' /> 
+                value: <ArHelper ar={premObject.ar} id={premObject.id} table='premises' /> 
             },
             {
                 rowName: 'Валидационный статус',
-                value: <CurrentStatus ar={equipObject.ar} fio={equipObject.fio} table='equipment' /> 
+                value: <CurrentStatus ar={premObject.ar} fio={premObject.fio} table='premises' /> 
             }
         ]
         
@@ -204,22 +151,22 @@ export const EquipCard = () => {
             {
               key: '1',
               label: 'Описание',
-              children: <EquipDescriptions columns={columns} data={data} />,
+              children: <PremDescriptions columns={columns} data={data} />,
             },
             {
               key: '2',
               label: 'Перечень валидационных работ',
-              children: <CardReestr id={equipObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={equipObject.groupp} />,
+              children: <CardReestr id={premObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={premObject.class} />,
             },
-            {
-              key: '3',
-              label: 'Техническая информация',
-              children: <TechnicalInfo id={equipObject.id} />,
-            },
+            // {
+            //   key: '3',
+            //   label: 'Техническая информация',
+            //   children: <TechnicalInfo id={premObject.id} />,
+            // },
             {
               key: '4',
               label: 'Медиа файлы',
-              children: <PhotosBlock id={equipObject.id} />,
+              children: <PhotosBlock id={premObject.id} />,
             },
           ]
 
@@ -227,7 +174,7 @@ export const EquipCard = () => {
             <>
             <Row style={{padding: '10px 0'}} >
                 <Col span={5} push={1} style={{textAlign: 'center'}} >
-                    <TitleImage equipObject={equipObject} id={id} />
+                    <TitleImage premObject={premObject} id={id} />
                 </Col>
                 <Col span={16} push={2} style={{minHeight: '89vh', display: "flex", flexDirection: 'column'}} >
                     <Tabs
@@ -243,7 +190,7 @@ export const EquipCard = () => {
         )
     } else {
         return (
-            <Text type="danger" style={{fontSize: '12pt', textAlign: 'center', padding: '20px'}}>Внимание! Оборудования с данным идентификатором не существует!</Text>
+            <Text type="danger" style={{fontSize: '12pt', textAlign: 'center', padding: '20px'}}>Внимание! Помещения с данным идентификатором не существует!</Text>
         )
     }
     

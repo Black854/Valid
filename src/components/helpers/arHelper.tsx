@@ -2,20 +2,26 @@ import { Select } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { getIsIntervalLoading } from "../../redux/equipmentSelectors"
 import { getIntervals } from "../../redux/appSelectors"
-import { updateInterval } from "../../redux/equipmentReducer"
 import { AppDispatch } from "../../redux/store"
+import { updateEquipInterval } from "../../redux/equipmentReducer"
+import { updatePremInterval } from "../../redux/premisesReducer"
 
 type ArHelperPropsType = {
     ar: string
     id: string
+    table: 'equipment' | 'premises' | 'systems' | 'processes'
 }
 
-export const ArHelper: React.FC<ArHelperPropsType> = ({ar, id}) => {
+export const ArHelper: React.FC<ArHelperPropsType> = ({ar, id, table}) => {
     const data = useSelector(getIntervals)
     const dispatch: AppDispatch = useDispatch()
     const isIntervalLoading = useSelector(getIsIntervalLoading)
     const handleUpdateInterval = (interval: string) => {
-        dispatch(updateInterval(id, interval))
+        if (table === 'equipment') {
+            dispatch(updateEquipInterval(id, interval))
+        } else if (table === 'premises') {
+            dispatch(updatePremInterval(id, interval))
+        }
     }
 
     return (

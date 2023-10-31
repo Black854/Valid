@@ -1,22 +1,32 @@
 import { Typography } from "antd"
 import { useSelector } from "react-redux/es/hooks/useSelector"
-import { getReestrDataSelector } from "../../redux/equipmentSelectors"
 import { addMonths } from 'date-fns';
 import { format } from 'date-fns';
 import { getIntervalsByAr } from "../../redux/appSelectors";
 import { AppStateType } from "../../redux/store";
+import { getPremReestrDataSelector } from "../../redux/premisesSelectors";
+import { getEquipReestrDataSelector } from "../../redux/equipmentSelectors"
+import { ReestrType } from "../../redux/premisesReducer";
 const { Text } = Typography
 
 type CurrentStatusPropsType = {
     ar: string
     fio: string
+    table: 'equipment' | 'premises' | 'systems' | 'processes'
 }
 
-export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio}) => {
+export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio, table}) => {
     // console.log('ar - ' + ar)
     // console.log('fio - ' + fio)
     const interval = useSelector((state: AppStateType) => getIntervalsByAr(state, ar))
-    const reestrData = useSelector(getReestrDataSelector)
+    const reestrEquipData = useSelector(getEquipReestrDataSelector)
+    const reestrPremData = useSelector(getPremReestrDataSelector)
+    let reestrData: ReestrType[] = []
+    if (table === 'equipment') {
+        reestrData = reestrEquipData;
+    } else if (table === 'premises') {
+        reestrData = reestrPremData;
+    }
     // console.log('length - ' + reestrData.length)
     if ( reestrData.length !== 0 ) {
         const maxDateObject = reestrData.reduce((max, obj) => {

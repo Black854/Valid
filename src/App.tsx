@@ -8,6 +8,8 @@ import { EquipCard } from './components/Equipment/EquipCard/EquipCard'
 import { store } from './redux/store'
 import { Equipment } from './components/Equipment/Equipment'
 import { CustomFooter } from './components/Footer/Footer'
+import { Premises } from './components/Premises/Premises'
+import { PremCard } from './components/Premises/PremCard/PremCard'
 const { theme } = require('antd/lib')
 
 export const App: React.FC = () => {
@@ -33,6 +35,8 @@ export const App: React.FC = () => {
               <Routes>
                 <Route path="/equipment" element={<Equipment />} />
                 <Route path="/equipment/:id" element={<EquipCard />} />
+                <Route path="/premises" element={<Premises />} />
+                <Route path="/premises/:id" element={<PremCard />} />
               </Routes>
             </Layout>
             <CustomFooter />

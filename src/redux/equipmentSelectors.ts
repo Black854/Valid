@@ -8,7 +8,7 @@ export const getIsLoading = (state: AppStateType) => {
     return (state.equipment.isLoading)
 }
 
-export const getReestrDataSelector = (state: AppStateType) => {
+export const getEquipReestrDataSelector = (state: AppStateType) => {
     return (state.equipment.reestrData)
 }
 

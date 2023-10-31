@@ -30,9 +30,14 @@ type VMPDepartmentsType = {
     isactive: string
 }
 
+type PremClassesGroup = {
+
+}
+
 const initialState = {
     isInitialized: true,
     equipGroups: [] as EquipGroup[],
+    premClassesGroups: [] as PremClassesGroup[],
     departments: [] as DepartmentsType[],
     vmpDepartments: [] as VMPDepartmentsType[],
     intervals: [

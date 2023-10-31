@@ -4,6 +4,10 @@ export const getEquipGroupsSelector = (state: AppStateType) => {
     return (state.app.equipGroups)
 }
 
+export const getPremClassesGroups = (state: AppStateType) => {
+    return (state.app.premClassesGroups)
+}
+
 export const getDepartmentsSelector = (state: AppStateType) => {
     return (state.app.departments)
 }

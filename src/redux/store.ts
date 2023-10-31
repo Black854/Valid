@@ -2,10 +2,12 @@ import {AnyAction, applyMiddleware, combineReducers, compose, legacy_createStore
 import thunkMiddleWare, { ThunkDispatch } from 'redux-thunk'
 import { appReducer } from './appReducer';
 import { equipmentReducer } from './equipmentReducer';
+import { premisesReducer } from './premisesReducer';
 
 let rootReducer = combineReducers({
   app: appReducer,
-  equipment: equipmentReducer
+  equipment: equipmentReducer,
+  premises: premisesReducer
 })
 
 type RootReducerType = typeof rootReducer

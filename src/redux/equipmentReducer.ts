@@ -42,7 +42,6 @@ type ReestrType = {
     typeval: string
     vo: string
     vp: string
-
 }
 
 let initialState = {
@@ -192,7 +191,7 @@ export const updateVMPDepartment = (id: string, VMPdepartment: string): ThunkTyp
     dispatch (equipActions.setIsVMPDepartmentLoading(false))
 }
 
-export const updateInterval = (id: string, interval: string): ThunkType => async (dispatch) => {
+export const updateEquipInterval = (id: string, interval: string): ThunkType => async (dispatch) => {
     dispatch (equipActions.setIsIntervalLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, interval)
     dispatch (equipActions.pushEquipmentData(data.items))
