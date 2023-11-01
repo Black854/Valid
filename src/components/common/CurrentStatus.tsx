@@ -34,7 +34,6 @@ export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio, table}
             const currentDate = new Date(obj.dvo);
             // Преобразовываем максимальную дату в объект Date
             const maxDate = new Date(max.dvo);
-          
             // Сравниваем текущую дату с максимальной датой
             return currentDate > maxDate ? obj : max;
         }, reestrData[0]); // Используем первый объект в качестве начальной максимальной даты
@@ -73,5 +72,4 @@ export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio, table}
     } else {
         return <Text type="warning">Отсутствуют данные о валидационных работах</Text>
     }
-    
 }

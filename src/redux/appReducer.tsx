@@ -59,7 +59,7 @@ const initialState = {
         { value: '12', label: 'Законсервировано', interval: '0' },
         { value: '15', label: 'Списано', interval: '0' }
     ],
-    premModes: null as PremModesType[] | null
+    premModes: [] as PremModesType[]
 }
 
 type InitialStateType = typeof initialState

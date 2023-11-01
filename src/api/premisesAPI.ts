@@ -56,9 +56,10 @@ export const premisesAPI = {
             return response.data
         })
     },
-    updateTechnicalInfo (id: string, text: string) {
+    updateTechnicalInfo (id: string, techType: string, text: string) {
         let data = new FormData()
         data.append("id", id)
+        data.append("techType", techType)
         data.append("text", text)
         return instance.post(`updateTechnicalInfo.php`, data).then (response => {
             return response.data

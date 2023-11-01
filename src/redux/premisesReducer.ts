@@ -155,8 +155,8 @@ export const getTechnicalInfo = (id: string): ThunkType => async (dispatch) => {
     dispatch(premActions.setTechnicalInfo(data.tech))
 }
 
-export const updateTechnicalInfo = (id: string, text: string): ThunkType => async (dispatch) => { 
-    let data = await premisesAPI.updateTechnicalInfo(id, text)
+export const updateTechnicalInfo = (id: string, techType: string, text: string): ThunkType => async (dispatch) => { 
+    let data = await premisesAPI.updateTechnicalInfo(id, techType, text)
     dispatch(premActions.setTechnicalInfo(data.tech))
 }
 

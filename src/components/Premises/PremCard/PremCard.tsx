@@ -4,8 +4,8 @@ import { useParams } from "react-router-dom"
 import { AppDispatch, AppStateType } from "../../../redux/store"
 import { ArHelper } from "../../helpers/arHelper"
 import React, { useEffect } from "react"
-import { getDepartmentsSelector, getVMPDepartmentsSelector } from "../../../redux/appSelectors"
-import { getDepartments, getVMPDepartments } from "../../../redux/appReducer"
+import { getDepartmentsSelector, getPremModesSelector, getVMPDepartmentsSelector } from "../../../redux/appSelectors"
+import { getDepartments, getPremModes, getVMPDepartments } from "../../../redux/appReducer"
 import { TitleImage } from "./CardComponents/TitleImage"
 import { PremDescriptions } from "./CardComponents/PremDescription"
 import { CardReestr } from "./CardComponents/CardReestr"
@@ -13,7 +13,7 @@ import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
 import { getIsClassLoading, getIsDepartmentLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading, getPremById, getPremData, getPremReestrDataSelector } from "../../../redux/premisesSelectors"
-import { getPremises, getReestrData, updateClass, updateDepartment, updateNomer, updateVMPDepartment } from "../../../redux/premisesReducer"
+import { getPremises, getReestrData, getTechnicalInfo, updateClass, updateDepartment, updateNomer, updateVMPDepartment } from "../../../redux/premisesReducer"
 const { Text } = Typography
 
 export const PremCard = () => {
@@ -36,6 +36,7 @@ export const PremCard = () => {
     const isClassLoading = useSelector(getIsClassLoading)
     const isReestrDataLoading = useSelector(getIsReestrDataLoading)
     const reestrData = useSelector(getPremReestrDataSelector)
+    const premModes = useSelector(getPremModesSelector)
 
     useEffect(() => {
         if (premData.length === 0) {
@@ -43,12 +44,20 @@ export const PremCard = () => {
         } else if (departments.length === 0) {
           dispatch(getDepartments())
         } else if (VMPDepartments.length === 0) {
-          dispatch(getVMPDepartments())
+            dispatch(getVMPDepartments())
+        } else if (premModes.length === 0) {
+            dispatch(getPremModes())
         }
-    }, [dispatch, premData, departments, VMPDepartments])
+    }, [dispatch, premData, premModes, departments, VMPDepartments])
+
+    useEffect (() => {
+        dispatch(getTechnicalInfo(id))
+    }, [])
+
     useEffect (() => {
         dispatch(getReestrData(id))
     }, [id])
+
     let classesData = [
         {id: '1', value: 'Контролируемые'},
         {id: '2', value: 'Складские'},
