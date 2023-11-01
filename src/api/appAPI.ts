@@ -12,6 +12,11 @@ export const appAPI = {
             return response.data
         })
     },
+    getPremModes () {
+        return instance.get(`getPremModes.php`).then (response => {
+            return response.data
+        })
+    },
     getDepartments () {
         return instance.get(`getDepartments.php`).then (response => {
             return response.data

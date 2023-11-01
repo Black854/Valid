@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 import { AppDispatch, AppStateType } from "../../../redux/store"
 import { ArHelper } from "../../helpers/arHelper"
 import React, { useEffect } from "react"
-import { getDepartmentsSelector, getPremClassesGroups, getVMPDepartmentsSelector } from "../../../redux/appSelectors"
+import { getDepartmentsSelector, getVMPDepartmentsSelector } from "../../../redux/appSelectors"
 import { getDepartments, getVMPDepartments } from "../../../redux/appReducer"
 import { TitleImage } from "./CardComponents/TitleImage"
 import { PremDescriptions } from "./CardComponents/PremDescription"
@@ -29,7 +29,6 @@ export const PremCard = () => {
     const premData = useSelector(getPremData)
     const isLoading = useSelector(getIsLoading)
     const premObject = useSelector((state: AppStateType) => getPremById(state, id))
-    const classesGroups = useSelector(getPremClassesGroups)
     const departments = useSelector(getDepartmentsSelector)
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
     const isDepartmentLoading = useSelector(getIsDepartmentLoading)
@@ -46,7 +45,7 @@ export const PremCard = () => {
         } else if (VMPDepartments.length === 0) {
           dispatch(getVMPDepartments())
         }
-    }, [dispatch, premData, classesGroups, departments, VMPDepartments])
+    }, [dispatch, premData, departments, VMPDepartments])
     useEffect (() => {
         dispatch(getReestrData(id))
     }, [id])
@@ -158,11 +157,11 @@ export const PremCard = () => {
               label: 'Перечень валидационных работ',
               children: <CardReestr id={premObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={premObject.class} />,
             },
-            // {
-            //   key: '3',
-            //   label: 'Техническая информация',
-            //   children: <TechnicalInfo id={premObject.id} />,
-            // },
+            {
+              key: '3',
+              label: 'Техническая информация',
+              children: <TechnicalInfo id={premObject.id} premClass={premObject.class} />,
+            },
             {
               key: '4',
               label: 'Медиа файлы',

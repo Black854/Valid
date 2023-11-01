@@ -38,14 +38,40 @@ export type ReestrType = {
     typeval: string
     vo: string
     vp: string
+}
 
+type TechnicalInfoType = {
+    id: string
+    idfromtable: string
+    l: string
+    w: string
+    h: string
+    s: string
+    v: string
+    bat: string
+    steam: string
+    con: string
+    ref: string
+    sensor1: string
+    sensor2: string
+    sensor3: string
+    sensor4: string
+    sensor5: string
+    flow: string
+    flowsize: string
+    lamp: string
+    temp: string
+    hum: string
+    light: string
+    air: string
+    project: string
 }
 
 let initialState = {
     data: [] as DataType[],
     reestrData: [] as ReestrType[],
     isLoading: false,
-    technicalInfo: '',
+    technicalInfo: null as TechnicalInfoType | null,
     photos: [] as PhotosType[],
     isDepartmentLoading: false,
     isVMPDepartmentLoading: false,
@@ -66,7 +92,7 @@ export const premisesReducer = (state = initialState, action: ActionTypes): Init
         case 'prem/PUSH_REESTR_DATA':
             return {...state, reestrData: action.data}            
         case 'prem/SET_TECH_INFO':
-            return {...state, technicalInfo: action.text}
+            return {...state, technicalInfo: action.data}
         case 'prem/SET_PHOTOS':
             return {...state, photos: action.data}
         case 'prem/SET_IS_DEPARTMENT_LOADING':
@@ -210,7 +236,7 @@ const premActions = {
     pushPremisesData: (data: DataType[]) => ({ type: 'prem/PUSH_PREM_DATA', data } as const),
     pushReestrData: (data: ReestrType[]) => ({ type: 'prem/PUSH_REESTR_DATA', data } as const),
     setIsLoading: () => ({ type: 'prem/IS_LOADING' } as const),
-    setTechnicalInfo: (text: string) => ({ type: 'prem/SET_TECH_INFO', text } as const),
+    setTechnicalInfo: (data: TechnicalInfoType) => ({ type: 'prem/SET_TECH_INFO', data } as const),
     setPhotosData: (data: PhotosType[]) => ({ type: 'prem/SET_PHOTOS', data } as const),
     setIsDepartmentLoading: (data: boolean) => ({ type: 'prem/SET_IS_DEPARTMENT_LOADING', data } as const),
     setIsVMPDepartmentLoading: (data: boolean) => ({ type: 'prem/SET_IS_VMP_DEPARTMENT_LOADING', data } as const),

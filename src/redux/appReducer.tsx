@@ -30,14 +30,17 @@ type VMPDepartmentsType = {
     isactive: string
 }
 
-type PremClassesGroup = {
-
+export type PremModesType = {
+    id: string
+    type: string
+    low: string
+    hight: string
+    isactive: string
 }
 
 const initialState = {
     isInitialized: true,
     equipGroups: [] as EquipGroup[],
-    premClassesGroups: [] as PremClassesGroup[],
     departments: [] as DepartmentsType[],
     vmpDepartments: [] as VMPDepartmentsType[],
     intervals: [
@@ -55,7 +58,8 @@ const initialState = {
         { value: '11', label: 'По изменениям (без оформления ПОТС)', interval: '0' },
         { value: '12', label: 'Законсервировано', interval: '0' },
         { value: '15', label: 'Списано', interval: '0' }
-    ]
+    ],
+    premModes: null as PremModesType[] | null
 }
 
 type InitialStateType = typeof initialState
@@ -67,6 +71,8 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
             return {...state, departments: action.data}
         case 'app/SET_VMP_DEPARTMENTS':
             return {...state, vmpDepartments: action.data}
+        case 'app/SET_PREM_MODES':
+            return {...state, premModes: action.data}
         default:
             return state
     }
@@ -82,6 +88,11 @@ export const getDepartments = (): ThunkType => async (dispatch) => {
     dispatch(appActions.setDepartments(data.items))
 }
 
+export const getPremModes = (): ThunkType => async (dispatch) => {
+    let data = await appAPI.getPremModes()
+    dispatch(appActions.setPremModes(data.modes))
+}
+
 export const getVMPDepartments = (): ThunkType => async (dispatch) => {
     let data = await appAPI.getVMPDepartments()
     dispatch(appActions.setVMPDepartments(data.items))
@@ -93,5 +104,6 @@ type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 const appActions = {
     setEquipGroups: ( data: EquipGroup[] ) => ({type: 'app/SET_EQUIP_GROUPS', data} as const),
     setDepartments: ( data: DepartmentsType[] ) => ({type: 'app/SET_DEPARTMENTS', data} as const),
-    setVMPDepartments: ( data: VMPDepartmentsType[] ) => ({type: 'app/SET_VMP_DEPARTMENTS', data} as const)
+    setVMPDepartments: ( data: VMPDepartmentsType[] ) => ({type: 'app/SET_VMP_DEPARTMENTS', data} as const),
+    setPremModes: ( data: any ) => ({type: 'app/SET_PREM_MODES', data} as const)
 }
