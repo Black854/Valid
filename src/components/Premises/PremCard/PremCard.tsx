@@ -47,6 +47,8 @@ export const PremCard = () => {
             dispatch(getVMPDepartments())
         } else if (premModes.length === 0) {
             dispatch(getPremModes())
+        } else if (premModes.length === 0) {
+            // dispatch(getPremModes())
         }
     }, [dispatch, premData, premModes, departments, VMPDepartments])
 
@@ -89,7 +91,7 @@ export const PremCard = () => {
             dispatch(updateVMPDepartment(id, text))
         }
 
-        const data = [
+        const premSkladData = [
             {
                 rowName: 'Подразделение (по ВМП)',
                 value: <Select
@@ -143,6 +145,56 @@ export const PremCard = () => {
                 value: <CurrentStatus ar={premObject.ar} fio={premObject.fio} table='premises' /> 
             }
         ]
+
+        const premOtherData = [
+            {
+                rowName: 'Подразделение (по ВМП)',
+                value: <Select
+                            style={{paddingRight: '20px', marginLeft: '-7px'}}
+                            dropdownStyle={{width: 'auto'}}
+                            defaultValue={premObject.sp}
+                            onChange={handleUpdateVMPDepartment}
+                            size="small"
+                            bordered={false}
+                            options={VMPDepartmentData}
+                            loading={isVMPDepartmentLoading}
+                        />
+            },
+            {
+                rowName: 'Подразделение (по ответственности)',
+                value: <Select
+                            style={{paddingRight: '20px', marginLeft: '-7px'}}
+                            dropdownStyle={{width: '120px'}}
+                            defaultValue={premObject.sp2}
+                            onChange={handleUpdateDepartment}
+                            size="small"
+                            bordered={false}
+                            options={departmentData}
+                            loading={isDepartmentLoading}
+                        />
+            },
+            {
+                rowName: 'Группа',
+                value: <Select
+                            defaultValue={premObject.class}
+                            onChange={handleUpdateGroup}
+                            size="small"
+                            style={{paddingRight: '20px', marginLeft: '-7px'}}
+                            dropdownStyle={{width: 'auto'}}
+                            bordered={false}
+                            options={classesData}
+                            loading={isClassLoading}
+                        />
+            },
+            {
+                rowName: 'Интервал оценки/реквалификации',
+                value: <ArHelper ar={premObject.ar} id={premObject.id} table='premises' /> 
+            },
+            {
+                rowName: 'Валидационный статус',
+                value: <CurrentStatus ar={premObject.ar} fio={premObject.fio} table='premises' /> 
+            }
+        ]
         
         const columns = [
             {
@@ -159,7 +211,7 @@ export const PremCard = () => {
             {
               key: '1',
               label: 'Описание',
-              children: <PremDescriptions columns={columns} data={data} />,
+              children: <PremDescriptions columns={columns} data={premObject.class === 'Складские' ? premSkladData : premOtherData} />,
             },
             {
               key: '2',
@@ -178,6 +230,19 @@ export const PremCard = () => {
             },
           ]
 
+          const itemsOfCleanPremises = [
+            {
+                key: '5',
+                label: 'Список помещений',
+                children: <PhotosBlock id={premObject.id} />,
+            },
+            {
+                key: '6',
+                label: 'Статусные этикетки',
+                children: <PhotosBlock id={premObject.id} />,
+            }
+          ]
+
         return (
             <>
             <Row style={{padding: '10px 0'}} >
@@ -187,7 +252,7 @@ export const PremCard = () => {
                 <Col span={16} push={2} style={{minHeight: '89vh', display: "flex", flexDirection: 'column'}} >
                     <Tabs
                         defaultActiveKey="1"
-                        items={items}
+                        items={premObject.class === 'Складские' ? items : [...items, ...itemsOfCleanPremises]}
                         indicatorSize={(origin) => origin - 16}
                         style={{flex: 1}}
                         type="card"

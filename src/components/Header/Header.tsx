@@ -14,6 +14,14 @@ export const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
     const getPathnameWithoutTrailingSlash = (pathname: string) => {
         if (pathname.includes("/equipment")) {
             return "/equipment"
+        } else if (pathname.includes("/premises")) {
+            return "/premises"
+        } else if (pathname.includes("/systems")) {
+            return "/systems"
+        } else if (pathname.includes("/processes")) {
+            return "/processes"
+        } else if (pathname.includes("/instruments")) {
+            return "/instruments"
         }
         return pathname
     }
