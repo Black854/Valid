@@ -67,18 +67,33 @@ type TechnicalInfoType = {
     project: string
 }
 
+export type CleanPremListType = {
+    id: string
+    sp: string
+    nomer: string
+    name: string
+}
+
+export type CleanGroupLabelsType = {
+    numbers: string
+    count: string    
+}
+
 let initialState = {
     data: [] as DataType[],
     reestrData: [] as ReestrType[],
     isLoading: false,
     technicalInfo: null as TechnicalInfoType | null,
     photos: [] as PhotosType[],
+    cleanPremList: [] as CleanPremListType[],
+    cleanGroupLabels: [] as CleanGroupLabelsType[],
     isDepartmentLoading: false,
     isVMPDepartmentLoading: false,
     isClassLoading: false,
     isReestrDataLoading: false,
     isIntervalLoading: false,
-    isReestrLoading: false
+    isReestrLoading: false,
+    isCleanPremDataLoading: false
 }
 
 type InitialStateType = typeof initialState
@@ -105,6 +120,12 @@ export const premisesReducer = (state = initialState, action: ActionTypes): Init
             return {...state, isReestrDataLoading: action.data}
         case 'prem/SET_IS_INTERVAL_LOADING':
             return {...state, isIntervalLoading: action.data}
+        case 'prem/SET_CLEAN_PREM_LIST':
+            return {...state, cleanPremList: action.data}
+        case 'prem/SET_IS_CLEAN_PREM_DATA_LOADING':
+            return {...state, isCleanPremDataLoading: action.data}
+        case 'prem/SET_CLEAN_GROUP_LABELS':
+            return {...state, cleanGroupLabels: action.data}
         default:
             return state
     }
@@ -165,6 +186,20 @@ export const getPhotos = (id: string): ThunkType => async (dispatch) => {
     dispatch(premActions.setPhotosData(data.photos))
 }
 
+export const getCleanPremList = (id: string): ThunkType => async (dispatch) => {
+    dispatch (premActions.setIsCleanPremDataLoading(true))
+    let data = await premisesAPI.getCleanPremList(id)
+    dispatch(premActions.setCleanPremList(data.items))
+    dispatch (premActions.setIsCleanPremDataLoading(false))
+}
+
+export const getCleanGroupLabels = (premId: string): ThunkType => async (dispatch) => {
+    // dispatch (premActions.setIsCleanPremDataLoading(true))
+    let data = await premisesAPI.getCleanGroupLabels(premId)
+    dispatch(premActions.setCleanGroupLabels(data.items))
+    // dispatch (premActions.setIsCleanPremDataLoading(false))
+}
+
 export const uploadPhotos = (id: string, file: any): ThunkType => async (dispatch) => { 
     let data = await premisesAPI.uploadPhotos(id, file)
     dispatch(premActions.setPhotosData(data.photos))
@@ -215,6 +250,13 @@ export const updateReestrDocsCode = (id: string, recordId: string, text: string,
     dispatch (premActions.setIsReestrDataLoading(false))
 }
 
+export const updateCleanPremItemData = (premId: string, recordId: string, text: string, dataType: 'sp' | 'nomer' | 'name'): ThunkType => async (dispatch) => {
+    dispatch (premActions.setIsCleanPremDataLoading(true))
+    let data = await premisesAPI.updateCleanPremItemData(premId, recordId, text, dataType)
+    dispatch (premActions.setCleanPremList(data.items))
+    dispatch (premActions.setIsCleanPremDataLoading(false))
+}
+
 export const uploadDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
     dispatch (premActions.setIsReestrDataLoading(true))
     let data = await premisesAPI.uploadDocument(objectId, recordId, dataType, file)
@@ -243,4 +285,7 @@ const premActions = {
     setIsGroupLoading: (data: boolean) => ({ type: 'prem/SET_IS_CLASS_LOADING', data } as const),
     setIsReestrDataLoading: (data: boolean) => ({ type: 'prem/SET_IS_REESTR_DATA_LOADING', data } as const),
     setIsIntervalLoading: (data: boolean) => ({ type: 'prem/SET_IS_INTERVAL_LOADING', data } as const),
+    setIsCleanPremDataLoading: (data: boolean) => ({ type: 'prem/SET_IS_CLEAN_PREM_DATA_LOADING', data } as const),
+    setCleanPremList: (data: CleanPremListType[]) => ({ type: 'prem/SET_CLEAN_PREM_LIST', data } as const),
+    setCleanGroupLabels: (data: []) => ({ type: 'prem/SET_CLEAN_GROUP_LABELS', data } as const),
 }

@@ -14,6 +14,8 @@ import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
 import { getIsClassLoading, getIsDepartmentLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading, getPremById, getPremData, getPremReestrDataSelector } from "../../../redux/premisesSelectors"
 import { getPremises, getReestrData, getTechnicalInfo, updateClass, updateDepartment, updateNomer, updateVMPDepartment } from "../../../redux/premisesReducer"
+import { CleanPremList } from "./CardComponents/CleanPremList"
+import { CleanPremGroups } from "./CardComponents/CleanPremGroups"
 const { Text } = Typography
 
 export const PremCard = () => {
@@ -234,12 +236,12 @@ export const PremCard = () => {
             {
                 key: '5',
                 label: 'Список помещений',
-                children: <PhotosBlock id={premObject.id} />,
+                children: <CleanPremList id={premObject.id} />,
             },
             {
                 key: '6',
                 label: 'Статусные этикетки',
-                children: <PhotosBlock id={premObject.id} />,
+                children: <CleanPremGroups id={premObject.id} />,
             }
           ]
 

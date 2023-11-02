@@ -72,6 +72,20 @@ export const premisesAPI = {
             return response.data
         })
     },
+    getCleanPremList (id: string) {
+        let data = new FormData()
+        data.append("id", id)
+        return instance.post(`getCleanPremList.php`, data).then (response => {
+            return response.data
+        })
+    },
+    getCleanGroupLabels (premId: string) {
+        let data = new FormData()
+        data.append("premId", premId)
+        return instance.post(`getCleanGroupLabels.php`, data).then (response => {
+            return response.data
+        })
+    },
     uploadPhotos (id: string, file: any) {
         let formData = new FormData()
         formData.append("id", id)
@@ -115,6 +129,16 @@ export const premisesAPI = {
         data.append("text", text)
         data.append("dataType", dataType)
         return instance.post(`updateReestrDocsCode.php`, data, {}).then (response => {
+            return response.data
+        })
+    },
+    updateCleanPremItemData (premId: string, recordId: string, text: string, dataType: 'sp' | 'nomer' | 'name') {
+        let data = new FormData()
+        data.append("premId", premId)
+        data.append("recordId", recordId)
+        data.append("dataType", dataType)
+        data.append("text", text)
+        return instance.post(`updateCleanPremItemData.php`, data, {}).then (response => {
             return response.data
         })
     },

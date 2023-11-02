@@ -48,3 +48,15 @@ export const getIsReestrDataLoading = (state: AppStateType) => {
 export const getIsIntervalLoading = (state: AppStateType) => {
     return (state.premises.isIntervalLoading)
 }
+
+export const getCleanPremListSelector = (state: AppStateType) => {
+    return (state.premises.cleanPremList)
+}
+
+export const getIsCleanPremDataLoading = (state: AppStateType) => {
+    return (state.premises.isCleanPremDataLoading)
+}
+
+export const getCleanGroupLabelsSelector = (state: AppStateType) => {
+    return (state.premises.cleanGroupLabels)
+}
