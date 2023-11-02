@@ -76,7 +76,8 @@ export type CleanPremListType = {
 
 export type CleanGroupLabelsType = {
     numbers: string
-    count: string    
+    count: string
+    department: string
 }
 
 let initialState = {

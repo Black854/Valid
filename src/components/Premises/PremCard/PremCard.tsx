@@ -241,7 +241,7 @@ export const PremCard = () => {
             {
                 key: '6',
                 label: 'Статусные этикетки',
-                children: <CleanPremGroups id={premObject.id} />,
+                children: <CleanPremGroups id={premObject.id} premObject={premObject} reestrData={reestrData} />,
             }
           ]
 
