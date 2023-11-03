@@ -38,6 +38,12 @@ export type PremModesType = {
     isactive: string
 }
 
+export type IntervalsType = {
+    value: string
+    label: string
+    interval: string
+}
+
 const initialState = {
     isInitialized: true,
     equipGroups: [] as EquipGroup[],
@@ -58,7 +64,7 @@ const initialState = {
         { value: '11', label: 'По изменениям (без оформления ПОТС)', interval: '0' },
         { value: '12', label: 'Законсервировано', interval: '0' },
         { value: '15', label: 'Списано', interval: '0' }
-    ],
+    ] as IntervalsType[],
     premModes: [] as PremModesType[]
 }
 

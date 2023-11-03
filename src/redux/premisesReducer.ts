@@ -94,7 +94,9 @@ let initialState = {
     isReestrDataLoading: false,
     isIntervalLoading: false,
     isReestrLoading: false,
-    isCleanPremDataLoading: false
+    isCleanPremDataLoading: false,
+    cleanTab: '',
+    sopCodeForm: ''
 }
 
 type InitialStateType = typeof initialState
@@ -126,7 +128,7 @@ export const premisesReducer = (state = initialState, action: ActionTypes): Init
         case 'prem/SET_IS_CLEAN_PREM_DATA_LOADING':
             return {...state, isCleanPremDataLoading: action.data}
         case 'prem/SET_CLEAN_GROUP_LABELS':
-            return {...state, cleanGroupLabels: action.data}
+            return {...state, cleanGroupLabels: action.data, cleanTab: action.tab, sopCodeForm: action.sopCodeForm}
         default:
             return state
     }
@@ -197,7 +199,7 @@ export const getCleanPremList = (id: string): ThunkType => async (dispatch) => {
 export const getCleanGroupLabels = (premId: string): ThunkType => async (dispatch) => {
     // dispatch (premActions.setIsCleanPremDataLoading(true))
     let data = await premisesAPI.getCleanGroupLabels(premId)
-    dispatch(premActions.setCleanGroupLabels(data.items))
+    dispatch(premActions.setCleanGroupLabels(data.items, data.tab, data.sopCodeForm))
     // dispatch (premActions.setIsCleanPremDataLoading(false))
 }
 
@@ -288,5 +290,5 @@ const premActions = {
     setIsIntervalLoading: (data: boolean) => ({ type: 'prem/SET_IS_INTERVAL_LOADING', data } as const),
     setIsCleanPremDataLoading: (data: boolean) => ({ type: 'prem/SET_IS_CLEAN_PREM_DATA_LOADING', data } as const),
     setCleanPremList: (data: CleanPremListType[]) => ({ type: 'prem/SET_CLEAN_PREM_LIST', data } as const),
-    setCleanGroupLabels: (data: []) => ({ type: 'prem/SET_CLEAN_GROUP_LABELS', data } as const),
+    setCleanGroupLabels: (data: [], tab: string, sopCodeForm: string) => ({ type: 'prem/SET_CLEAN_GROUP_LABELS', data, tab, sopCodeForm } as const),
 }

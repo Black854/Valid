@@ -60,3 +60,11 @@ export const getIsCleanPremDataLoading = (state: AppStateType) => {
 export const getCleanGroupLabelsSelector = (state: AppStateType) => {
     return (state.premises.cleanGroupLabels)
 }
+
+export const getCleanTabSelector = (state: AppStateType) => {
+    return (state.premises.cleanTab)
+}
+
+export const getSopCodeFormSelector = (state: AppStateType) => {
+    return (state.premises.sopCodeForm)
+}
