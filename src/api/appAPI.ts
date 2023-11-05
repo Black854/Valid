@@ -27,4 +27,9 @@ export const appAPI = {
             return response.data
         })
     },
+    getSopCodeForm () {
+        return instance.get(`getSopCodeForm.php`).then (response => {
+            return response.data
+        })
+    },
 }

@@ -1,3 +1,7 @@
 .titleImage .ant-image-mask {
   border-radius: 10px; /* Скругляем углы для маски Preview */
 }
+
+.cursorPointer {
+  cursor: pointer;
+}

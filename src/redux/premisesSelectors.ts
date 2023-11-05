@@ -65,6 +65,6 @@ export const getCleanTabSelector = (state: AppStateType) => {
     return (state.premises.cleanTab)
 }
 
-export const getSopCodeFormSelector = (state: AppStateType) => {
-    return (state.premises.sopCodeForm)
+export const getIsCleanPremGroupsLoading = (state: AppStateType) => {
+    return (state.premises.isCleanPremGroupsLoading)
 }

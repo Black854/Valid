@@ -49,6 +49,12 @@ export const Equipment: React.FC = () => {
 
     const columns: ColumnsType<DataType> = [
         {
+            title: <Text strong style={{fontSize: '12pt'}}>№</Text>,
+            dataIndex: 'index',
+            render: (text, record, index) => index + 1,
+            align: 'center'
+        },
+        {
             title: <Text strong style={{fontSize: '12pt'}}>Наименование</Text>,
             dataIndex: 'name',
             render: (text, record) => (

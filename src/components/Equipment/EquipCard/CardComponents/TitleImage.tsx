@@ -1,4 +1,4 @@
-import { Button, Image, Popconfirm, Typography } from "antd"
+import { Button, Image, Popconfirm, Typography, message } from "antd"
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import empty from './../../../../img/empty.png'
 import { useDispatch } from "react-redux";
@@ -33,8 +33,32 @@ type TitleImagePropsType = {
 
 export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => {
     const dispatch: AppDispatch = useDispatch()
+    const [messageApi, contextHolder] = message.useMessage()
+    
+    const error = (fileName: string) => {
+        messageApi.open({
+          type: 'error',
+          content: `Расширение файла ${fileName} не соответствует разрешенным`,
+        })
+    }
+    
     const onSelectPhoto = (e: any) => {
-        dispatch(uploadMainPhoto(id, e.currentTarget.files[0]))
+        if (e.currentTarget.files.length > 0) {
+            const fileName = e.currentTarget.files[0].name
+            // Получите расширение файла, разделенное точкой
+            const fileExtension = fileName.split('.').pop()
+
+            // Список разрешенных расширений
+            const allowedExtensions = ['jpg', 'jpeg', 'png']
+
+            if (allowedExtensions.includes(fileExtension.toLowerCase())) {
+                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
+                dispatch(uploadMainPhoto(id, e.currentTarget.files[0]))
+            } else {
+                // Файл имеет недопустимое расширение
+                error(fileName)
+            }
+        }
     }
     const handleDeleteFoto = () => {
         dispatch(deleteMainPhoto(id))
@@ -47,7 +71,8 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => 
     let fileInputRef: any = null
 
     return (
-        <>
+        <>  
+            {contextHolder}
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
                 <Text strong editable={{onChange: (text: string) => handleUpdateName(text)}} style={{color: '#167afe', fontSize: '12pt', display: 'block', marginBottom: '20px'}}>{equipObject.name}</Text>
                 <Image
@@ -64,7 +89,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => 
                 />
             </div>
             { !equipObject.foto && <>
-                <input id="uploadPhoto" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
+                <input id="uploadPhoto" accept="image/jpeg, image/png" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
                 <Button htmlType="submit" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
                 </>
             }

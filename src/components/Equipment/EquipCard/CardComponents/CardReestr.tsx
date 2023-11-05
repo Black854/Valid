@@ -230,7 +230,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 dataSource={reestrDataWithoutEmptyRows}
                 bordered
                 pagination={false} // Скрыть пагинацию, если есть
-                style={{marginBottom: '30px'}}
+                style={{marginBottom: '60px'}}
                 rowKey='id'
                 loading={isReestrDataLoading}
             />

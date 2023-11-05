@@ -14,6 +14,7 @@ import { CardReestr } from "./CardComponents/CardReestr"
 import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
+import { EquipLabel } from "./CardComponents/EquipLabel"
 const { Text } = Typography
 
 export const EquipCard = () => {
@@ -220,6 +221,12 @@ export const EquipCard = () => {
               key: '4',
               label: 'Медиа файлы',
               children: <PhotosBlock id={equipObject.id} />,
+            },
+            {
+              key: '5',
+              label: 'Статусная этикетка',
+              children: <EquipLabel equipObject={equipObject} reestrData={reestrData} />,
+              disabled: equipObject.ar === '0' || equipObject.ar === '12' || equipObject.ar === '15' || equipObject.date === null ? true : false
             },
           ]
 

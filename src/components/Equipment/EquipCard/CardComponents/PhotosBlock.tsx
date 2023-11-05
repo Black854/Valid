@@ -9,7 +9,7 @@ import pdf from './../../../../img/pdfi.png'
 import video from './../../../../img/video.png'
 import { RcFile } from "antd/es/upload"
 import { AppDispatch } from "../../../../redux/store"
-const {Text} = Typography
+const {Text, Title} = Typography
 
 type PhotosBlockPropsType = {
     id: string
@@ -145,29 +145,19 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
         } else if (e.id === '99999') {
             return  <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{padding: '4px'}}>
                         {contextHolder}
-                        <Avatar 
-                            shape='square'
-                            icon={
-                                <>
-                                    <Text style={{fontSize: '20pt' }}>+</Text>
-                                    <Text>Загрузить</Text>
-                                </>
+                        <Button 
+                            children={  <>
+                                            <PlusOutlined />
+                                            <Text style={{color: 'inherit', display: 'block'}}>Загрузить</Text>
+                                        </>
                             }
-                            children={<Text>Загрузить</Text>}
-                            style={{objectFit: 'cover',
+                            style={{
                                     minHeight: '100px',
                                     height: '100%',
                                     width: '100%',
                                     cursor: 'pointer',
-                                    backgroundColor: 'rgb(0 0 0 / 2%)',
-                                    border: '1px dashed #d9d9d9',
-                                    borderRadius: '8px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    textAlign: 'center'
-                                }} 
+                            }}
+                            type="dashed"
                             onClick={() => fileInputRef.click()}
                         />
                         <input id="uploadPhoto" accept="image/jpeg, image/png, application/pdf, video/mp4" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />

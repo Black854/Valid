@@ -65,7 +65,8 @@ const initialState = {
         { value: '12', label: 'Законсервировано', interval: '0' },
         { value: '15', label: 'Списано', interval: '0' }
     ] as IntervalsType[],
-    premModes: [] as PremModesType[]
+    premModes: [] as PremModesType[],
+    sopCodeForm: ''
 }
 
 type InitialStateType = typeof initialState
@@ -79,6 +80,8 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
             return {...state, vmpDepartments: action.data}
         case 'app/SET_PREM_MODES':
             return {...state, premModes: action.data}
+        case 'app/SET_SOP_CODE_FORM':
+            return {...state, sopCodeForm: action.data}
         default:
             return state
     }
@@ -104,6 +107,11 @@ export const getVMPDepartments = (): ThunkType => async (dispatch) => {
     dispatch(appActions.setVMPDepartments(data.items))
 }
 
+export const getSopCodeForm = (): ThunkType => async (dispatch) => {
+    let data = await appAPI.getSopCodeForm()
+    dispatch(appActions.setSopCodeForm(data.code))
+}
+
 type ActionTypes = InferActionsTypes<typeof appActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
@@ -111,5 +119,6 @@ const appActions = {
     setEquipGroups: ( data: EquipGroup[] ) => ({type: 'app/SET_EQUIP_GROUPS', data} as const),
     setDepartments: ( data: DepartmentsType[] ) => ({type: 'app/SET_DEPARTMENTS', data} as const),
     setVMPDepartments: ( data: VMPDepartmentsType[] ) => ({type: 'app/SET_VMP_DEPARTMENTS', data} as const),
-    setPremModes: ( data: any ) => ({type: 'app/SET_PREM_MODES', data} as const)
+    setPremModes: ( data: PremModesType[] ) => ({type: 'app/SET_PREM_MODES', data} as const),
+    setSopCodeForm: ( data: string ) => ({type: 'app/SET_SOP_CODE_FORM', data} as const)
 }

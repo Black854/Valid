@@ -1,4 +1,4 @@
-import { Select, Table, Typography } from "antd"
+import { Button, Select, Table, Typography } from "antd"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../../redux/store"
@@ -15,6 +15,10 @@ type TechnicalInfoPropsType = {
 export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
     const dispatch: AppDispatch = useDispatch()
     const cleanPremList = useSelector(getCleanPremListSelector)
+    const cleanPremListWithIndex = cleanPremList.map((item, index) => ({
+        ...item,
+        index: index + 1,
+    }))
     const departments = useSelector(getDepartmentsSelector)
     const isCleanPremDataLoading = useSelector(getIsCleanPremDataLoading)
     let filteredDepartments = departments.filter(e => e.stat === '1')
@@ -28,6 +32,11 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
     }
 
     const columns: ColumnsType<CleanPremListType> = [
+        {
+            title: <Text strong style={{fontSize: '12pt'}}>№</Text>,
+            dataIndex: 'index',
+            align: 'center'
+        },
         {
             title: <Text strong style={{fontSize: '12pt'}}>Номер помещения</Text>,
             dataIndex: 'nomer',
@@ -54,16 +63,23 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
         }
     ]
 
+    const handleAddPrem = () => {
+        
+    }
+
     return (
-        <Table
-            columns={columns}
-            dataSource={cleanPremList}
-            bordered
-            pagination={false} // Скрыть пагинацию, если есть
-            rowKey='id'
-            style={{marginBottom: '60px'}}
-            loading={isCleanPremDataLoading}
-        />
+        <>
+            <Button style={{position: 'absolute', top: '15px', zIndex: '1'}} onClick={handleAddPrem}>Добавить помещение</Button>
+            <Table
+                columns={columns}
+                dataSource={cleanPremListWithIndex}
+                bordered
+                pagination={{position: ["topRight"], defaultPageSize: 10}} // Скрыть пагинацию, если есть
+                rowKey='id'
+                style={{marginBottom: '60px'}}
+                loading={isCleanPremDataLoading}
+            />
+        </>
     )
     
 }

@@ -16,6 +16,7 @@ import { getIsClassLoading, getIsDepartmentLoading, getIsLoading, getIsReestrDat
 import { getPremises, getReestrData, getTechnicalInfo, updateClass, updateDepartment, updateNomer, updateVMPDepartment } from "../../../redux/premisesReducer"
 import { CleanPremList } from "./CardComponents/CleanPremList"
 import { CleanPremGroups } from "./CardComponents/CleanPremGroups"
+import { PremLabel } from "./CardComponents/PremLabel"
 const { Text } = Typography
 
 export const PremCard = () => {
@@ -242,11 +243,20 @@ export const PremCard = () => {
                 key: '6',
                 label: 'Статусные этикетки',
                 children: <CleanPremGroups id={premObject.id} premObject={premObject} reestrData={reestrData} />,
+                disabled: premObject.ar === '0' || premObject.ar === '12' || premObject.ar === '15' || premObject.date === null ? true : false
+            }
+          ]
+
+          const itemsOfSkladPremises = [
+            {
+                key: '5',
+                label: 'Статусная этикетка',
+                children: <PremLabel id={premObject.id} premObject={premObject} reestrData={reestrData} />,
+                disabled: premObject.ar === '0' || premObject.ar === '12' || premObject.ar === '15' || premObject.date === null ? true : false
             }
           ]
 
         return (
-            <>
             <Row style={{padding: '10px 0'}} >
                 <Col span={5} push={1} style={{textAlign: 'center'}} >
                     <TitleImage premObject={premObject} id={id} />
@@ -254,14 +264,13 @@ export const PremCard = () => {
                 <Col span={16} push={2} style={{minHeight: '89vh', display: "flex", flexDirection: 'column'}} >
                     <Tabs
                         defaultActiveKey="1"
-                        items={premObject.class === 'Складские' ? items : [...items, ...itemsOfCleanPremises]}
+                        items={premObject.class === 'Складские' ? [...items, ...itemsOfSkladPremises] : [...items, ...itemsOfCleanPremises]}
                         indicatorSize={(origin) => origin - 16}
                         style={{flex: 1}}
                         type="card"
                     />
                 </Col>
             </Row>
-            </>
         )
     } else {
         return (

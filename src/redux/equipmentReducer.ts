@@ -2,7 +2,7 @@ import { ThunkAction } from "redux-thunk"
 import { equipmentAPI } from "../api/equipmentAPI"
 import { AppStateType, InferActionsTypes } from "./store"
 
-type DataType = {
+export type DataType = {
     id: string
     sp: string
     sp2: string
@@ -27,7 +27,7 @@ type PhotosType = {
     name: string
 }
 
-type ReestrType = {
+export type ReestrType = {
     dvo: string
     dvp: string
     et: string
@@ -55,7 +55,8 @@ let initialState = {
     isGroupLoading: false,
     isReestrDataLoading: false,
     isIntervalLoading: false,
-    isReestrLoading: false
+    isReestrLoading: false,
+    sopCodeForm: ''
 }
 
 type InitialStateType = typeof initialState

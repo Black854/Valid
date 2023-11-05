@@ -95,8 +95,8 @@ let initialState = {
     isIntervalLoading: false,
     isReestrLoading: false,
     isCleanPremDataLoading: false,
+    isCleanPremGroupsLoading: false,
     cleanTab: '',
-    sopCodeForm: ''
 }
 
 type InitialStateType = typeof initialState
@@ -128,7 +128,9 @@ export const premisesReducer = (state = initialState, action: ActionTypes): Init
         case 'prem/SET_IS_CLEAN_PREM_DATA_LOADING':
             return {...state, isCleanPremDataLoading: action.data}
         case 'prem/SET_CLEAN_GROUP_LABELS':
-            return {...state, cleanGroupLabels: action.data, cleanTab: action.tab, sopCodeForm: action.sopCodeForm}
+            return {...state, cleanGroupLabels: action.data, cleanTab: action.tab}
+        case 'prem/SET_IS_PREM_GROUPS_LOADING':
+            return {...state, isCleanPremGroupsLoading: action.data}
         default:
             return state
     }
@@ -197,10 +199,10 @@ export const getCleanPremList = (id: string): ThunkType => async (dispatch) => {
 }
 
 export const getCleanGroupLabels = (premId: string): ThunkType => async (dispatch) => {
-    // dispatch (premActions.setIsCleanPremDataLoading(true))
+    dispatch (premActions.setIsCleanPremGroupsLoading(true))
     let data = await premisesAPI.getCleanGroupLabels(premId)
-    dispatch(premActions.setCleanGroupLabels(data.items, data.tab, data.sopCodeForm))
-    // dispatch (premActions.setIsCleanPremDataLoading(false))
+    dispatch(premActions.setCleanGroupLabels(data.items, data.tab))
+    dispatch (premActions.setIsCleanPremGroupsLoading(false))
 }
 
 export const uploadPhotos = (id: string, file: any): ThunkType => async (dispatch) => { 
@@ -290,5 +292,6 @@ const premActions = {
     setIsIntervalLoading: (data: boolean) => ({ type: 'prem/SET_IS_INTERVAL_LOADING', data } as const),
     setIsCleanPremDataLoading: (data: boolean) => ({ type: 'prem/SET_IS_CLEAN_PREM_DATA_LOADING', data } as const),
     setCleanPremList: (data: CleanPremListType[]) => ({ type: 'prem/SET_CLEAN_PREM_LIST', data } as const),
-    setCleanGroupLabels: (data: [], tab: string, sopCodeForm: string) => ({ type: 'prem/SET_CLEAN_GROUP_LABELS', data, tab, sopCodeForm } as const),
+    setCleanGroupLabels: (data: [], tab: string) => ({ type: 'prem/SET_CLEAN_GROUP_LABELS', data, tab } as const),
+    setIsCleanPremGroupsLoading: (data: boolean) => ({ type: 'prem/SET_IS_PREM_GROUPS_LOADING', data } as const),
 }

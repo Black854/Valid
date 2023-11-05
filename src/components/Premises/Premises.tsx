@@ -38,6 +38,12 @@ export const Premises: React.FC = () => {
 
     const columns: ColumnsType<DataType> = [
         {
+            title: <Text strong style={{fontSize: '12pt'}}>№</Text>,
+            dataIndex: 'index',
+            render: (text, record, index) => index + 1,
+            align: 'center'
+        },
+        {
             title: <Text strong style={{fontSize: '12pt'}}>Наименование</Text>,
             dataIndex: 'name',
             render: (text, record) => (
@@ -116,7 +122,8 @@ export const Premises: React.FC = () => {
                         dataSource={data}
                         bordered
                         pagination={false}
-                        title={() => <Text style={{fontSize: '14pt'}}>Помещения (всего {premData.length} объектов)</Text>}
+                        title={() => <Text style={{fontSize: '14pt'}}>Помещения (всего: {premData.length})</Text>}
+                        
                     /> 
                 </Col>
             </Row>
