@@ -1,5 +1,5 @@
 import { ColumnsType } from "antd/es/table"
-import { Button, Col, Modal, Radio, Row, Table, Typography } from "antd"
+import { Button, Col, Flex, Modal, Radio, Row, Space, Table, Typography } from "antd"
 import { CleanGroupLabelsType, DataType, ReestrType, getCleanGroupLabels } from "../../../../redux/premisesReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { getCleanGroupLabelsSelector, getCleanTabSelector, getIsCleanPremGroupsLoading } from "../../../../redux/premisesSelectors"
@@ -10,7 +10,7 @@ import { LabelDateHelper, labelEndDate } from "../../../helpers/labelDateHelper"
 import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector } from "../../../../redux/appSelectors"
 import { PrinterOutlined } from '@ant-design/icons'
 import { getSopCodeForm } from "../../../../redux/appReducer"
-const {Text} = Typography
+const {Text, Title} = Typography
 
 type CleanPremGroupsPropsType = {
     id: string
@@ -216,24 +216,36 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                     </table>
                     <div style={{fontSize: '9pt', textAlign: 'right', height: '3mm', margin: '0mm 2mm 2mm 0', padding: '0', color: 'black'}}>{sopCodeForm}</div>
                 </div>
-                {selectedRowKeys.length === 0 ? <Button disabled icon={<PrinterOutlined />}>Печать этикетки</Button> :
-                                                <Button type="primary" icon={<PrinterOutlined />} onClick={() => setLabelModalOpen(true)}>Печать</Button>}
-                {selectedRowKeys.length === 0 ? <Button style={{marginLeft: '20px'}} disabled icon={<PrinterOutlined />}>Печать рамки</Button> :
-                                                <Button style={{marginLeft: '20px'}} type="primary" icon={<PrinterOutlined />} onClick={() => setFrameModalOpen(true)}>Печать рамки</Button>}
-                
-                <Modal title="Печать статусной этикетки" open={labelModalOpen} onCancel={() => handleCancel('label')} footer={[ <Button key="close" onClick={() => handleCancel('label')} type="primary">Закрыть</Button> ]} >
-                    <iframe style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/et.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
-                    &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
+                <Row>
+                    <Title level={5}>Порядок действий:</Title>
+                    <Col style={{display: 'flex', flexDirection: 'column'}}>
+                        <Text>1. Убедитесь в том, что бумага в принтере лежит ровно</Text>
+                        <Text>2. Выберите группу помещений в таблице слева</Text>
+                        <Text>3. Распечатайте рамку этикетки</Text>
+                        <Text>4. Приклейте в рамку шаблон этикетки</Text>
+                        <Text>5. Верните лист с приклеенным шаблоном обратно в принтер</Text>
+                        <Text>6. Распечатайте этикетку</Text>
+                        {selectedRowKeys.length === 0 ? <Button style={{marginTop: '20px'}} disabled icon={<PrinterOutlined />}>Печать рамки</Button> :
+                                                        <Button style={{marginTop: '20px'}} type="default" icon={<PrinterOutlined />} onClick={() => setFrameModalOpen(true)}>Печать рамки</Button>}
+                       
+                        {selectedRowKeys.length === 0 ? <Button style={{marginTop: '10px'}} disabled icon={<PrinterOutlined />}>Печать этикетки</Button> :
+                                                        <Button style={{marginTop: '10px'}} type="primary" icon={<PrinterOutlined />} onClick={() => setLabelModalOpen(true)}>Печать этикетки</Button>}
+                         
+                        <Modal title="Печать статусной этикетки" open={labelModalOpen} onCancel={() => handleCancel('label')} footer={[ <Button key="close" onClick={() => handleCancel('label')} type="primary">Закрыть</Button> ]} >
+                            <iframe style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/et.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
+                            &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
 
-                    </iframe>
-                </Modal>
+                            </iframe>
+                        </Modal>
 
-                <Modal title="Печать рамки для статусной этикетки" open={frameModalOpen} onCancel={() => handleCancel('frame')} footer={[ <Button key="close" onClick={() => handleCancel('frame')} type="primary">Закрыть</Button> ]} >
-                    <iframe style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/etWithFrames.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
-                    &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
+                        <Modal title="Печать рамки для статусной этикетки" open={frameModalOpen} onCancel={() => handleCancel('frame')} footer={[ <Button key="close" onClick={() => handleCancel('frame')} type="primary">Закрыть</Button> ]} >
+                            <iframe style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/etWithFrames.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
+                            &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
 
-                    </iframe>
-                </Modal>
+                            </iframe>
+                        </Modal>
+                    </Col>
+                </Row>
             </Col>
         </Row>
     )

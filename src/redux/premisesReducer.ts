@@ -124,13 +124,15 @@ export const premisesReducer = (state = initialState, action: ActionTypes): Init
         case 'prem/SET_IS_INTERVAL_LOADING':
             return {...state, isIntervalLoading: action.data}
         case 'prem/SET_CLEAN_PREM_LIST':
-            return {...state, cleanPremList: action.data}
+            return {...state, cleanPremList: action.items}
         case 'prem/SET_IS_CLEAN_PREM_DATA_LOADING':
             return {...state, isCleanPremDataLoading: action.data}
         case 'prem/SET_CLEAN_GROUP_LABELS':
             return {...state, cleanGroupLabels: action.data, cleanTab: action.tab}
         case 'prem/SET_IS_PREM_GROUPS_LOADING':
             return {...state, isCleanPremGroupsLoading: action.data}
+        case 'prem/SET_CLEAN_TAB':
+            return {...state, cleanTab: action.cleanTab}
         default:
             return state
     }
@@ -195,6 +197,7 @@ export const getCleanPremList = (id: string): ThunkType => async (dispatch) => {
     dispatch (premActions.setIsCleanPremDataLoading(true))
     let data = await premisesAPI.getCleanPremList(id)
     dispatch(premActions.setCleanPremList(data.items))
+    dispatch (premActions.setCleanTab(data.cleanTab))
     dispatch (premActions.setIsCleanPremDataLoading(false))
 }
 
@@ -276,6 +279,20 @@ export const deleteDocument = (objectId: string, recordId: string, dataType: 'vo
     dispatch (premActions.setIsReestrDataLoading(false))
 }
 
+export const createCleanPrem = (cleanTab: string, nomer: string, sp: string, name: string): ThunkType => async (dispatch) => {
+    dispatch (premActions.setIsCleanPremDataLoading(true))
+    let data = await premisesAPI.createCleanPrem(cleanTab, nomer, sp, name)
+    dispatch (premActions.setCleanPremList(data.items))
+    dispatch (premActions.setIsCleanPremDataLoading(false))
+}
+
+export const deleteCleanPrem = (cleanTab: string, id: string): ThunkType => async (dispatch) => {
+    dispatch (premActions.setIsCleanPremDataLoading(true))
+    let data = await premisesAPI.deleteCleanPrem(cleanTab, id)
+    dispatch (premActions.setCleanPremList(data.items))
+    dispatch (premActions.setIsCleanPremDataLoading(false))
+}
+
 type ActionTypes = InferActionsTypes<typeof premActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
@@ -291,7 +308,8 @@ const premActions = {
     setIsReestrDataLoading: (data: boolean) => ({ type: 'prem/SET_IS_REESTR_DATA_LOADING', data } as const),
     setIsIntervalLoading: (data: boolean) => ({ type: 'prem/SET_IS_INTERVAL_LOADING', data } as const),
     setIsCleanPremDataLoading: (data: boolean) => ({ type: 'prem/SET_IS_CLEAN_PREM_DATA_LOADING', data } as const),
-    setCleanPremList: (data: CleanPremListType[]) => ({ type: 'prem/SET_CLEAN_PREM_LIST', data } as const),
+    setCleanPremList: (items: CleanPremListType[]) => ({ type: 'prem/SET_CLEAN_PREM_LIST', items } as const),
     setCleanGroupLabels: (data: [], tab: string) => ({ type: 'prem/SET_CLEAN_GROUP_LABELS', data, tab } as const),
     setIsCleanPremGroupsLoading: (data: boolean) => ({ type: 'prem/SET_IS_PREM_GROUPS_LOADING', data } as const),
+    setCleanTab: (cleanTab: string) => ({ type: 'prem/SET_CLEAN_TAB', cleanTab } as const),
 }

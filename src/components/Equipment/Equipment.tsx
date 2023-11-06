@@ -51,7 +51,6 @@ export const Equipment: React.FC = () => {
         {
             title: <Text strong style={{fontSize: '12pt'}}>№</Text>,
             dataIndex: 'index',
-            render: (text, record, index) => index + 1,
             align: 'center'
         },
         {
@@ -132,7 +131,10 @@ export const Equipment: React.FC = () => {
         },
     ]
 
-    const data: DataType[] = equipNewData
+    const data: DataType[] = equipNewData.map((item, index) => ({
+        ...item,
+        index: index + 1,
+    }))
     if (isLoading) {
         return  <Spin size="large" style={{width: '60px', height: '60px', margin: '30px auto 10px auto'}} />
     }
@@ -145,7 +147,7 @@ export const Equipment: React.FC = () => {
                         dataSource={data}
                         bordered
                         pagination={{defaultPageSize: 20}}
-                        title={() => <Text style={{fontSize: '14pt'}}>Оборудование (всего {equipData.length} объектов)</Text>}
+                        title={() => <Text style={{fontSize: '14pt'}}>Оборудование (всего: {equipData.length})</Text>}
                     /> 
                 </Col>
             </Row>

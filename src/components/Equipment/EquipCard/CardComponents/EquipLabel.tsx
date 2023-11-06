@@ -155,7 +155,7 @@ export const EquipLabel: React.FC<CleanPremGroupsPropsType> = ({equipObject, ree
                 <Text>4. Верните лист с приклеенным шаблоном обратно в принтер</Text>
                 <Text>5. Распечатайте этикетку</Text>
                 <Button style={{marginTop: '20px'}} type="default" icon={<PrinterOutlined />} onClick={() => setFrameModalOpen(true)}>Печать рамки</Button>
-                <Button style={{marginTop: '20px'}} type="primary" icon={<PrinterOutlined />} onClick={() => setLabelModalOpen(true)}>Печать этикетки</Button>
+                <Button style={{marginTop: '10px'}} type="primary" icon={<PrinterOutlined />} onClick={() => setLabelModalOpen(true)}>Печать этикетки</Button>
 
                 <Modal title="Печать статусной этикетки" open={labelModalOpen} onCancel={() => handleCancel('label')} footer={[ <Button key="close" onClick={() => handleCancel('label')} type="primary">Закрыть</Button> ]} >
                     <iframe style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/et.php?code=${maxDateObject.nvo}&name=${equipObject.name}&startDate=${formattedPremCurrentDate}

@@ -162,4 +162,22 @@ export const premisesAPI = {
             return response.data
         })
     },
+    createCleanPrem (cleanTab: string, nomer: string, sp: string, name: string) {
+        let data = new FormData()
+        data.append("cleanTab", cleanTab)
+        data.append("nomer", nomer)
+        data.append("sp", sp)
+        data.append("name", name)
+        return instance.post(`createCleanPrem.php`, data, {}).then (response => {
+            return response.data
+        })
+    },
+    deleteCleanPrem (cleanTab: string, id: string) {
+        let data = new FormData()
+        data.append("cleanTab", cleanTab)
+        data.append("id", id)
+        return instance.post(`deleteCleanPrem.php`, data, {}).then (response => {
+            return response.data
+        })
+    },
 }
