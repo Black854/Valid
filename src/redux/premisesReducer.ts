@@ -78,6 +78,7 @@ export type CleanGroupLabelsType = {
     numbers: string
     count: string
     department: string
+    groupId: string
 }
 
 let initialState = {
@@ -291,6 +292,13 @@ export const deleteCleanPrem = (cleanTab: string, id: string): ThunkType => asyn
     let data = await premisesAPI.deleteCleanPrem(cleanTab, id)
     dispatch (premActions.setCleanPremList(data.items))
     dispatch (premActions.setIsCleanPremDataLoading(false))
+}
+
+export const deleteCleanPremGroup = (cleanTab: string, groupId: string): ThunkType => async (dispatch) => {
+    dispatch (premActions.setIsCleanPremGroupsLoading(true))
+    let data = await premisesAPI.deleteCleanPremGroup(cleanTab, groupId)
+    dispatch(premActions.setCleanGroupLabels(data.items, data.tab))
+    dispatch (premActions.setIsCleanPremGroupsLoading(false))
 }
 
 type ActionTypes = InferActionsTypes<typeof premActions>

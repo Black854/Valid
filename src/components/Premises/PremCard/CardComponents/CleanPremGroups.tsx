@@ -1,6 +1,6 @@
 import { ColumnsType } from "antd/es/table"
-import { Button, Col, Flex, Modal, Radio, Row, Space, Table, Typography } from "antd"
-import { CleanGroupLabelsType, DataType, ReestrType, getCleanGroupLabels } from "../../../../redux/premisesReducer"
+import { Button, Col, Flex, Form, Input, Modal, Popconfirm, Radio, Row, Space, Table, Typography } from "antd"
+import { CleanGroupLabelsType, DataType, ReestrType, deleteCleanPremGroup, getCleanGroupLabels } from "../../../../redux/premisesReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { getCleanGroupLabelsSelector, getCleanTabSelector, getIsCleanPremGroupsLoading } from "../../../../redux/premisesSelectors"
 import { useEffect, useState } from "react"
@@ -10,6 +10,9 @@ import { LabelDateHelper, labelEndDate } from "../../../helpers/labelDateHelper"
 import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector } from "../../../../redux/appSelectors"
 import { PrinterOutlined } from '@ant-design/icons'
 import { getSopCodeForm } from "../../../../redux/appReducer"
+import { PlusOutlined, DeleteOutlined, SaveOutlined } from '@ant-design/icons'
+import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
+import { CustomController } from "../../../common/CustomController"
 const {Text, Title} = Typography
 
 type CleanPremGroupsPropsType = {
@@ -44,6 +47,10 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     }))
     const intervals = useSelector(getIntervals)
     const isCleanPremGroupsLoading = useSelector(getIsCleanPremGroupsLoading)
+    const cleanTab = useSelector(getCleanTabSelector)
+    const handleDeleteCleanPremGroup = (groupId: string) => {
+        dispatch(deleteCleanPremGroup(cleanTab, groupId))
+    }
 
     const columns: ColumnsType<CleanGroupLabelsType> = [
         {
@@ -61,6 +68,23 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
             title: <Text strong style={{fontSize: '12pt'}}>Номера помещений</Text>,
             dataIndex: 'numbers',
             render: (numbers) => <Text>{`№ ${numbers}`}</Text>
+        },
+        {
+            title: <Text strong style={{fontSize: '12pt'}}>Действия</Text>,
+            render: (text, record, index) =>    <Row>
+                                                    <Col span={18} push={3} style={{display: 'flex', flexDirection: 'column'}}>
+                                                        <Popconfirm
+                                                            title='Подтвердите удаление'
+                                                            description='Вы уверены, что хотите удалить этикетку?'
+                                                            okText='Да'
+                                                            cancelText='Нет'
+                                                            onConfirm={() => handleDeleteCleanPremGroup(record.groupId)}
+                                                        >
+                                                            <Button style={{display: 'block', marginTop: '5px'}} size="small" danger type="link" icon={<DeleteOutlined />}>Удалить</Button>
+                                                        </Popconfirm>
+                                                    </Col>
+                                                </Row>,
+            align: 'center'            
         }
     ]
 
@@ -82,7 +106,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     }, reestrData[0])
       
     const labelEndDateToPrint = labelEndDate(maxDateObject.dvo, premObject.ar, intervals)
-
+    const [showModal, setShowModal] = useState(false)
     const premCurrentDate = new Date(maxDateObject.dvo)
     const formattedPremCurrentDate = format(premCurrentDate, 'dd.MM.yyyy')
     
@@ -101,11 +125,28 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
             setLabelModalOpen(false)
         } else if (modalType === 'frame') {
             setFrameModalOpen(false)
+        } else if (modalType === 'addForm') {
+            setShowModal(false)
         }
     }
+    const { handleSubmit, control, formState: { errors } } = useForm({
+        defaultValues: { rememberMe: false }
+    })
+
+    const submit = (data: any) => {
+        // dispatch(login(data))
+    }
+
+    const error = (data: any) => {
+        // data.email && setError(localError + data.email.message)
+        // data.password && setError(localError + data.password.message)
+        // data.rememberMe && setError(localError + data.rememberMe.message)
+    }
+
     return (
         <Row>
-            <Col span={14}>
+            <Col span={14}>           
+                <Button icon={<PlusOutlined />} style={{position: 'absolute', top: '15px', zIndex: '1'}} onClick={() => setShowModal(true)}>Добавить этикетку</Button>
                 <Table
                     columns={columns}
                     dataSource={cleanGroupLabelsWithIndex}
@@ -120,11 +161,24 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                         onChange: (selectedRowKeys: React.Key[], selectedRows: CleanGroupLabelsType[]) => {
                             setSelectedRowKeys(selectedRowKeys);
                             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-                          }
+                        }
                       }}
                     loading={isCleanPremGroupsLoading}
                     rowClassName={() => 'cursorPointer'}
                 />
+                <Modal title="Добавление этикетки" open={showModal} onCancel={() => handleCancel('addForm')} footer={[ <Button key="close" onClick={() => handleCancel('addForm')} type="primary">Отмена</Button>]} >
+                    <Form onFinish={handleSubmit(submit, error)}>
+                        <CustomController control={control} name='rememberMe' type='checkbox' label='Помещение № 109 "Помещение блаблабла"' />
+                        <CustomController control={control} name='rememberMe' type='checkbox' label='Помещение № 109 "Помещение блаблабла"' />
+                        <CustomController control={control} name='rememberMe' type='checkbox' label='Помещение № 109 "Помещение блаблабла"' />
+                        <CustomController control={control} name='rememberMe' type='checkbox' label='Помещение № 109 "Помещение блаблабла"' />
+                        <CustomController control={control} name='rememberMe' type='checkbox' label='Помещение № 109 "Помещение блаблабла"' />
+                        <CustomController control={control} name='rememberMe' type='checkbox' label='Помещение № 109 "Помещение блаблабла"' />
+                        <CustomController control={control} name='rememberMe' type='checkbox' label='Помещение № 109 "Помещение блаблабла"' />
+                        {/* <Text type="danger">{localError}</Text> */}
+                        <Form.Item><Button style={{marginTop: '15px'}} size="small" type="primary" htmlType="submit">Создать этикетку</Button></Form.Item>
+                    </Form>
+                </Modal>
             </Col>
             <Col span={10} push={1}>
                 <div style={{border: '1px solid black', margin: '0', padding: '0', backgroundColor: 'white', width: '120mm', marginBottom: '20px'}}>

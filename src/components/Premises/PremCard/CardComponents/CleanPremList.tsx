@@ -6,7 +6,7 @@ import { getCleanPremListSelector, getCleanTabSelector, getIsCleanPremDataLoadin
 import { CleanPremListType, createCleanPrem, deleteCleanPrem, getCleanPremList, updateCleanPremItemData } from "../../../../redux/premisesReducer"
 import { getDepartmentsSelector } from "../../../../redux/appSelectors"
 import { ColumnsType } from "antd/es/table"
-import { UploadOutlined, DeleteOutlined, SaveOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined, SaveOutlined } from '@ant-design/icons'
 const {Text} = Typography
 
 type TechnicalInfoPropsType = {
@@ -173,7 +173,7 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
                                                                                                 <Button style={{display: 'block', marginTop: '5px'}} onClick={handleCancel} size="small" type="link" icon={<DeleteOutlined />}>Отмена</Button></> :
                                                                                                 <Popconfirm
                                                                                                     title='Подтвердите удаление'
-                                                                                                    description='Вы уверены, что хотите удалить помещение? При удалении помещения оно так же удалится из всех групп этикеток'
+                                                                                                    description='Вы уверены, что хотите удалить помещение? При удалении помещения оно так же удалится из всех этикеток'
                                                                                                     okText='Да'
                                                                                                     cancelText='Нет'
                                                                                                     onConfirm={() => handleDeleteCleanPrem(record.id)}
@@ -191,7 +191,7 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
     return (
         <>
             {contextHolder}
-            <Button style={{position: 'absolute', top: '15px', zIndex: '1'}} onClick={handleAddPrem}>Добавить помещение</Button>
+            <Button icon={<PlusOutlined />} style={{position: 'absolute', top: '15px', zIndex: '1'}} onClick={handleAddPrem}>Добавить помещение</Button>
             <Table
                 columns={columns}
                 dataSource={cleanPremListWithIndex}

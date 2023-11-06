@@ -180,4 +180,12 @@ export const premisesAPI = {
             return response.data
         })
     },
+    deleteCleanPremGroup (cleanTab: string, groupId: string) {
+        let data = new FormData()
+        data.append("cleanTab", cleanTab)
+        data.append("groupId", groupId)
+        return instance.post(`deleteCleanPremGroup.php`, data, {}).then (response => {
+            return response.data
+        })
+    },
 }

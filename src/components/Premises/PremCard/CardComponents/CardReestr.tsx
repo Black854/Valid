@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux"
 import React from "react"
 import { ColumnsType } from "antd/es/table"
 import { ConvertDate } from "../../../helpers/convertDate"
-import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
+import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons'
 import { AppDispatch } from "../../../../redux/store"
 import { ReestrType, deleteDocument, updateReestrDocsCode, uploadDocument } from "../../../../redux/premisesReducer"
 const { Text } = Typography

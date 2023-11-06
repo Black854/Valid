@@ -45,9 +45,6 @@ export const LabelDateHelper: React.FC<LabelDateHelperType> = ({date, ar}) => {
 export const labelEndDate = (date: string, ar: string, intervals: IntervalsType[]) => {
     const mainInterval = intervals.find((e: IntervalsType) => e.value === ar)
     let monthCountString = mainInterval?.interval
-    console.log(intervals)
-    console.log(ar)
-    console.log(monthCountString)
     if (monthCountString) {
         const monthCount = parseInt(monthCountString);
         if (date) {
