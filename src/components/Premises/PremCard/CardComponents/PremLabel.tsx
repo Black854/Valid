@@ -1,8 +1,6 @@
-import { ColumnsType } from "antd/es/table"
-import { Button, Col, Modal, Radio, Row, Table, Typography } from "antd"
-import { CleanGroupLabelsType, DataType, ReestrType, getCleanGroupLabels } from "../../../../redux/premisesReducer"
+import { Button, Col, Modal, Row, Typography } from "antd"
+import { DataType, ReestrType } from "../../../../redux/premisesReducer"
 import { useDispatch, useSelector } from "react-redux"
-import { getCleanGroupLabelsSelector, getCleanTabSelector, getIsCleanPremGroupsLoading } from "../../../../redux/premisesSelectors"
 import { useEffect, useState } from "react"
 import { AppDispatch } from "../../../../redux/store"
 import { format } from 'date-fns'

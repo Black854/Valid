@@ -1,11 +1,9 @@
-import { Avatar, Button, Col, Image, Modal, Popconfirm, Row, Typography, message } from "antd"
+import { Button, Col, Image, Modal, Popconfirm, Row, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
-import Link from "antd/es/typography/Link"
-import { DeleteFilled, EyeOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteFilled, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import pdf from './../../../../img/pdfi.png'
 import video from './../../../../img/video.png'
-import { RcFile } from "antd/es/upload"
 import { AppDispatch } from "../../../../redux/store"
 import { getPhotosSelector } from "../../../../redux/premisesSelectors";
 import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/premisesReducer";

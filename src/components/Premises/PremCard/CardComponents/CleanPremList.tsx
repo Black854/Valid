@@ -1,9 +1,9 @@
-import { Button, Col, Input, Popconfirm, Row, Select, Space, Table, Typography, message } from "antd"
-import { useEffect, useRef, useState } from "react"
+import { Button, Col, Input, Popconfirm, Row, Select, Table, Typography, message } from "antd"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../../redux/store"
 import { getCleanPremListSelector, getCleanTabSelector, getIsCleanPremDataLoading } from "../../../../redux/premisesSelectors"
-import { CleanPremListType, createCleanPrem, deleteCleanPrem, getCleanPremList, updateCleanPremItemData } from "../../../../redux/premisesReducer"
+import { createCleanPrem, deleteCleanPrem, getCleanPremList, updateCleanPremItemData } from "../../../../redux/premisesReducer"
 import { getDepartmentsSelector } from "../../../../redux/appSelectors"
 import { ColumnsType } from "antd/es/table"
 import { PlusOutlined, DeleteOutlined, SaveOutlined } from '@ant-design/icons'
@@ -123,7 +123,7 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
     }
 
     const handleDeleteCleanPrem = (recordId: string) => {
-        dispatch(deleteCleanPrem(cleanTab, recordId))
+        dispatch(deleteCleanPrem(id, cleanTab, recordId))
     }
 
     const columns: ColumnsType<CleanPremListTypeWithIndex> = [

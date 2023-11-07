@@ -198,4 +198,15 @@ export const premisesAPI = {
             return response.data
         })
     },
+    editCleanPremGroup (cleanTab: string, dataItems: Array<string>, count: string, groupId: string) {
+        const requestData = {
+            cleanTab,
+            dataItems,
+            count,
+            groupId
+        }
+        return instance.post(`editCleanPremGroup.php`, requestData, {}).then (response => {
+            return response.data
+        })
+    },
 }

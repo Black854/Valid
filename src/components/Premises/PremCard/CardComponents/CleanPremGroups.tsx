@@ -1,6 +1,6 @@
 import { ColumnsType } from "antd/es/table"
-import { Button, Checkbox, Col, Flex, Form, Input, Modal, Popconfirm, Radio, Row, Space, Table, Typography } from "antd"
-import { CleanGroupLabelsType, DataType, ReestrType, createCleanPremGroup, deleteCleanPremGroup, getCleanGroupLabels, getCleanPremList } from "../../../../redux/premisesReducer"
+import { Button, Checkbox, Col, Form, Input, Modal, Popconfirm, Row, Table, Typography } from "antd"
+import { CleanGroupLabelsType, DataType, ReestrType, createCleanPremGroup, deleteCleanPremGroup, editCleanPremGroup, getCleanGroupLabels, getCleanPremList } from "../../../../redux/premisesReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { getCleanGroupLabelsSelector, getCleanPremListSelector, getCleanTabSelector, getIsCleanPremGroupsLoading } from "../../../../redux/premisesSelectors"
 import { useEffect, useState } from "react"
@@ -10,9 +10,7 @@ import { LabelDateHelper, labelEndDate } from "../../../helpers/labelDateHelper"
 import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector } from "../../../../redux/appSelectors"
 import { PrinterOutlined } from '@ant-design/icons'
 import { getSopCodeForm } from "../../../../redux/appReducer"
-import { PlusOutlined, DeleteOutlined, SaveOutlined } from '@ant-design/icons'
-import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
-import { CustomController } from "../../../common/CustomController"
+import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 const {Text, Title} = Typography
 
 type CleanPremGroupsPropsType = {
@@ -71,7 +69,24 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
         {
             title: <Text strong style={{fontSize: '12pt'}}>Действия</Text>,
             render: (text, record, index) =>    <Row>
-                                                    <Col span={18} push={3} style={{display: 'flex', flexDirection: 'column'}}>
+                                                    <Col span={22} push={1} style={{display: 'flex', flexDirection: 'column'}}>
+                                                        <Button
+                                                            style={{display: 'block', marginTop: '5px', textAlign: 'left'}}
+                                                            size="small" type="link"
+                                                            icon={<EditOutlined />}
+                                                            onClick={() => {
+                                                                setShowModalLabelEdit(true)
+                                                                setCount(record.count)
+                                                                const numbersData = record.numbers.split(', ')
+                                                                const idData = cleanPremList
+                                                                    .filter(elem => numbersData.includes(elem.nomer))
+                                                                    .map(elem => elem.id)
+                                                                setDataItems(idData)
+                                                                setGroupId(record.groupId)
+                                                            }}
+                                                            >
+                                                            Редактировать
+                                                            </Button>
                                                         <Popconfirm
                                                             title='Подтвердите удаление'
                                                             description='Вы уверены, что хотите удалить этикетку?'
@@ -79,11 +94,20 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                                                             cancelText='Нет'
                                                             onConfirm={() => handleDeleteCleanPremGroup(record.groupId)}
                                                         >
-                                                            <Button style={{display: 'block', marginTop: '5px'}} size="small" danger type="link" icon={<DeleteOutlined />}>Удалить</Button>
+                                                            <Button
+                                                                style={{display: 'block', marginTop: '5px', textAlign: 'left'}}
+                                                                size="small"
+                                                                danger
+                                                                type="link"
+                                                                icon={<DeleteOutlined />}
+                                                                >
+                                                                Удалить
+                                                            </Button>
                                                         </Popconfirm>
                                                     </Col>
                                                 </Row>,
-            align: 'center'            
+            align: 'center',
+            width: '10%'
         }
     ]
 
@@ -118,8 +142,10 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     const [labelModalOpen, setLabelModalOpen] = useState(false)
     const [frameModalOpen, setFrameModalOpen] = useState(false)
     const [showModal, setShowModal] = useState(false)
+    const [showModalLabelEdit, setShowModalLabelEdit] = useState(false)
     const [dataItems, setDataItems] = useState([] as string[])
     const [count, setCount] = useState('1')
+    const [groupId, setGroupId] = useState('')
     const handleCancel = (modalType: string) => {
         if (modalType === 'label') {
             setLabelModalOpen(false)
@@ -127,15 +153,30 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
             setFrameModalOpen(false)
         } else if (modalType === 'addForm') {
             setShowModal(false)
+            setCount('1')
+        } else if (modalType === 'editForm') {
+            setShowModalLabelEdit(false)
+            setDataItems([])
+            setGroupId('')
+            setCount('1')
         }
     }
 
     const submitForm = () => {
         if (dataItems.length > 0) {
-            console.log(dataItems)
             dispatch(createCleanPremGroup(cleanTab, dataItems, count))
             setDataItems([])
             setShowModal(false)
+            setCount('1')
+        }
+    }
+
+    const submitEditForm = () => {
+        if (dataItems.length > 0) {
+            dispatch(editCleanPremGroup(cleanTab, dataItems, count, groupId))
+            setDataItems([])
+            setShowModalLabelEdit(false)
+            setCount('1')
         }
     }
 
@@ -169,18 +210,32 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                     rowClassName={() => 'cursorPointer'}
                 />
                 <Modal title="Добавление этикетки" open={showModal} onCancel={() => handleCancel('addForm')} footer={[ <Button key="close" onClick={() => handleCancel('addForm')} type="primary">Отмена</Button>]} >
-                    <Text style={{display: 'inline'}}>Количество: </Text>
+                    <Text style={{display: 'inline-block', marginRight: '10px', marginTop: '10px'}}>Количество: </Text>
                     <Input type="number"
                         size="small"
                         name='labelCount'
-                        style={{display: 'inline', width: '50px'}}
+                        style={{display: 'inline-block', width: '50px', marginRight: '10px'}}
                         minLength={1}
                         value={count}
                         onChange={(e) => setCount(e.target.value)}
                     />
-                    <Text style={{display: 'inline'}}> шт.</Text>
+                    <Text style={{display: 'inline-block', marginBottom: '20px'}}> шт.</Text>
                     {formItems}
                     <Button disabled={dataItems.length <= 0 || count === '' || parseInt(count) < 1} style={{marginTop: '15px'}} size="small" type="primary" onClick={submitForm}>Создать этикетку</Button>
+                </Modal>
+                <Modal title="Редактирование этикетки" open={showModalLabelEdit} onCancel={() => handleCancel('editForm')} footer={[ <Button key="close" onClick={() => handleCancel('editForm')} type="primary">Отмена</Button>]} >
+                    <Text style={{display: 'inline-block', marginRight: '10px', marginTop: '10px'}}>Количество: </Text>
+                    <Input type="number"
+                        size="small"
+                        name='labelCount'
+                        style={{display: 'inline-block', width: '50px', marginRight: '10px'}}
+                        minLength={1}
+                        value={count}
+                        onChange={(e) => setCount(e.target.value)}
+                    />
+                    <Text style={{display: 'inline-block', marginBottom: '20px'}}> шт.</Text>
+                    {formItems}
+                    <Button disabled={dataItems.length <= 0 || count === '' || parseInt(count) < 1} style={{marginTop: '15px'}} size="small" type="primary" onClick={submitEditForm}>Сохранить изменения</Button>
                 </Modal>
             </Col>
             <Col span={10} push={1}>
@@ -290,12 +345,12 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                                                         <Button style={{marginTop: '10px'}} type="primary" icon={<PrinterOutlined />} onClick={() => setLabelModalOpen(true)}>Печать этикетки</Button>}
                         <Modal title="Печать статусной этикетки" open={labelModalOpen} onCancel={() => handleCancel('label')} footer={[ <Button key="close" onClick={() => handleCancel('label')} type="primary">Закрыть</Button> ]} >
                             <iframe style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/et.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
-                            &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
+                                &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
                             </iframe>
                         </Modal>
                         <Modal title="Печать рамки для статусной этикетки" open={frameModalOpen} onCancel={() => handleCancel('frame')} footer={[ <Button key="close" onClick={() => handleCancel('frame')} type="primary">Закрыть</Button> ]} >
                             <iframe key={frameModalOpen === true ? 'frameModalOpen-open' : 'frameModalOpen-closed'} style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/etWithFrames.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
-                            &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
+                                &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
                             </iframe>
                         </Modal>
                     </Col>

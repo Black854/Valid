@@ -287,11 +287,12 @@ export const createCleanPrem = (cleanTab: string, nomer: string, sp: string, nam
     dispatch (premActions.setIsCleanPremDataLoading(false))
 }
 
-export const deleteCleanPrem = (cleanTab: string, id: string): ThunkType => async (dispatch) => {
+export const deleteCleanPrem = (objectId: string, cleanTab: string, id: string): ThunkType => async (dispatch) => {
     dispatch (premActions.setIsCleanPremDataLoading(true))
     let data = await premisesAPI.deleteCleanPrem(cleanTab, id)
     dispatch (premActions.setCleanPremList(data.items))
     dispatch (premActions.setIsCleanPremDataLoading(false))
+    dispatch (getCleanGroupLabels(objectId))
 }
 
 export const deleteCleanPremGroup = (cleanTab: string, groupId: string): ThunkType => async (dispatch) => {
@@ -304,6 +305,13 @@ export const deleteCleanPremGroup = (cleanTab: string, groupId: string): ThunkTy
 export const createCleanPremGroup = (cleanTab: string, dataItems: Array<string>, count: string): ThunkType => async (dispatch) => {
     dispatch (premActions.setIsCleanPremGroupsLoading(true))
     let data = await premisesAPI.createCleanPremGroup(cleanTab, dataItems, count)
+    dispatch(premActions.setCleanGroupLabels(data.items, data.tab))
+    dispatch (premActions.setIsCleanPremGroupsLoading(false))
+}
+
+export const editCleanPremGroup = (cleanTab: string, dataItems: Array<string>, count: string, groupId: string): ThunkType => async (dispatch) => {
+    dispatch (premActions.setIsCleanPremGroupsLoading(true))
+    let data = await premisesAPI.editCleanPremGroup(cleanTab, dataItems, count, groupId)
     dispatch(premActions.setCleanGroupLabels(data.items, data.tab))
     dispatch (premActions.setIsCleanPremGroupsLoading(false))
 }
