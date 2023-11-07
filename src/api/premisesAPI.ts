@@ -188,4 +188,14 @@ export const premisesAPI = {
             return response.data
         })
     },
+    createCleanPremGroup (cleanTab: string, dataItems: Array<string>, count: string) {
+        const requestData = {
+            cleanTab,
+            dataItems,
+            count
+        }
+        return instance.post(`createCleanPremGroup.php`, requestData, {}).then (response => {
+            return response.data
+        })
+    },
 }

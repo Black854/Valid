@@ -301,6 +301,13 @@ export const deleteCleanPremGroup = (cleanTab: string, groupId: string): ThunkTy
     dispatch (premActions.setIsCleanPremGroupsLoading(false))
 }
 
+export const createCleanPremGroup = (cleanTab: string, dataItems: Array<string>, count: string): ThunkType => async (dispatch) => {
+    dispatch (premActions.setIsCleanPremGroupsLoading(true))
+    let data = await premisesAPI.createCleanPremGroup(cleanTab, dataItems, count)
+    dispatch(premActions.setCleanGroupLabels(data.items, data.tab))
+    dispatch (premActions.setIsCleanPremGroupsLoading(false))
+}
+
 type ActionTypes = InferActionsTypes<typeof premActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 

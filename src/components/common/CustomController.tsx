@@ -8,7 +8,7 @@ const {Text, Title} = Typography
 type CustomControllerProps = {
     name: string
     type: string
-    control: any
+    control?: any
     label?: string
     required?: boolean
     maxLength?: number
