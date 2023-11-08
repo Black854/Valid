@@ -56,7 +56,8 @@ let initialState = {
     isReestrDataLoading: false,
     isIntervalLoading: false,
     isReestrLoading: false,
-    sopCodeForm: ''
+    sopCodeForm: '',
+    equipIdArrayAtWorkAtCurrentUser: [] as ReestrType[],
 }
 
 type InitialStateType = typeof initialState

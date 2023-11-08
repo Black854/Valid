@@ -72,7 +72,8 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                                                     <Col span={22} push={1} style={{display: 'flex', flexDirection: 'column'}}>
                                                         <Button
                                                             style={{display: 'block', marginTop: '5px', textAlign: 'left'}}
-                                                            size="small" type="link"
+                                                            size="small"
+                                                            type="link"
                                                             icon={<EditOutlined />}
                                                             onClick={() => {
                                                                 setShowModalLabelEdit(true)
@@ -190,7 +191,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     return (
         <Row>
             <Col span={14}>           
-                <Button icon={<PlusOutlined />} style={{position: 'absolute', top: '15px', zIndex: '1'}} onClick={() => setShowModal(true)}>Добавить этикетку</Button>
+                <Button icon={<PlusOutlined />} style={{position: 'absolute', top: '10px', zIndex: '1'}} onClick={() => setShowModal(true)}>Добавить этикетку</Button>
                 <Table
                     columns={columns}
                     dataSource={cleanGroupLabelsWithIndex}
@@ -208,6 +209,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                     }}
                     loading={isCleanPremGroupsLoading}
                     rowClassName={() => 'cursorPointer'}
+                    size="small"
                 />
                 <Modal title="Добавление этикетки" open={showModal} onCancel={() => handleCancel('addForm')} footer={[ <Button key="close" onClick={() => handleCancel('addForm')} type="primary">Отмена</Button>]} >
                     <Text style={{display: 'inline-block', marginRight: '10px', marginTop: '10px'}}>Количество: </Text>
@@ -339,6 +341,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                         <Text>4. Приклейте в рамку шаблон этикетки</Text>
                         <Text>5. Верните лист с приклеенным шаблоном обратно в принтер</Text>
                         <Text>6. Распечатайте этикетку</Text>
+                        <Text>7. Повторите пункты 4, 5, 6 столько раз, сколько нужно этикеток (см. в таблице)</Text>
                         {selectedRowKeys.length === 0 ? <Button style={{marginTop: '20px'}} disabled icon={<PrinterOutlined />}>Печать рамки</Button> :
                                                         <Button style={{marginTop: '20px'}} type="default" icon={<PrinterOutlined />} onClick={() => {setFrameModalOpen(true)}}>Печать рамки</Button>}
                         {selectedRowKeys.length === 0 ? <Button style={{marginTop: '10px'}} disabled icon={<PrinterOutlined />}>Печать этикетки</Button> :

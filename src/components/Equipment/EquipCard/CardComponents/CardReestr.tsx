@@ -233,6 +233,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 style={{marginBottom: '60px'}}
                 rowKey='id'
                 loading={isReestrDataLoading}
+                size="small"
             />
         </>
     )

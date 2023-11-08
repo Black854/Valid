@@ -148,6 +148,7 @@ export const Equipment: React.FC = () => {
                         bordered
                         pagination={{defaultPageSize: 20}}
                         title={() => <Text style={{fontSize: '14pt'}}>Оборудование (всего: {equipData.length})</Text>}
+                        size="small"
                     /> 
                 </Col>
             </Row>

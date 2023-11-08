@@ -48,3 +48,7 @@ export const getIsReestrDataLoading = (state: AppStateType) => {
 export const getIsIntervalLoading = (state: AppStateType) => {
     return (state.equipment.isIntervalLoading)
 }
+
+export const getCurrentEquipData = (state: AppStateType) => {
+    return (state.equipment.equipIdArrayAtWorkAtCurrentUser)
+}

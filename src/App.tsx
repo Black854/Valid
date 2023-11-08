@@ -10,6 +10,7 @@ import { Equipment } from './components/Equipment/Equipment'
 import { CustomFooter } from './components/Footer/Footer'
 import { Premises } from './components/Premises/Premises'
 import { PremCard } from './components/Premises/PremCard/PremCard'
+import { WorkList } from './components/WorkList/WorkList'
 const { theme } = require('antd/lib')
 
 export const App: React.FC = () => {
@@ -29,7 +30,7 @@ export const App: React.FC = () => {
     <Router>
       <Provider store={store}>
         <ConfigProvider theme={{algorithm: typeTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm }} >
-          <Layout>
+          <Layout style={{height: '100vh'}}>
             <Header1 swithTheme={handleThemeChange} typeTheme={typeTheme} />
             <Layout>
               <Routes>
@@ -37,6 +38,7 @@ export const App: React.FC = () => {
                 <Route path="/equipment/:id" element={<EquipCard />} />
                 <Route path="/premises" element={<Premises />} />
                 <Route path="/premises/:id" element={<PremCard />} />
+                <Route path="/work" element={<WorkList />} />
               </Routes>
             </Layout>
             <CustomFooter />

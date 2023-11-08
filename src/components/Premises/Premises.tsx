@@ -123,7 +123,7 @@ export const Premises: React.FC = () => {
                         bordered
                         pagination={false}
                         title={() => <Text style={{fontSize: '14pt'}}>Помещения (всего: {premData.length})</Text>}
-                        
+                        size="small"
                     /> 
                 </Col>
             </Row>

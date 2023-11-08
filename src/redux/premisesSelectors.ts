@@ -68,3 +68,7 @@ export const getCleanTabSelector = (state: AppStateType) => {
 export const getIsCleanPremGroupsLoading = (state: AppStateType) => {
     return (state.premises.isCleanPremGroupsLoading)
 }
+
+export const getCurrentPremData = (state: AppStateType) => {
+    return (state.premises.premIdArrayAtWorkAtCurrentUser)
+}

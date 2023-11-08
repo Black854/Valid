@@ -15,6 +15,7 @@ export const EquipDescriptions: React.FC<EquipDescriptionsPropsType> = ({columns
                 pagination={false} // Скрыть пагинацию, если есть
                 showHeader={false} // Скрыть заголовки, если есть
                 rowKey='rowName'
+                size="small"
             />
         </>
     )

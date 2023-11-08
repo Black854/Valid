@@ -15,6 +15,7 @@ export const PremDescriptions: React.FC<PremDescriptionsPropsType> = ({columns, 
                 pagination={false} // Скрыть пагинацию, если есть
                 showHeader={false} // Скрыть заголовки, если есть
                 rowKey='rowName'
+                size="small"
             />
         </>
     )

@@ -191,7 +191,7 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
     return (
         <>
             {contextHolder}
-            <Button icon={<PlusOutlined />} style={{position: 'absolute', top: '15px', zIndex: '1'}} onClick={handleAddPrem}>Добавить помещение</Button>
+            <Button icon={<PlusOutlined />} style={{position: 'absolute', top: '10px', zIndex: '1'}} onClick={handleAddPrem}>Добавить помещение</Button>
             <Table
                 columns={columns}
                 dataSource={cleanPremListWithIndex}
@@ -200,6 +200,7 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
                 rowKey='id'
                 style={{marginBottom: '60px'}}
                 loading={isCleanPremDataLoading}
+                size="small"
             />
         </>
     )

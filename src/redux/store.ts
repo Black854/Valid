@@ -3,11 +3,13 @@ import thunkMiddleWare, { ThunkDispatch } from 'redux-thunk'
 import { appReducer } from './appReducer';
 import { equipmentReducer } from './equipmentReducer';
 import { premisesReducer } from './premisesReducer';
+import { authReducer } from './authReducer';
 
 let rootReducer = combineReducers({
   app: appReducer,
   equipment: equipmentReducer,
-  premises: premisesReducer
+  premises: premisesReducer,
+  auth: authReducer
 })
 
 type RootReducerType = typeof rootReducer

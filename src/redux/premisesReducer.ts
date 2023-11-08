@@ -98,6 +98,7 @@ let initialState = {
     isCleanPremDataLoading: false,
     isCleanPremGroupsLoading: false,
     cleanTab: '',
+    premIdArrayAtWorkAtCurrentUser: [] as ReestrType[],
 }
 
 type InitialStateType = typeof initialState
