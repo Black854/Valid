@@ -209,4 +209,12 @@ export const premisesAPI = {
             return response.data
         })
     },
+    getCurrentPremData (myPremDataIdArray: Array<string>) {
+        const requestData = {
+            myPremDataIdArray
+        }
+        return instance.post(`getCurrentPremData.php`, requestData, {}).then (response => {
+            return response.data
+        })
+    },
 }

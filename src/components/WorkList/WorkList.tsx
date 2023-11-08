@@ -2,18 +2,20 @@ import { Typography, Col, Image, Row, Spin, Table, Badge, Space, Dropdown, Table
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
-import { getPremData, getIsLoading, getCurrentPremData } from "../../redux/premisesSelectors"
+import { getPremData, getIsLoading, getCurrentPremDataSelector } from "../../redux/premisesSelectors"
 import { EyeOutlined} from '@ant-design/icons'
 import { RenderDateHelper } from "../helpers/renderDateHelper"
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
 import React, { useEffect } from "react"
 import { AppDispatch } from "../../redux/store"
-import { ReestrType, getPremises, getReestrData } from "../../redux/premisesReducer"
+import { ReestrType, getCurrentPremData, getPremises, getReestrData } from "../../redux/premisesReducer"
 import { getCurrentEquipData, getEquipData } from "../../redux/equipmentSelectors"
 import { getAuthUserNameSelector } from "../../redux/authSelectors"
 import { DownOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons'
 import { getEquipment } from "../../redux/equipmentReducer"
+import { ConvertDate } from "../helpers/convertDate"
+import { ConvertPremDate } from "../helpers/convertPremDate"
 
 const { Text } = Typography
   
@@ -60,9 +62,14 @@ export const WorkList: React.FC = () => {
 
     const myPremDataIdArray = premNewData.map(e => e.id)
     const myEquipDataIdArray = equipNewData.map(e => e.id)
-
-    const myPremData = useSelector(getCurrentPremData)
+    
+    const myPremData = useSelector(getCurrentPremDataSelector)
     const myEquipData = useSelector(getCurrentEquipData)
+
+    if (myPremDataIdArray.length > 0 && myPremData.length === 0) {
+        dispatch(getCurrentPremData(myPremDataIdArray))
+    }
+
 
     type DataType = typeof premNewData[0]
     const data: DataType[] = [...premNewData, ...equipNewData]
@@ -148,17 +155,87 @@ export const WorkList: React.FC = () => {
                             expandedRowRender: (record) => {
                                 type ExpandedDataType = {
                                     key: React.Key
+                                    id: string,
+                                    progress: string,
+                                    vp: string,
+                                    nvp: string,
+                                    dvp: string,
+                                    vo: string,
+                                    nvo: string,
+                                    dvo: string,
+                                    et: string
                                 }
 
                                 const columns: TableColumnsType<ExpandedDataType> = [
-                                    { title: 'Прогресс', dataIndex: 'progress', key: 'progress', align: 'center' },
-                                    { title: 'Протокол', dataIndex: 'vp', key: 'vp', align: 'center' },
-                                    { title: 'Код протокола', dataIndex: 'nvp', key: 'nvp', align: 'center' },
-                                    { title: 'Дата протокола', dataIndex: 'dvp', key: 'dvp', align: 'center' },
-                                    { title: 'Отчет', dataIndex: 'vo', key: 'vo', align: 'center' },
-                                    { title: 'Код отчета', dataIndex: 'nvo', key: 'nvo', align: 'center' },
-                                    { title: 'Дата отчета', dataIndex: 'dvo', key: 'dvo', align: 'center' },
-                                    { title: 'Этикетка приклеена', dataIndex: 'et', key: 'et', align: 'center' },
+                                    {
+                                        title: 'Прогресс',
+                                        dataIndex: 'progress',
+                                        key: 'progress',
+                                        align: 'center',
+                                    },
+                                    { 
+                                        title: 'Протокол',
+                                        dataIndex: 'vp',
+                                        key: 'vp',
+                                        align: 'center',
+                                        render: (vp, record) => {
+                                            return record.vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
+                                        }
+                                    },
+                                    {
+                                        title: 'Код протокола',
+                                        dataIndex: 'nvp',
+                                        key: 'nvp',
+                                        align: 'center',
+                                        render: (vp, record) => {
+                                            return record.vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
+                                        } 
+                                    },
+                                    {
+                                        title: 'Дата протокола',
+                                        dataIndex: 'dvp',
+                                        key: 'dvp',
+                                        align: 'center',
+                                        render: (vp, record) => {
+                                            return record.vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
+                                        }
+                                    },
+                                    {
+                                        title: 'Отчет',
+                                        dataIndex: 'vo',
+                                        key: 'vo',
+                                        align: 'center',
+                                        render: (vp, record) => {
+                                            return record.vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
+                                        }
+                                    },
+                                    {
+                                        title: 'Код отчета',
+                                        dataIndex: 'nvo',
+                                        key: 'nvo',
+                                        align: 'center',
+                                        render: (vp, record) => {
+                                            return record.vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
+                                        }
+                                    },
+                                    {
+                                        title: 'Дата отчета',
+                                        dataIndex: 'dvo',
+                                        key: 'dvo',
+                                        align: 'center',
+                                        render: (dvo, record) => {
+                                            return <ConvertPremDate date={dvo} premId={record.id} dateType='dvo' id={record.id} key={record.id} />
+                                        }
+                                    },
+                                    {
+                                        title: 'Этикетка',
+                                        dataIndex: 'et',
+                                        key: 'et',
+                                        align: 'center',
+                                        render: (et, record) => {
+                                            return et === '' ? <Text type="warning">Не приклеена</Text> : <Text type="success">Приклеена</Text>
+                                        }
+                                    },
                                 ]
 
                                 if (record.objectType === 'premises') {
@@ -180,7 +257,7 @@ export const WorkList: React.FC = () => {
                                         data = [data2]
                                     }
 
-                                    return record.class === 'Чистые' && <Table columns={columns} dataSource={data} pagination={false} />
+                                    return record.class === 'Чистые' && <Table columns={columns} dataSource={data} pagination={false} bordered />
                                 }
                             
                                 

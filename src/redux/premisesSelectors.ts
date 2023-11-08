@@ -69,6 +69,6 @@ export const getIsCleanPremGroupsLoading = (state: AppStateType) => {
     return (state.premises.isCleanPremGroupsLoading)
 }
 
-export const getCurrentPremData = (state: AppStateType) => {
+export const getCurrentPremDataSelector = (state: AppStateType) => {
     return (state.premises.premIdArrayAtWorkAtCurrentUser)
 }

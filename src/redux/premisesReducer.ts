@@ -135,6 +135,8 @@ export const premisesReducer = (state = initialState, action: ActionTypes): Init
             return {...state, isCleanPremGroupsLoading: action.data}
         case 'prem/SET_CLEAN_TAB':
             return {...state, cleanTab: action.cleanTab}
+        case 'prem/SET_PREM_ID_ARRAY_AT_WORK_AT_CURRENT_USER':
+            return {...state, premIdArrayAtWorkAtCurrentUser: action.data}
         default:
             return state
     }
@@ -317,6 +319,11 @@ export const editCleanPremGroup = (cleanTab: string, dataItems: Array<string>, c
     dispatch (premActions.setIsCleanPremGroupsLoading(false))
 }
 
+export const getCurrentPremData = (myPremDataIdArray: Array<string>): ThunkType => async (dispatch) => {
+    let data = await premisesAPI.getCurrentPremData(myPremDataIdArray)
+    dispatch(premActions.setPremIdArrayAtWorkAtCurrentUser(data.items))
+}
+
 type ActionTypes = InferActionsTypes<typeof premActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
@@ -336,4 +343,5 @@ const premActions = {
     setCleanGroupLabels: (data: [], tab: string) => ({ type: 'prem/SET_CLEAN_GROUP_LABELS', data, tab } as const),
     setIsCleanPremGroupsLoading: (data: boolean) => ({ type: 'prem/SET_IS_PREM_GROUPS_LOADING', data } as const),
     setCleanTab: (cleanTab: string) => ({ type: 'prem/SET_CLEAN_TAB', cleanTab } as const),
+    setPremIdArrayAtWorkAtCurrentUser: (data: any) => ({ type: 'prem/SET_PREM_ID_ARRAY_AT_WORK_AT_CURRENT_USER', data } as const),
 }
