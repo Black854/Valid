@@ -200,7 +200,7 @@ export const updateEquipInterval = (id: string, interval: string): ThunkType => 
     dispatch (equipActions.setIsIntervalLoading(false))
 }
 
-export const updateReestrDate = (id: string, equipId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
+export const updateReestrDateEquip = (id: string, equipId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
     dispatch (equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.updateReestrDate(id, equipId, date, dateType)
     dispatch (equipActions.pushReestrData(data.items))

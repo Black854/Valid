@@ -9,13 +9,13 @@ import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
 import React, { useEffect } from "react"
 import { AppDispatch } from "../../redux/store"
-import { ReestrType, getCurrentPremData, getPremises, getReestrData } from "../../redux/premisesReducer"
+import { ReestrType, getCurrentPremData, getPremises, getReestrData, updateReestrDocsCodePrem } from "../../redux/premisesReducer"
 import { getCurrentEquipData, getEquipData } from "../../redux/equipmentSelectors"
 import { getAuthUserNameSelector } from "../../redux/authSelectors"
 import { DownOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons'
 import { getEquipment } from "../../redux/equipmentReducer"
 import { ConvertDate } from "../helpers/convertDate"
-import { ConvertPremDate } from "../helpers/convertPremDate"
+import { DatePickerForWork } from "../helpers/DatePickerForWork"
 
 const { Text } = Typography
   
@@ -31,9 +31,9 @@ export const WorkList: React.FC = () => {
         dispatch(getPremises())
         dispatch(getEquipment())
     }, [])
-    
+
     const premNewData = premData.map(e => ({
-        objectType: 'premises',
+        objectType: 'premises' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
         key: e.id,
         sp2: e.sp2,
@@ -47,7 +47,7 @@ export const WorkList: React.FC = () => {
     })).filter(e => e.fio === AuthUserName)
     
     const equipNewData = equipData.map(e => ({
-        objectType: 'equipment',
+        objectType: 'equipment' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
         key: e.id,
         sp2: e.sp2,
@@ -152,7 +152,7 @@ export const WorkList: React.FC = () => {
                     <Table
                         columns={columns}
                         expandable={{
-                            expandedRowRender: (record) => {
+                            expandedRowRender: (rec) => {
                                 type ExpandedDataType = {
                                     key: React.Key
                                     id: string,
@@ -164,6 +164,10 @@ export const WorkList: React.FC = () => {
                                     nvo: string,
                                     dvo: string,
                                     et: string
+                                }
+
+                                const handleUpdateDocsCode = (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
+                                    rec.objectType === 'premises' && dispatch(updateReestrDocsCodePrem(rec.id, recordId, text, dataType))
                                 }
 
                                 const columns: TableColumnsType<ExpandedDataType> = [
@@ -178,8 +182,8 @@ export const WorkList: React.FC = () => {
                                         dataIndex: 'vp',
                                         key: 'vp',
                                         align: 'center',
-                                        render: (vp, record) => {
-                                            return record.vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
+                                        render: (vp) => {
+                                            return vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
                                         }
                                     },
                                     {
@@ -187,8 +191,9 @@ export const WorkList: React.FC = () => {
                                         dataIndex: 'nvp',
                                         key: 'nvp',
                                         align: 'center',
-                                        render: (vp, record) => {
-                                            return record.vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
+                                        render: (nvp, record) => {
+                                            return nvp === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp'), text: ''}} type="warning">Нет данных</Text> :
+                                                                <Text type="success" editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp')}}>{nvp}</Text>
                                         } 
                                     },
                                     {
@@ -196,8 +201,8 @@ export const WorkList: React.FC = () => {
                                         dataIndex: 'dvp',
                                         key: 'dvp',
                                         align: 'center',
-                                        render: (vp, record) => {
-                                            return record.vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
+                                        render: (dvp, record) => {
+                                            return <DatePickerForWork date={dvp} premId={record.id} dateType='dvp' id={record.id} key={record.id} group={rec.objectType} />
                                         }
                                     },
                                     {
@@ -205,8 +210,8 @@ export const WorkList: React.FC = () => {
                                         dataIndex: 'vo',
                                         key: 'vo',
                                         align: 'center',
-                                        render: (vp, record) => {
-                                            return record.vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
+                                        render: (vp) => {
+                                            return vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
                                         }
                                     },
                                     {
@@ -214,8 +219,9 @@ export const WorkList: React.FC = () => {
                                         dataIndex: 'nvo',
                                         key: 'nvo',
                                         align: 'center',
-                                        render: (vp, record) => {
-                                            return record.vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
+                                        render: (nvo, record) => {
+                                            return nvo === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo'), text: ''}} type="warning">Нет данных</Text> :
+                                                                <Text type="success" editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo')}}>{nvo}</Text>
                                         }
                                     },
                                     {
@@ -224,7 +230,7 @@ export const WorkList: React.FC = () => {
                                         key: 'dvo',
                                         align: 'center',
                                         render: (dvo, record) => {
-                                            return <ConvertPremDate date={dvo} premId={record.id} dateType='dvo' id={record.id} key={record.id} />
+                                            return <DatePickerForWork date={dvo} premId={record.id} dateType='dvo' id={record.id} key={record.id} group={rec.objectType} />
                                         }
                                     },
                                     {
@@ -232,36 +238,63 @@ export const WorkList: React.FC = () => {
                                         dataIndex: 'et',
                                         key: 'et',
                                         align: 'center',
-                                        render: (et, record) => {
+                                        render: (et) => {
                                             return et === '' ? <Text type="warning">Не приклеена</Text> : <Text type="success">Приклеена</Text>
                                         }
                                     },
                                 ]
 
-                                if (record.objectType === 'premises') {
+                                if (rec.objectType === 'premises') {
                                     let data: any = [{
                                         key: '1',
-                                        progress: '2014-12-24 23:12:00',
-                                        vp: 'This is production name',
-                                        nvp: 'Upgraded: 56',
-                                        dvp: 'Upgraded: 56',
-                                        vo: 'Upgraded: 56',
-                                        nvo: 'Upgraded: 56',
-                                        dvo: 'Upgraded: 56',
+                                        progress: '',
+                                        vp: '',
+                                        nvp: '',
+                                        dvp: '',
+                                        vo: '',
+                                        nvo: '',
+                                        dvo: '',
                                         et: ''
                                     }]
 
-                                    const data2 = myPremData.find(e => e.idfromtable === record.id)
+                                    const data2 = myPremData.find(e => e.idfromtable === rec.id)
 
                                     if (data2 !== undefined) {
                                         data = [data2]
                                     }
 
-                                    return record.class === 'Чистые' && <Table columns={columns} dataSource={data} pagination={false} bordered />
-                                }
-                            
-                                
+                                    return (
+                                        (rec.class === 'Чистые' ||  rec.class === 'Контролируемые') ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
+                                        rec.class === 'Складские' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> : null
+                                    )
+                                } else if (rec.objectType === 'equipment') {
+                                    let data: any = [{
+                                        key: '1',
+                                        progress: '',
+                                        vp: '',
+                                        nvp: '',
+                                        dvp: '',
+                                        vo: '',
+                                        nvo: '',
+                                        dvo: '',
+                                        et: ''
+                                    }]
 
+                                    const data2 = myEquipData.find(e => e.idfromtable === rec.id)
+
+                                    if (data2 !== undefined) {
+                                        data = [data2]
+                                    }
+
+                                    return (
+                                        rec.class === 'Термостаты' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
+                                        rec.class === 'Тех. оборудование' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
+                                        rec.class === 'Лаб. оборудование' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
+                                        rec.class === 'Термоконтейнеры' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
+                                        rec.class === 'Авторефрижераторы' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
+                                        <Table columns={columns} dataSource={data} pagination={false} bordered /> 
+                                    )
+                                }
                             }
                         }}
                         dataSource={data}

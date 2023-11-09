@@ -30,7 +30,7 @@ export const App: React.FC = () => {
     <Router>
       <Provider store={store}>
         <ConfigProvider theme={{algorithm: typeTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm }} >
-          <Layout style={{height: '100vh'}}>
+          <Layout style={{minHeight: '100vh'}}>
             <Header1 swithTheme={handleThemeChange} typeTheme={typeTheme} />
             <Layout>
               <Routes>

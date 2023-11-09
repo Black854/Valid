@@ -3,8 +3,10 @@ import dayjs from 'dayjs'
 import { format } from 'date-fns'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { updateReestrDate } from '../../redux/equipmentReducer'
+import { updateReestrDateEquip } from '../../redux/equipmentReducer'
 import { AppDispatch } from '../../redux/store'
+import { updateReestrDatePrem } from '../../redux/premisesReducer'
+import { datePickerLocale } from './datePickerLocale'
 const { Text } = Typography
 
 type ConvertDateType = {
@@ -12,9 +14,10 @@ type ConvertDateType = {
     id: string
     equipId: string
     dateType: 'dvp' | 'dvo'
+    group: 'equipment' | 'premises' | 'systems' | 'processes'
 }
 
-export const ConvertDate: React.FC<ConvertDateType> = ({id, equipId, date, dateType}) => {
+export const ConvertDate: React.FC<ConvertDateType> = ({id, equipId, date, dateType, group}) => {
     const [isPopconfirmVisible, setPopconfirmVisible] = useState(false)
     const [selectedDate, setSelectedDate] = useState('')
     const dispatch: AppDispatch = useDispatch()
@@ -28,7 +31,8 @@ export const ConvertDate: React.FC<ConvertDateType> = ({id, equipId, date, dateT
     const handleConfirm = () => {
         const date = new Date(selectedDate)
         const formattedSelectedDate = format(date, 'yyyy-MM-dd') // Текущая дата для сравнения с датой объекта
-        dispatch(updateReestrDate(id, equipId, formattedSelectedDate, dateType))
+        group === 'equipment' && dispatch(updateReestrDateEquip(id, equipId, formattedSelectedDate, dateType))
+        group === 'premises' && dispatch(updateReestrDatePrem(id, equipId, formattedSelectedDate, dateType))
         // Закрыть Popconfirm после подтверждения
         setPopconfirmVisible(false)
     }
@@ -69,7 +73,7 @@ export const ConvertDate: React.FC<ConvertDateType> = ({id, equipId, date, dateT
                         open={isPopconfirmVisible}
 
                     >
-                        <DatePicker size='small'  allowClear={false} format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false} onChange={(date) => handleDateChange(date)}  />
+                        <DatePicker size='small' locale={datePickerLocale} allowClear={false} format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false} onChange={(date) => handleDateChange(date)}  />
                     </Popconfirm>
         }
     }

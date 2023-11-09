@@ -1,10 +1,14 @@
-import { DatePicker, Input, Popconfirm, Typography } from 'antd'
-import dayjs from 'dayjs'
+import { ConfigProvider, DatePicker, Input, Popconfirm, Typography } from 'antd'
 import { format } from 'date-fns'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../redux/store'
-import { updateReestrDate } from '../../redux/premisesReducer'
+import { updateReestrDatePrem } from '../../redux/premisesReducer'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ru'
+import { datePickerLocale } from './datePickerLocale'
+
+dayjs.locale('ru')
 const { Text } = Typography
 
 type ConvertDateType = {
@@ -12,14 +16,14 @@ type ConvertDateType = {
     id: string
     premId: string
     dateType: 'dvp' | 'dvo'
+    group: 'equipment' | 'premises' | 'systems' | 'processes'
 }
 
-export const ConvertPremDate: React.FC<ConvertDateType> = ({id, premId, date, dateType}) => {
+export const DatePickerForWork: React.FC<ConvertDateType> = ({id, premId, date, dateType, group}) => {
     const [isPopconfirmVisible, setPopconfirmVisible] = useState(false)
     const [selectedDate, setSelectedDate] = useState('')
     const dispatch: AppDispatch = useDispatch()
 
-    console.log(date)
 
     const handleDateChange = (date: any) => {
         setSelectedDate(date)
@@ -28,8 +32,9 @@ export const ConvertPremDate: React.FC<ConvertDateType> = ({id, premId, date, da
 
     const handleConfirm = () => {
         const date = new Date(selectedDate)
-        const formattedSelectedDate = format(date, 'yyyy-MM-dd') // Текущая дата для сравнения с датой объекта
-        dispatch(updateReestrDate(id, premId, formattedSelectedDate, dateType))
+        let formattedSelectedDate = format(date, 'yyyy-MM-dd') // Текущая дата для сравнения с датой объекта
+        formattedSelectedDate === '1970-01-01' && (formattedSelectedDate = '')
+        dispatch(updateReestrDatePrem(id, premId, formattedSelectedDate, dateType))
         // Закрыть Popconfirm после подтверждения
         setPopconfirmVisible(false)
     }
@@ -39,7 +44,14 @@ export const ConvertPremDate: React.FC<ConvertDateType> = ({id, premId, date, da
     }
 
     let dateFormat ="DD.MM.YYYY"
-
+    
+    const disabledDate = (current: any) => {
+        // Получаем текущую дату
+        const today = dayjs()
+      
+        // Сравниваем текущую дату с выбранной датой и заблокируем все даты после сегодняшней
+        return current && current > today //добавить  сюда еще блокирование дат раньше предыдущего отчета
+    }
 
     if (date) {
         let parts = date.split('.') // Разделяем строку по точкам
@@ -52,7 +64,7 @@ export const ConvertPremDate: React.FC<ConvertDateType> = ({id, premId, date, da
             const date = `${day}.${month}.${year}`
             return <Text>{date}</Text>
         }
-    
+
         parts = date.split('-') // Разделяем строку по точкам
         if (parts.length === 3) {
             // Проверяем, что строка содержит три части: день, месяц и год
@@ -61,7 +73,6 @@ export const ConvertPremDate: React.FC<ConvertDateType> = ({id, premId, date, da
             const day = parts[2]
             // Создаем новую дату в формате "dd.MM.yyyy"
             const date = `${day}.${month}.${year}`
-            
             return <Popconfirm
                         title="Подтверждение изменений"
                         description="Вы уверены, что хотите изменить данные?"
@@ -71,21 +82,22 @@ export const ConvertPremDate: React.FC<ConvertDateType> = ({id, premId, date, da
                         cancelText="Нет"
                         open={isPopconfirmVisible}
                         >
-                        <DatePicker size='small'  allowClear={false} format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false} onChange={(date) => handleDateChange(date)}  />
+                            <DatePicker locale={datePickerLocale} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} onChange={(date) => handleDateChange(date)}  />
+                            
                     </Popconfirm>
         }
-    } else { // плохой метод. нужен условный вывод только для ворк листа
+    } else {
         return <Popconfirm
-                        title="Подтверждение изменений"
-                        description="Вы уверены, что хотите изменить данные?"
-                        onConfirm={handleConfirm}
-                        onCancel={handleCancel}
-                        okText="Да"
-                        cancelText="Нет"
-                        open={isPopconfirmVisible}
+                    title="Подтверждение изменений"
+                    description="Вы уверены, что хотите изменить данные?"
+                    onConfirm={handleConfirm}
+                    onCancel={handleCancel}
+                    okText="Да"
+                    cancelText="Нет"
+                    open={isPopconfirmVisible}
                     >
-                        <DatePicker size='small' allowClear={false} format={'DD.MM.YYYY'} bordered={false} onChange={(date) => handleDateChange(date)}  />
-                    </Popconfirm>
+                    <DatePicker locale={datePickerLocale} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} onChange={(date) => handleDateChange(date)}  />
+                </Popconfirm>
     }
     return <></>
 }

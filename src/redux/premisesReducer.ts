@@ -248,14 +248,14 @@ export const updatePremInterval = (id: string, interval: string): ThunkType => a
     dispatch (premActions.setIsIntervalLoading(false))
 }
 
-export const updateReestrDate = (id: string, premId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
+export const updateReestrDatePrem = (id: string, premId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
     dispatch (premActions.setIsReestrDataLoading(true))
     let data = await premisesAPI.updateReestrDate(id, premId, date, dateType)
     dispatch (premActions.pushReestrData(data.items))
     dispatch (premActions.setIsReestrDataLoading(false))
 }
 
-export const updateReestrDocsCode = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
+export const updateReestrDocsCodePrem = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
     dispatch (premActions.setIsReestrDataLoading(true))
     let data = await premisesAPI.updateReestrDocsCode(id, recordId, text, dataType)
     dispatch (premActions.pushReestrData(data.items))

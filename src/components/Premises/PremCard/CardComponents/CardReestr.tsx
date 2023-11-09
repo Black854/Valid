@@ -5,7 +5,7 @@ import { ColumnsType } from "antd/es/table"
 import { ConvertDate } from "../../../helpers/convertDate"
 import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons'
 import { AppDispatch } from "../../../../redux/store"
-import { ReestrType, deleteDocument, updateReestrDocsCode, uploadDocument } from "../../../../redux/premisesReducer"
+import { ReestrType, deleteDocument, updateReestrDocsCodePrem, uploadDocument } from "../../../../redux/premisesReducer"
 const { Text } = Typography
 
 type DataType = Array<ReestrType>
@@ -29,7 +29,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
         })
     }
     const handleUpdateDocsCode = (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
-        dispatch(updateReestrDocsCode(id, recordId, text, dataType))
+        dispatch(updateReestrDocsCodePrem(id, recordId, text, dataType))
     }
     let columns: ColumnsType<ReestrType> = [
         {
@@ -86,7 +86,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
         {
             title: <Text strong style={{fontSize: '12pt'}}>Дата</Text>,
             dataIndex: 'dvp',
-            render: (dvp, record) => { return <ConvertDate date={dvp} equipId={id} dateType='dvp' id={record.id} key={record.id} /> },
+            render: (dvp, record) => { return <ConvertDate date={dvp} equipId={id} dateType='dvp' id={record.id} key={record.id} group="premises" /> },
             width: '11%',
             align: 'center',
         },
@@ -149,7 +149,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 const dateB: any = new Date(b.dvo);
                 return dateA - dateB;
             },
-            render: (dvo, record) => { return <ConvertDate date={dvo} equipId={id} dateType='dvo' id={record.id} key={record.id} /> },
+            render: (dvo, record) => { return <ConvertDate date={dvo} equipId={id} dateType='dvo' id={record.id} key={record.id} group="premises" /> },
             sortDirections: ['ascend', 'descend'],
             defaultSortOrder: 'descend',
             width: '11%',
