@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../redux/store'
-import { updateReestrDatePrem } from '../../redux/premisesReducer'
+import { getCurrentPremData, updateReestrDatePrem } from '../../redux/premisesReducer'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
 import { datePickerLocale } from './datePickerLocale'
@@ -17,9 +17,10 @@ type ConvertDateType = {
     premId: string
     dateType: 'dvp' | 'dvo'
     group: 'equipment' | 'premises' | 'systems' | 'processes'
+    myDataIdArray: any
 }
 
-export const DatePickerForWork: React.FC<ConvertDateType> = ({id, premId, date, dateType, group}) => {
+export const DatePickerForWork: React.FC<ConvertDateType> = ({id, premId, date, dateType, group, myDataIdArray}) => {
     const [isPopconfirmVisible, setPopconfirmVisible] = useState(false)
     const [selectedDate, setSelectedDate] = useState('')
     const dispatch: AppDispatch = useDispatch()
@@ -30,13 +31,16 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({id, premId, date, 
         setPopconfirmVisible(true)
     }
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         const date = new Date(selectedDate)
         let formattedSelectedDate = format(date, 'yyyy-MM-dd') // Текущая дата для сравнения с датой объекта
         formattedSelectedDate === '1970-01-01' && (formattedSelectedDate = '')
-        dispatch(updateReestrDatePrem(id, premId, formattedSelectedDate, dateType))
         // Закрыть Popconfirm после подтверждения
         setPopconfirmVisible(false)
+        await dispatch(updateReestrDatePrem(id, premId, formattedSelectedDate, dateType))
+        if (group === 'premises') {
+            await dispatch(getCurrentPremData(myDataIdArray))
+        }
     }
 
     const handleCancel = () => {
@@ -82,8 +86,7 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({id, premId, date, 
                         cancelText="Нет"
                         open={isPopconfirmVisible}
                         >
-                            <DatePicker locale={datePickerLocale} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} onChange={(date) => handleDateChange(date)}  />
-                            
+                        <DatePicker locale={datePickerLocale} style={{ borderColor: '#87d068', accentColor: 'green', color: 'red' }} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} value={dayjs(date, dateFormat)} onChange={(date) => handleDateChange(date)}  /> 
                     </Popconfirm>
         }
     } else {

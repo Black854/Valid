@@ -5,7 +5,7 @@ import { ColumnsType } from "antd/es/table"
 import { ConvertDate } from "../../../helpers/convertDate"
 import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons'
 import { AppDispatch } from "../../../../redux/store"
-import { ReestrType, deleteDocument, updateReestrDocsCodePrem, uploadDocument } from "../../../../redux/premisesReducer"
+import { ReestrType, deletePremDocument, updateReestrDocsCodePrem, uploadPremDocument } from "../../../../redux/premisesReducer"
 const { Text } = Typography
 
 type DataType = Array<ReestrType>
@@ -38,7 +38,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
             render: (nvp, record) => {
                 if (record.vp) {
                     const handleDeleteDocument = () => {
-                        dispatch(deleteDocument(id, record.id, 'vp', record.vp))
+                        dispatch(deletePremDocument(id, record.id, 'vp', record.vp))
                     }
                     return  <>
                                 <Text style={{width: '90%'}} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp')}}>
@@ -68,7 +68,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 
                             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                                 // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                                dispatch(uploadDocument(id, record.id, 'vp', e.currentTarget.files[0]))
+                                dispatch(uploadPremDocument(id, record.id, 'vp', e.currentTarget.files[0]))
                             } else {
                                 // Файл имеет недопустимое расширение
                                 error(fileName)
@@ -96,7 +96,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
             render: (nvo, record) => {
                 if (record.vo) {
                     const handleDeleteDocument = () => {
-                        dispatch(deleteDocument(id, record.id, 'vo', record.vo))
+                        dispatch(deletePremDocument(id, record.id, 'vo', record.vo))
                     }
                     return  <>
                                 <Text style={{width: '95%'}} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo')}}>{nvo}</Text>
@@ -124,7 +124,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 
                             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                                 // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                                dispatch(uploadDocument(id, record.id, 'vo', e.currentTarget.files[0]))
+                                dispatch(uploadPremDocument(id, record.id, 'vo', e.currentTarget.files[0]))
                             } else {
                                 // Файл имеет недопустимое расширение
                                 error(fileName)
@@ -163,7 +163,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
         render: (pam, record) =>  {
             if (pam) {
                 const handleDeleteDocument = () => {
-                    dispatch(deleteDocument(id, record.id, 'pam', pam))
+                    dispatch(deletePremDocument(id, record.id, 'pam', pam))
                 }
                 return  <>
                             <Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + pam}>Просмотр</Button>
@@ -190,7 +190,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
             
                         if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                             // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                            dispatch(uploadDocument(id, record.id, 'pam', e.currentTarget.files[0]))
+                            dispatch(uploadPremDocument(id, record.id, 'pam', e.currentTarget.files[0]))
                         } else {
                             // Файл имеет недопустимое расширение
                             error(fileName)

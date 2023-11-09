@@ -269,14 +269,14 @@ export const updateCleanPremItemData = (premId: string, recordId: string, text: 
     dispatch (premActions.setIsCleanPremDataLoading(false))
 }
 
-export const uploadDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
+export const uploadPremDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
     dispatch (premActions.setIsReestrDataLoading(true))
     let data = await premisesAPI.uploadDocument(objectId, recordId, dataType, file)
     dispatch (premActions.pushReestrData(data.items))
     dispatch (premActions.setIsReestrDataLoading(false))
 }
 
-export const deleteDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', url: string): ThunkType => async (dispatch) => {
+export const deletePremDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', url: string): ThunkType => async (dispatch) => {
     dispatch (premActions.setIsReestrDataLoading(true))
     let data = await premisesAPI.deleteDocument(objectId, recordId, dataType, url)
     dispatch (premActions.pushReestrData(data.items))
@@ -322,6 +322,10 @@ export const editCleanPremGroup = (cleanTab: string, dataItems: Array<string>, c
 export const getCurrentPremData = (myPremDataIdArray: Array<string>): ThunkType => async (dispatch) => {
     let data = await premisesAPI.getCurrentPremData(myPremDataIdArray)
     dispatch(premActions.setPremIdArrayAtWorkAtCurrentUser(data.items))
+}
+
+export const updatePremWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string): ThunkType => async (dispatch) => {
+    await premisesAPI.updatePremWorkData(recordId, changeParam, text)
 }
 
 type ActionTypes = InferActionsTypes<typeof premActions>

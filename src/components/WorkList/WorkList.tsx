@@ -1,4 +1,4 @@
-import { Typography, Col, Image, Row, Spin, Table, Badge, Space, Dropdown, TableColumnsType, Progress } from "antd"
+import { Typography, Col, Image, Row, Spin, Table, Badge, Space, Dropdown, TableColumnsType, Progress, Button, Popconfirm, message } from "antd"
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
@@ -9,10 +9,10 @@ import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
 import React, { useEffect } from "react"
 import { AppDispatch } from "../../redux/store"
-import { ReestrType, getCurrentPremData, getPremises, getReestrData, updateReestrDocsCodePrem } from "../../redux/premisesReducer"
+import { ReestrType, deletePremDocument, getCurrentPremData, getPremises, getReestrData, updatePremWorkData, updateReestrDocsCodePrem, uploadPremDocument } from "../../redux/premisesReducer"
 import { getCurrentEquipData, getEquipData } from "../../redux/equipmentSelectors"
 import { getAuthUserNameSelector } from "../../redux/authSelectors"
-import { DownOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons'
+import { DownOutlined, DeleteOutlined, UploadOutlined, FileWordOutlined } from '@ant-design/icons'
 import { getEquipment } from "../../redux/equipmentReducer"
 import { ConvertDate } from "../helpers/convertDate"
 import { DatePickerForWork } from "../helpers/DatePickerForWork"
@@ -20,6 +20,15 @@ import { DatePickerForWork } from "../helpers/DatePickerForWork"
 const { Text } = Typography
   
 export const WorkList: React.FC = () => {
+    const [messageApi, contextHolder] = message.useMessage()
+
+    const error = (fileName: string) => {
+        messageApi.open({
+            type: 'error',
+            content: `Расширение файла ${fileName} не соответствует разрешенным`,
+        })
+    }
+
     const dispatch: AppDispatch = useDispatch()
 
     const premData = useSelector(getPremData)
@@ -40,6 +49,7 @@ export const WorkList: React.FC = () => {
         name: e.name,
         nomer: e.nomer,
         class: e.class,
+        mode: e.mode,
         date: e.date,
         ar: e.ar,
         foto: e.foto,
@@ -54,6 +64,7 @@ export const WorkList: React.FC = () => {
         name: e.name,
         nomer: e.nomer,
         class: e.groupp,
+        mode: 'none',
         date: e.date,
         ar: e.ar,
         foto: e.foto,
@@ -107,7 +118,50 @@ export const WorkList: React.FC = () => {
         },
         {
             title: <Text strong style={{fontSize: '12pt'}}>Прогресс</Text>,
-            render: (text, record, index) => <Progress percent={70} size="small" status="normal" />,
+            render: (text, record, index) => {
+                let a: number = 0
+                let b: number = 1
+                const thisObject = myPremData.find(e => e.idfromtable === record.id)
+                if (record.objectType === 'premises') {
+                    if (record.class === 'Чистые' || record.class === 'Контролируемые') {
+                        b = 7
+                        a += thisObject?.vp !== '' ? 1 : 0
+                        a += thisObject?.nvp !== '' ? 1 : 0
+                        a += thisObject?.dvp !== '' ? 1 : 0
+                        a += thisObject?.vo !== '' ? 1 : 0
+                        a += thisObject?.nvo !== '' ? 1 : 0
+                        a += thisObject?.dvo !== '' ? 1 : 0
+                        a += thisObject?.et !== '' ? 1 : 0
+                    } else {
+                        if (record.mode === '2 - 8 ºC' || record.mode === 'минус 30 - 35 ºC') {
+                            b = 10
+                            a += thisObject?.vp !== '' ? 1 : 0
+                            a += thisObject?.nvp !== '' ? 1 : 0
+                            a += thisObject?.dvp !== '' ? 1 : 0
+                            a += thisObject?.vo !== '' ? 1 : 0
+                            a += thisObject?.nvo !== '' ? 1 : 0
+                            a += thisObject?.dvo !== '' ? 1 : 0
+                            a += thisObject?.et !== '' ? 1 : 0
+                            a += thisObject?.season !== '' ? 1 : 0
+                            a += thisObject?.pam !== '' ? 1 : 0
+                            a += thisObject?.pam2 !== '' ? 1 : 0
+                        } else {
+                            b = 8
+                            a += thisObject?.vp !== '' ? 1 : 0
+                            a += thisObject?.nvp !== '' ? 1 : 0
+                            a += thisObject?.dvp !== '' ? 1 : 0
+                            a += thisObject?.vo !== '' ? 1 : 0
+                            a += thisObject?.nvo !== '' ? 1 : 0
+                            a += thisObject?.dvo !== '' ? 1 : 0
+                            a += thisObject?.et !== '' ? 1 : 0
+                            a += thisObject?.season !== '' ? 1 : 0
+                        }
+                    }
+                }
+                
+                let c = Math.round((a/b)*100)
+                return <Progress percent={c} size="small" status={c === 100 ? 'success' : 'normal'} />
+            },
             align: 'center',
         },
         {
@@ -147,6 +201,7 @@ export const WorkList: React.FC = () => {
     }
     return (
         <Content style={{padding: '20px 0',  marginBottom: '60px' }}>
+            {contextHolder}
             <Row>
                 <Col span={22} push={1}>
                     <Table
@@ -166,25 +221,68 @@ export const WorkList: React.FC = () => {
                                     et: string
                                 }
 
-                                const handleUpdateDocsCode = (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
-                                    rec.objectType === 'premises' && dispatch(updateReestrDocsCodePrem(rec.id, recordId, text, dataType))
+                                const handleUpdateDocsCode = async (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
+                                    if (rec.objectType === 'premises') {
+                                        await dispatch(updateReestrDocsCodePrem(rec.id, recordId, text, dataType))
+                                        await dispatch(getCurrentPremData(myPremDataIdArray))
+                                    }
                                 }
 
                                 const columns: TableColumnsType<ExpandedDataType> = [
-                                    {
-                                        title: 'Прогресс',
-                                        dataIndex: 'progress',
-                                        key: 'progress',
-                                        align: 'center',
-                                    },
                                     { 
                                         title: 'Протокол',
                                         dataIndex: 'vp',
                                         key: 'vp',
                                         align: 'center',
-                                        render: (vp) => {
-                                            return vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
-                                        }
+                                        render: (vp, record) => {
+                                            if (vp !== '') {
+                                                const fileSegments = vp.split('/')
+                                                const fileName = fileSegments[fileSegments.length - 1]
+                                                const handleDeleteDocument = async () => {
+                                                    await dispatch(deletePremDocument(rec.id, record.id, 'vp', vp))
+                                                    await dispatch(getCurrentPremData(myPremDataIdArray))
+                                                }
+                                                return  <>
+                                                    <Text style={{width: '95%'}}>{fileName}</Text>
+                                                    <Button size="small" icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + vp} />
+                                                    <Popconfirm
+                                                        title='Подтвердите удаление'
+                                                        description='Вы уверены, что хотите удалить документ?'
+                                                        okText='Да'
+                                                        cancelText='Нет'
+                                                        onConfirm={handleDeleteDocument}
+                                                        >
+                                                        <Button size="small" danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="link" />
+                                                    </Popconfirm>
+                                                </>
+                                            } else {
+                                                let uploadDocumentRef: any = null
+                                                const onSelectDocument = async (e: any) => {
+                                                    if (e.currentTarget.files.length > 0) {
+                                                        const fileName = e.currentTarget.files[0].name
+                                                        // Получите расширение файла, разделенное точкой
+                                                        const fileExtension = fileName.split('.').pop()
+                                            
+                                                        // Список разрешенных расширений
+                                                        const allowedExtensions = ['doc', 'docx']
+                                            
+                                                        if (allowedExtensions.includes(fileExtension.toLowerCase())) {
+                                                            // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
+                                                            await dispatch(uploadPremDocument(rec.id, record.id, 'vp', e.currentTarget.files[0]))
+                                                            await dispatch(getCurrentPremData(myPremDataIdArray))
+                                                        } else {
+                                                            // Файл имеет недопустимое расширение
+                                                            error(fileName)
+                                                        }
+                                                    }
+                                                }
+                                                return  <>
+                                                    <Text type="warning">Не загружен</Text>
+                                                    <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                                                    <Button size="small" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} />
+                                                </>
+                                            }
+                                        },
                                     },
                                     {
                                         title: 'Код протокола',
@@ -193,7 +291,12 @@ export const WorkList: React.FC = () => {
                                         align: 'center',
                                         render: (nvp, record) => {
                                             return nvp === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp'), text: ''}} type="warning">Нет данных</Text> :
-                                                                <Text type="success" editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp')}}>{nvp}</Text>
+                                                                <Text   type="success"
+                                                                        editable={{
+                                                                            onChange: (text: string) => { handleUpdateDocsCode(record.id, text, 'nvp')}
+                                                                        }}>
+                                                                    {nvp}
+                                                                </Text>
                                         } 
                                     },
                                     {
@@ -202,7 +305,7 @@ export const WorkList: React.FC = () => {
                                         key: 'dvp',
                                         align: 'center',
                                         render: (dvp, record) => {
-                                            return <DatePickerForWork date={dvp} premId={record.id} dateType='dvp' id={record.id} key={record.id} group={rec.objectType} />
+                                            return <DatePickerForWork date={dvp} premId={record.id} dateType='dvp' id={record.id} key={record.id} group={rec.objectType} myDataIdArray={myPremDataIdArray} />
                                         }
                                     },
                                     {
@@ -210,9 +313,54 @@ export const WorkList: React.FC = () => {
                                         dataIndex: 'vo',
                                         key: 'vo',
                                         align: 'center',
-                                        render: (vp) => {
-                                            return vp === '' ? <Text type="warning">Не загружен</Text> : <Text type="success">Загружен</Text>
-                                        }
+                                        render: (vo, record) => {
+                                            if (vo !== '') {
+                                                const fileSegments = vo.split('/')
+                                                const fileName = fileSegments[fileSegments.length - 1]
+                                                const handleDeleteDocument = async () => {
+                                                    await dispatch(deletePremDocument(rec.id, record.id, 'vo', vo))
+                                                    await dispatch(getCurrentPremData(myPremDataIdArray))
+                                                }
+                                                return  <>
+                                                            <Text type="success" style={{width: '95%'}}>{fileName}</Text>
+                                                            <Button size="small" icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + vo} />
+                                                            <Popconfirm
+                                                                title='Подтвердите удаление'
+                                                                description='Вы уверены, что хотите удалить документ?'
+                                                                okText='Да'
+                                                                cancelText='Нет'
+                                                                onConfirm={handleDeleteDocument}
+                                                                >
+                                                                <Button size="small" danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="link" />
+                                                            </Popconfirm>
+                                                        </>
+                                            } else {
+                                                let uploadDocumentRef: any = null
+                                                const onSelectDocument = async (e: any) => {
+                                                    if (e.currentTarget.files.length > 0) {
+                                                        const fileName = e.currentTarget.files[0].name
+                                                        // Получите расширение файла, разделенное точкой
+                                                        const fileExtension = fileName.split('.').pop()
+                                            
+                                                        // Список разрешенных расширений
+                                                        const allowedExtensions = ['doc', 'docx']
+                                            
+                                                        if (allowedExtensions.includes(fileExtension.toLowerCase())) {
+                                                            // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
+                                                            await dispatch(uploadPremDocument(rec.id, record.id, 'vo', e.currentTarget.files[0]))
+                                                            await dispatch(getCurrentPremData(myPremDataIdArray))
+                                                        } else {
+                                                            // Файл имеет недопустимое расширение
+                                                            error(fileName)
+                                                        }
+                                                    }
+                                                }
+                                                return  <>
+                                                            <Text type="warning">Не загружен</Text>
+                                                            <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                                                            <Button size="small" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
+                                            }
+                                        },
                                     },
                                     {
                                         title: 'Код отчета',
@@ -221,7 +369,12 @@ export const WorkList: React.FC = () => {
                                         align: 'center',
                                         render: (nvo, record) => {
                                             return nvo === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo'), text: ''}} type="warning">Нет данных</Text> :
-                                                                <Text type="success" editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo')}}>{nvo}</Text>
+                                                                <Text   type="success"
+                                                                        editable={{
+                                                                            onChange: (text: string) => { handleUpdateDocsCode(record.id, text, 'nvo') }
+                                                                        }}>
+                                                                    {nvo}
+                                                                </Text>
                                         }
                                     },
                                     {
@@ -230,7 +383,7 @@ export const WorkList: React.FC = () => {
                                         key: 'dvo',
                                         align: 'center',
                                         render: (dvo, record) => {
-                                            return <DatePickerForWork date={dvo} premId={record.id} dateType='dvo' id={record.id} key={record.id} group={rec.objectType} />
+                                            return <DatePickerForWork date={dvo} premId={record.id} dateType='dvo' id={record.id} key={record.id} group={rec.objectType} myDataIdArray={myPremDataIdArray} />
                                         }
                                     },
                                     {
@@ -238,8 +391,18 @@ export const WorkList: React.FC = () => {
                                         dataIndex: 'et',
                                         key: 'et',
                                         align: 'center',
-                                        render: (et) => {
-                                            return et === '' ? <Text type="warning">Не приклеена</Text> : <Text type="success">Приклеена</Text>
+                                        render: (et, record) => {
+                                            const handleLabelSwitch = async (pol: string) => {
+                                                await dispatch(updatePremWorkData(record.id, 'et', pol))
+                                                await dispatch(getCurrentPremData(myPremDataIdArray))
+                                            }
+                                            return et === '' ?
+                                                <Button onClick={() => handleLabelSwitch('1')} type="default">
+                                                    <Text type="warning">Не приклеена</Text>
+                                                </Button> :
+                                                <Button onClick={() => handleLabelSwitch('')} type="default">
+                                                    <Text type="success">Приклеена</Text>
+                                                </Button>
                                         }
                                     },
                                 ]
@@ -267,34 +430,35 @@ export const WorkList: React.FC = () => {
                                         (rec.class === 'Чистые' ||  rec.class === 'Контролируемые') ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
                                         rec.class === 'Складские' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> : null
                                     )
-                                } else if (rec.objectType === 'equipment') {
-                                    let data: any = [{
-                                        key: '1',
-                                        progress: '',
-                                        vp: '',
-                                        nvp: '',
-                                        dvp: '',
-                                        vo: '',
-                                        nvo: '',
-                                        dvo: '',
-                                        et: ''
-                                    }]
+                                } 
+                                // else if (rec.objectType === 'equipment') {
+                                //     let data: any = [{
+                                //         key: '1',
+                                //         progress: '',
+                                //         vp: '',
+                                //         nvp: '',
+                                //         dvp: '',
+                                //         vo: '',
+                                //         nvo: '',
+                                //         dvo: '',
+                                //         et: ''
+                                //     }]
 
-                                    const data2 = myEquipData.find(e => e.idfromtable === rec.id)
+                                //     const data2 = myEquipData.find(e => e.idfromtable === rec.id)
 
-                                    if (data2 !== undefined) {
-                                        data = [data2]
-                                    }
+                                //     if (data2 !== undefined) {
+                                //         data = [data2]
+                                //     }
 
-                                    return (
-                                        rec.class === 'Термостаты' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
-                                        rec.class === 'Тех. оборудование' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
-                                        rec.class === 'Лаб. оборудование' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
-                                        rec.class === 'Термоконтейнеры' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
-                                        rec.class === 'Авторефрижераторы' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
-                                        <Table columns={columns} dataSource={data} pagination={false} bordered /> 
-                                    )
-                                }
+                                //     return (
+                                //         rec.class === 'Термостаты' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
+                                //         rec.class === 'Тех. оборудование' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
+                                //         rec.class === 'Лаб. оборудование' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
+                                //         rec.class === 'Термоконтейнеры' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
+                                //         rec.class === 'Авторефрижераторы' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
+                                //         <Table columns={columns} dataSource={data} pagination={false} bordered /> 
+                                //     )
+                                // }
                             }
                         }}
                         dataSource={data}

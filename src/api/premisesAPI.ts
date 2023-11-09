@@ -217,4 +217,14 @@ export const premisesAPI = {
             return response.data
         })
     },
+    updatePremWorkData (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string) {
+        const requestData = {
+            recordId,
+            changeParam,
+            text
+        }
+        return instance.post(`updatePremWorkData.php`, requestData, {}).then (response => {
+            return response.data
+        })
+    },
 }
