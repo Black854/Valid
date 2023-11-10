@@ -84,6 +84,8 @@ export const equipmentReducer = (state = initialState, action: ActionTypes): Ini
             return {...state, isReestrDataLoading: action.data}
         case 'equip/SET_IS_INTERVAL_LOADING':
             return {...state, isIntervalLoading: action.data}
+        case 'equip/SET_EQUIP_ID_ARRAY_AT_WORK_AT_CURRENT_USER':
+            return {...state, equipIdArrayAtWorkAtCurrentUser: action.data}
         default:
             return state
     }
@@ -207,25 +209,34 @@ export const updateReestrDateEquip = (id: string, equipId: string, date: string,
     dispatch (equipActions.setIsReestrDataLoading(false))
 }
 
-export const updateReestrDocsCode = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
+export const updateReestrDocsCodeEquip = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
     dispatch (equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.updateReestrDocsCode(id, recordId, text, dataType)
     dispatch (equipActions.pushReestrData(data.items))
     dispatch (equipActions.setIsReestrDataLoading(false))
 }
 
-export const uploadDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
+export const uploadEquipDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
     dispatch (equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.uploadDocument(objectId, recordId, dataType, file)
     dispatch (equipActions.pushReestrData(data.items))
     dispatch (equipActions.setIsReestrDataLoading(false))
 }
 
-export const deleteDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', url: string): ThunkType => async (dispatch) => {
+export const deleteEquipDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', url: string): ThunkType => async (dispatch) => {
     dispatch (equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.deleteDocument(objectId, recordId, dataType, url)
     dispatch (equipActions.pushReestrData(data.items))
     dispatch (equipActions.setIsReestrDataLoading(false))
+}
+
+export const getCurrentEquipData = (myEquipDataIdArray: Array<string>): ThunkType => async (dispatch) => {
+    let data = await equipmentAPI.getCurrentEquipData(myEquipDataIdArray)
+    dispatch(equipActions.setEquipIdArrayAtWorkAtCurrentUser(data.items))
+}
+
+export const updateEquipWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string): ThunkType => async (dispatch) => {
+    await equipmentAPI.updateEquipWorkData(recordId, changeParam, text)
 }
 
 type ActionTypes = InferActionsTypes<typeof equipActions>
@@ -242,4 +253,5 @@ const equipActions = {
     setIsGroupLoading: (data: boolean) => ({ type: 'equip/SET_IS_GROUP_LOADING', data } as const),
     setIsReestrDataLoading: (data: boolean) => ({ type: 'equip/SET_IS_REESTR_DATA_LOADING', data } as const),
     setIsIntervalLoading: (data: boolean) => ({ type: 'equip/SET_IS_INTERVAL_LOADING', data } as const),
+    setEquipIdArrayAtWorkAtCurrentUser: (data: any) => ({ type: 'equip/SET_EQUIP_ID_ARRAY_AT_WORK_AT_CURRENT_USER', data } as const),
 }

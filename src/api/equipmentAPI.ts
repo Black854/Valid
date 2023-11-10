@@ -145,4 +145,22 @@ export const equipmentAPI = {
             return response.data
         })
     },
+    getCurrentEquipData (myEquipDataIdArray: Array<string>) {
+        const requestData = {
+            myEquipDataIdArray
+        }
+        return instance.post(`getCurrentEquipData.php`, requestData, {}).then (response => {
+            return response.data
+        })
+    },
+    updateEquipWorkData (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string) {
+        const requestData = {
+            recordId,
+            changeParam,
+            text
+        }
+        return instance.post(`updateEquipWorkData.php`, requestData, {}).then (response => {
+            return response.data
+        })
+    },
 }

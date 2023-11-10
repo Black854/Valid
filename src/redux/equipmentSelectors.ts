@@ -49,6 +49,6 @@ export const getIsIntervalLoading = (state: AppStateType) => {
     return (state.equipment.isIntervalLoading)
 }
 
-export const getCurrentEquipData = (state: AppStateType) => {
+export const getCurrentEquipDataSelector = (state: AppStateType) => {
     return (state.equipment.equipIdArrayAtWorkAtCurrentUser)
 }

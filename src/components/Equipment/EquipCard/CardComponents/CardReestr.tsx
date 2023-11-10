@@ -1,6 +1,6 @@
 import { Button, Popconfirm, Table, Typography, message } from "antd"
 import { useDispatch } from "react-redux"
-import { deleteDocument, updateReestrDocsCode, uploadDocument } from "../../../../redux/equipmentReducer"
+import { deleteEquipDocument, updateReestrDocsCodeEquip, uploadEquipDocument } from "../../../../redux/equipmentReducer"
 import React from "react"
 import { ColumnsType } from "antd/es/table"
 import { ConvertDate } from "../../../helpers/convertDate"
@@ -41,7 +41,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
         })
     }
     const handleUpdateDocsCode = (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
-        dispatch(updateReestrDocsCode(id, recordId, text, dataType))
+        dispatch(updateReestrDocsCodeEquip(id, recordId, text, dataType))
     }
     let columns: ColumnsType<reestrDataItemType> = [
         {
@@ -50,7 +50,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
             render: (nvp, record) => {
                 if (record.vp) {
                     const handleDeleteDocument = () => {
-                        dispatch(deleteDocument(id, record.id, 'vp', record.vp))
+                        dispatch(deleteEquipDocument(id, record.id, 'vp', record.vp))
                     }
                     return  <>
                                 <Text style={{width: '90%'}} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp')}}>
@@ -80,7 +80,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 
                             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                                 // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                                dispatch(uploadDocument(id, record.id, 'vp', e.currentTarget.files[0]))
+                                dispatch(uploadEquipDocument(id, record.id, 'vp', e.currentTarget.files[0]))
                             } else {
                                 // Файл имеет недопустимое расширение
                                 error(fileName)
@@ -108,7 +108,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
             render: (nvo, record) => {
                 if (record.vo) {
                     const handleDeleteDocument = () => {
-                        dispatch(deleteDocument(id, record.id, 'vo', record.vo))
+                        dispatch(deleteEquipDocument(id, record.id, 'vo', record.vo))
                     }
                     return  <>
                                 <Text style={{width: '95%'}} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo')}}>{nvo}</Text>
@@ -136,7 +136,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 
                             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                                 // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                                dispatch(uploadDocument(id, record.id, 'vo', e.currentTarget.files[0]))
+                                dispatch(uploadEquipDocument(id, record.id, 'vo', e.currentTarget.files[0]))
                             } else {
                                 // Файл имеет недопустимое расширение
                                 error(fileName)
@@ -175,7 +175,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
         render: (pam, record) =>  {
             if (pam) {
                 const handleDeleteDocument = () => {
-                    dispatch(deleteDocument(id, record.id, 'pam', pam))
+                    dispatch(deleteEquipDocument(id, record.id, 'pam', pam))
                 }
                 return  <>
                             <Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + pam}>Просмотр</Button>
@@ -202,7 +202,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
             
                         if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                             // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                            dispatch(uploadDocument(id, record.id, 'pam', e.currentTarget.files[0]))
+                            dispatch(uploadEquipDocument(id, record.id, 'pam', e.currentTarget.files[0]))
                         } else {
                             // Файл имеет недопустимое расширение
                             error(fileName)

@@ -10,10 +10,10 @@ import { NavLink } from "react-router-dom"
 import React, { useEffect } from "react"
 import { AppDispatch } from "../../redux/store"
 import { ReestrType, deletePremDocument, getCurrentPremData, getPremises, getReestrData, updatePremWorkData, updateReestrDocsCodePrem, uploadPremDocument } from "../../redux/premisesReducer"
-import { getCurrentEquipData, getEquipData } from "../../redux/equipmentSelectors"
+import { getCurrentEquipDataSelector, getEquipData } from "../../redux/equipmentSelectors"
 import { getAuthUserNameSelector } from "../../redux/authSelectors"
 import { DownOutlined, DeleteOutlined, UploadOutlined, FileWordOutlined } from '@ant-design/icons'
-import { getEquipment } from "../../redux/equipmentReducer"
+import { deleteEquipDocument, getCurrentEquipData, getEquipment, updateEquipWorkData, updateReestrDocsCodeEquip, uploadEquipDocument } from "../../redux/equipmentReducer"
 import { ConvertDate } from "../helpers/convertDate"
 import { DatePickerForWork } from "../helpers/DatePickerForWork"
 
@@ -75,12 +75,15 @@ export const WorkList: React.FC = () => {
     const myEquipDataIdArray = equipNewData.map(e => e.id)
     
     const myPremData = useSelector(getCurrentPremDataSelector)
-    const myEquipData = useSelector(getCurrentEquipData)
+    const myEquipData = useSelector(getCurrentEquipDataSelector)
 
     if (myPremDataIdArray.length > 0 && myPremData.length === 0) {
         dispatch(getCurrentPremData(myPremDataIdArray))
     }
 
+    if (myEquipDataIdArray.length > 0 && myEquipData.length === 0) {
+        dispatch(getCurrentEquipData(myEquipDataIdArray))
+    }
 
     type DataType = typeof premNewData[0]
     const data: DataType[] = [...premNewData, ...equipNewData]
@@ -121,7 +124,8 @@ export const WorkList: React.FC = () => {
             render: (text, record, index) => {
                 let a: number = 0
                 let b: number = 1
-                const thisObject = myPremData.find(e => e.idfromtable === record.id)
+                const thisObject = record.objectType === 'premises' ? myPremData.find(e => e.idfromtable === record.id) :
+                record.objectType === 'equipment' ? myEquipData.find(e => e.idfromtable === record.id) : null
                 if (record.objectType === 'premises') {
                     if (record.class === 'Чистые' || record.class === 'Контролируемые') {
                         b = 7
@@ -156,6 +160,37 @@ export const WorkList: React.FC = () => {
                             a += thisObject?.et !== '' ? 1 : 0
                             a += thisObject?.season !== '' ? 1 : 0
                         }
+                    }
+                } else if (record.objectType === 'equipment') {
+                    if (record.class === 'Термостаты') {
+                        b = 9
+                        a += thisObject?.vp !== '' ? 1 : 0
+                        a += thisObject?.nvp !== '' ? 1 : 0
+                        a += thisObject?.dvp !== '' ? 1 : 0
+                        a += thisObject?.vo !== '' ? 1 : 0
+                        a += thisObject?.nvo !== '' ? 1 : 0
+                        a += thisObject?.dvo !== '' ? 1 : 0
+                        a += thisObject?.pam !== '' ? 1 : 0
+                        a += thisObject?.pam2 !== '' ? 1 : 0
+                        a += thisObject?.et !== '' ? 1 : 0
+                    } else if (record.class === 'Термоконтейнеры') {
+                        b = 7
+                        a += thisObject?.vp !== '' ? 1 : 0
+                        a += thisObject?.nvp !== '' ? 1 : 0
+                        a += thisObject?.dvp !== '' ? 1 : 0
+                        a += thisObject?.vo !== '' ? 1 : 0
+                        a += thisObject?.nvo !== '' ? 1 : 0
+                        a += thisObject?.dvo !== '' ? 1 : 0
+                        a += thisObject?.pam !== '' ? 1 : 0
+                    } else {
+                        b = 7
+                        a += thisObject?.vp !== '' ? 1 : 0
+                        a += thisObject?.nvp !== '' ? 1 : 0
+                        a += thisObject?.dvp !== '' ? 1 : 0
+                        a += thisObject?.vo !== '' ? 1 : 0
+                        a += thisObject?.nvo !== '' ? 1 : 0
+                        a += thisObject?.dvo !== '' ? 1 : 0
+                        a += thisObject?.et !== '' ? 1 : 0
                     }
                 }
                 
@@ -225,189 +260,196 @@ export const WorkList: React.FC = () => {
                                     if (rec.objectType === 'premises') {
                                         await dispatch(updateReestrDocsCodePrem(rec.id, recordId, text, dataType))
                                         await dispatch(getCurrentPremData(myPremDataIdArray))
+                                    } else if (rec.objectType === 'equipment') {
+                                        await dispatch(updateReestrDocsCodeEquip(rec.id, recordId, text, dataType))
+                                        await dispatch(getCurrentEquipData(myEquipDataIdArray))
                                     }
                                 }
 
-                                const columns: TableColumnsType<ExpandedDataType> = [
-                                    { 
-                                        title: 'Протокол',
-                                        dataIndex: 'vp',
-                                        key: 'vp',
-                                        align: 'center',
-                                        render: (vp, record) => {
-                                            if (vp !== '') {
-                                                const fileSegments = vp.split('/')
-                                                const fileName = fileSegments[fileSegments.length - 1]
-                                                const handleDeleteDocument = async () => {
-                                                    await dispatch(deletePremDocument(rec.id, record.id, 'vp', vp))
-                                                    await dispatch(getCurrentPremData(myPremDataIdArray))
-                                                }
-                                                return  <>
-                                                    <Text style={{width: '95%'}}>{fileName}</Text>
-                                                    <Button size="small" icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + vp} />
-                                                    <Popconfirm
-                                                        title='Подтвердите удаление'
-                                                        description='Вы уверены, что хотите удалить документ?'
-                                                        okText='Да'
-                                                        cancelText='Нет'
-                                                        onConfirm={handleDeleteDocument}
-                                                        >
-                                                        <Button size="small" danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="link" />
-                                                    </Popconfirm>
-                                                </>
-                                            } else {
-                                                let uploadDocumentRef: any = null
-                                                const onSelectDocument = async (e: any) => {
-                                                    if (e.currentTarget.files.length > 0) {
-                                                        const fileName = e.currentTarget.files[0].name
-                                                        // Получите расширение файла, разделенное точкой
-                                                        const fileExtension = fileName.split('.').pop()
-                                            
-                                                        // Список разрешенных расширений
-                                                        const allowedExtensions = ['doc', 'docx']
-                                            
-                                                        if (allowedExtensions.includes(fileExtension.toLowerCase())) {
-                                                            // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                                                            await dispatch(uploadPremDocument(rec.id, record.id, 'vp', e.currentTarget.files[0]))
-                                                            await dispatch(getCurrentPremData(myPremDataIdArray))
-                                                        } else {
-                                                            // Файл имеет недопустимое расширение
-                                                            error(fileName)
-                                                        }
-                                                    }
-                                                }
-                                                return  <>
-                                                    <Text type="warning">Не загружен</Text>
-                                                    <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
-                                                    <Button size="small" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} />
-                                                </>
-                                            }
-                                        },
-                                    },
-                                    {
-                                        title: 'Код протокола',
-                                        dataIndex: 'nvp',
-                                        key: 'nvp',
-                                        align: 'center',
-                                        render: (nvp, record) => {
-                                            return nvp === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp'), text: ''}} type="warning">Нет данных</Text> :
-                                                                <Text   type="success"
-                                                                        editable={{
-                                                                            onChange: (text: string) => { handleUpdateDocsCode(record.id, text, 'nvp')}
-                                                                        }}>
-                                                                    {nvp}
-                                                                </Text>
-                                        } 
-                                    },
-                                    {
-                                        title: 'Дата протокола',
-                                        dataIndex: 'dvp',
-                                        key: 'dvp',
-                                        align: 'center',
-                                        render: (dvp, record) => {
-                                            return <DatePickerForWork date={dvp} premId={record.id} dateType='dvp' id={record.id} key={record.id} group={rec.objectType} myDataIdArray={myPremDataIdArray} />
-                                        }
-                                    },
-                                    {
-                                        title: 'Отчет',
-                                        dataIndex: 'vo',
-                                        key: 'vo',
-                                        align: 'center',
-                                        render: (vo, record) => {
-                                            if (vo !== '') {
-                                                const fileSegments = vo.split('/')
-                                                const fileName = fileSegments[fileSegments.length - 1]
-                                                const handleDeleteDocument = async () => {
-                                                    await dispatch(deletePremDocument(rec.id, record.id, 'vo', vo))
-                                                    await dispatch(getCurrentPremData(myPremDataIdArray))
-                                                }
-                                                return  <>
-                                                            <Text type="success" style={{width: '95%'}}>{fileName}</Text>
-                                                            <Button size="small" icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + vo} />
-                                                            <Popconfirm
-                                                                title='Подтвердите удаление'
-                                                                description='Вы уверены, что хотите удалить документ?'
-                                                                okText='Да'
-                                                                cancelText='Нет'
-                                                                onConfirm={handleDeleteDocument}
-                                                                >
-                                                                <Button size="small" danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="link" />
-                                                            </Popconfirm>
-                                                        </>
-                                            } else {
-                                                let uploadDocumentRef: any = null
-                                                const onSelectDocument = async (e: any) => {
-                                                    if (e.currentTarget.files.length > 0) {
-                                                        const fileName = e.currentTarget.files[0].name
-                                                        // Получите расширение файла, разделенное точкой
-                                                        const fileExtension = fileName.split('.').pop()
-                                            
-                                                        // Список разрешенных расширений
-                                                        const allowedExtensions = ['doc', 'docx']
-                                            
-                                                        if (allowedExtensions.includes(fileExtension.toLowerCase())) {
-                                                            // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                                                            await dispatch(uploadPremDocument(rec.id, record.id, 'vo', e.currentTarget.files[0]))
-                                                            await dispatch(getCurrentPremData(myPremDataIdArray))
-                                                        } else {
-                                                            // Файл имеет недопустимое расширение
-                                                            error(fileName)
-                                                        }
-                                                    }
-                                                }
-                                                return  <>
-                                                            <Text type="warning">Не загружен</Text>
-                                                            <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
-                                                            <Button size="small" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
-                                            }
-                                        },
-                                    },
-                                    {
-                                        title: 'Код отчета',
-                                        dataIndex: 'nvo',
-                                        key: 'nvo',
-                                        align: 'center',
-                                        render: (nvo, record) => {
-                                            return nvo === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo'), text: ''}} type="warning">Нет данных</Text> :
-                                                                <Text   type="success"
-                                                                        editable={{
-                                                                            onChange: (text: string) => { handleUpdateDocsCode(record.id, text, 'nvo') }
-                                                                        }}>
-                                                                    {nvo}
-                                                                </Text>
-                                        }
-                                    },
-                                    {
-                                        title: 'Дата отчета',
-                                        dataIndex: 'dvo',
-                                        key: 'dvo',
-                                        align: 'center',
-                                        render: (dvo, record) => {
-                                            return <DatePickerForWork date={dvo} premId={record.id} dateType='dvo' id={record.id} key={record.id} group={rec.objectType} myDataIdArray={myPremDataIdArray} />
-                                        }
-                                    },
-                                    {
-                                        title: 'Этикетка',
-                                        dataIndex: 'et',
-                                        key: 'et',
-                                        align: 'center',
-                                        render: (et, record) => {
-                                            const handleLabelSwitch = async (pol: string) => {
-                                                await dispatch(updatePremWorkData(record.id, 'et', pol))
-                                                await dispatch(getCurrentPremData(myPremDataIdArray))
-                                            }
-                                            return et === '' ?
-                                                <Button onClick={() => handleLabelSwitch('1')} type="default">
-                                                    <Text type="warning">Не приклеена</Text>
-                                                </Button> :
-                                                <Button onClick={() => handleLabelSwitch('')} type="default">
-                                                    <Text type="success">Приклеена</Text>
-                                                </Button>
-                                        }
-                                    },
-                                ]
-
                                 if (rec.objectType === 'premises') {
+                                    const defaultColumns: TableColumnsType<ExpandedDataType> = [
+                                        {
+                                            title: 'Протокол',
+                                            dataIndex: 'vp',
+                                            key: 'vp',
+                                            align: 'center',
+                                            render: (vp, record) => {
+                                                if (vp !== '') {
+                                                    const fileSegments = vp.split('/')
+                                                    const fileName = fileSegments[fileSegments.length - 1]
+                                                    const handleDeleteDocument = async () => {
+                                                        await dispatch(deletePremDocument(rec.id, record.id, 'vp', vp))
+                                                        await dispatch(getCurrentPremData(myPremDataIdArray))
+                                                    }
+                                                    return  <>
+                                                        <Text type="success" style={{width: '95%'}}>{fileName}</Text>
+                                                        <Button size="small" icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + vp} />
+                                                        <Popconfirm
+                                                            title='Подтвердите удаление'
+                                                            description='Вы уверены, что хотите удалить документ?'
+                                                            okText='Да'
+                                                            cancelText='Нет'
+                                                            onConfirm={handleDeleteDocument}
+                                                            >
+                                                            <Button size="small" danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="link" />
+                                                        </Popconfirm>
+                                                    </>
+                                                } else {
+                                                    let uploadDocumentRef: any = null
+                                                    const onSelectDocument = async (e: any) => {
+                                                        if (e.currentTarget.files.length > 0) {
+                                                            const fileName = e.currentTarget.files[0].name
+                                                            // Получите расширение файла, разделенное точкой
+                                                            const fileExtension = fileName.split('.').pop()
+                                                
+                                                            // Список разрешенных расширений
+                                                            const allowedExtensions = ['doc', 'docx']
+                                                
+                                                            if (allowedExtensions.includes(fileExtension.toLowerCase())) {
+                                                                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
+                                                                await dispatch(uploadPremDocument(rec.id, record.id, 'vp', e.currentTarget.files[0]))
+                                                                await dispatch(getCurrentPremData(myPremDataIdArray))
+                                                            } else {
+                                                                // Файл имеет недопустимое расширение
+                                                                error(fileName)
+                                                            }
+                                                        }
+                                                    }
+                                                    return  <>
+                                                        <Text type="warning">Не загружен</Text>
+                                                        <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                                                        <Button size="small" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} />
+                                                    </>
+                                                }
+                                            },
+                                        },
+                                        {
+                                            title: 'Код протокола',
+                                            dataIndex: 'nvp',
+                                            key: 'nvp',
+                                            align: 'center',
+                                            render: (nvp, record) => {
+                                                return nvp === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp'), text: ''}} type="warning">Нет данных</Text> :
+                                                                    <Text   type="success"
+                                                                            editable={{
+                                                                                onChange: (text: string) => { handleUpdateDocsCode(record.id, text, 'nvp')}
+                                                                            }}>
+                                                                        {nvp}
+                                                                    </Text>
+                                            } 
+                                        },
+                                        {
+                                            title: 'Дата протокола',
+                                            dataIndex: 'dvp',
+                                            key: 'dvp',
+                                            align: 'center',
+                                            render: (dvp, record) => {
+                                                return <DatePickerForWork date={dvp} objectId={record.id} dateType='dvp' id={record.id} key={record.id} group={rec.objectType} myDataIdArray={myPremDataIdArray} />
+                                            }
+                                        },
+                                        {
+                                            title: 'Отчет',
+                                            dataIndex: 'vo',
+                                            key: 'vo',
+                                            align: 'center',
+                                            render: (vo, record) => {
+                                                if (vo !== '') {
+                                                    const fileSegments = vo.split('/')
+                                                    const fileName = fileSegments[fileSegments.length - 1]
+                                                    const handleDeleteDocument = async () => {
+                                                        await dispatch(deletePremDocument(rec.id, record.id, 'vo', vo))
+                                                        await dispatch(getCurrentPremData(myPremDataIdArray))
+                                                    }
+                                                    return  <>
+                                                                <Text type="success" style={{width: '95%'}}>{fileName}</Text>
+                                                                <Button size="small" icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + vo} />
+                                                                <Popconfirm
+                                                                    title='Подтвердите удаление'
+                                                                    description='Вы уверены, что хотите удалить документ?'
+                                                                    okText='Да'
+                                                                    cancelText='Нет'
+                                                                    onConfirm={handleDeleteDocument}
+                                                                    >
+                                                                    <Button size="small" danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="link" />
+                                                                </Popconfirm>
+                                                            </>
+                                                } else {
+                                                    let uploadDocumentRef: any = null
+                                                    const onSelectDocument = async (e: any) => {
+                                                        if (e.currentTarget.files.length > 0) {
+                                                            const fileName = e.currentTarget.files[0].name
+                                                            // Получите расширение файла, разделенное точкой
+                                                            const fileExtension = fileName.split('.').pop()
+                                                
+                                                            // Список разрешенных расширений
+                                                            const allowedExtensions = ['doc', 'docx']
+                                                
+                                                            if (allowedExtensions.includes(fileExtension.toLowerCase())) {
+                                                                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
+                                                                await dispatch(uploadPremDocument(rec.id, record.id, 'vo', e.currentTarget.files[0]))
+                                                                await dispatch(getCurrentPremData(myPremDataIdArray))
+                                                            } else {
+                                                                // Файл имеет недопустимое расширение
+                                                                error(fileName)
+                                                            }
+                                                        }
+                                                    }
+                                                    return  <>
+                                                        <Text type="warning">Не загружен</Text>
+                                                        <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                                                        <Button size="small" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} />
+                                                    </>
+                                                }
+                                            },
+                                        },
+                                        {
+                                            title: 'Код отчета',
+                                            dataIndex: 'nvo',
+                                            key: 'nvo',
+                                            align: 'center',
+                                            render: (nvo, record) => {
+                                                return nvo === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo'), text: ''}} type="warning">Нет данных</Text> :
+                                                                    <Text   type="success"
+                                                                            editable={{
+                                                                                onChange: (text: string) => { handleUpdateDocsCode(record.id, text, 'nvo') }
+                                                                            }}>
+                                                                        {nvo}
+                                                                    </Text>
+                                            }
+                                        },
+                                        {
+                                            title: 'Дата отчета',
+                                            dataIndex: 'dvo',
+                                            key: 'dvo',
+                                            align: 'center',
+                                            render: (dvo, record) => {
+                                                return <DatePickerForWork date={dvo} objectId={record.id} dateType='dvo' id={record.id} key={record.id} group={rec.objectType} myDataIdArray={myPremDataIdArray} />
+                                            }
+                                        }
+                                    ]
+
+                                    const labelColumn: TableColumnsType<ExpandedDataType> = [
+                                        {
+                                            title: 'Этикетка',
+                                            dataIndex: 'et',
+                                            key: 'et',
+                                            align: 'center',
+                                            render: (et, record) => {
+                                                const handleLabelSwitch = async (pol: string) => {
+                                                    await dispatch(updatePremWorkData(record.id, 'et', pol))
+                                                    await dispatch(getCurrentPremData(myPremDataIdArray))
+                                                }
+                                                return et === '' ?
+                                                    <Button onClick={() => handleLabelSwitch('1')} type="default">
+                                                        <Text type="warning">Не приклеена</Text>
+                                                    </Button> :
+                                                    <Button onClick={() => handleLabelSwitch('')} type="default">
+                                                        <Text type="success">Приклеена</Text>
+                                                    </Button>
+                                            }
+                                        },
+                                    ]
+
                                     let data: any = [{
                                         key: '1',
                                         progress: '',
@@ -427,38 +469,221 @@ export const WorkList: React.FC = () => {
                                     }
 
                                     return (
-                                        (rec.class === 'Чистые' ||  rec.class === 'Контролируемые') ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
-                                        rec.class === 'Складские' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> : null
+                                        (rec.class === 'Чистые' ||  rec.class === 'Контролируемые') ? <Table columns={[...defaultColumns, ...labelColumn]} dataSource={data} pagination={false} bordered /> :
+                                        rec.class === 'Складские' ? <Table columns={[...defaultColumns, ...labelColumn]} dataSource={data} pagination={false} bordered /> : null
                                     )
                                 } 
-                                // else if (rec.objectType === 'equipment') {
-                                //     let data: any = [{
-                                //         key: '1',
-                                //         progress: '',
-                                //         vp: '',
-                                //         nvp: '',
-                                //         dvp: '',
-                                //         vo: '',
-                                //         nvo: '',
-                                //         dvo: '',
-                                //         et: ''
-                                //     }]
+                                else if (rec.objectType === 'equipment') {
+                                    const defaultColumns: TableColumnsType<ExpandedDataType> = [
+                                        {
+                                            title: 'Протокол',
+                                            dataIndex: 'vp',
+                                            key: 'vp',
+                                            align: 'center',
+                                            render: (vp, record) => {
+                                                if (vp !== '') {
+                                                    const fileSegments = vp.split('/')
+                                                    const fileName = fileSegments[fileSegments.length - 1]
+                                                    const handleDeleteDocument = async () => {
+                                                        await dispatch(deleteEquipDocument(rec.id, record.id, 'vp', vp))
+                                                        await dispatch(getCurrentEquipData(myEquipDataIdArray))
+                                                    }
+                                                    return  <>
+                                                        <Text type="success" style={{width: '95%'}}>{fileName}</Text>
+                                                        <Button size="small" icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + vp} />
+                                                        <Popconfirm
+                                                            title='Подтвердите удаление'
+                                                            description='Вы уверены, что хотите удалить документ?'
+                                                            okText='Да'
+                                                            cancelText='Нет'
+                                                            onConfirm={handleDeleteDocument}
+                                                            >
+                                                            <Button size="small" danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="link" />
+                                                        </Popconfirm>
+                                                    </>
+                                                } else {
+                                                    let uploadDocumentRef: any = null
+                                                    const onSelectDocument = async (e: any) => {
+                                                        if (e.currentTarget.files.length > 0) {
+                                                            const fileName = e.currentTarget.files[0].name
+                                                            // Получите расширение файла, разделенное точкой
+                                                            const fileExtension = fileName.split('.').pop()
+                                                
+                                                            // Список разрешенных расширений
+                                                            const allowedExtensions = ['doc', 'docx']
+                                                
+                                                            if (allowedExtensions.includes(fileExtension.toLowerCase())) {
+                                                                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
+                                                                await dispatch(uploadEquipDocument(rec.id, record.id, 'vp', e.currentTarget.files[0]))
+                                                                await dispatch(getCurrentEquipData(myEquipDataIdArray))
+                                                            } else {
+                                                                // Файл имеет недопустимое расширение
+                                                                error(fileName)
+                                                            }
+                                                        }
+                                                    }
+                                                    return  <>
+                                                        <Text type="warning">Не загружен</Text>
+                                                        <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                                                        <Button size="small" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} />
+                                                    </>
+                                                }
+                                            },
+                                        },
+                                        {
+                                            title: 'Код протокола',
+                                            dataIndex: 'nvp',
+                                            key: 'nvp',
+                                            align: 'center',
+                                            render: (nvp, record) => {
+                                                return nvp === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp'), text: ''}} type="warning">Нет данных</Text> :
+                                                                    <Text   type="success"
+                                                                            editable={{
+                                                                                onChange: (text: string) => { handleUpdateDocsCode(record.id, text, 'nvp')}
+                                                                            }}>
+                                                                        {nvp}
+                                                                    </Text>
+                                            } 
+                                        },
+                                        {
+                                            title: 'Дата протокола',
+                                            dataIndex: 'dvp',
+                                            key: 'dvp',
+                                            align: 'center',
+                                            render: (dvp, record) => {
+                                                return <DatePickerForWork date={dvp} objectId={record.id} dateType='dvp' id={record.id} key={record.id} group={rec.objectType} myDataIdArray={myEquipDataIdArray} />
+                                            }
+                                        },
+                                        {
+                                            title: 'Отчет',
+                                            dataIndex: 'vo',
+                                            key: 'vo',
+                                            align: 'center',
+                                            render: (vo, record) => {
+                                                if (vo !== '') {
+                                                    const fileSegments = vo.split('/')
+                                                    const fileName = fileSegments[fileSegments.length - 1]
+                                                    const handleDeleteDocument = async () => {
+                                                        await dispatch(deleteEquipDocument(rec.id, record.id, 'vo', vo))
+                                                        await dispatch(getCurrentEquipData(myEquipDataIdArray))
+                                                    }
+                                                    return  <>
+                                                        <Text type="success" style={{width: '95%'}}>{fileName}</Text>
+                                                        <Button size="small" icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + vo} />
+                                                        <Popconfirm
+                                                            title='Подтвердите удаление'
+                                                            description='Вы уверены, что хотите удалить документ?'
+                                                            okText='Да'
+                                                            cancelText='Нет'
+                                                            onConfirm={handleDeleteDocument}
+                                                            >
+                                                            <Button size="small" danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="link" />
+                                                        </Popconfirm>
+                                                    </>
+                                                } else {
+                                                    let uploadDocumentRef: any = null
+                                                    const onSelectDocument = async (e: any) => {
+                                                        if (e.currentTarget.files.length > 0) {
+                                                            const fileName = e.currentTarget.files[0].name
+                                                            // Получите расширение файла, разделенное точкой
+                                                            const fileExtension = fileName.split('.').pop()
+                                                
+                                                            // Список разрешенных расширений
+                                                            const allowedExtensions = ['doc', 'docx']
+                                                
+                                                            if (allowedExtensions.includes(fileExtension.toLowerCase())) {
+                                                                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
+                                                                await dispatch(uploadEquipDocument(rec.id, record.id, 'vo', e.currentTarget.files[0]))
+                                                                await dispatch(getCurrentEquipData(myEquipDataIdArray))
+                                                            } else {
+                                                                // Файл имеет недопустимое расширение
+                                                                error(fileName)
+                                                            }
+                                                        }
+                                                    }
+                                                    return  <>
+                                                        <Text type="warning">Не загружен</Text>
+                                                        <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{display: 'none'}} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
+                                                        <Button size="small" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="link" onClick={() => uploadDocumentRef.click()} />
+                                                    </>
+                                                }
+                                            },
+                                        },
+                                        {
+                                            title: 'Код отчета',
+                                            dataIndex: 'nvo',
+                                            key: 'nvo',
+                                            align: 'center',
+                                            render: (nvo, record) => {
+                                                return nvo === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo'), text: ''}} type="warning">Нет данных</Text> :
+                                                                    <Text   type="success"
+                                                                            editable={{
+                                                                                onChange: (text: string) => { handleUpdateDocsCode(record.id, text, 'nvo') }
+                                                                            }}>
+                                                                        {nvo}
+                                                                    </Text>
+                                            }
+                                        },
+                                        {
+                                            title: 'Дата отчета',
+                                            dataIndex: 'dvo',
+                                            key: 'dvo',
+                                            align: 'center',
+                                            render: (dvo, record) => {
+                                                return <DatePickerForWork date={dvo} objectId={record.id} dateType='dvo' id={record.id} key={record.id} group={rec.objectType} myDataIdArray={myEquipDataIdArray} />
+                                            }
+                                        }
+                                    ]
 
-                                //     const data2 = myEquipData.find(e => e.idfromtable === rec.id)
+                                    const labelColumn: TableColumnsType<ExpandedDataType> = [
+                                        {
+                                            title: 'Этикетка',
+                                            dataIndex: 'et',
+                                            key: 'et',
+                                            align: 'center',
+                                            render: (et, record) => {
+                                                const handleLabelSwitch = async (pol: string) => {
+                                                    await dispatch(updateEquipWorkData(record.id, 'et', pol))
+                                                    await dispatch(getCurrentEquipData(myEquipDataIdArray))
+                                                }
+                                                return et === '' ?
+                                                    <Button onClick={() => handleLabelSwitch('1')} type="default">
+                                                        <Text type="warning">Не приклеена</Text>
+                                                    </Button> :
+                                                    <Button onClick={() => handleLabelSwitch('')} type="default">
+                                                        <Text type="success">Приклеена</Text>
+                                                    </Button>
+                                            }
+                                        },
+                                    ]
+                                    
+                                    let data: any = [{
+                                        key: '1',
+                                        progress: '',
+                                        vp: '',
+                                        nvp: '',
+                                        dvp: '',
+                                        vo: '',
+                                        nvo: '',
+                                        dvo: '',
+                                        et: ''
+                                    }]
 
-                                //     if (data2 !== undefined) {
-                                //         data = [data2]
-                                //     }
+                                    const data2 = myEquipData.find(e => e.idfromtable === rec.id)
 
-                                //     return (
-                                //         rec.class === 'Термостаты' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
-                                //         rec.class === 'Тех. оборудование' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
-                                //         rec.class === 'Лаб. оборудование' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
-                                //         rec.class === 'Термоконтейнеры' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
-                                //         rec.class === 'Авторефрижераторы' ? <Table columns={columns} dataSource={data} pagination={false} bordered /> :
-                                //         <Table columns={columns} dataSource={data} pagination={false} bordered /> 
-                                //     )
-                                // }
+                                    if (data2 !== undefined) {
+                                        data = [data2]
+                                    }
+
+                                    return (
+                                        // rec.class === 'Термостаты' ? <Table columns={{...defaultColumns, ...labelColumn}} dataSource={data} pagination={false} bordered /> :
+                                        rec.class === 'Тех. оборудование' && <Table columns={[...defaultColumns, ...labelColumn]} dataSource={data} pagination={false} bordered />
+                                        // rec.class === 'Лаб. оборудование' ? <Table columns={{...defaultColumns, ...labelColumn}} dataSource={data} pagination={false} bordered /> :
+                                        // rec.class === 'Термоконтейнеры' ? <Table columns={{...defaultColumns, ...labelColumn}} dataSource={data} pagination={false} bordered /> :
+                                        // rec.class === 'Авторефрижераторы' ? <Table columns={{...defaultColumns, ...labelColumn}} dataSource={data} pagination={false} bordered /> :
+                                        // <Table columns={{...defaultColumns, ...labelColumn}} dataSource={data} pagination={false} bordered /> 
+                                    )
+                                }
                             }
                         }}
                         dataSource={data}
@@ -466,7 +691,7 @@ export const WorkList: React.FC = () => {
                         pagination={false}
                         title={() => <Text style={{fontSize: '14pt'}}>Мои задачи (всего: {data.length})</Text>}
                         size="small"
-                    /> 
+                    />
                 </Col>
             </Row>
         </Content>

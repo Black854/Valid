@@ -7,6 +7,7 @@ import { getCurrentPremData, updateReestrDatePrem } from '../../redux/premisesRe
 import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
 import { datePickerLocale } from './datePickerLocale'
+import { getCurrentEquipData, updateReestrDateEquip } from '../../redux/equipmentReducer'
 
 dayjs.locale('ru')
 const { Text } = Typography
@@ -14,17 +15,16 @@ const { Text } = Typography
 type ConvertDateType = {
     date: string | undefined
     id: string
-    premId: string
+    objectId: string
     dateType: 'dvp' | 'dvo'
     group: 'equipment' | 'premises' | 'systems' | 'processes'
-    myDataIdArray: any
+    myDataIdArray: string[]
 }
 
-export const DatePickerForWork: React.FC<ConvertDateType> = ({id, premId, date, dateType, group, myDataIdArray}) => {
+export const DatePickerForWork: React.FC<ConvertDateType> = ({id, objectId, date, dateType, group, myDataIdArray}) => {
     const [isPopconfirmVisible, setPopconfirmVisible] = useState(false)
     const [selectedDate, setSelectedDate] = useState('')
     const dispatch: AppDispatch = useDispatch()
-
 
     const handleDateChange = (date: any) => {
         setSelectedDate(date)
@@ -37,9 +37,12 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({id, premId, date, 
         formattedSelectedDate === '1970-01-01' && (formattedSelectedDate = '')
         // Закрыть Popconfirm после подтверждения
         setPopconfirmVisible(false)
-        await dispatch(updateReestrDatePrem(id, premId, formattedSelectedDate, dateType))
         if (group === 'premises') {
+            await dispatch(updateReestrDatePrem(id, objectId, formattedSelectedDate, dateType))
             await dispatch(getCurrentPremData(myDataIdArray))
+        } else if (group === 'equipment') {
+            await dispatch(updateReestrDateEquip(id, objectId, formattedSelectedDate, dateType))
+            await dispatch(getCurrentEquipData(myDataIdArray))
         }
     }
 
