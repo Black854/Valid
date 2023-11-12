@@ -5,6 +5,7 @@ import { getIntervals } from "../../redux/appSelectors"
 import { AppDispatch } from "../../redux/store"
 import { updateEquipInterval } from "../../redux/equipmentReducer"
 import { updatePremInterval } from "../../redux/premisesReducer"
+import { updateSysInterval } from "../../redux/systemsReducer"
 
 type ArHelperPropsType = {
     ar: string
@@ -21,6 +22,8 @@ export const ArHelper: React.FC<ArHelperPropsType> = ({ar, id, table}) => {
             dispatch(updateEquipInterval(id, interval))
         } else if (table === 'premises') {
             dispatch(updatePremInterval(id, interval))
+        } else if (table === 'systems') {
+            dispatch(updateSysInterval(id, interval))
         }
     }
 

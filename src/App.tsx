@@ -11,6 +11,9 @@ import { CustomFooter } from './components/Footer/Footer'
 import { Premises } from './components/Premises/Premises'
 import { PremCard } from './components/Premises/PremCard/PremCard'
 import { WorkList } from './components/WorkList/WorkList'
+import { Monitoring } from './components/WorkList/Monitoring'
+import { Systems } from './components/Systems/Systems'
+import { SysCard } from './components/Systems/SysCard/SysCard'
 const { theme } = require('antd/lib')
 
 export const App: React.FC = () => {
@@ -38,7 +41,10 @@ export const App: React.FC = () => {
                 <Route path="/equipment/:id" element={<EquipCard />} />
                 <Route path="/premises" element={<Premises />} />
                 <Route path="/premises/:id" element={<PremCard />} />
+                <Route path="/systems" element={<Systems />} />
+                <Route path="/systems/:id" element={<SysCard />} />
                 <Route path="/work" element={<WorkList />} />
+                <Route path="/monitoring" element={<Monitoring />} />
               </Routes>
             </Layout>
             <CustomFooter />

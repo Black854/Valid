@@ -7,17 +7,18 @@ import { updateReestrDateEquip } from '../../redux/equipmentReducer'
 import { AppDispatch } from '../../redux/store'
 import { updateReestrDatePrem } from '../../redux/premisesReducer'
 import { datePickerLocale } from './datePickerLocale'
+import { updateReestrDateSys } from '../../redux/systemsReducer'
 const { Text } = Typography
 
 type ConvertDateType = {
     date: string | undefined
     id: string
-    equipId: string
+    objectId: string
     dateType: 'dvp' | 'dvo'
     group: 'equipment' | 'premises' | 'systems' | 'processes'
 }
 
-export const ConvertDate: React.FC<ConvertDateType> = ({id, equipId, date, dateType, group}) => {
+export const ConvertDate: React.FC<ConvertDateType> = ({id, objectId, date, dateType, group}) => {
     const [isPopconfirmVisible, setPopconfirmVisible] = useState(false)
     const [selectedDate, setSelectedDate] = useState('')
     const dispatch: AppDispatch = useDispatch()
@@ -31,8 +32,9 @@ export const ConvertDate: React.FC<ConvertDateType> = ({id, equipId, date, dateT
     const handleConfirm = () => {
         const date = new Date(selectedDate)
         const formattedSelectedDate = format(date, 'yyyy-MM-dd') // Текущая дата для сравнения с датой объекта
-        group === 'equipment' && dispatch(updateReestrDateEquip(id, equipId, formattedSelectedDate, dateType))
-        group === 'premises' && dispatch(updateReestrDatePrem(id, equipId, formattedSelectedDate, dateType))
+        group === 'equipment' && dispatch(updateReestrDateEquip(id, objectId, formattedSelectedDate, dateType))
+        group === 'premises' && dispatch(updateReestrDatePrem(id, objectId, formattedSelectedDate, dateType))
+        group === 'systems' && dispatch(updateReestrDateSys(id, objectId, formattedSelectedDate, dateType))
         // Закрыть Popconfirm после подтверждения
         setPopconfirmVisible(false)
     }

@@ -7,16 +7,16 @@ import { format } from 'date-fns'
 import { LabelDateHelper, labelEndDate } from "../../../helpers/labelDateHelper"
 import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector } from "../../../../redux/appSelectors"
 import { PrinterOutlined } from '@ant-design/icons'
-import { DataType, EquipReestrType } from "../../../../redux/equipmentReducer"
 import { getSopCodeForm } from "../../../../redux/appReducer"
+import { DataType, SysReestrType } from "../../../../redux/systemsReducer"
 const {Text, Title} = Typography
 
 type CleanPremGroupsPropsType = {
-    equipObject: DataType
-    reestrData: EquipReestrType[]
+    sysObject: DataType
+    reestrData: SysReestrType[]
 }
 
-export const EquipLabel: React.FC<CleanPremGroupsPropsType> = ({equipObject, reestrData}) => {
+export const SysLabel: React.FC<CleanPremGroupsPropsType> = ({sysObject, reestrData}) => {
 
     const dispatch: AppDispatch = useDispatch()
     const intervals = useSelector(getIntervals)
@@ -25,8 +25,6 @@ export const EquipLabel: React.FC<CleanPremGroupsPropsType> = ({equipObject, ree
     }, [])
     const sopCodeForm = useSelector(getSopCodeFormSelector)
 
-    const numbersToPrint =  equipObject.inv + (equipObject.inv ? ` / ${equipObject.serial}` : `${equipObject.serial}`)
-
     const maxDateObject = reestrData.reduce((max, obj) => {
         const currentDate = new Date(obj.dvo);
         const maxDate = new Date(max.dvo);
@@ -34,7 +32,7 @@ export const EquipLabel: React.FC<CleanPremGroupsPropsType> = ({equipObject, ree
         return currentDate > maxDate ? obj : max;
     }, reestrData[0])
       
-    const labelEndDateToPrint = labelEndDate(maxDateObject.dvo, equipObject.ar, intervals)
+    const labelEndDateToPrint = labelEndDate(maxDateObject.dvo, sysObject.ar, intervals)
 
     const premCurrentDate = new Date(maxDateObject.dvo)
     const formattedPremCurrentDate = format(premCurrentDate, 'dd.MM.yyyy')
@@ -43,8 +41,8 @@ export const EquipLabel: React.FC<CleanPremGroupsPropsType> = ({equipObject, ree
     const ovFio = departments.find(e => e.name === 'ОВ')?.fio
     const ovPos = departments.find(e => e.name === 'ОВ')?.pos
     
-    const departmentFio = departments.find(e => e.name === equipObject.sp2)?.fio || <Text type="danger" style={{fontSize: '8pt'}}>Не выбрано</Text>
-    const departmentPos = departments.find(e => e.name === equipObject.sp2)?.pos || <Text type="danger" style={{fontSize: '8pt'}}>Не выбрано</Text>
+    const departmentFio = departments.find(e => e.name === sysObject.sp2)?.fio || <Text type="danger" style={{fontSize: '8pt'}}>Не выбрано</Text>
+    const departmentPos = departments.find(e => e.name === sysObject.sp2)?.pos || <Text type="danger" style={{fontSize: '8pt'}}>Не выбрано</Text>
     const [labelModalOpen, setLabelModalOpen] = useState(false)
     const [frameModalOpen, setFrameModalOpen] = useState(false)
     const handleCancel = (modalType: string) => {
@@ -77,7 +75,7 @@ export const EquipLabel: React.FC<CleanPremGroupsPropsType> = ({equipObject, ree
                                 Наименование объекта квалификации
                             </td>
                             <td style={{textAlign: 'center'}} colSpan={3}>
-                                {equipObject.name}
+                                {sysObject.name}
                             </td>
                         </tr>
                         <tr>
@@ -85,7 +83,7 @@ export const EquipLabel: React.FC<CleanPremGroupsPropsType> = ({equipObject, ree
                                 Заводской/учетный номер
                             </td>
                             <td style={{textAlign: 'center'}} colSpan={3}>
-                                {numbersToPrint}
+                                н/п
                             </td>
                         </tr>
                         <tr>
@@ -101,7 +99,7 @@ export const EquipLabel: React.FC<CleanPremGroupsPropsType> = ({equipObject, ree
                                 Срок действия статуса «Валидировано»
                             </td>
                             <td style={{textAlign: 'center'}} colSpan={3}>
-                                До <LabelDateHelper ar={equipObject.ar}  date={maxDateObject.dvo} />
+                                До <LabelDateHelper ar={sysObject.ar}  date={maxDateObject.dvo} />
                             </td>
                         </tr>
                         <tr>
@@ -158,16 +156,14 @@ export const EquipLabel: React.FC<CleanPremGroupsPropsType> = ({equipObject, ree
                 <Button style={{marginTop: '10px'}} type="primary" icon={<PrinterOutlined />} onClick={() => setLabelModalOpen(true)}>Печать этикетки</Button>
 
                 <Modal title="Печать статусной этикетки" open={labelModalOpen} onCancel={() => handleCancel('label')} footer={[ <Button key="close" onClick={() => handleCancel('label')} type="primary">Закрыть</Button> ]} >
-                    <iframe style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/et.php?code=${maxDateObject.nvo}&name=${equipObject.name}&startDate=${formattedPremCurrentDate}
-                    &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
-
+                    <iframe style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/et.php?code=${maxDateObject.nvo}&name=${sysObject.name}&startDate=${formattedPremCurrentDate}
+                    &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=н/п&sopCodeForm=${sopCodeForm}`}>
                     </iframe>
                 </Modal>
 
                 <Modal title="Печать рамки для статусной этикетки" open={frameModalOpen} onCancel={() => handleCancel('frame')} footer={[ <Button key="close" onClick={() => handleCancel('frame')} type="primary">Закрыть</Button> ]} >
-                    <iframe style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/etWithFrames.php?code=${maxDateObject.nvo}&name=${equipObject.name}&startDate=${formattedPremCurrentDate}
-                    &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
-
+                    <iframe style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/etWithFrames.php?code=${maxDateObject.nvo}&name=${sysObject.name}&startDate=${formattedPremCurrentDate}
+                    &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=н/п&sopCodeForm=${sopCodeForm}`}>
                     </iframe>
                 </Modal>
             </Col>

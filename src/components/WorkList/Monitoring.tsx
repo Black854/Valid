@@ -16,14 +16,12 @@ import { getCurrentEquipData, getEquipment } from "../../redux/equipmentReducer"
 import { EquipTasks } from "./taskComponents/EquipTasks"
 import { PremTasks } from "./taskComponents/PremTasks"
 import { ProgressHelper } from "./taskComponents/ProgressHelper"
-import { getAllValidators } from "../../redux/appReducer"
-import { getCurrentSysDataSelector, getSysData } from "../../redux/systemsSelectors"
-import { getCurrentSysData, getSystems } from "../../redux/systemsReducer"
-import { SysTasks } from "./taskComponents/SysTasks"
+import { AllValidatorsType, getAllValidators } from "../../redux/appReducer"
+import { getAllValidatorsSelector } from "../../redux/appSelectors"
 
 const { Text } = Typography
   
-export const WorkList: React.FC = () => {
+export const Monitoring: React.FC = () => {
     const [messageApi, contextHolder] = message.useMessage()
 
     const error = (fileName: string) => {
@@ -37,14 +35,16 @@ export const WorkList: React.FC = () => {
 
     const premData = useSelector(getPremData)
     const equipData = useSelector(getEquipData)
-    const sysData = useSelector(getSysData)
     const isLoading = useSelector(getIsLoading)
     const AuthUserName = useSelector(getAuthUserNameSelector)
+    const allValidators = useSelector(getAllValidatorsSelector)
+
+    const usersFilters = allValidators.map((e: AllValidatorsType) => ({ value: e.fio, text: e.fio}))
 
     useEffect(() => {
         dispatch(getPremises())
         dispatch(getEquipment())
-        dispatch(getSystems())
+        dispatch(getAllValidators())
     }, [])
 
     const premNewData = premData.map(e => ({
@@ -60,7 +60,7 @@ export const WorkList: React.FC = () => {
         ar: e.ar,
         foto: e.foto,
         fio: e.fio
-    })).filter(e => e.fio === AuthUserName)
+    })).filter(e => e.fio !== '')
     
     const equipNewData = equipData.map(e => ({
         objectType: 'equipment' as 'equipment' | 'premises' | 'systems' | 'processes',
@@ -75,30 +75,13 @@ export const WorkList: React.FC = () => {
         ar: e.ar,
         foto: e.foto,
         fio: e.fio
-    })).filter(e => e.fio === AuthUserName)
-
-    const sysNewData = sysData.map(e => ({
-        objectType: 'systems' as 'equipment' | 'premises' | 'systems' | 'processes',
-        id: e.id,
-        key: e.id,
-        sp2: e.sp2,
-        name: e.name,
-        nomer: 'none',
-        class: 'none',
-        mode: 'none',
-        date: e.date,
-        ar: e.ar,
-        foto: e.foto,
-        fio: e.fio
-    })).filter(e => e.fio === AuthUserName)
+    })).filter(e => e.fio !== '')
 
     const myPremDataIdArray = premNewData.map(e => e.id)
     const myEquipDataIdArray = equipNewData.map(e => e.id)
-    const mySysDataIdArray = sysNewData.map(e => e.id)
     
     const myPremData = useSelector(getCurrentPremDataSelector)
     const myEquipData = useSelector(getCurrentEquipDataSelector)
-    const mySysData = useSelector(getCurrentSysDataSelector)
 
     if (myPremDataIdArray.length > 0 && myPremData.length === 0) {
         dispatch(getCurrentPremData(myPremDataIdArray))
@@ -108,12 +91,8 @@ export const WorkList: React.FC = () => {
         dispatch(getCurrentEquipData(myEquipDataIdArray))
     }
 
-    if (mySysDataIdArray.length > 0 && mySysData.length === 0) {
-        dispatch(getCurrentSysData(mySysDataIdArray))
-    }
-
     type DataType = typeof premNewData[0]
-    const data: DataType[] = [...premNewData, ...equipNewData, ...sysNewData]
+    const data: DataType[] = [...premNewData, ...equipNewData]
 
     const columns: ColumnsType<DataType> = [
         {
@@ -149,9 +128,20 @@ export const WorkList: React.FC = () => {
         {
             title: <Text strong style={{fontSize: '12pt'}}>Прогресс</Text>,
             render: (text, record, index) => {
-                return <ProgressHelper key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} mySysData={mySysData} />
+                return <ProgressHelper key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} />
             },
             align: 'center',
+        },
+        {
+            title: <Text strong style={{fontSize: '12pt'}}>Исполнитель</Text>,
+            dataIndex: 'fio',
+            render: (fio) => {
+                return <Text>{fio}</Text>
+            },
+            align: 'center',
+            filters: usersFilters,
+            onFilter: (value: any, record) => record.fio.indexOf(value) === 0,
+            sorter: (a, b) => a.fio.localeCompare(b.fio)
         },
         {
             title: <Text strong style={{fontSize: '12pt'}}>Подразделение</Text>,
@@ -190,14 +180,13 @@ export const WorkList: React.FC = () => {
                             expandedRowRender: (rec) => {
                                 return rec.objectType === 'premises' ? <PremTasks myPremData={myPremData} error={error} rec={rec} myPremDataIdArray={myPremDataIdArray}/> :
                                 rec.objectType === 'equipment' ? <EquipTasks myEquipData={myEquipData} error={error} rec={rec} myEquipDataIdArray={myEquipDataIdArray}/> :
-                                rec.objectType === 'systems' ? <SysTasks mySysData={mySysData} error={error} rec={rec} mySysDataIdArray={mySysDataIdArray}/> :
                                 null
                             }
                         }}
                         dataSource={data}
                         bordered
                         pagination={false}
-                        title={() => <Text style={{fontSize: '14pt'}}>Мои задачи (всего: {data.length})</Text>}
+                        title={() => <Text style={{fontSize: '14pt'}}>Все задачи (всего: {data.length})</Text>}
                         size="small"
                     />
                 </Col>

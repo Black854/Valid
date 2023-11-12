@@ -1,5 +1,5 @@
 import { Button, Col, Modal, Row, Typography } from "antd"
-import { DataType, ReestrType } from "../../../../redux/premisesReducer"
+import { DataType, PremReestrType } from "../../../../redux/premisesReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { AppDispatch } from "../../../../redux/store"
@@ -13,7 +13,7 @@ const {Text, Title} = Typography
 type CleanPremGroupsPropsType = {
     id: string
     premObject: DataType
-    reestrData: ReestrType[]
+    reestrData: PremReestrType[]
 }
 
 export const PremLabel: React.FC<CleanPremGroupsPropsType> = ({id, premObject, reestrData}) => {

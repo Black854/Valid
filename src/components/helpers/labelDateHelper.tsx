@@ -27,10 +27,10 @@ export const LabelDateHelper: React.FC<LabelDateHelperType> = ({date, ar}) => {
             }
         }
 
-        const equipDate = new Date(date)
-        const resultEquipDate = addMonths(equipDate, monthCount) // Прибавляем monthCount месяцев
+        const objectDate = new Date(date)
+        const resultObjectDate = addMonths(objectDate, monthCount) // Прибавляем monthCount месяцев
     
-        let dateForPrint = format(resultEquipDate, 'dd.MM.yyyy')
+        let dateForPrint = format(resultObjectDate, 'dd.MM.yyyy')
         if (ar === '0') { return <>Не валидируется</> }
         else if (ar==='12') { return <>Законсервировано</> }
         else if (ar==='15') { return <>Списано</> }
@@ -59,10 +59,10 @@ export const labelEndDate = (date: string, ar: string, intervals: IntervalsType[
             }
         }
 
-        const equipDate = new Date(date)
-        const resultEquipDate = addMonths(equipDate, monthCount) // Прибавляем monthCount месяцев
+        const objectDate = new Date(date)
+        const resultObjectDate = addMonths(objectDate, monthCount) // Прибавляем monthCount месяцев
     
-        let dateForPrint = format(resultEquipDate, 'dd.MM.yyyy')
+        let dateForPrint = format(resultObjectDate, 'dd.MM.yyyy')
         if (ar === '0') { return 'Не валидируется' }
         else if (ar==='12') { return 'Законсервировано' }
         else if (ar==='15') { return 'Списано' }

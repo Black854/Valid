@@ -23,7 +23,7 @@ type PhotosType = {
     name: string
 }
 
-export type ReestrType = {
+export type PremReestrType = {
     dvo: string
     dvp: string
     et: string
@@ -83,7 +83,7 @@ export type CleanGroupLabelsType = {
 
 let initialState = {
     data: [] as DataType[],
-    reestrData: [] as ReestrType[],
+    reestrData: [] as PremReestrType[],
     isLoading: false,
     technicalInfo: null as TechnicalInfoType | null,
     photos: [] as PhotosType[],
@@ -98,7 +98,7 @@ let initialState = {
     isCleanPremDataLoading: false,
     isCleanPremGroupsLoading: false,
     cleanTab: '',
-    premIdArrayAtWorkAtCurrentUser: [] as ReestrType[],
+    premIdArrayAtWorkAtCurrentUser: [] as PremReestrType[],
 }
 
 type InitialStateType = typeof initialState
@@ -333,7 +333,7 @@ type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 const premActions = {
     pushPremisesData: (data: DataType[]) => ({ type: 'prem/PUSH_PREM_DATA', data } as const),
-    pushReestrData: (data: ReestrType[]) => ({ type: 'prem/PUSH_REESTR_DATA', data } as const),
+    pushReestrData: (data: PremReestrType[]) => ({ type: 'prem/PUSH_REESTR_DATA', data } as const),
     setIsLoading: () => ({ type: 'prem/IS_LOADING' } as const),
     setTechnicalInfo: (data: TechnicalInfoType) => ({ type: 'prem/SET_TECH_INFO', data } as const),
     setPhotosData: (data: PhotosType[]) => ({ type: 'prem/SET_PHOTOS', data } as const),

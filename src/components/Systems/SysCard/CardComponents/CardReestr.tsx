@@ -3,12 +3,24 @@ import { useDispatch } from "react-redux"
 import React from "react"
 import { ColumnsType } from "antd/es/table"
 import { ConvertDate } from "../../../helpers/convertDate"
-import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons'
+import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
 import { AppDispatch } from "../../../../redux/store"
-import { PremReestrType, deletePremDocument, updateReestrDocsCodePrem, uploadPremDocument } from "../../../../redux/premisesReducer"
+import { deleteSysDocument, updateReestrDocsCodeSys, uploadSysDocument } from "../../../../redux/systemsReducer"
 const { Text } = Typography
 
-type DataType = Array<PremReestrType>
+
+type reestrDataItemType = {
+    id: string
+    nvo: string
+    vo: string
+    dvo: string
+    nvp: string
+    vp: string
+    dvp: string
+    pam: string
+}
+
+type DataType = Array<reestrDataItemType>
 
 type CardReestrPropsType = {
     id: string
@@ -29,16 +41,16 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
         })
     }
     const handleUpdateDocsCode = (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
-        dispatch(updateReestrDocsCodePrem(id, recordId, text, dataType))
+        dispatch(updateReestrDocsCodeSys(id, recordId, text, dataType))
     }
-    let columns: ColumnsType<PremReestrType> = [
+    let columns: ColumnsType<reestrDataItemType> = [
         {
             title: <Text strong style={{fontSize: '12pt'}}>Код протокола</Text>,
             dataIndex: 'nvp',
             render: (nvp, record) => {
                 if (record.vp) {
                     const handleDeleteDocument = () => {
-                        dispatch(deletePremDocument(id, record.id, 'vp', record.vp))
+                        dispatch(deleteSysDocument(id, record.id, 'vp', record.vp))
                     }
                     return  <>
                                 <Text style={{width: '90%'}} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp')}}>
@@ -68,7 +80,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 
                             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                                 // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                                dispatch(uploadPremDocument(id, record.id, 'vp', e.currentTarget.files[0]))
+                                dispatch(uploadSysDocument(id, record.id, 'vp', e.currentTarget.files[0]))
                             } else {
                                 // Файл имеет недопустимое расширение
                                 error(fileName)
@@ -86,7 +98,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
         {
             title: <Text strong style={{fontSize: '12pt'}}>Дата</Text>,
             dataIndex: 'dvp',
-            render: (dvp, record) => { return <ConvertDate date={dvp} objectId={id} dateType='dvp' id={record.id} key={record.id} group="premises" /> },
+            render: (dvp, record) => { return <ConvertDate date={dvp} objectId={id} dateType='dvp' id={record.id} key={record.id} group="equipment" /> },
             width: '11%',
             align: 'center',
         },
@@ -96,7 +108,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
             render: (nvo, record) => {
                 if (record.vo) {
                     const handleDeleteDocument = () => {
-                        dispatch(deletePremDocument(id, record.id, 'vo', record.vo))
+                        dispatch(deleteSysDocument(id, record.id, 'vo', record.vo))
                     }
                     return  <>
                                 <Text style={{width: '95%'}} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo')}}>{nvo}</Text>
@@ -124,7 +136,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 
                             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                                 // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                                dispatch(uploadPremDocument(id, record.id, 'vo', e.currentTarget.files[0]))
+                                dispatch(uploadSysDocument(id, record.id, 'vo', e.currentTarget.files[0]))
                             } else {
                                 // Файл имеет недопустимое расширение
                                 error(fileName)
@@ -149,7 +161,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 const dateB: any = new Date(b.dvo);
                 return dateA - dateB;
             },
-            render: (dvo, record) => { return <ConvertDate date={dvo} objectId={id} dateType='dvo' id={record.id} key={record.id} group="premises" /> },
+            render: (dvo, record) => { return <ConvertDate date={dvo} objectId={id} dateType='dvo' id={record.id} key={record.id} group="equipment" /> },
             sortDirections: ['ascend', 'descend'],
             defaultSortOrder: 'descend',
             width: '11%',
@@ -157,13 +169,13 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
         },
     ];
 
-    const pamColumn: ColumnsType<PremReestrType> = [{
+    const pamColumn: ColumnsType<reestrDataItemType> = [{
         title: <Text strong style={{fontSize: '12pt'}}>Памятка</Text>,
         dataIndex: 'pam',
         render: (pam, record) =>  {
             if (pam) {
                 const handleDeleteDocument = () => {
-                    dispatch(deletePremDocument(id, record.id, 'pam', pam))
+                    dispatch(deleteSysDocument(id, record.id, 'pam', pam))
                 }
                 return  <>
                             <Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + pam}>Просмотр</Button>
@@ -190,7 +202,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
             
                         if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                             // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                            dispatch(uploadPremDocument(id, record.id, 'pam', e.currentTarget.files[0]))
+                            dispatch(uploadSysDocument(id, record.id, 'pam', e.currentTarget.files[0]))
                         } else {
                             // Файл имеет недопустимое расширение
                             error(fileName)

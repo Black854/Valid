@@ -55,20 +55,20 @@ export const RenderDateHelper: React.FC<renderDateHelperType> = ({date, record})
     const currentDate = new Date()
     const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
 
-    const equipDate = new Date(date)
-    const resultEquipDate = addMonths(equipDate, monthCount) // Прибавляем monthCount месяцев
-    const formattedEquipDate = format(resultEquipDate, 'yyyyMMdd') // дата объекта для сравнения
+    const objectDate = new Date(date)
+    const resultObjectDate = addMonths(objectDate, monthCount) // Прибавляем monthCount месяцев
+    const formattedObjectDate = format(resultObjectDate, 'yyyyMMdd') // дата объекта для сравнения
 
-    const resultEquipDateWithoutOneMonth = subMonths(resultEquipDate, 1) // Прибавляем monthCount месяцев
-    const formattedEquipDateWithoutOneMonth = format(resultEquipDateWithoutOneMonth, 'yyyyMMdd') // дата объекта минус 1 месяц для сравнения
+    const resultObjectDateWithoutOneMonth = subMonths(resultObjectDate, 1) // Прибавляем monthCount месяцев
+    const formattedObjectDateWithoutOneMonth = format(resultObjectDateWithoutOneMonth, 'yyyyMMdd') // дата объекта минус 1 месяц для сравнения
    
-    let dateForPrint = format(resultEquipDate, 'dd.MM.yyyy')
+    let dateForPrint = format(resultObjectDate, 'dd.MM.yyyy')
     if (ar === '0') { return <Text type="secondary">Не валидируется</Text> }
     else if (ar==='12') { return <Text type="secondary">Законсервировано</Text> }
     else if (ar==='15') { return <Text type="secondary">Списано</Text> }
     else if (ar==='11' || ar==='10') { return <Text type="secondary">До изменений</Text> }
     else if (record.date === null) { return <Text type="danger">Нет данных</Text> }
-    else if (formattedCurrentDate >= formattedEquipDate) { return <Text type="danger">{dateForPrint}</Text> }
-    else if (formattedEquipDate > formattedCurrentDate && formattedCurrentDate >= formattedEquipDateWithoutOneMonth) { return <Text type="warning">{dateForPrint}</Text> }
+    else if (formattedCurrentDate >= formattedObjectDate) { return <Text type="danger">{dateForPrint}</Text> }
+    else if (formattedObjectDate > formattedCurrentDate && formattedCurrentDate >= formattedObjectDateWithoutOneMonth) { return <Text type="warning">{dateForPrint}</Text> }
     else { return <Text type="success">{dateForPrint}</Text> }
 }

@@ -6,7 +6,8 @@ import { getIntervalsByAr } from "../../redux/appSelectors";
 import { AppStateType } from "../../redux/store";
 import { getPremReestrDataSelector } from "../../redux/premisesSelectors";
 import { getEquipReestrDataSelector } from "../../redux/equipmentSelectors"
-import { ReestrType } from "../../redux/premisesReducer";
+import { PremReestrType } from "../../redux/premisesReducer";
+import { getSysReestrDataSelector } from "../../redux/systemsSelectors";
 const { Text } = Typography
 
 type CurrentStatusPropsType = {
@@ -21,11 +22,14 @@ export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio, table}
     const interval = useSelector((state: AppStateType) => getIntervalsByAr(state, ar))
     const reestrEquipData = useSelector(getEquipReestrDataSelector)
     const reestrPremData = useSelector(getPremReestrDataSelector)
-    let reestrData: ReestrType[] = []
+    const reestrSysData = useSelector(getSysReestrDataSelector)
+    let reestrData: PremReestrType[] = []
     if (table === 'equipment') {
-        reestrData = reestrEquipData;
+        reestrData = reestrEquipData
     } else if (table === 'premises') {
-        reestrData = reestrPremData;
+        reestrData = reestrPremData
+    } else if (table === 'systems') {
+        reestrData = reestrSysData
     }
     // console.log('length - ' + reestrData.length)
     if ( reestrData.length !== 0 ) {

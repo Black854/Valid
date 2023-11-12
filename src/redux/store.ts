@@ -4,12 +4,14 @@ import { appReducer } from './appReducer';
 import { equipmentReducer } from './equipmentReducer';
 import { premisesReducer } from './premisesReducer';
 import { authReducer } from './authReducer';
+import { systemsReducer } from './systemsReducer';
 
 let rootReducer = combineReducers({
   app: appReducer,
   equipment: equipmentReducer,
   premises: premisesReducer,
-  auth: authReducer
+  systems: systemsReducer,
+  auth: authReducer,
 })
 
 type RootReducerType = typeof rootReducer

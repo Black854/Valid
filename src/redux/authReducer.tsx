@@ -17,14 +17,14 @@ export const authReducer = (state = initialState, action: ActionTypes): InitialS
     }
 }
 
-// export const getEquipGroups = (type: 'active' | 'all'): ThunkType => async (dispatch) => {
-//     let data = await appAPI.getEquipGroups(type)
-//     dispatch(appActions.setEquipGroups(data.groups))
+// export const getAllValidators = (): ThunkType => async (dispatch) => {
+//     let data = await authAPI.getAllValidators()
+//     dispatch(authActions.setAllValidators(data.items))
 // }
 
-type ActionTypes = InferActionsTypes<typeof appActions>
+type ActionTypes = InferActionsTypes<typeof authActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
-const appActions = {
-    // setEquipGroups: ( data: EquipGroup[] ) => ({type: 'app/SET_EQUIP_GROUPS', data} as const),
+const authActions = {
+    // setAllValidators: ( data: AllValidators[] ) => ({type: 'auth/SET_ALL_VALIDATORS', data} as const),
 }

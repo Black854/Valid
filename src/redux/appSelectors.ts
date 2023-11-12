@@ -24,6 +24,10 @@ export const getSopCodeFormSelector = (state: AppStateType) => {
     return (state.app.sopCodeForm)
 }
 
+export const getAllValidatorsSelector = (state: AppStateType) => {
+    return (state.app.allValidators)
+}
+
 export const getIntervalsByAr = (state: AppStateType, ar: string | undefined = '0') => {
     const allIntervalsData = getIntervals(state); // Используем существующий селектор для получения всего массива данных
   

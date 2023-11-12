@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
 import { datePickerLocale } from './datePickerLocale'
 import { getCurrentEquipData, updateReestrDateEquip } from '../../redux/equipmentReducer'
+import { getCurrentSysData, updateReestrDateSys } from '../../redux/systemsReducer'
 
 dayjs.locale('ru')
 const { Text } = Typography
@@ -43,6 +44,9 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({id, objectId, date
         } else if (group === 'equipment') {
             await dispatch(updateReestrDateEquip(id, objectId, formattedSelectedDate, dateType))
             await dispatch(getCurrentEquipData(myDataIdArray))
+        } else if (group === 'systems') {
+            await dispatch(updateReestrDateSys(id, objectId, formattedSelectedDate, dateType))
+            await dispatch(getCurrentSysData(myDataIdArray))
         }
     }
 

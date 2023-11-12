@@ -32,4 +32,9 @@ export const appAPI = {
             return response.data
         })
     },
+    getAllValidators () {
+        return instance.get(`getAllValidators.php`).then (response => {
+            return response.data
+        })
+    },
 }

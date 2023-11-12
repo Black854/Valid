@@ -27,7 +27,7 @@ type PhotosType = {
     name: string
 }
 
-export type ReestrType = {
+export type EquipReestrType = {
     dvo: string
     dvp: string
     et: string
@@ -46,7 +46,7 @@ export type ReestrType = {
 
 let initialState = {
     data: [] as DataType[],
-    reestrData: [] as ReestrType[],
+    reestrData: [] as EquipReestrType[],
     isLoading: false,
     technicalInfo: '',
     photos: [] as PhotosType[],
@@ -57,7 +57,7 @@ let initialState = {
     isIntervalLoading: false,
     isReestrLoading: false,
     sopCodeForm: '',
-    equipIdArrayAtWorkAtCurrentUser: [] as ReestrType[],
+    equipIdArrayAtWorkAtCurrentUser: [] as EquipReestrType[],
 }
 
 type InitialStateType = typeof initialState
@@ -244,7 +244,7 @@ type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 const equipActions = {
     pushEquipmentData: (data: DataType[]) => ({ type: 'equip/PUSH_EQ_DATA', data } as const),
-    pushReestrData: (data: ReestrType[]) => ({ type: 'equip/PUSH_REESTR_DATA', data } as const),
+    pushReestrData: (data: EquipReestrType[]) => ({ type: 'equip/PUSH_REESTR_DATA', data } as const),
     setIsLoading: () => ({ type: 'equip/IS_LOADING' } as const),
     setTechnicalInfo: (text: string) => ({ type: 'equip/SET_TECH_INFO', text } as const),
     setPhotosData: (data: PhotosType[]) => ({ type: 'equip/SET_PHOTOS', data } as const),
