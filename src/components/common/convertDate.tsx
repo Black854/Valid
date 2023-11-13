@@ -3,11 +3,12 @@ import dayjs from 'dayjs'
 import { format } from 'date-fns'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { updateReestrDateEquip } from '../../redux/equipmentReducer'
+import { updateReestrDateEquip } from '../../redux/Reducers/equipmentReducer'
 import { AppDispatch } from '../../redux/store'
-import { updateReestrDatePrem } from '../../redux/premisesReducer'
+import { updateReestrDatePrem } from '../../redux/Reducers/premisesReducer'
 import { datePickerLocale } from './datePickerLocale'
-import { updateReestrDateSys } from '../../redux/systemsReducer'
+import { updateReestrDateSys } from '../../redux/Reducers/systemsReducer'
+import { updateReestrDateProc } from '../../redux/Reducers/processesReducer'
 const { Text } = Typography
 
 type ConvertDateType = {
@@ -35,6 +36,7 @@ export const ConvertDate: React.FC<ConvertDateType> = ({id, objectId, date, date
         group === 'equipment' && dispatch(updateReestrDateEquip(id, objectId, formattedSelectedDate, dateType))
         group === 'premises' && dispatch(updateReestrDatePrem(id, objectId, formattedSelectedDate, dateType))
         group === 'systems' && dispatch(updateReestrDateSys(id, objectId, formattedSelectedDate, dateType))
+        group === 'processes' && dispatch(updateReestrDateProc(id, objectId, formattedSelectedDate, dateType))
         // Закрыть Popconfirm после подтверждения
         setPopconfirmVisible(false)
     }

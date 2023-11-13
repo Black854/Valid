@@ -1,21 +1,24 @@
 import { Typography, Col, Image, Row, Spin, Table, Badge, Space, Dropdown, TableColumnsType, Progress, Button, Popconfirm, message } from "antd"
-import { PremReestrType } from "../../../redux/premisesReducer"
-import { EquipReestrType } from "../../../redux/equipmentReducer"
-import { SysReestrType } from "../../../redux/systemsReducer"
+import { PremReestrType } from "../../../redux/Reducers/premisesReducer"
+import { EquipReestrType } from "../../../redux/Reducers/equipmentReducer"
+import { SysReestrType } from "../../../redux/Reducers/systemsReducer"
+import { ProcReestrType } from "../../../redux/Reducers/processesReducer"
 
 type ProgresssHelper = {
     record: any
     myPremData: PremReestrType[]
     myEquipData: EquipReestrType[]
     mySysData?: SysReestrType[]
+    myProcData?: ProcReestrType[]
 }
 
-export const ProgressHelper: React.FC<ProgresssHelper> = ({record, myPremData, myEquipData, mySysData}) => {
+export const ProgressHelper: React.FC<ProgresssHelper> = ({record, myPremData, myEquipData, mySysData, myProcData}) => {
     let a: number = 0
     let b: number = 1
     const thisObject = record.objectType === 'premises' ? myPremData.find(e => e.idfromtable === record.id) :
     record.objectType === 'equipment' ? myEquipData.find(e => e.idfromtable === record.id) :
-    record.objectType === 'systems' ? mySysData?.find(e => e.idfromtable === record.id) : null
+    record.objectType === 'systems' ? mySysData?.find(e => e.idfromtable === record.id) :
+    record.objectType === 'processes' ? myProcData?.find(e => e.idfromtable === record.id) : null
     if (record.objectType === 'premises') {
         if (thisObject?.typeval === '1') {
             if (record.class === 'Чистые' || record.class === 'Контролируемые') {
@@ -137,6 +140,21 @@ export const ProgressHelper: React.FC<ProgresssHelper> = ({record, myPremData, m
             a += thisObject?.nvo !== '' ? 1 : 0
             a += thisObject?.dvo !== '' ? 1 : 0
             a += thisObject?.et !== '' ? 1 : 0
+        }
+    } else if (record.objectType === 'processes') {
+        if (thisObject?.typeval === '1') {
+            b = 6
+            a += thisObject?.vp !== '' ? 1 : 0
+            a += thisObject?.nvp !== '' ? 1 : 0
+            a += thisObject?.dvp !== '' ? 1 : 0
+            a += thisObject?.vo !== '' ? 1 : 0
+            a += thisObject?.nvo !== '' ? 1 : 0
+            a += thisObject?.dvo !== '' ? 1 : 0
+        } else if (thisObject?.typeval === '3') {
+            b = 3
+            a += thisObject?.vo !== '' ? 1 : 0
+            a += thisObject?.nvo !== '' ? 1 : 0
+            a += thisObject?.dvo !== '' ? 1 : 0
         }
     }
     let c = Math.round((a/b)*100)

@@ -14,6 +14,8 @@ import { WorkList } from './components/WorkList/WorkList'
 import { Monitoring } from './components/WorkList/Monitoring'
 import { Systems } from './components/Systems/Systems'
 import { SysCard } from './components/Systems/SysCard/SysCard'
+import { Processes } from './components/Processes/Processes'
+import { ProcCard } from './components/Processes/ProcCard/ProcCard'
 const { theme } = require('antd/lib')
 
 export const App: React.FC = () => {
@@ -43,6 +45,8 @@ export const App: React.FC = () => {
                 <Route path="/premises/:id" element={<PremCard />} />
                 <Route path="/systems" element={<Systems />} />
                 <Route path="/systems/:id" element={<SysCard />} />
+                <Route path="/processes" element={<Processes />} />
+                <Route path="/processes/:id" element={<ProcCard />} />
                 <Route path="/work" element={<WorkList />} />
                 <Route path="/monitoring" element={<Monitoring />} />
               </Routes>

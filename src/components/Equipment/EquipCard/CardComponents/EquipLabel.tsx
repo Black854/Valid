@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { AppDispatch } from "../../../../redux/store"
 import { format } from 'date-fns'
-import { LabelDateHelper, labelEndDate } from "../../../helpers/labelDateHelper"
-import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector } from "../../../../redux/appSelectors"
+import { LabelDateHelper, labelEndDate } from "../../../common/labelDateHelper"
+import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector } from "../../../../redux/Selectors/appSelectors"
 import { PrinterOutlined } from '@ant-design/icons'
-import { DataType, EquipReestrType } from "../../../../redux/equipmentReducer"
-import { getSopCodeForm } from "../../../../redux/appReducer"
+import { DataType, EquipReestrType } from "../../../../redux/Reducers/equipmentReducer"
+import { getSopCodeForm } from "../../../../redux/Reducers/appReducer"
 const {Text, Title} = Typography
 
 type CleanPremGroupsPropsType = {

@@ -1,15 +1,15 @@
 import { ColumnsType } from "antd/es/table"
 import { Button, Checkbox, Col, Form, Input, Modal, Popconfirm, Row, Table, Typography } from "antd"
-import { CleanGroupLabelsType, DataType, PremReestrType, createCleanPremGroup, deleteCleanPremGroup, editCleanPremGroup, getCleanGroupLabels, getCleanPremList } from "../../../../redux/premisesReducer"
+import { CleanGroupLabelsType, DataType, PremReestrType, createCleanPremGroup, deleteCleanPremGroup, editCleanPremGroup, getCleanGroupLabels, getCleanPremList } from "../../../../redux/Reducers/premisesReducer"
 import { useDispatch, useSelector } from "react-redux"
-import { getCleanGroupLabelsSelector, getCleanPremListSelector, getCleanTabSelector, getIsCleanPremGroupsLoading } from "../../../../redux/premisesSelectors"
+import { getCleanGroupLabelsSelector, getCleanPremListSelector, getCleanTabSelector, getIsCleanPremGroupsLoading } from "../../../../redux/Selectors/premisesSelectors"
 import { useEffect, useState } from "react"
 import { AppDispatch } from "../../../../redux/store"
 import { format } from 'date-fns'
-import { LabelDateHelper, labelEndDate } from "../../../helpers/labelDateHelper"
-import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector } from "../../../../redux/appSelectors"
+import { LabelDateHelper, labelEndDate } from "../../../common/labelDateHelper"
+import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector } from "../../../../redux/Selectors/appSelectors"
 import { PrinterOutlined } from '@ant-design/icons'
-import { getSopCodeForm } from "../../../../redux/appReducer"
+import { getSopCodeForm } from "../../../../redux/Reducers/appReducer"
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 const {Text, Title} = Typography
 

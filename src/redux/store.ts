@@ -1,16 +1,18 @@
 import {AnyAction, applyMiddleware, combineReducers, compose, legacy_createStore as createStore} from 'redux';
 import thunkMiddleWare, { ThunkDispatch } from 'redux-thunk'
-import { appReducer } from './appReducer';
-import { equipmentReducer } from './equipmentReducer';
-import { premisesReducer } from './premisesReducer';
-import { authReducer } from './authReducer';
-import { systemsReducer } from './systemsReducer';
+import { appReducer } from './Reducers/appReducer';
+import { equipmentReducer } from './Reducers/equipmentReducer';
+import { premisesReducer } from './Reducers/premisesReducer';
+import { authReducer } from './Reducers/authReducer';
+import { systemsReducer } from './Reducers/systemsReducer';
+import { processesReducer } from './Reducers/processesReducer';
 
 let rootReducer = combineReducers({
   app: appReducer,
   equipment: equipmentReducer,
   premises: premisesReducer,
   systems: systemsReducer,
+  processes: processesReducer,
   auth: authReducer,
 })
 

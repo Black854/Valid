@@ -2,7 +2,7 @@ import { Button, Image, Popconfirm, Typography, message } from "antd"
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import empty from './../../../../img/empty.png'
 import { useDispatch } from "react-redux";
-import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/equipmentReducer";
+import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/equipmentReducer";
 import { useParams } from "react-router-dom";
 import { EyeOutlined} from '@ant-design/icons';
 import { AppDispatch } from "../../../../redux/store";

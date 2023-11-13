@@ -1,15 +1,15 @@
-import { Typography, Col, Image, Row, Spin, Table } from "antd";
+import { Typography, Col, Image, Row, Spin, Table } from "antd"
 import { Content } from "antd/es/layout/layout"
-import type { ColumnsType } from 'antd/es/table';
-import { useDispatch, useSelector } from "react-redux";
-import { getEquipData, getIsLoading } from "../../redux/Selectors/equipmentSelectors";
-import { getEquipment } from "../../redux/Reducers/equipmentReducer";
-import { EyeOutlined} from '@ant-design/icons';
-import { RenderDateHelper } from "../common/renderDateHelper";
+import type { ColumnsType } from 'antd/es/table'
+import { useDispatch, useSelector } from "react-redux"
+import { EyeOutlined} from '@ant-design/icons'
+import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
-import { NavLink } from "react-router-dom";
-import React from "react";
-import { AppDispatch } from "../../redux/store";
+import { NavLink } from "react-router-dom"
+import React from "react"
+import { AppDispatch } from "../../redux/store"
+import { getIsLoading, getProcData } from "../../redux/Selectors/processesSelectors"
+import { getProcesses } from "../../redux/Reducers/processesReducer"
 
 const { Text } = Typography;
 
@@ -25,16 +25,16 @@ interface DataType {
     foto: string
 }
   
-export const Equipment: React.FC = () => {
+export const Processes: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
 
-    const equipData = useSelector(getEquipData)
+    const procData = useSelector(getProcData)
     const isLoading = useSelector(getIsLoading)
 
-    if (equipData.length === 0 && isLoading===false) {
-        dispatch(getEquipment())
+    if (procData.length === 0 && isLoading===false) {
+        dispatch(getProcesses())
     }
-    const equipNewData = equipData.map(e => ({
+    const procNewData = procData.map(e => ({
         id: e.id,
         key: e.id,
         sp2: e.sp2,
@@ -94,35 +94,6 @@ export const Equipment: React.FC = () => {
             align: 'center',
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Учетный номер</Text>,
-            dataIndex: 'inv',
-            render: (inv) => {
-                if (inv !== '') {
-                    return <Text>{inv}</Text>
-                } else {
-                    return <Text type="warning">Отсутствует</Text>
-                }
-            },
-            sorter: (a, b) => a.name.localeCompare(b.name),
-            align: 'center'
-        },
-        {
-            title: <Text strong style={{fontSize: '12pt'}}>Группа</Text>,
-            dataIndex: 'group',
-            filters: [
-                { text: 'Термостаты', value: 'Термостаты' },
-                { text: 'Тех. оборудование', value: 'Тех. оборудование' },
-                { text: 'Лаб. оборудование', value: 'Лаб. оборудование' },
-                { text: 'Термоконтейнеры', value: 'Термоконтейнеры' }
-            ],
-            render: (text) => <Text>{text}</Text>,
-            onFilter: (value: any, record) => record.group.indexOf(value) === 0,
-            sorter: (a, b) => a.group.localeCompare(b.group),
-            sortDirections: ['ascend'],
-            width: '12%',
-            align: 'center',
-        },
-        {
             title: <Text strong style={{fontSize: '12pt'}}>Дата (до)</Text>,
             dataIndex: 'date',
             render: (date, record) => { return <RenderDateHelper date={date} record={record} /> },
@@ -131,7 +102,7 @@ export const Equipment: React.FC = () => {
         },
     ]
 
-    const data: DataType[] = equipNewData.map((item, index) => ({
+    const data: DataType[] = procNewData.map((item, index) => ({
         ...item,
         index: index + 1,
     }))
@@ -146,9 +117,10 @@ export const Equipment: React.FC = () => {
                         columns={columns}
                         dataSource={data}
                         bordered
-                        pagination={{defaultPageSize: 20}}
-                        title={() => <Text style={{fontSize: '14pt'}}>Оборудование (всего: {equipData.length})</Text>}
+                        pagination={false}
+                        title={() => <Text style={{fontSize: '14pt'}}>Оборудование (всего: {procData.length})</Text>}
                         size="small"
+                        style={{marginBottom: '30px'}}
                     /> 
                 </Col>
             </Row>

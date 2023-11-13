@@ -1,5 +1,5 @@
 import { ThunkAction } from "redux-thunk"
-import { AppStateType, InferActionsTypes } from "./store"
+import { AppStateType, InferActionsTypes } from "../store"
 
 const initialState = {
     isAuth: true,

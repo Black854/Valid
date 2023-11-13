@@ -67,7 +67,7 @@ export const RenderDateHelper: React.FC<renderDateHelperType> = ({date, record})
     else if (ar==='12') { return <Text type="secondary">Законсервировано</Text> }
     else if (ar==='15') { return <Text type="secondary">Списано</Text> }
     else if (ar==='11' || ar==='10') { return <Text type="secondary">До изменений</Text> }
-    else if (record.date === null) { return <Text type="danger">Нет данных</Text> }
+    else if (record.date === null) { return <Text type="warning">Нет данных</Text> }
     else if (formattedCurrentDate >= formattedObjectDate) { return <Text type="danger">{dateForPrint}</Text> }
     else if (formattedObjectDate > formattedCurrentDate && formattedCurrentDate >= formattedObjectDateWithoutOneMonth) { return <Text type="warning">{dateForPrint}</Text> }
     else { return <Text type="success">{dateForPrint}</Text> }

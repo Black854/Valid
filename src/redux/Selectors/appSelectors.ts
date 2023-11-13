@@ -1,4 +1,4 @@
-import { AppStateType } from "./store"
+import { AppStateType } from "../store"
 
 export const getEquipGroupsSelector = (state: AppStateType) => {
     return (state.app.equipGroups)

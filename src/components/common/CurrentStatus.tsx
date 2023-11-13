@@ -2,12 +2,13 @@ import { Typography } from "antd"
 import { useSelector } from "react-redux/es/hooks/useSelector"
 import { addMonths } from 'date-fns';
 import { format } from 'date-fns';
-import { getIntervalsByAr } from "../../redux/appSelectors";
+import { getIntervalsByAr } from "../../redux/Selectors/appSelectors";
 import { AppStateType } from "../../redux/store";
-import { getPremReestrDataSelector } from "../../redux/premisesSelectors";
-import { getEquipReestrDataSelector } from "../../redux/equipmentSelectors"
-import { PremReestrType } from "../../redux/premisesReducer";
-import { getSysReestrDataSelector } from "../../redux/systemsSelectors";
+import { getPremReestrDataSelector } from "../../redux/Selectors/premisesSelectors";
+import { getEquipReestrDataSelector } from "../../redux/Selectors/equipmentSelectors"
+import { PremReestrType } from "../../redux/Reducers/premisesReducer";
+import { getSysReestrDataSelector } from "../../redux/Selectors/systemsSelectors";
+import { getProcReestrDataSelector } from "../../redux/Selectors/processesSelectors";
 const { Text } = Typography
 
 type CurrentStatusPropsType = {
@@ -17,12 +18,11 @@ type CurrentStatusPropsType = {
 }
 
 export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio, table}) => {
-    // console.log('ar - ' + ar)
-    // console.log('fio - ' + fio)
     const interval = useSelector((state: AppStateType) => getIntervalsByAr(state, ar))
     const reestrEquipData = useSelector(getEquipReestrDataSelector)
     const reestrPremData = useSelector(getPremReestrDataSelector)
     const reestrSysData = useSelector(getSysReestrDataSelector)
+    const reestrProcData = useSelector(getProcReestrDataSelector)
     let reestrData: PremReestrType[] = []
     if (table === 'equipment') {
         reestrData = reestrEquipData
@@ -30,8 +30,9 @@ export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio, table}
         reestrData = reestrPremData
     } else if (table === 'systems') {
         reestrData = reestrSysData
+    } else if (table === 'processes') {
+        reestrData = reestrProcData
     }
-    // console.log('length - ' + reestrData.length)
     if ( reestrData.length !== 0 ) {
         const maxDateObject = reestrData.reduce((max, obj) => {
             // Преобразовываем дату dvo в объект Date
@@ -45,18 +46,16 @@ export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio, table}
             const numInterval = parseInt(interval, 10)
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd'); // Текущая дата для сравнения с датой объекта
-            // console.log('Текущая дата для сравнения - ' + formattedCurrentDate)
-    
-            const equipDate = new Date(maxDateObject.dvo)
-            const resultEquipDate = addMonths(equipDate, numInterval); // Прибавляем monthCount месяцев
-            const formattedEquipDate = format(resultEquipDate, 'yyyyMMdd'); // Текущая дата для сравнения с датой объекта
-            // console.log('Дата квалификации объекта для сравнения - ' + formattedEquipDate)
-            let dateForPrint = format(resultEquipDate, 'dd.MM.yyyy');
+            
+            const objectDate = new Date(maxDateObject.dvo)
+            const resultObjectDate = addMonths(objectDate, numInterval); // Прибавляем monthCount месяцев
+            const formattedObjectDate = format(resultObjectDate, 'yyyyMMdd'); // Текущая дата для сравнения с датой объекта
+            let dateForPrint = format(resultObjectDate, 'dd.MM.yyyy');
             if (ar === '0') { return <Text type="secondary">Не валидируется</Text> }
             else if (ar==='12') { return <Text type="secondary">Законсервировано</Text> }
             else if (ar==='15') { return <Text type="secondary">Списано</Text> }
             else if (ar==='11' || ar==='10') { return <Text type="secondary">До изменений</Text> }
-            else if (formattedCurrentDate >= formattedEquipDate) {
+            else if (formattedCurrentDate >= formattedObjectDate) {
                 if (fio==='') {
                     return <Text type="danger">Просрочен с {dateForPrint}</Text> 
                 } else {

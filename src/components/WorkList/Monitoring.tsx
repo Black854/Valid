@@ -2,22 +2,28 @@ import { Typography, Col, Image, Row, Spin, Table, Badge, Space, Dropdown, Table
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
-import { getPremData, getIsLoading, getCurrentPremDataSelector } from "../../redux/premisesSelectors"
+import { getPremData, getIsLoading, getCurrentPremDataSelector } from "../../redux/Selectors/premisesSelectors"
 import { EyeOutlined} from '@ant-design/icons'
-import { RenderDateHelper } from "../helpers/renderDateHelper"
+import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
 import React, { useEffect } from "react"
 import { AppDispatch } from "../../redux/store"
-import { getCurrentPremData, getPremises } from "../../redux/premisesReducer"
-import { getCurrentEquipDataSelector, getEquipData } from "../../redux/equipmentSelectors"
-import { getAuthUserNameSelector } from "../../redux/authSelectors"
-import { getCurrentEquipData, getEquipment } from "../../redux/equipmentReducer"
+import { getCurrentPremData, getPremises } from "../../redux/Reducers/premisesReducer"
+import { getCurrentEquipDataSelector, getEquipData } from "../../redux/Selectors/equipmentSelectors"
+import { getAuthUserNameSelector } from "../../redux/Selectors/authSelectors"
+import { getCurrentEquipData, getEquipment } from "../../redux/Reducers/equipmentReducer"
 import { EquipTasks } from "./taskComponents/EquipTasks"
 import { PremTasks } from "./taskComponents/PremTasks"
 import { ProgressHelper } from "./taskComponents/ProgressHelper"
-import { AllValidatorsType, getAllValidators } from "../../redux/appReducer"
-import { getAllValidatorsSelector } from "../../redux/appSelectors"
+import { AllValidatorsType, getAllValidators } from "../../redux/Reducers/appReducer"
+import { getAllValidatorsSelector } from "../../redux/Selectors/appSelectors"
+import { getCurrentSysData, getSystems } from "../../redux/Reducers/systemsReducer"
+import { getCurrentProcData, getProcesses } from "../../redux/Reducers/processesReducer"
+import { getCurrentSysDataSelector, getSysData } from "../../redux/Selectors/systemsSelectors"
+import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/processesSelectors"
+import { ProcTasks } from "./taskComponents/ProcTasks"
+import { SysTasks } from "./taskComponents/SysTasks"
 
 const { Text } = Typography
   
@@ -35,8 +41,10 @@ export const Monitoring: React.FC = () => {
 
     const premData = useSelector(getPremData)
     const equipData = useSelector(getEquipData)
+    const sysData = useSelector(getSysData)
+    const procData = useSelector(getProcData)
     const isLoading = useSelector(getIsLoading)
-    const AuthUserName = useSelector(getAuthUserNameSelector)
+    // const AuthUserName = useSelector(getAuthUserNameSelector)
     const allValidators = useSelector(getAllValidatorsSelector)
 
     const usersFilters = allValidators.map((e: AllValidatorsType) => ({ value: e.fio, text: e.fio}))
@@ -44,6 +52,8 @@ export const Monitoring: React.FC = () => {
     useEffect(() => {
         dispatch(getPremises())
         dispatch(getEquipment())
+        dispatch(getSystems())
+        dispatch(getProcesses())
         dispatch(getAllValidators())
     }, [])
 
@@ -77,11 +87,45 @@ export const Monitoring: React.FC = () => {
         fio: e.fio
     })).filter(e => e.fio !== '')
 
+    const sysNewData = sysData.map(e => ({
+        objectType: 'systems' as 'equipment' | 'premises' | 'systems' | 'processes',
+        id: e.id,
+        key: e.id,
+        sp2: e.sp2,
+        name: e.name,
+        nomer: 'none',
+        class: 'none',
+        mode: 'none',
+        date: e.date,
+        ar: e.ar,
+        foto: e.foto,
+        fio: e.fio
+    })).filter(e => e.fio !== '')
+
+    const procNewData = procData.map(e => ({
+        objectType: 'processes' as 'equipment' | 'premises' | 'systems' | 'processes',
+        id: e.id,
+        key: e.id,
+        sp2: e.sp2,
+        name: e.name,
+        nomer: 'none',
+        class: 'none',
+        mode: 'none',
+        date: e.date,
+        ar: e.ar,
+        foto: e.foto,
+        fio: e.fio
+    })).filter(e => e.fio !== '')
+
     const myPremDataIdArray = premNewData.map(e => e.id)
     const myEquipDataIdArray = equipNewData.map(e => e.id)
+    const mySysDataIdArray = sysNewData.map(e => e.id)
+    const myProcDataIdArray = procNewData.map(e => e.id)
     
     const myPremData = useSelector(getCurrentPremDataSelector)
     const myEquipData = useSelector(getCurrentEquipDataSelector)
+    const mySysData = useSelector(getCurrentSysDataSelector)
+    const myProcData = useSelector(getCurrentProcDataSelector)
 
     if (myPremDataIdArray.length > 0 && myPremData.length === 0) {
         dispatch(getCurrentPremData(myPremDataIdArray))
@@ -91,8 +135,16 @@ export const Monitoring: React.FC = () => {
         dispatch(getCurrentEquipData(myEquipDataIdArray))
     }
 
+    if (mySysDataIdArray.length > 0 && mySysData.length === 0) {
+        dispatch(getCurrentSysData(mySysDataIdArray))
+    }
+
+    if (myProcDataIdArray.length > 0 && myProcData.length === 0) {
+        dispatch(getCurrentProcData(myProcDataIdArray))
+    }
+
     type DataType = typeof premNewData[0]
-    const data: DataType[] = [...premNewData, ...equipNewData]
+    const data: DataType[] = [...premNewData, ...equipNewData, ...sysNewData, ...procNewData]
 
     const columns: ColumnsType<DataType> = [
         {
@@ -128,8 +180,9 @@ export const Monitoring: React.FC = () => {
         {
             title: <Text strong style={{fontSize: '12pt'}}>Прогресс</Text>,
             render: (text, record, index) => {
-                return <ProgressHelper key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} />
+                return <ProgressHelper key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} mySysData={mySysData} myProcData={myProcData} />
             },
+            sorter: (a, b) => a.sp2.localeCompare(b.sp2),
             align: 'center',
         },
         {
@@ -180,6 +233,8 @@ export const Monitoring: React.FC = () => {
                             expandedRowRender: (rec) => {
                                 return rec.objectType === 'premises' ? <PremTasks myPremData={myPremData} error={error} rec={rec} myPremDataIdArray={myPremDataIdArray}/> :
                                 rec.objectType === 'equipment' ? <EquipTasks myEquipData={myEquipData} error={error} rec={rec} myEquipDataIdArray={myEquipDataIdArray}/> :
+                                rec.objectType === 'systems' ? <SysTasks mySysData={mySysData} error={error} rec={rec} mySysDataIdArray={mySysDataIdArray}/> :
+                                rec.objectType === 'processes' ? <ProcTasks myProcData={myProcData} error={error} rec={rec} myProcDataIdArray={myProcDataIdArray}/> :
                                 null
                             }
                         }}

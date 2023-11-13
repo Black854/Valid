@@ -2,10 +2,10 @@ import { Select, Table, Typography } from "antd"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../../redux/store"
-import { getTechInfo } from "../../../../redux/premisesSelectors"
-import { getTechnicalInfo, updateTechnicalInfo } from "../../../../redux/premisesReducer"
-import { getPremModesSelector } from "../../../../redux/appSelectors"
-import { PremModesType } from "../../../../redux/appReducer"
+import { getTechInfo } from "../../../../redux/Selectors/premisesSelectors"
+import { getTechnicalInfo, updateTechnicalInfo } from "../../../../redux/Reducers/premisesReducer"
+import { getPremModesSelector } from "../../../../redux/Selectors/appSelectors"
+import { PremModesType } from "../../../../redux/Reducers/appReducer"
 const {Text} = Typography
 
 type TechnicalInfoPropsType = {

@@ -1,4 +1,4 @@
-import { AppStateType } from "./store"
+import { AppStateType } from "../store"
 
 export const getPremData = (state: AppStateType) => {
     return state.premises.data

@@ -4,20 +4,20 @@ import { useParams } from "react-router-dom"
 import { AppDispatch, AppStateType } from "../../../redux/store"
 import { ArHelper } from "../../common/arHelper"
 import React, { useEffect } from "react"
-import { getDepartmentsSelector, getEquipGroupsSelector, getVMPDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
-import { getDepartments, getEquipGroups, getVMPDepartments } from "../../../redux/Reducers/appReducer"
+import { getDepartmentsSelector, getVMPDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
+import { getDepartments, getVMPDepartments } from "../../../redux/Reducers/appReducer"
 import { TitleImage } from "./CardComponents/TitleImage"
 import { CardReestr } from "./CardComponents/CardReestr"
 import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
-import { getIsDepartmentLoading, getIsGroupLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading, getSysById, getSysData, getSysReestrDataSelector } from "../../../redux/Selectors/systemsSelectors"
-import { getReestrData, getSystems, updateDepartment, updateManufacturDate, updateManufacturer, updateNomer, updateVMPDepartment } from "../../../redux/Reducers/systemsReducer"
-import { SysDescriptions } from "./CardComponents/SysDescription"
-import { SysLabel } from "./CardComponents/SysLabel"
+import { getIsDepartmentLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading, getProcById, getProcData, getProcReestrDataSelector } from "../../../redux/Selectors/processesSelectors"
+import { getProcesses, getReestrData, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/processesReducer"
+import { ProcDescriptions } from "./CardComponents/ProcDescription"
+import { ProcLabel } from "./CardComponents/ProcLabel"
 const { Text } = Typography
 
-export const SysCard = () => {
+export const ProcCard = () => {
     const dispatch: AppDispatch = useDispatch()
     const params = useParams()
     let id: string
@@ -27,26 +27,25 @@ export const SysCard = () => {
         id = params.id
     }
     
-    const sysData = useSelector(getSysData)
+    const procData = useSelector(getProcData)
     const isLoading = useSelector(getIsLoading)
-    const sysObject = useSelector((state: AppStateType) => getSysById(state, id))
+    const procObject = useSelector((state: AppStateType) => getProcById(state, id))
     const departments = useSelector(getDepartmentsSelector)
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
     const isDepartmentLoading = useSelector(getIsDepartmentLoading)
     const isVMPDepartmentLoading = useSelector(getIsVMPDepartmentLoading)
-    const isGroupLoading = useSelector(getIsGroupLoading)
     const isReestrDataLoading = useSelector(getIsReestrDataLoading)
-    const reestrData = useSelector(getSysReestrDataSelector)
+    const reestrData = useSelector(getProcReestrDataSelector)
 
     useEffect(() => {
-        if (sysData.length === 0) {
-          dispatch(getSystems())
+        if (procData.length === 0) {
+          dispatch(getProcesses())
         } else if (departments.length === 0) {
           dispatch(getDepartments())
         } else if (VMPDepartments.length === 0) {
           dispatch(getVMPDepartments())
         }
-    }, [dispatch, sysData, departments, VMPDepartments])
+    }, [dispatch, procData, departments, VMPDepartments])
     useEffect (() => {
         dispatch(getReestrData(id))
     }, [id])
@@ -59,7 +58,7 @@ export const SysCard = () => {
     
     if (isLoading) {
         return  <Spin size="large" style={{width: '60px', height: '60px', margin: '30px auto 10px auto'}} />
-    } else if (sysObject) {
+    } else if (procObject) {
         interface DataType {
             ar: string
             date: string
@@ -87,7 +86,7 @@ export const SysCard = () => {
                 value: <Select
                             style={{paddingRight: '20px', marginLeft: '-7px'}}
                             dropdownStyle={{width: 'auto'}}
-                            defaultValue={sysObject.sp}
+                            defaultValue={procObject.sp}
                             onChange={handleUpdateVMPDepartment}
                             size="small"
                             bordered={false}
@@ -100,7 +99,7 @@ export const SysCard = () => {
                 value: <Select
                             style={{paddingRight: '20px', marginLeft: '-7px'}}
                             dropdownStyle={{width: '120px'}}
-                            defaultValue={sysObject.sp2}
+                            defaultValue={procObject.sp2}
                             onChange={handleUpdateDepartment}
                             size="small"
                             bordered={false}
@@ -110,11 +109,11 @@ export const SysCard = () => {
             },
             {
                 rowName: 'Интервал оценки/реквалификации',
-                value: <ArHelper ar={sysObject.ar} id={sysObject.id} table='systems' /> 
+                value: <ArHelper ar={procObject.ar} id={procObject.id} table='processes' /> 
             },
             {
                 rowName: 'Валидационный статус',
-                value: <CurrentStatus ar={sysObject.ar} fio={sysObject.fio} table='systems' /> 
+                value: <CurrentStatus ar={procObject.ar} fio={procObject.fio} table='processes' /> 
             }
         ]
         
@@ -133,28 +132,28 @@ export const SysCard = () => {
             {
               key: '1',
               label: 'Описание',
-              children: <SysDescriptions columns={columns} data={data} />,
+              children: <ProcDescriptions columns={columns} data={data} />,
             },
             {
               key: '2',
               label: 'Перечень валидационных работ',
-              children: <CardReestr id={sysObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={sysObject.groupp} />,
+              children: <CardReestr id={procObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={procObject.groupp} />,
             },
             {
               key: '3',
               label: 'Техническая информация',
-              children: <TechnicalInfo id={sysObject.id} />,
+              children: <TechnicalInfo id={procObject.id} />,
             },
             {
               key: '4',
               label: 'Медиа файлы',
-              children: <PhotosBlock id={sysObject.id} />,
+              children: <PhotosBlock id={procObject.id} />,
             },
             {
               key: '5',
               label: 'Статусная этикетка',
-              children: <SysLabel sysObject={sysObject} reestrData={reestrData} />,
-              disabled: sysObject.ar === '0' || sysObject.ar === '12' || sysObject.ar === '15' || sysObject.date === null ? true : false
+              children: <ProcLabel procObject={procObject} reestrData={reestrData} />,
+              disabled: procObject.ar === '0' || procObject.ar === '12' || procObject.ar === '15' || procObject.date === null ? true : false
             },
           ]
 
@@ -162,7 +161,7 @@ export const SysCard = () => {
             <>
             <Row style={{padding: '10px 0'}} >
                 <Col span={5} push={1} style={{textAlign: 'center'}} >
-                    <TitleImage sysObject={sysObject} id={id} />
+                    <TitleImage procObject={procObject} id={id} />
                 </Col>
                 <Col span={16} push={2} style={{minHeight: '89vh', display: "flex", flexDirection: 'column'}} >
                     <Tabs

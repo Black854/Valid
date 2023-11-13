@@ -1,9 +1,10 @@
 import { Table, Typography } from "antd"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { getTechInfo } from "../../../../redux/Selectors/equipmentSelectors"
-import { getTechnicalInfo, updateTechnicalInfo } from "../../../../redux/Reducers/equipmentReducer"
 import { AppDispatch } from "../../../../redux/store"
+import { getTechInfo } from "../../../../redux/Selectors/processesSelectors"
+import { getTechnicalInfo, updateTechnicalInfo } from "../../../../redux/Reducers/processesReducer"
+
 const {Text} = Typography
 type TechnicalInfoPropsType = {
     id: string

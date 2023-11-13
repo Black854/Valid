@@ -1,4 +1,4 @@
-import { AppStateType } from "./store"
+import { AppStateType } from "../store"
 
 export const getSysData = (state: AppStateType) => {
     return state.systems.data

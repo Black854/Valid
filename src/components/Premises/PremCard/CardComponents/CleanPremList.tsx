@@ -2,9 +2,9 @@ import { Button, Col, Input, Popconfirm, Row, Select, Table, Typography, message
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../../redux/store"
-import { getCleanPremListSelector, getCleanTabSelector, getIsCleanPremDataLoading } from "../../../../redux/premisesSelectors"
-import { createCleanPrem, deleteCleanPrem, getCleanPremList, updateCleanPremItemData } from "../../../../redux/premisesReducer"
-import { getDepartmentsSelector } from "../../../../redux/appSelectors"
+import { getCleanPremListSelector, getCleanTabSelector, getIsCleanPremDataLoading } from "../../../../redux/Selectors/premisesSelectors"
+import { createCleanPrem, deleteCleanPrem, getCleanPremList, updateCleanPremItemData } from "../../../../redux/Reducers/premisesReducer"
+import { getDepartmentsSelector } from "../../../../redux/Selectors/appSelectors"
 import { ColumnsType } from "antd/es/table"
 import { PlusOutlined, DeleteOutlined, SaveOutlined } from '@ant-design/icons'
 const {Text} = Typography

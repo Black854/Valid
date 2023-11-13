@@ -2,14 +2,14 @@ import { Typography, Col, Image, Row, Spin, Table } from "antd"
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
-import { getPremData, getIsLoading } from "../../redux/premisesSelectors"
+import { getPremData, getIsLoading } from "../../redux/Selectors/premisesSelectors"
 import { EyeOutlined} from '@ant-design/icons'
-import { RenderDateHelper } from "../helpers/renderDateHelper"
+import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
 import React from "react"
 import { AppDispatch } from "../../redux/store"
-import { getPremises } from "../../redux/premisesReducer"
+import { getPremises } from "../../redux/Reducers/premisesReducer"
 
 const { Text } = Typography
   

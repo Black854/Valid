@@ -1,6 +1,6 @@
 import { ThunkAction } from "redux-thunk"
-import { equipmentAPI } from "../api/equipmentAPI"
-import { AppStateType, InferActionsTypes } from "./store"
+import { equipmentAPI } from "../../api/equipmentAPI"
+import { AppStateType, InferActionsTypes } from "../store"
 
 export type DataType = {
     id: string

@@ -1,11 +1,12 @@
 import { Select } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { getIsIntervalLoading } from "../../redux/equipmentSelectors"
-import { getIntervals } from "../../redux/appSelectors"
+import { getIsIntervalLoading } from "../../redux/Selectors/equipmentSelectors"
+import { getIntervals } from "../../redux/Selectors/appSelectors"
 import { AppDispatch } from "../../redux/store"
-import { updateEquipInterval } from "../../redux/equipmentReducer"
-import { updatePremInterval } from "../../redux/premisesReducer"
-import { updateSysInterval } from "../../redux/systemsReducer"
+import { updateEquipInterval } from "../../redux/Reducers/equipmentReducer"
+import { updatePremInterval } from "../../redux/Reducers/premisesReducer"
+import { updateSysInterval } from "../../redux/Reducers/systemsReducer"
+import { updateProcInterval } from "../../redux/Reducers/processesReducer"
 
 type ArHelperPropsType = {
     ar: string
@@ -24,6 +25,8 @@ export const ArHelper: React.FC<ArHelperPropsType> = ({ar, id, table}) => {
             dispatch(updatePremInterval(id, interval))
         } else if (table === 'systems') {
             dispatch(updateSysInterval(id, interval))
+        } else if (table === 'processes') {
+            dispatch(updateProcInterval(id, interval))
         }
     }
 

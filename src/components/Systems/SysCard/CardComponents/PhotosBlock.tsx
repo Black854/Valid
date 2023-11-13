@@ -7,8 +7,8 @@ import pdf from './../../../../img/pdfi.png'
 import video from './../../../../img/video.png'
 import { RcFile } from "antd/es/upload"
 import { AppDispatch } from "../../../../redux/store"
-import { getPhotosSelector } from "../../../../redux/systemsSelectors";
-import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/systemsReducer";
+import { getPhotosSelector } from "../../../../redux/Selectors/systemsSelectors";
+import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/Reducers/systemsReducer";
 const {Text, Title} = Typography
 
 type PhotosBlockPropsType = {

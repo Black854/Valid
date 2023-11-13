@@ -2,10 +2,10 @@ import { Button, Popconfirm, Table, Typography, message } from "antd"
 import { useDispatch } from "react-redux"
 import React from "react"
 import { ColumnsType } from "antd/es/table"
-import { ConvertDate } from "../../../helpers/convertDate"
+import { ConvertDate } from "../../../common/convertDate"
 import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
 import { AppDispatch } from "../../../../redux/store"
-import { deleteSysDocument, updateReestrDocsCodeSys, uploadSysDocument } from "../../../../redux/systemsReducer"
+import { deleteSysDocument, updateReestrDocsCodeSys, uploadSysDocument } from "../../../../redux/Reducers/systemsReducer"
 const { Text } = Typography
 
 
@@ -98,7 +98,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
         {
             title: <Text strong style={{fontSize: '12pt'}}>Дата</Text>,
             dataIndex: 'dvp',
-            render: (dvp, record) => { return <ConvertDate date={dvp} objectId={id} dateType='dvp' id={record.id} key={record.id} group="equipment" /> },
+            render: (dvp, record) => { return <ConvertDate date={dvp} objectId={id} dateType='dvp' id={record.id} key={record.id} group="systems" /> },
             width: '11%',
             align: 'center',
         },
@@ -161,7 +161,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                 const dateB: any = new Date(b.dvo);
                 return dateA - dateB;
             },
-            render: (dvo, record) => { return <ConvertDate date={dvo} objectId={id} dateType='dvo' id={record.id} key={record.id} group="equipment" /> },
+            render: (dvo, record) => { return <ConvertDate date={dvo} objectId={id} dateType='dvo' id={record.id} key={record.id} group="systems" /> },
             sortDirections: ['ascend', 'descend'],
             defaultSortOrder: 'descend',
             width: '11%',

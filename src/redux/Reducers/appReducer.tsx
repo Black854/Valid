@@ -1,6 +1,6 @@
 import { ThunkAction } from "redux-thunk";
-import { appAPI } from "../api/appAPI";
-import { AppStateType, InferActionsTypes } from "./store";
+import { appAPI } from "../../api/appAPI";
+import { AppStateType, InferActionsTypes } from "../store";
 
 type EquipGroup = {
     id: string

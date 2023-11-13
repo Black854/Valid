@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { EyeOutlined} from '@ant-design/icons';
 import { AppDispatch } from "../../../../redux/store";
-import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/systemsReducer";
+import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/systemsReducer";
 const {Text} = Typography
 
 interface DataType {

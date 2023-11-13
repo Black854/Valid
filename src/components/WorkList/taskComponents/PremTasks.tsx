@@ -1,10 +1,10 @@
-import { PremReestrType, deletePremDocument, getCurrentPremData, updatePremWorkData, updateReestrDocsCodePrem, uploadPremDocument } from "../../../redux/premisesReducer"
+import { PremReestrType, deletePremDocument, getCurrentPremData, updatePremWorkData, updateReestrDocsCodePrem, uploadPremDocument } from "../../../redux/Reducers/premisesReducer"
 import { ExpandedDataType } from "../types"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../../redux/store"
 import { DeleteOutlined, UploadOutlined, FileWordOutlined } from '@ant-design/icons'
 import { Typography, Table, TableColumnsType,Button, Popconfirm } from "antd"
-import { DatePickerForWork } from "../../helpers/DatePickerForWork"
+import { DatePickerForWork } from "../../common/DatePickerForWork"
 const { Text } = Typography
 
 type PremTasks = {

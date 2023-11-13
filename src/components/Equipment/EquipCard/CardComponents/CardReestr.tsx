@@ -1,9 +1,9 @@
 import { Button, Popconfirm, Table, Typography, message } from "antd"
 import { useDispatch } from "react-redux"
-import { deleteEquipDocument, updateReestrDocsCodeEquip, uploadEquipDocument } from "../../../../redux/equipmentReducer"
+import { deleteEquipDocument, updateReestrDocsCodeEquip, uploadEquipDocument } from "../../../../redux/Reducers/equipmentReducer"
 import React from "react"
 import { ColumnsType } from "antd/es/table"
-import { ConvertDate } from "../../../helpers/convertDate"
+import { ConvertDate } from "../../../common/convertDate"
 import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
 import { AppDispatch } from "../../../../redux/store"
 const { Text } = Typography

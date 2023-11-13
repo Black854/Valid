@@ -1,19 +1,37 @@
 import { Button, Image, Popconfirm, Typography, message } from "antd"
-import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
+import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import empty from './../../../../img/empty.png'
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { EyeOutlined} from '@ant-design/icons';
-import { AppDispatch } from "../../../../redux/store";
-import { DataType, deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/premisesReducer";
+import { useDispatch } from "react-redux"
+import { useParams } from "react-router-dom"
+import { EyeOutlined} from '@ant-design/icons'
+import { AppDispatch } from "../../../../redux/store"
+import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/processesReducer"
 const {Text} = Typography
 
+interface DataType {
+    ar: string
+    date: string
+    fio: string
+    foto: string
+    groupp: string
+    id: string
+    inv: string
+    manual: string
+    manufacturdate: string
+    manufacturer: string
+    name: string
+    nomer: string
+    sp: string
+    sp2: string
+    serial: string
+}
+
 type TitleImagePropsType = {
-    premObject: DataType
+    procObject: DataType
     id: string
 }
 
-export const TitleImage: React.FC<TitleImagePropsType> = ({premObject, id}) => {
+export const TitleImage: React.FC<TitleImagePropsType> = ({procObject, id}) => {
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
     
@@ -23,6 +41,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({premObject, id}) => {
           content: `Расширение файла ${fileName} не соответствует разрешенным`,
         })
     }
+    
     const onSelectPhoto = (e: any) => {
         if (e.currentTarget.files.length > 0) {
             const fileName = e.currentTarget.files[0].name
@@ -52,13 +71,13 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({premObject, id}) => {
     let fileInputRef: any = null
 
     return (
-        <>
+        <>  
             {contextHolder}
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
-                <Text strong editable={{text: premObject.name, onChange: (text: string) => handleUpdateName(text)}} style={{color: '#167afe', fontSize: '12pt', display: 'block', marginBottom: '20px'}}>{ premObject.class==='Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name }</Text>
+                <Text strong editable={{onChange: (text: string) => handleUpdateName(text)}} style={{color: '#167afe', fontSize: '12pt', display: 'block', marginBottom: '20px'}}>{procObject.name}</Text>
                 <Image
-                    src={premObject.foto ? "http://10.85.10.212/ov/" + premObject.foto : empty}
-                    preview = { premObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }
+                    src={procObject.foto ? "http://10.85.10.212/ov/" + procObject.foto : empty}
+                    preview = { procObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }
                     style={{
                         maxWidth: '100%',
                         maxHeight: '45vh',
@@ -69,12 +88,12 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({premObject, id}) => {
                     rootClassName="titleImage"
                 />
             </div>
-            { !premObject.foto && <>
+            { !procObject.foto && <>
                 <input id="uploadPhoto" accept="image/jpeg, image/png" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
                 <Button htmlType="submit" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
                 </>
             }
-            { premObject.foto && id && <>
+            { procObject.foto && id && <>
                     <Popconfirm
                         title='Подтвердите удаление'
                         description='Вы уверены, что хотите удалить фотографию?'

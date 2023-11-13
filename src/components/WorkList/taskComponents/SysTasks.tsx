@@ -3,8 +3,8 @@ import { Typography, Table, TableColumnsType,Button, Popconfirm } from "antd"
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../../redux/store'
 import { ExpandedDataType } from '../types'
-import { DatePickerForWork } from '../../helpers/DatePickerForWork'
-import { SysReestrType, deleteSysDocument, getCurrentSysData, updateReestrDocsCodeSys, updateSysWorkData, uploadSysDocument } from '../../../redux/systemsReducer'
+import { DatePickerForWork } from '../../common/DatePickerForWork'
+import { SysReestrType, deleteSysDocument, getCurrentSysData, updateReestrDocsCodeSys, updateSysWorkData, uploadSysDocument } from '../../../redux/Reducers/systemsReducer'
 
 const { Text } = Typography
 
@@ -309,12 +309,6 @@ export const SysTasks: React.FC<EquipTasks> = ({mySysDataIdArray, mySysData, rec
         data = [data2]
     }
 
-    return thisObject?.typeval === '1' ? (
-        rec.class === 'Термостаты' ? <Table columns={[...protocolColumns, ...reportColumns, ...pamColumn, ...pam2Column, ...labelColumn]} dataSource={data} pagination={false} bordered /> :
-        rec.class === 'Термоконтейнеры' ? <Table columns={[...protocolColumns, ...reportColumns, ...pamColumn]} dataSource={data} pagination={false} bordered />:
-        <Table columns={[...protocolColumns, ...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered />
-    ) : thisObject?.typeval === '3' ? (
-        rec.class === 'Термоконтейнеры' ? <Table columns={[...reportColumns]} dataSource={data} pagination={false} bordered /> :
-        <Table columns={[...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered />
-    ) : null
+    return thisObject?.typeval === '1' ? <Table columns={[...protocolColumns, ...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered />:
+           thisObject?.typeval === '3' ? <Table columns={[...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered /> : null
 }

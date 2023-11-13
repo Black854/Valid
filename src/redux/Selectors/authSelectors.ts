@@ -1,4 +1,4 @@
-import { AppStateType } from "./store"
+import { AppStateType } from "../store"
 
 export const getUserIdSelector = (state: AppStateType) => {
     return (state.auth.userId)

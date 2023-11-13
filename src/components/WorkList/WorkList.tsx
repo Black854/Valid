@@ -2,24 +2,27 @@ import { Typography, Col, Image, Row, Spin, Table, Badge, Space, Dropdown, Table
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
-import { getPremData, getIsLoading, getCurrentPremDataSelector } from "../../redux/premisesSelectors"
+import { getPremData, getIsLoading, getCurrentPremDataSelector } from "../../redux/Selectors/premisesSelectors"
 import { EyeOutlined} from '@ant-design/icons'
-import { RenderDateHelper } from "../helpers/renderDateHelper"
+import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
 import React, { useEffect } from "react"
 import { AppDispatch } from "../../redux/store"
-import { getCurrentPremData, getPremises } from "../../redux/premisesReducer"
-import { getCurrentEquipDataSelector, getEquipData } from "../../redux/equipmentSelectors"
-import { getAuthUserNameSelector } from "../../redux/authSelectors"
-import { getCurrentEquipData, getEquipment } from "../../redux/equipmentReducer"
+import { getCurrentPremData, getPremises } from "../../redux/Reducers/premisesReducer"
+import { getCurrentEquipDataSelector, getEquipData } from "../../redux/Selectors/equipmentSelectors"
+import { getAuthUserNameSelector } from "../../redux/Selectors/authSelectors"
+import { getCurrentEquipData, getEquipment } from "../../redux/Reducers/equipmentReducer"
 import { EquipTasks } from "./taskComponents/EquipTasks"
 import { PremTasks } from "./taskComponents/PremTasks"
 import { ProgressHelper } from "./taskComponents/ProgressHelper"
-import { getAllValidators } from "../../redux/appReducer"
-import { getCurrentSysDataSelector, getSysData } from "../../redux/systemsSelectors"
-import { getCurrentSysData, getSystems } from "../../redux/systemsReducer"
+import { getAllValidators } from "../../redux/Reducers/appReducer"
+import { getCurrentSysDataSelector, getSysData } from "../../redux/Selectors/systemsSelectors"
+import { getCurrentSysData, getSystems } from "../../redux/Reducers/systemsReducer"
 import { SysTasks } from "./taskComponents/SysTasks"
+import { getCurrentProcData, getProcesses } from "../../redux/Reducers/processesReducer"
+import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/processesSelectors"
+import { ProcTasks } from "./taskComponents/ProcTasks"
 
 const { Text } = Typography
   
@@ -38,6 +41,7 @@ export const WorkList: React.FC = () => {
     const premData = useSelector(getPremData)
     const equipData = useSelector(getEquipData)
     const sysData = useSelector(getSysData)
+    const procData = useSelector(getProcData)
     const isLoading = useSelector(getIsLoading)
     const AuthUserName = useSelector(getAuthUserNameSelector)
 
@@ -45,6 +49,7 @@ export const WorkList: React.FC = () => {
         dispatch(getPremises())
         dispatch(getEquipment())
         dispatch(getSystems())
+        dispatch(getProcesses())
     }, [])
 
     const premNewData = premData.map(e => ({
@@ -92,13 +97,30 @@ export const WorkList: React.FC = () => {
         fio: e.fio
     })).filter(e => e.fio === AuthUserName)
 
+    const procNewData = procData.map(e => ({
+        objectType: 'processes' as 'equipment' | 'premises' | 'systems' | 'processes',
+        id: e.id,
+        key: e.id,
+        sp2: e.sp2,
+        name: e.name,
+        nomer: 'none',
+        class: 'none',
+        mode: 'none',
+        date: e.date,
+        ar: e.ar,
+        foto: e.foto,
+        fio: e.fio
+    })).filter(e => e.fio === AuthUserName)
+
     const myPremDataIdArray = premNewData.map(e => e.id)
     const myEquipDataIdArray = equipNewData.map(e => e.id)
     const mySysDataIdArray = sysNewData.map(e => e.id)
+    const myProcDataIdArray = procNewData.map(e => e.id)
     
     const myPremData = useSelector(getCurrentPremDataSelector)
     const myEquipData = useSelector(getCurrentEquipDataSelector)
     const mySysData = useSelector(getCurrentSysDataSelector)
+    const myProcData = useSelector(getCurrentProcDataSelector)
 
     if (myPremDataIdArray.length > 0 && myPremData.length === 0) {
         dispatch(getCurrentPremData(myPremDataIdArray))
@@ -112,8 +134,12 @@ export const WorkList: React.FC = () => {
         dispatch(getCurrentSysData(mySysDataIdArray))
     }
 
+    if (myProcDataIdArray.length > 0 && myProcData.length === 0) {
+        dispatch(getCurrentProcData(myProcDataIdArray))
+    }
+
     type DataType = typeof premNewData[0]
-    const data: DataType[] = [...premNewData, ...equipNewData, ...sysNewData]
+    const data: DataType[] = [...premNewData, ...equipNewData, ...sysNewData, ...procNewData]
 
     const columns: ColumnsType<DataType> = [
         {
@@ -149,7 +175,7 @@ export const WorkList: React.FC = () => {
         {
             title: <Text strong style={{fontSize: '12pt'}}>Прогресс</Text>,
             render: (text, record, index) => {
-                return <ProgressHelper key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} mySysData={mySysData} />
+                return <ProgressHelper key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} mySysData={mySysData} myProcData={myProcData} />
             },
             align: 'center',
         },
@@ -191,6 +217,7 @@ export const WorkList: React.FC = () => {
                                 return rec.objectType === 'premises' ? <PremTasks myPremData={myPremData} error={error} rec={rec} myPremDataIdArray={myPremDataIdArray}/> :
                                 rec.objectType === 'equipment' ? <EquipTasks myEquipData={myEquipData} error={error} rec={rec} myEquipDataIdArray={myEquipDataIdArray}/> :
                                 rec.objectType === 'systems' ? <SysTasks mySysData={mySysData} error={error} rec={rec} mySysDataIdArray={mySysDataIdArray}/> :
+                                rec.objectType === 'processes' ? <ProcTasks myProcData={myProcData} error={error} rec={rec} myProcDataIdArray={myProcDataIdArray}/> :
                                 null
                             }
                         }}

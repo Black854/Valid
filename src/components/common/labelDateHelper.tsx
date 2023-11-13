@@ -1,8 +1,8 @@
 import { addMonths } from 'date-fns'
 import { format } from 'date-fns'
-import { getIntervals } from '../../redux/appSelectors'
+import { getIntervals } from '../../redux/Selectors/appSelectors'
 import { useSelector } from 'react-redux'
-import { IntervalsType } from '../../redux/appReducer'
+import { IntervalsType } from '../../redux/Reducers/appReducer'
 
 type LabelDateHelperType = {
     date: string

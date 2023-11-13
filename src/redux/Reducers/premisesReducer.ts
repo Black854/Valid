@@ -1,6 +1,6 @@
 import { ThunkAction } from "redux-thunk"
-import { premisesAPI } from "../api/premisesAPI"
-import { AppStateType, InferActionsTypes } from "./store"
+import { premisesAPI } from "../../api/premisesAPI"
+import { AppStateType, InferActionsTypes } from "../store"
 
 export type DataType = {
     mode: string

@@ -3,13 +3,13 @@ import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
 import { EyeOutlined} from '@ant-design/icons'
-import { RenderDateHelper } from "../helpers/renderDateHelper"
+import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
 import React from "react"
 import { AppDispatch } from "../../redux/store"
-import { getIsLoading, getSysData } from "../../redux/systemsSelectors"
-import { getSystems } from "../../redux/systemsReducer"
+import { getIsLoading, getSysData } from "../../redux/Selectors/systemsSelectors"
+import { getSystems } from "../../redux/Reducers/systemsReducer"
 
 const { Text } = Typography;
 

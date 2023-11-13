@@ -3,12 +3,13 @@ import { format } from 'date-fns'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../redux/store'
-import { getCurrentPremData, updateReestrDatePrem } from '../../redux/premisesReducer'
+import { getCurrentPremData, updateReestrDatePrem } from '../../redux/Reducers/premisesReducer'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
 import { datePickerLocale } from './datePickerLocale'
-import { getCurrentEquipData, updateReestrDateEquip } from '../../redux/equipmentReducer'
-import { getCurrentSysData, updateReestrDateSys } from '../../redux/systemsReducer'
+import { getCurrentEquipData, updateReestrDateEquip } from '../../redux/Reducers/equipmentReducer'
+import { getCurrentSysData, updateReestrDateSys } from '../../redux/Reducers/systemsReducer'
+import { getCurrentProcData, updateReestrDateProc } from '../../redux/Reducers/processesReducer'
 
 dayjs.locale('ru')
 const { Text } = Typography
@@ -47,6 +48,9 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({id, objectId, date
         } else if (group === 'systems') {
             await dispatch(updateReestrDateSys(id, objectId, formattedSelectedDate, dateType))
             await dispatch(getCurrentSysData(myDataIdArray))
+        } else if (group === 'processes') {
+            await dispatch(updateReestrDateProc(id, objectId, formattedSelectedDate, dateType))
+            await dispatch(getCurrentProcData(myDataIdArray))
         }
     }
 
