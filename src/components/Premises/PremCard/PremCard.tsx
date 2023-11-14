@@ -124,7 +124,7 @@ export const PremCard = () => {
             {
                 rowName: 'Номер помещения',
                 value:  premObject.nomer ? <Text editable={{ onChange: (text) => {updateDataNomer(text)}, text: premObject.nomer}}>Помещение { premObject.nomer}</Text>:
-                                            <Text type="danger" editable={{ onChange: (text) => {updateDataNomer(text)}, text: ''}}>Не указано</Text>
+                                            <Text type="warning" editable={{ onChange: (text) => {updateDataNomer(text)}, text: ''}}>Не указано</Text>
             },
             {
                 rowName: 'Группа',

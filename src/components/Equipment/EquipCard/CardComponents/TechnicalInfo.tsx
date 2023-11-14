@@ -30,7 +30,7 @@ export const TechnicalInfo: React.FC<TechnicalInfoPropsType> = ({ id }) => {
         {
           dataIndex: 'value',
           render: (value: string) => value != '' ? <Text editable={{onChange: (text: string) => updateTechInfo(text)}} style={{fontSize: '12pt'}}>{value}</Text> :
-                                                    <Text type='danger' editable={{onChange: (text: string) => updateTechInfo(text), text: ''}} style={{fontSize: '12pt'}} >Нет данных</Text>,
+                                                    <Text type='warning' editable={{onChange: (text: string) => updateTechInfo(text), text: ''}} style={{fontSize: '12pt'}} >Нет данных</Text>,
         }
     ]
 

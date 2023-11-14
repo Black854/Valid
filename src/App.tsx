@@ -17,6 +17,7 @@ import { SysCard } from './components/Systems/SysCard/SysCard'
 import { Processes } from './components/Processes/Processes'
 import { ProcCard } from './components/Processes/ProcCard/ProcCard'
 import { Instruments } from './components/Instruments/Instruments'
+import { InstCard } from './components/Instruments/InstCard/InstCard'
 const { theme } = require('antd/lib')
 
 export const App: React.FC = () => {
@@ -51,6 +52,7 @@ export const App: React.FC = () => {
                 <Route path="/work" element={<WorkList />} />
                 <Route path="/monitoring" element={<Monitoring />} />
                 <Route path="/instruments" element={<Instruments />} />
+                <Route path="/instruments/:id" element={<InstCard />} />
               </Routes>
             </Layout>
             <CustomFooter />

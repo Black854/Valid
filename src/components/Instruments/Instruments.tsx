@@ -3,14 +3,12 @@ import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
 import { EyeOutlined} from '@ant-design/icons'
-import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
 import React from "react"
 import { AppDispatch } from "../../redux/store"
 import { getInstruments } from "../../redux/Reducers/instrumentsReducer"
 import { getInstData, getIsLoading } from "../../redux/Selectors/instrumentsSelectors"
-import { format } from 'date-fns'
 import { RenderDateHelperInstruments } from "../common/RenderDateHelperInstruments"
 
 const { Text } = Typography;

@@ -105,11 +105,6 @@ export const updateSerial = (id: string, serial: string): ThunkType => async (di
     dispatch (instActions.pushInstrumentsData(data.items))
 }
 
-export const updateInvno = (id: string, invno: string): ThunkType => async (dispatch) => {
-    let data = await instrumentsAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, invno)
-    dispatch (instActions.pushInstrumentsData(data.items))
-}
-
 export const getTechnicalInfo = (id: string): ThunkType => async (dispatch) => { 
     let data = await instrumentsAPI.getTechnicalInfo(id)
     dispatch(instActions.setTechnicalInfo(data.tech))

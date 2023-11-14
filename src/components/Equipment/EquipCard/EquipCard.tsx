@@ -145,7 +145,7 @@ export const EquipCard = () => {
             {
                 rowName: 'Местонахождение',
                 value:  equipObject.nomer ? <Text editable={{ onChange: (text) => {updateDataNomer(text)}, text: equipObject.nomer}}>Помещение № { equipObject.nomer}</Text>:
-                                            <Text type="danger" editable={{ onChange: (text) => {updateDataNomer(text)}, text: ''}}>Не указано</Text>
+                                            <Text type="warning" editable={{ onChange: (text) => {updateDataNomer(text)}, text: ''}}>Не указано</Text>
             },
             {
                 rowName: 'Группа',
@@ -163,22 +163,22 @@ export const EquipCard = () => {
             {
                 rowName: 'Производитель',
                 value: equipObject.manufacturer ? <Text editable={{ onChange: (text) => {updateDataManufacturer(text)}}}>{equipObject.manufacturer}</Text> :
-                <Text type="danger" editable={{ onChange: (text) => {updateDataManufacturer(text)}, text: ''}}>Не указано</Text>
+                <Text type="warning" editable={{ onChange: (text) => {updateDataManufacturer(text)}, text: ''}}>Не указано</Text>
             },
             {
                 rowName: 'Год изготовления',
                 value: equipObject.manufacturdate ? <Text editable={{ onChange: (text) => {updateDataManufacturdate(text)}}}>{equipObject.manufacturdate}</Text> :
-                <Text type="danger" editable={{ onChange: (text) => {updateDataManufacturdate(text)}, text: ''}}>Не указано</Text>
+                <Text type="warning" editable={{ onChange: (text) => {updateDataManufacturdate(text)}, text: ''}}>Не указано</Text>
             },
             {
                 rowName: 'Серийный номер',
                 value: equipObject.serial ? <Text editable={{ onChange: (text) => {updateDataSerial(text)}}}>{equipObject.serial}</Text> :
-                <Text type="danger" editable={{ onChange: (text) => {updateDataSerial(text)}, text: ''}}>Не указано</Text>
+                <Text type="warning" editable={{ onChange: (text) => {updateDataSerial(text)}, text: ''}}>Не указано</Text>
             },
             {
                 rowName: 'Учетный номер',
                 value: equipObject.inv ? <Text editable={{ onChange: (text) => {updateDataInv(text)}}}>{equipObject.inv}</Text> :
-                <Text type="danger" editable={{ onChange: (text) => {updateDataInv(text)}, text: ''}}>Не указано</Text>
+                <Text type="warning" editable={{ onChange: (text) => {updateDataInv(text)}, text: ''}}>Не указано</Text>
             },
             {
                 rowName: 'Интервал оценки/реквалификации',

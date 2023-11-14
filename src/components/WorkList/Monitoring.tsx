@@ -171,7 +171,6 @@ export const Monitoring: React.FC = () => {
             render: (text, record, index) => {
                 return <ProgressHelper key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} mySysData={mySysData} myProcData={myProcData} />
             },
-            sorter: (a, b) => a.sp2.localeCompare(b.sp2),
             align: 'center',
         },
         {
