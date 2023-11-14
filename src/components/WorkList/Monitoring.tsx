@@ -58,7 +58,7 @@ export const Monitoring: React.FC = () => {
     const premNewData = premData.map(e => ({
         objectType: 'premises' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
-        key: e.id,
+        key: 'prem'+e.id,
         sp2: e.sp2,
         name: e.name,
         nomer: e.nomer,
@@ -73,7 +73,7 @@ export const Monitoring: React.FC = () => {
     const equipNewData = equipData.map(e => ({
         objectType: 'equipment' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
-        key: e.id,
+        key: 'equip'+e.id,
         sp2: e.sp2,
         name: e.name,
         nomer: e.nomer,
@@ -88,7 +88,7 @@ export const Monitoring: React.FC = () => {
     const sysNewData = sysData.map(e => ({
         objectType: 'systems' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
-        key: e.id,
+        key: 'sys'+e.id,
         sp2: e.sp2,
         name: e.name,
         nomer: 'none',
@@ -103,7 +103,7 @@ export const Monitoring: React.FC = () => {
     const procNewData = procData.map(e => ({
         objectType: 'processes' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
-        key: e.id,
+        key: 'proc'+e.id,
         sp2: e.sp2,
         name: e.name,
         nomer: 'none',
