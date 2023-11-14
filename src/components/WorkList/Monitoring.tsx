@@ -28,16 +28,22 @@ import { SysTasks } from "./taskComponents/SysTasks"
 const { Text } = Typography
   
 export const Monitoring: React.FC = () => {
-    const [messageApi, contextHolder] = message.useMessage()
+    useEffect(() => {
+        dispatch(getPremises())
+        dispatch(getEquipment())
+        dispatch(getSystems())
+        dispatch(getProcesses())
+        dispatch(getAllValidators())
+    }, [])
 
+    const dispatch: AppDispatch = useDispatch()
+    const [messageApi, contextHolder] = message.useMessage()
     const error = (fileName: string) => {
         messageApi.open({
             type: 'error',
             content: `Расширение файла ${fileName} не соответствует разрешенным`,
         })
     }
-
-    const dispatch: AppDispatch = useDispatch()
 
     const premData = useSelector(getPremData)
     const equipData = useSelector(getEquipData)
@@ -48,14 +54,6 @@ export const Monitoring: React.FC = () => {
     const allValidators = useSelector(getAllValidatorsSelector)
 
     const usersFilters = allValidators.map((e: AllValidatorsType) => ({ value: e.fio, text: e.fio}))
-
-    useEffect(() => {
-        dispatch(getPremises())
-        dispatch(getEquipment())
-        dispatch(getSystems())
-        dispatch(getProcesses())
-        dispatch(getAllValidators())
-    }, [])
 
     const premNewData = premData.map(e => ({
         objectType: 'premises' as 'equipment' | 'premises' | 'systems' | 'processes',
@@ -127,21 +125,12 @@ export const Monitoring: React.FC = () => {
     const mySysData = useSelector(getCurrentSysDataSelector)
     const myProcData = useSelector(getCurrentProcDataSelector)
 
-    if (myPremDataIdArray.length > 0 && myPremData.length === 0) {
+    useEffect(() => {
         dispatch(getCurrentPremData(myPremDataIdArray))
-    }
-
-    if (myEquipDataIdArray.length > 0 && myEquipData.length === 0) {
         dispatch(getCurrentEquipData(myEquipDataIdArray))
-    }
-
-    if (mySysDataIdArray.length > 0 && mySysData.length === 0) {
         dispatch(getCurrentSysData(mySysDataIdArray))
-    }
-
-    if (myProcDataIdArray.length > 0 && myProcData.length === 0) {
         dispatch(getCurrentProcData(myProcDataIdArray))
-    }
+    }, [premData, equipData, sysData, procData])
 
     type DataType = typeof premNewData[0]
     const data: DataType[] = [...premNewData, ...equipNewData, ...sysNewData, ...procNewData]

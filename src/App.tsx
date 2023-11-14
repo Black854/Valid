@@ -16,10 +16,11 @@ import { Systems } from './components/Systems/Systems'
 import { SysCard } from './components/Systems/SysCard/SysCard'
 import { Processes } from './components/Processes/Processes'
 import { ProcCard } from './components/Processes/ProcCard/ProcCard'
+import { Instruments } from './components/Instruments/Instruments'
 const { theme } = require('antd/lib')
 
 export const App: React.FC = () => {
-  const [typeTheme, setTheme] = useState('dark') // Изначально устанавливаем светлую тему
+  const [typeTheme, setTheme] = useState('dark') // Изначально устанавливаем темную тему
 
   // Обработчик события для переключения темы
   const handleThemeChange = (checked: boolean) => {
@@ -49,6 +50,7 @@ export const App: React.FC = () => {
                 <Route path="/processes/:id" element={<ProcCard />} />
                 <Route path="/work" element={<WorkList />} />
                 <Route path="/monitoring" element={<Monitoring />} />
+                <Route path="/instruments" element={<Instruments />} />
               </Routes>
             </Layout>
             <CustomFooter />

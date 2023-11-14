@@ -6,6 +6,7 @@ import { premisesReducer } from './Reducers/premisesReducer';
 import { authReducer } from './Reducers/authReducer';
 import { systemsReducer } from './Reducers/systemsReducer';
 import { processesReducer } from './Reducers/processesReducer';
+import { instrumentsReducer } from './Reducers/instrumentsReducer';
 
 let rootReducer = combineReducers({
   app: appReducer,
@@ -13,6 +14,7 @@ let rootReducer = combineReducers({
   premises: premisesReducer,
   systems: systemsReducer,
   processes: processesReducer,
+  instruments: instrumentsReducer,
   auth: authReducer,
 })
 

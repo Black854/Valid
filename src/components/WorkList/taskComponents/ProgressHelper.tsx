@@ -158,5 +158,5 @@ export const ProgressHelper: React.FC<ProgresssHelper> = ({record, myPremData, m
         }
     }
     let c = Math.round((a/b)*100)
-    return <Progress type="line" percent={c} size="small" status={c === 100 ? 'success' : 'normal'} />
+    return <Progress type="line" steps={b} percent={c} size={[12, 7]} style={{margin: '0px', padding: '0px'}} status={c === 100 ? 'success' : 'normal'} />
 }
