@@ -18,6 +18,7 @@ import { Processes } from './components/Processes/Processes'
 import { ProcCard } from './components/Processes/ProcCard/ProcCard'
 import { Instruments } from './components/Instruments/Instruments'
 import { InstCard } from './components/Instruments/InstCard/InstCard'
+import { Signal } from './components/Signal/Signal'
 const { theme } = require('antd/lib')
 
 export const App: React.FC = () => {
@@ -53,6 +54,7 @@ export const App: React.FC = () => {
                 <Route path="/monitoring" element={<Monitoring />} />
                 <Route path="/instruments" element={<Instruments />} />
                 <Route path="/instruments/:id" element={<InstCard />} />
+                <Route path="/signal" element={<Signal />} />
               </Routes>
             </Layout>
             <CustomFooter />

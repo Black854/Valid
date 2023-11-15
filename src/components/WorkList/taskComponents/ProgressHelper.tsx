@@ -8,8 +8,8 @@ type ProgresssHelper = {
     record: any
     myPremData: PremReestrType[]
     myEquipData: EquipReestrType[]
-    mySysData?: SysReestrType[]
-    myProcData?: ProcReestrType[]
+    mySysData: SysReestrType[]
+    myProcData: ProcReestrType[]
 }
 
 export const ProgressHelper: React.FC<ProgresssHelper> = ({record, myPremData, myEquipData, mySysData, myProcData}) => {
