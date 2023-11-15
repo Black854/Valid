@@ -1,4 +1,4 @@
-import { Typography, Col, Image, Row, Spin, Table, Badge, Space, Dropdown, TableColumnsType, Progress, Button, Popconfirm, message } from "antd"
+import { Typography, Col, Image, Row, Spin, Table, message } from "antd"
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
@@ -11,24 +11,19 @@ import React, { useEffect } from "react"
 import { AppDispatch } from "../../redux/store"
 import { getCurrentPremData, getPremises } from "../../redux/Reducers/premisesReducer"
 import { getCurrentEquipDataSelector, getEquipData } from "../../redux/Selectors/equipmentSelectors"
-import { getAuthUserNameSelector } from "../../redux/Selectors/authSelectors"
 import { getCurrentEquipData, getEquipment } from "../../redux/Reducers/equipmentReducer"
-import { EquipTasks } from "../WorkList/taskComponents/EquipTasks"
-import { PremTasks } from "../WorkList/taskComponents/PremTasks"
 import { ProgressHelper } from "../WorkList/taskComponents/ProgressHelper"
-import { AllValidatorsType, getAllValidators } from "../../redux/Reducers/appReducer"
-import { getAllValidatorsSelector } from "../../redux/Selectors/appSelectors"
+import { getAllValidators } from "../../redux/Reducers/appReducer"
 import { getCurrentSysData, getSystems } from "../../redux/Reducers/systemsReducer"
 import { getCurrentProcData, getProcesses } from "../../redux/Reducers/processesReducer"
 import { getCurrentSysDataSelector, getSysData } from "../../redux/Selectors/systemsSelectors"
 import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/processesSelectors"
-import { ProcTasks } from "../WorkList/taskComponents/ProcTasks"
-import { SysTasks } from "../WorkList/taskComponents/SysTasks"
 import { addMonths, format, subMonths } from "date-fns"
 
 const { Text } = Typography
   
 export const Signal: React.FC = () => {
+    const dispatch: AppDispatch = useDispatch()
     useEffect(() => {
         dispatch(getPremises())
         dispatch(getEquipment())
@@ -37,7 +32,6 @@ export const Signal: React.FC = () => {
         dispatch(getAllValidators())
     }, [])
 
-    const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
     const error = (fileName: string) => {
         messageApi.open({
@@ -51,10 +45,6 @@ export const Signal: React.FC = () => {
     const sysData = useSelector(getSysData)
     const procData = useSelector(getProcData)
     const isLoading = useSelector(getIsLoading)
-    // const AuthUserName = useSelector(getAuthUserNameSelector)
-    const allValidators = useSelector(getAllValidatorsSelector)
-
-    const usersFilters = allValidators.map((e: AllValidatorsType) => ({ value: e.fio, text: e.fio}))
 
     const premNewData = premData.map(e => ({
         objectType: 'premises' as 'equipment' | 'premises' | 'systems' | 'processes',
@@ -293,7 +283,8 @@ export const Signal: React.FC = () => {
             title: <Text strong style={{fontSize: '12pt'}}>Статус</Text>,
             dataIndex: 'fio',
             render: (fio, record) => { return <>
-                <Text type={fio === '' ? 'warning' : 'success'}>{fio === '' ? 'Не в работе' : `Выполняет ${fio}`}</Text>
+                {fio === '' ?  <Text type='warning'>Не в работе</Text> :
+                                <Text>{`Выполняет ${fio}`}</Text>}
                 {fio !== '' && <ProgressHelper record={record} myEquipData={myEquipData} myPremData={myPremData} myProcData={myProcData} mySysData={mySysData}/>}
             </> },
             width: '12%',

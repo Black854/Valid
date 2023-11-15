@@ -1,7 +1,9 @@
 import React from "react"
 import {Link, NavLink, useLocation} from 'react-router-dom'
-import { Col, Menu, MenuProps, Row, Switch } from 'antd'
+import { Col, Menu, MenuProps, Row, Switch, Typography } from 'antd'
 import { Header } from "antd/es/layout/layout"
+
+const { Text } = Typography
 
 type HeaderPropsType = {
     swithTheme: (checked: boolean) => void
@@ -62,7 +64,8 @@ export const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
                     />
                 </Col>
                 <Col span={2} style={{ textAlign: 'right'}}>
-                    <Switch checked={typeTheme === 'dark'} onChange={swithTheme} />
+                    <Text type="warning">Тема  </Text>
+                    <Switch checked={typeTheme === 'light'} onChange={swithTheme} checkedChildren="Темная" unCheckedChildren="Светлая"  />
                 </Col>
             </Row>
         </Header>

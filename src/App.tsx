@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Layout, ConfigProvider} from 'antd'
+import { Layout, ConfigProvider, FloatButton} from 'antd'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import './App.css'
@@ -19,6 +19,7 @@ import { ProcCard } from './components/Processes/ProcCard/ProcCard'
 import { Instruments } from './components/Instruments/Instruments'
 import { InstCard } from './components/Instruments/InstCard/InstCard'
 import { Signal } from './components/Signal/Signal'
+import { Monplans } from './components/Monplans/Monplans'
 const { theme } = require('antd/lib')
 
 export const App: React.FC = () => {
@@ -28,9 +29,9 @@ export const App: React.FC = () => {
   const handleThemeChange = (checked: boolean) => {
     // В зависимости от значения Switch (true или false), меняем тему
     if (checked) {
-      setTheme('dark') // Если true, устанавливаем светлую тему
+      setTheme('light') // Если true, устанавливаем светлую тему
     } else {
-      setTheme('light') // Если false, устанавливаем темную тему
+      setTheme('dark') // Если false, устанавливаем темную тему
     }
   }
 
@@ -55,7 +56,10 @@ export const App: React.FC = () => {
                 <Route path="/instruments" element={<Instruments />} />
                 <Route path="/instruments/:id" element={<InstCard />} />
                 <Route path="/signal" element={<Signal />} />
-              </Routes>
+                <Route path="/monplans" element={<Monplans />} />
+                <Route path="/monplans/:year/:month" element={<Monplans />} />
+              </Routes> 
+            <FloatButton.BackTop />
             </Layout>
             <CustomFooter />
           </Layout>
