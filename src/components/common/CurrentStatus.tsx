@@ -33,7 +33,7 @@ export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio, table}
     } else if (table === 'processes') {
         reestrData = reestrProcData
     }
-    if ( reestrData.length !== 0 ) {
+    if ( reestrData.length > 0 ) {
         const maxDateObject = reestrData.reduce((max, obj) => {
             // Преобразовываем дату dvo в объект Date
             const currentDate = new Date(obj.dvo);
@@ -46,28 +46,31 @@ export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio, table}
             const numInterval = parseInt(interval, 10)
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd'); // Текущая дата для сравнения с датой объекта
-            
-            const objectDate = new Date(maxDateObject.dvo)
-            const resultObjectDate = addMonths(objectDate, numInterval); // Прибавляем monthCount месяцев
-            const formattedObjectDate = format(resultObjectDate, 'yyyyMMdd'); // Текущая дата для сравнения с датой объекта
-            let dateForPrint = format(resultObjectDate, 'dd.MM.yyyy');
-            if (ar === '0') { return <Text type="secondary">Не валидируется</Text> }
-            else if (ar==='12') { return <Text type="secondary">Законсервировано</Text> }
-            else if (ar==='15') { return <Text type="secondary">Списано</Text> }
-            else if (ar==='11' || ar==='10') { return <Text type="secondary">До изменений</Text> }
-            else if (formattedCurrentDate >= formattedObjectDate) {
-                if (fio==='') {
-                    return <Text type="danger">Просрочен с {dateForPrint}</Text> 
-                } else {
-                    return <Text type="danger">Просрочен с {dateForPrint} (в работе у {fio})</Text> 
+            if (maxDateObject.dvo !== '') {
+                const objectDate = new Date(maxDateObject.dvo)
+                const resultObjectDate = addMonths(objectDate, numInterval); // Прибавляем monthCount месяцев
+                const formattedObjectDate = format(resultObjectDate, 'yyyyMMdd'); // Текущая дата для сравнения с датой объекта
+                let dateForPrint = format(resultObjectDate, 'dd.MM.yyyy');
+                if (ar === '0') { return <Text type="secondary">Не валидируется</Text> }
+                else if (ar==='12') { return <Text type="secondary">Законсервировано</Text> }
+                else if (ar==='15') { return <Text type="secondary">Списано</Text> }
+                else if (ar==='11' || ar==='10') { return <Text type="secondary">До изменений</Text> }
+                else if (formattedCurrentDate >= formattedObjectDate) {
+                    if (fio==='') {
+                        return <Text type="danger">Просрочен с {dateForPrint}</Text> 
+                    } else {
+                        return <Text type="danger">Просрочен с {dateForPrint} (в работе у {fio})</Text> 
+                    }
                 }
-            }
-            else {
-                if (fio==='') {
-                    return <Text type="success">Действителен до {dateForPrint}</Text> 
-                } else {
-                    return <Text type="success">Действителен до {dateForPrint} (в работе у {fio})</Text>
+                else {
+                    if (fio==='') {
+                        return <Text type="success">Действителен до {dateForPrint}</Text> 
+                    } else {
+                        return <Text type="success">Действителен до {dateForPrint} (в работе у {fio})</Text>
+                    }
                 }
+            } else {
+                return <Text type="warning">Отсутствуют данные о валидационных работах</Text>
             }
         } else {
             return <Text type="danger">Объект имеет несуществующий тип интервала</Text>

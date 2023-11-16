@@ -24,6 +24,8 @@ export const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
             return "/processes"
         } else if (pathname.includes("/instruments")) {
             return "/instruments"
+        } else if (pathname.includes("/monplans")) {
+            return "/monplans"
         }
         return pathname
     }

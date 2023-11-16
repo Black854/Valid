@@ -7,6 +7,7 @@ import { authReducer } from './Reducers/authReducer';
 import { systemsReducer } from './Reducers/systemsReducer';
 import { processesReducer } from './Reducers/processesReducer';
 import { instrumentsReducer } from './Reducers/instrumentsReducer';
+import { plansReducer } from './Reducers/plansReducer';
 
 let rootReducer = combineReducers({
   app: appReducer,
@@ -16,6 +17,7 @@ let rootReducer = combineReducers({
   processes: processesReducer,
   instruments: instrumentsReducer,
   auth: authReducer,
+  plans: plansReducer
 })
 
 type RootReducerType = typeof rootReducer
