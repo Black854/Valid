@@ -29,4 +29,16 @@ export const plansAPI = {
             return response.data
         })
     },
+    updatePlansDoc(doc: string, objectId: string, tableName: string, recordId: string, month: string) {
+        const requestData = {
+            doc,
+            objectId,
+            tableName,
+            recordId,
+            month
+        }
+        return instance.post(`updatePlansDoc.php`, requestData, {}).then (response => {
+            return response.data
+        })
+    },
 }

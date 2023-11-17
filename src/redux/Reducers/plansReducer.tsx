@@ -53,6 +53,11 @@ export const updatePlansFio = (fio: string, objectId: string, tableName: string,
     dispatch(plansActions.setPlans(data.items))
 }
 
+export const updatePlansDoc = (doc: string, objectId: string, tableName: string, recordId: string, month: string): ThunkType => async (dispatch) => {
+    let data = await plansAPI.updatePlansDoc(doc, objectId, tableName, recordId, month)
+    dispatch(plansActions.setPlans(data.items))
+}
+
 type ActionTypes = InferActionsTypes<typeof plansActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
