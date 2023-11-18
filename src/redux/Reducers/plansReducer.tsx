@@ -8,6 +8,9 @@ export type MonthListItem = {
 
 export type PlansType = {
     name: string
+    nomer: string
+    class: string
+    sp: string
     sp2: string
     foto: string
     date: string
@@ -55,6 +58,11 @@ export const updatePlansFio = (fio: string, objectId: string, tableName: string,
 
 export const updatePlansDoc = (doc: string, objectId: string, tableName: string, recordId: string, month: string): ThunkType => async (dispatch) => {
     let data = await plansAPI.updatePlansDoc(doc, objectId, tableName, recordId, month)
+    dispatch(plansActions.setPlans(data.items))
+}
+
+export const updatePlansDates = (startDate: string, endDate: string, objectId: string, tableName: string, recordId: string, month: string): ThunkType => async (dispatch) => {
+    let data = await plansAPI.updatePlansDates(startDate, endDate, objectId, tableName, recordId, month)
     dispatch(plansActions.setPlans(data.items))
 }
 
