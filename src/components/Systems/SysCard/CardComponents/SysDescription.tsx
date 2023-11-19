@@ -1,4 +1,6 @@
 import { Table } from "antd"
+import { useSelector } from "react-redux"
+import { getIsDescriptionLoading } from "../../../../redux/Selectors/systemsSelectors"
 
 type SysDescriptionsPropsType = {
     columns: any
@@ -6,6 +8,7 @@ type SysDescriptionsPropsType = {
 }
 
 export const SysDescriptions: React.FC<SysDescriptionsPropsType> = ({columns, data}) => {
+    const isDescriptionLoading = useSelector(getIsDescriptionLoading)
     return (
         <>
             <Table
@@ -16,6 +19,7 @@ export const SysDescriptions: React.FC<SysDescriptionsPropsType> = ({columns, da
                 showHeader={false} // Скрыть заголовки, если есть
                 rowKey='rowName'
                 size="small"
+                loading={isDescriptionLoading}
             />
         </>
     )

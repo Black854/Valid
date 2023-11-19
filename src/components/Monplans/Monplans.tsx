@@ -1,5 +1,5 @@
-import { Col, DatePicker, Image, Menu, MenuProps, Popconfirm, Row, Select, Table, Typography } from "antd"
-import { PrinterOutlined, EyeOutlined, CalendarOutlined } from '@ant-design/icons'
+import { Button, Col, DatePicker, Image, Menu, MenuProps, Popconfirm, Row, Select, Table, Typography } from "antd"
+import { PrinterOutlined, EyeOutlined, CalendarOutlined, DeleteOutlined } from '@ant-design/icons'
 import { NavLink, useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../redux/store"
@@ -16,21 +16,22 @@ import 'dayjs/locale/ru'
 import { datePickerLocale } from './../common/datePickerLocale'
 import dayjs from 'dayjs'
 import { DateChanger } from "./PlansComponents/Datechanger"
+import { DeletePlans } from "./PlansComponents/deletePlans"
 
 const { Text } = Typography
 
 type MenuItem = Required<MenuProps>['items'][number]
 
-export const Monplans: React.FC = ({}) => {
+export const Monplans: React.FC = ({ }) => {
   const dispatch: AppDispatch = useDispatch()
   const monthList = useSelector(getMonthListSelector)
   const allValidators = useSelector(getAllValidatorsSelector)
-  const emptyFioObject = [{ value: '', label: <Text type="warning">Не указано</Text>}]
+  const emptyFioObject = [{ value: '', label: <Text type="warning">Не указано</Text> }]
   const allValidatorsFio = [...emptyFioObject, ...allValidators.map(e => ({ value: e.fio, label: e.fio }))]
   const params = useParams()
   const navigate = useNavigate()
-  let year: string 
-  let month: string 
+  let year: string
+  let month: string
   let date: string
 
   if (params.year && params.month) {
@@ -41,7 +42,7 @@ export const Monplans: React.FC = ({}) => {
     year = currentDate.getFullYear().toString()
     month = (currentDate.getMonth() + 1).toString().padStart(2, '0')
   }
-  date = month+'.'+year
+  date = month + '.' + year
   useEffect(() => {
     dispatch(getMonthList())
     dispatch(getPlans(date))
@@ -68,12 +69,12 @@ export const Monplans: React.FC = ({}) => {
 
   const columns: ColumnsType<PlansType> = [
     {
-      title: <Text strong style={{fontSize: '12pt'}}>№</Text>,
+      title: <Text strong style={{ fontSize: '12pt' }}>№</Text>,
       align: 'center',
       dataIndex: 'index'
     },
     {
-      title: <Text strong style={{fontSize: '12pt'}}>СП ВМП</Text>,
+      title: <Text strong style={{ fontSize: '12pt' }}>СП ВМП</Text>,
       dataIndex: 'sp',
       sorter: (a, b) => a.sp.localeCompare(b.sp),
       sortDirections: ['ascend', 'descend'],
@@ -81,7 +82,7 @@ export const Monplans: React.FC = ({}) => {
       align: 'center',
     },
     {
-      title: <Text strong style={{fontSize: '12pt'}}>Планируемый объем работ</Text>,
+      title: <Text strong style={{ fontSize: '12pt' }}>Планируемый объем работ</Text>,
       dataIndex: 'name',
       render: (text, record) => (
         <Row>
@@ -90,25 +91,26 @@ export const Monplans: React.FC = ({}) => {
               maxWidth: '30px',
               maxHeight: '30px',
               borderRadius: '3px',
-              overflow: 'hidden'}}
+              overflow: 'hidden'
+            }}
               src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
-              preview = {{mask: <EyeOutlined style={{fontSize: '12pt'}} />}}
+              preview={{ mask: <EyeOutlined style={{ fontSize: '12pt' }} /> }}
             />
           </Col>
           <Col span={23}>
             <NavLink
               to={`/${record.tablename}/${record.idfromtable}`}
-              style={{fontSize: '12pt', marginLeft: '10px'}}
-              >
-                {text ? record.tablename === 'premises' ? record.class === 'Складские' ? `Помещение ${record.nomer} «${record.name}»` : text : text : <Text type="danger">Объект больше не существует, т.к. был удалён</Text>}
+              style={{ fontSize: '12pt', marginLeft: '10px' }}
+            >
+              {text ? record.tablename === 'premises' ? record.class === 'Складские' ? `Помещение ${record.nomer} «${record.name}»` : text : text : <Text type="warning">Объект больше не существует, т.к. был удалён</Text>}
             </NavLink>
-          </Col>  
+          </Col>
         </Row>
       ),
       sorter: (a, b) => a.name.localeCompare(b.name)
     },
     {
-      title: <Text strong style={{fontSize: '12pt'}}>Сроки</Text>,
+      title: <Text strong style={{ fontSize: '12pt' }}>Сроки</Text>,
       dataIndex: 'date',
       render: (startObjectDate, record) => {
 
@@ -117,19 +119,23 @@ export const Monplans: React.FC = ({}) => {
       align: 'center'
     },
     {
-      title: <Text strong style={{fontSize: '12pt'}}>Ответственный</Text>,
+      title: <Text strong style={{ fontSize: '12pt' }}>Ответственный</Text>,
       dataIndex: 'fio',
       render: (fio, record) => <FioChanger allValidatorsFio={allValidatorsFio} date={date} fio={fio} record={record} key={record.id} />,
       width: '10%',
       align: 'center'
     },
     {
-      title: <Text strong style={{fontSize: '12pt'}}>Результат</Text>,
+      title: <Text strong style={{ fontSize: '12pt' }}>Результат</Text>,
       dataIndex: 'doc',
       render: (doc, record) => <DocChanger date={date} doc={doc} record={record} key={record.id} />,
       sorter: (a, b) => a.doc.localeCompare(b.doc),
       sortDirections: ['ascend', 'descend'],
       width: '12%',
+      align: 'center',
+    },
+    {
+      render: (text, record) => <DeletePlans month={month} record={record} />,
       align: 'center',
     },
   ]
@@ -157,7 +163,7 @@ export const Monplans: React.FC = ({}) => {
 
   if (monthList.length > 0) {
     const getMonthName = (monthNumber: number) => {
-    return months[monthNumber - 1] // -1 потому что массивы начинаются с индекса 0
+      return months[monthNumber - 1] // -1 потому что массивы начинаются с индекса 0
     }
     const generateMenuItems = (monthsByYear: Record<string, MonthListItem[]>) => {
       return Object.entries(monthsByYear).map(([year, months]) => {
@@ -199,9 +205,9 @@ export const Monplans: React.FC = ({}) => {
     ]
 
     return (
-      <Row style={{marginTop: '10px'}}>
+      <Row style={{ marginTop: '10px' }}>
         <Col span={4}>
-        <Menu
+          <Menu
             mode="inline"
             onClick={({ key }) => handleMenuClick(key)}
             style={{ width: 256 }}
@@ -224,11 +230,11 @@ export const Monplans: React.FC = ({}) => {
                         return child && 'label' in child && (
                           <Menu.Item key={`g${menuItem.key}${(matchedMonthIndex + 1).toString().padStart(2, '0')}`} icon={<EyeOutlined />}>{child.label}</Menu.Item>
                         )
-                        })}
+                      })}
                     </Menu.SubMenu>
                   );
                 } else if (menuItem.type === 'divider') {
-                  return <Menu.Divider key={`divider-${index}`}/>
+                  return <Menu.Divider key={`divider-${index}`} />
                 } else if ('label' in menuItem) {
                   return <Menu.Item key={`item-${menuItem.key}`} icon={<PrinterOutlined />}>{menuItem.label}</Menu.Item>
                 }
@@ -242,11 +248,11 @@ export const Monplans: React.FC = ({}) => {
             columns={columns}
             dataSource={data}
             bordered
-            pagination={{defaultPageSize: 50}}
-            title={() => <Text style={{fontSize: '14pt'}}>План работ на {date} (всего: {data.length})</Text>}
+            pagination={{ defaultPageSize: 50 }}
+            title={() => <Text style={{ fontSize: '14pt' }}>План работ на {date} (всего: {data.length})</Text>}
             size="small"
-            style={{marginBottom: '60px'}}
-          /> 
+            style={{ marginBottom: '60px' }}
+          />
         </Col>
       </Row>
     )

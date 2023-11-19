@@ -1,4 +1,6 @@
 import { Table } from "antd"
+import { useSelector } from "react-redux"
+import { getIsDescriptionLoading } from "../../../../redux/Selectors/equipmentSelectors"
 
 type EquipDescriptionsPropsType = {
     columns: any
@@ -6,6 +8,7 @@ type EquipDescriptionsPropsType = {
 }
 
 export const EquipDescriptions: React.FC<EquipDescriptionsPropsType> = ({columns, data}) => {
+    const isDescriptionLoading = useSelector(getIsDescriptionLoading)
     return (
         <>
             <Table
@@ -16,6 +19,7 @@ export const EquipDescriptions: React.FC<EquipDescriptionsPropsType> = ({columns
                 showHeader={false} // Скрыть заголовки, если есть
                 rowKey='rowName'
                 size="small"
+                loading={isDescriptionLoading}
             />
         </>
     )

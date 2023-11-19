@@ -89,14 +89,10 @@ let initialState = {
     photos: [] as PhotosType[],
     cleanPremList: [] as CleanPremListType[],
     cleanGroupLabels: [] as CleanGroupLabelsType[],
-    isDepartmentLoading: false,
-    isVMPDepartmentLoading: false,
-    isClassLoading: false,
     isReestrDataLoading: false,
-    isIntervalLoading: false,
-    isReestrLoading: false,
     isCleanPremDataLoading: false,
     isCleanPremGroupsLoading: false,
+    isDescriptionLoading: false,
     cleanTab: '',
     premIdArrayAtWorkAtCurrentUser: [] as PremReestrType[],
 }
@@ -106,25 +102,17 @@ type InitialStateType = typeof initialState
 export const premisesReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case 'prem/PUSH_PREM_DATA':
-            return {...state, data: action.data, isLoading: false}
+            return {...state, data: action.data}
         case 'prem/IS_LOADING':
-            return {...state, isLoading: true}
+            return {...state, isLoading: action.data}
         case 'prem/PUSH_REESTR_DATA':
             return {...state, reestrData: action.data}            
         case 'prem/SET_TECH_INFO':
             return {...state, technicalInfo: action.data}
         case 'prem/SET_PHOTOS':
             return {...state, photos: action.data}
-        case 'prem/SET_IS_DEPARTMENT_LOADING':
-            return {...state, isDepartmentLoading: action.data}
-        case 'prem/SET_IS_VMP_DEPARTMENT_LOADING':
-            return {...state, isVMPDepartmentLoading: action.data}
-        case 'prem/SET_IS_CLASS_LOADING':
-            return {...state, isClassLoading: action.data}
         case 'prem/SET_IS_REESTR_DATA_LOADING':
             return {...state, isReestrDataLoading: action.data}
-        case 'prem/SET_IS_INTERVAL_LOADING':
-            return {...state, isIntervalLoading: action.data}
         case 'prem/SET_CLEAN_PREM_LIST':
             return {...state, cleanPremList: action.items}
         case 'prem/SET_IS_CLEAN_PREM_DATA_LOADING':
@@ -137,15 +125,18 @@ export const premisesReducer = (state = initialState, action: ActionTypes): Init
             return {...state, cleanTab: action.cleanTab}
         case 'prem/SET_PREM_ID_ARRAY_AT_WORK_AT_CURRENT_USER':
             return {...state, premIdArrayAtWorkAtCurrentUser: action.data}
+        case 'prem/SET_IS_DESCRIPTION_LOADING':
+            return {...state, isDescriptionLoading: action.data}
         default:
             return state
     }
 }
 
 export const getPremises = (): ThunkType => async (dispatch) => {
-    dispatch (premActions.setIsLoading())
+    dispatch (premActions.setIsLoading(true))
     let data = await premisesAPI.getPremises()
     dispatch (premActions.pushPremisesData(data.items))
+    dispatch (premActions.setIsLoading(false))
 }
 
 export const getReestrData = (id: string): ThunkType => async (dispatch) => {
@@ -161,25 +152,39 @@ export const uploadMainPhoto = (id: string, file: File): ThunkType => async (dis
 }
 
 export const deleteMainPhoto = (id: string): ThunkType => async (dispatch) => {
+    dispatch (premActions.setIsLoading(true))
     let data = await premisesAPI.deleteMainPhoto(id)
     dispatch (premActions.pushPremisesData(data.items))
+    dispatch (premActions.setIsDescriptionLoading(false))
+    dispatch (premActions.setIsLoading(false))
 }
 
 export const updateNomer = (id: string, nomer: string): ThunkType => async (dispatch) => {
+    dispatch (premActions.setIsDescriptionLoading(true))
     let data = await premisesAPI.updateDescription(id, nomer)
     dispatch (premActions.pushPremisesData(data.items))
+    dispatch (premActions.setIsDescriptionLoading(false))
 }
 
 export const updateName = (id: string, name: string): ThunkType => async (dispatch) => {
+    dispatch (premActions.setIsDescriptionLoading(true))
     let data = await premisesAPI.updateDescription(id, undefined, name)
     dispatch (premActions.pushPremisesData(data.items))
+    dispatch (premActions.setIsDescriptionLoading(false))
 }
 
 export const updateClass = (id: string, premClass: string): ThunkType => async (dispatch) => {
-    dispatch (premActions.setIsGroupLoading(true))
+    dispatch (premActions.setIsDescriptionLoading(true))
     let data = await premisesAPI.updateDescription(id, undefined, undefined, premClass)
     dispatch (premActions.pushPremisesData(data.items))
-    dispatch (premActions.setIsGroupLoading(false))
+    dispatch (premActions.setIsDescriptionLoading(false))
+}
+
+export const updateMode = (id: string, premMode: string): ThunkType => async (dispatch) => {
+    dispatch (premActions.setIsDescriptionLoading(true))
+    let data = await premisesAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, premMode)
+    dispatch (premActions.pushPremisesData(data.items))
+    dispatch (premActions.setIsDescriptionLoading(false))
 }
 
 export const getTechnicalInfo = (id: string): ThunkType => async (dispatch) => { 
@@ -228,24 +233,24 @@ export const updatePdfDescription = (photoId: string, text: string, id: string):
 }
 
 export const updateDepartment = (id: string, department: string): ThunkType => async (dispatch) => {
-    dispatch (premActions.setIsDepartmentLoading(true))
+    dispatch (premActions.setIsDescriptionLoading(true))
     let data = await premisesAPI.updateDescription(id, undefined, undefined, undefined, department)
     dispatch (premActions.pushPremisesData(data.items))
-    dispatch (premActions.setIsDepartmentLoading(false))
+    dispatch (premActions.setIsDescriptionLoading(false))
 }
 
 export const updateVMPDepartment = (id: string, VMPdepartment: string): ThunkType => async (dispatch) => {
-    dispatch (premActions.setIsVMPDepartmentLoading(true))
+    dispatch (premActions.setIsDescriptionLoading(true))
     let data = await premisesAPI.updateDescription(id, undefined, undefined, undefined, undefined, VMPdepartment)
     dispatch (premActions.pushPremisesData(data.items))
-    dispatch (premActions.setIsVMPDepartmentLoading(false))
+    dispatch (premActions.setIsDescriptionLoading(false))
 }
 
 export const updatePremInterval = (id: string, interval: string): ThunkType => async (dispatch) => {
-    dispatch (premActions.setIsIntervalLoading(true))
+    dispatch (premActions.setIsDescriptionLoading(true))
     let data = await premisesAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, interval)
     dispatch (premActions.pushPremisesData(data.items))
-    dispatch (premActions.setIsIntervalLoading(false))
+    dispatch (premActions.setIsDescriptionLoading(false))
 }
 
 export const updateReestrDatePrem = (id: string, premId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
@@ -334,18 +339,15 @@ type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 const premActions = {
     pushPremisesData: (data: DataType[]) => ({ type: 'prem/PUSH_PREM_DATA', data } as const),
     pushReestrData: (data: PremReestrType[]) => ({ type: 'prem/PUSH_REESTR_DATA', data } as const),
-    setIsLoading: () => ({ type: 'prem/IS_LOADING' } as const),
+    setIsLoading: (data: boolean) => ({ type: 'prem/IS_LOADING', data } as const),
     setTechnicalInfo: (data: TechnicalInfoType) => ({ type: 'prem/SET_TECH_INFO', data } as const),
     setPhotosData: (data: PhotosType[]) => ({ type: 'prem/SET_PHOTOS', data } as const),
-    setIsDepartmentLoading: (data: boolean) => ({ type: 'prem/SET_IS_DEPARTMENT_LOADING', data } as const),
-    setIsVMPDepartmentLoading: (data: boolean) => ({ type: 'prem/SET_IS_VMP_DEPARTMENT_LOADING', data } as const),
-    setIsGroupLoading: (data: boolean) => ({ type: 'prem/SET_IS_CLASS_LOADING', data } as const),
     setIsReestrDataLoading: (data: boolean) => ({ type: 'prem/SET_IS_REESTR_DATA_LOADING', data } as const),
-    setIsIntervalLoading: (data: boolean) => ({ type: 'prem/SET_IS_INTERVAL_LOADING', data } as const),
     setIsCleanPremDataLoading: (data: boolean) => ({ type: 'prem/SET_IS_CLEAN_PREM_DATA_LOADING', data } as const),
     setCleanPremList: (items: CleanPremListType[]) => ({ type: 'prem/SET_CLEAN_PREM_LIST', items } as const),
     setCleanGroupLabels: (data: [], tab: string) => ({ type: 'prem/SET_CLEAN_GROUP_LABELS', data, tab } as const),
     setIsCleanPremGroupsLoading: (data: boolean) => ({ type: 'prem/SET_IS_PREM_GROUPS_LOADING', data } as const),
     setCleanTab: (cleanTab: string) => ({ type: 'prem/SET_CLEAN_TAB', cleanTab } as const),
     setPremIdArrayAtWorkAtCurrentUser: (data: any) => ({ type: 'prem/SET_PREM_ID_ARRAY_AT_WORK_AT_CURRENT_USER', data } as const),
+    setIsDescriptionLoading: (data: any) => ({ type: 'prem/SET_IS_DESCRIPTION_LOADING', data } as const),
 }

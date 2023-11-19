@@ -29,24 +29,12 @@ export const getSysById = (state: AppStateType, id: string | undefined ='0') => 
     return sysWithId // Возвращаем объект или null, если не найден
 }
 
-export const getIsDepartmentLoading = (state: AppStateType) => {
-    return (state.systems.isDepartmentLoading)
-}
-
-export const getIsVMPDepartmentLoading = (state: AppStateType) => {
-    return (state.systems.isVMPDepartmentLoading)
-}
-
-export const getIsGroupLoading = (state: AppStateType) => {
-    return (state.systems.isGroupLoading)
-}
-
 export const getIsReestrDataLoading = (state: AppStateType) => {
     return (state.systems.isReestrDataLoading)
 }
 
-export const getIsIntervalLoading = (state: AppStateType) => {
-    return (state.systems.isIntervalLoading)
+export const getIsDescriptionLoading = (state: AppStateType) => {
+    return (state.systems.isDescriptionLoading)
 }
 
 export const getCurrentSysDataSelector = (state: AppStateType) => {

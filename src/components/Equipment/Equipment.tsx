@@ -4,7 +4,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { useDispatch, useSelector } from "react-redux";
 import { getEquipData, getIsLoading } from "../../redux/Selectors/equipmentSelectors";
 import { getEquipment } from "../../redux/Reducers/equipmentReducer";
-import { EyeOutlined} from '@ant-design/icons';
+import { EyeOutlined } from '@ant-design/icons';
 import { RenderDateHelper } from "../common/renderDateHelper";
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom";
@@ -24,14 +24,14 @@ interface DataType {
     ar: string
     foto: string
 }
-  
+
 export const Equipment: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
 
     const equipData = useSelector(getEquipData)
     const isLoading = useSelector(getIsLoading)
 
-    if (equipData.length === 0 && isLoading===false) {
+    if (equipData.length === 0 && isLoading === false) {
         dispatch(getEquipment())
     }
     const equipNewData = equipData.map(e => ({
@@ -49,34 +49,35 @@ export const Equipment: React.FC = () => {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: <Text strong style={{fontSize: '12pt'}}>№</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>№</Text>,
             dataIndex: 'index',
             align: 'center'
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Наименование</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Наименование</Text>,
             dataIndex: 'name',
             render: (text, record) => (
-            <Row>
-                <Col span={1}>
-                    <Image style={{
-                        maxWidth: '30px',
-                        maxHeight: '30px',
-                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
-                        borderRadius: '3px',
-                        overflow: 'hidden'}} 
-                        src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
-                        preview = {{mask: <EyeOutlined style={{fontSize: '12pt'}} />}}
-                    />
-                </Col>
-                <Col span={23}>
-                    <NavLink to={record.id} style={{fontSize: '12pt', marginLeft: '10px'}}>{text}</NavLink>
-                </Col>  
-            </Row>),
+                <Row>
+                    <Col span={1}>
+                        <Image style={{
+                            maxWidth: '30px',
+                            maxHeight: '30px',
+                            boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
+                            borderRadius: '3px',
+                            overflow: 'hidden'
+                        }}
+                            src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
+                            preview={{ mask: <EyeOutlined style={{ fontSize: '12pt' }} /> }}
+                        />
+                    </Col>
+                    <Col span={23}>
+                        <NavLink to={record.id} style={{ fontSize: '12pt', marginLeft: '10px' }}>{text}</NavLink>
+                    </Col>
+                </Row>),
             sorter: (a, b) => a.name.localeCompare(b.name)
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Подразделение</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Подразделение</Text>,
             dataIndex: 'sp2',
             filters: [
                 { text: 'МБЛ', value: 'МБЛ' },
@@ -94,7 +95,7 @@ export const Equipment: React.FC = () => {
             align: 'center',
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Учетный номер</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Учетный номер</Text>,
             dataIndex: 'inv',
             render: (inv) => {
                 if (inv !== '') {
@@ -107,7 +108,7 @@ export const Equipment: React.FC = () => {
             align: 'center'
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Группа</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Группа</Text>,
             dataIndex: 'group',
             filters: [
                 { text: 'Термостаты', value: 'Термостаты' },
@@ -123,7 +124,7 @@ export const Equipment: React.FC = () => {
             align: 'center',
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Дата (до)</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Дата (до)</Text>,
             dataIndex: 'date',
             render: (date, record) => { return <RenderDateHelper date={date} record={record} /> },
             width: '10%',
@@ -136,20 +137,20 @@ export const Equipment: React.FC = () => {
         index: index + 1,
     }))
     if (isLoading) {
-        return  <Spin size="large" style={{width: '60px', height: '60px', margin: '30px auto 10px auto'}} />
+        return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
     }
     return (
-        <Content style={{padding: '20px 0',  marginBottom: '40px'}}>
+        <Content style={{ padding: '20px 0', marginBottom: '40px' }}>
             <Row>
                 <Col span={22} push={1}>
                     <Table
                         columns={columns}
                         dataSource={data}
                         bordered
-                        pagination={{defaultPageSize: 20}}
-                        title={() => <Text style={{fontSize: '14pt'}}>Оборудование (всего: {equipData.length})</Text>}
+                        pagination={{ defaultPageSize: 20 }}
+                        title={() => <Text style={{ fontSize: '14pt' }}>Оборудование (всего: {equipData.length})</Text>}
                         size="small"
-                    /> 
+                    />
                 </Col>
             </Row>
         </Content>

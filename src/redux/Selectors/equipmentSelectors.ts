@@ -29,26 +29,14 @@ export const getEquipById = (state: AppStateType, id: string | undefined ='0') =
     return equipWithId; // Возвращаем объект или null, если не найден
 }
 
-export const getIsDepartmentLoading = (state: AppStateType) => {
-    return (state.equipment.isDepartmentLoading)
-}
-
-export const getIsVMPDepartmentLoading = (state: AppStateType) => {
-    return (state.equipment.isVMPDepartmentLoading)
-}
-
-export const getIsGroupLoading = (state: AppStateType) => {
-    return (state.equipment.isGroupLoading)
-}
-
 export const getIsReestrDataLoading = (state: AppStateType) => {
     return (state.equipment.isReestrDataLoading)
 }
 
-export const getIsIntervalLoading = (state: AppStateType) => {
-    return (state.equipment.isIntervalLoading)
-}
-
 export const getCurrentEquipDataSelector = (state: AppStateType) => {
     return (state.equipment.equipIdArrayAtWorkAtCurrentUser)
+}
+
+export const getIsDescriptionLoading = (state: AppStateType) => {
+    return (state.equipment.isDescriptionLoading)
 }

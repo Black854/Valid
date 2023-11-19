@@ -15,9 +15,10 @@ type CardReestrPropsType = {
     isReestrDataLoading: boolean
     reestrData: DataType
     group: string
+    mode: string
 }
 
-export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, reestrData, group}) => {
+export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoading, reestrData, group, mode}) => {
     const reestrDataWithoutEmptyRows = reestrData.filter(e => e.dvo !== '')
 
     const dispatch: AppDispatch = useDispatch()
@@ -166,7 +167,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                     dispatch(deletePremDocument(id, record.id, 'pam', pam))
                 }
                 return  <>
-                            <Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + pam}>Просмотр</Button>
+                            <Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + pam}>Открыть</Button>
                             <Popconfirm
                                 title='Подтвердите удаление'
                                 description='Вы уверены, что хотите удалить документ?'
@@ -174,7 +175,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                                 cancelText='Нет'
                                 onConfirm={handleDeleteDocument}
                             >
-                                <Button danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="text" />
+                                <Button danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="text" >Удалить</Button>
                             </Popconfirm>
                         </>
             } else {
@@ -206,7 +207,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
         align: 'center'
     }]
 
-    if (group === 'Термостаты' || group === 'Термоконтейнеры') {
+    if (group === 'Складские' && (mode === '2 - 8 ºC' || mode === 'минус 30 - 35 ºC')) {
         columns=columns.concat(pamColumn)
     }
 

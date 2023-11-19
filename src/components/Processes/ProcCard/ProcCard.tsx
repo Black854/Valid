@@ -11,7 +11,7 @@ import { CardReestr } from "./CardComponents/CardReestr"
 import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
-import { getIsDepartmentLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading, getProcById, getProcData, getProcReestrDataSelector } from "../../../redux/Selectors/processesSelectors"
+import { getIsLoading, getIsReestrDataLoading, getProcById, getProcData, getProcReestrDataSelector } from "../../../redux/Selectors/processesSelectors"
 import { getProcesses, getReestrData, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/processesReducer"
 import { ProcDescriptions } from "./CardComponents/ProcDescription"
 import { ProcLabel } from "./CardComponents/ProcLabel"
@@ -32,8 +32,6 @@ export const ProcCard = () => {
     const procObject = useSelector((state: AppStateType) => getProcById(state, id))
     const departments = useSelector(getDepartmentsSelector)
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
-    const isDepartmentLoading = useSelector(getIsDepartmentLoading)
-    const isVMPDepartmentLoading = useSelector(getIsVMPDepartmentLoading)
     const isReestrDataLoading = useSelector(getIsReestrDataLoading)
     const reestrData = useSelector(getProcReestrDataSelector)
 
@@ -91,7 +89,6 @@ export const ProcCard = () => {
                             size="small"
                             bordered={false}
                             options={VMPDepartmentData}
-                            loading={isVMPDepartmentLoading}
                         />
             },
             {
@@ -104,7 +101,6 @@ export const ProcCard = () => {
                             size="small"
                             bordered={false}
                             options={departmentData}
-                            loading={isDepartmentLoading}
                         />
             },
             {

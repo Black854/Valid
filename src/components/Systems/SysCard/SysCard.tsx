@@ -11,8 +11,8 @@ import { CardReestr } from "./CardComponents/CardReestr"
 import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
-import { getIsDepartmentLoading, getIsGroupLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading, getSysById, getSysData, getSysReestrDataSelector } from "../../../redux/Selectors/systemsSelectors"
-import { getReestrData, getSystems, updateDepartment, updateManufacturDate, updateManufacturer, updateNomer, updateVMPDepartment } from "../../../redux/Reducers/systemsReducer"
+import { getIsLoading, getIsReestrDataLoading, getSysById, getSysData, getSysReestrDataSelector } from "../../../redux/Selectors/systemsSelectors"
+import { getReestrData, getSystems, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/systemsReducer"
 import { SysDescriptions } from "./CardComponents/SysDescription"
 import { SysLabel } from "./CardComponents/SysLabel"
 const { Text } = Typography
@@ -32,9 +32,6 @@ export const SysCard = () => {
     const sysObject = useSelector((state: AppStateType) => getSysById(state, id))
     const departments = useSelector(getDepartmentsSelector)
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
-    const isDepartmentLoading = useSelector(getIsDepartmentLoading)
-    const isVMPDepartmentLoading = useSelector(getIsVMPDepartmentLoading)
-    const isGroupLoading = useSelector(getIsGroupLoading)
     const isReestrDataLoading = useSelector(getIsReestrDataLoading)
     const reestrData = useSelector(getSysReestrDataSelector)
 
@@ -92,7 +89,6 @@ export const SysCard = () => {
                             size="small"
                             bordered={false}
                             options={VMPDepartmentData}
-                            loading={isVMPDepartmentLoading}
                         />
             },
             {
@@ -105,7 +101,6 @@ export const SysCard = () => {
                             size="small"
                             bordered={false}
                             options={departmentData}
-                            loading={isDepartmentLoading}
                         />
             },
             {
@@ -181,5 +176,4 @@ export const SysCard = () => {
             <Text type="danger" style={{fontSize: '12pt', textAlign: 'center', padding: '20px'}}>Внимание! Запрошенный Вами объект не существует!</Text>
         )
     }
-    
 }

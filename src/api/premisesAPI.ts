@@ -35,7 +35,8 @@ export const premisesAPI = {
             premClass?: string,
             department?: string,
             VMPDepartment?: string,
-            interval?: string
+            interval?: string,
+            mode?: string
         ) {
         let data = new FormData()
         data.append("id", id)
@@ -46,6 +47,7 @@ export const premisesAPI = {
         department !== undefined && data.append("department", department)
         VMPDepartment !== undefined && data.append("VMPDepartment", VMPDepartment)
         interval !== undefined && data.append("interval", interval)
+        mode !== undefined && data.append("mode", mode)
         
         return instance.post(`updateDescription.php`, data, {}).then (response => {
             return response.data

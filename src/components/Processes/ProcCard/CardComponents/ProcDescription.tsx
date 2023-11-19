@@ -1,4 +1,6 @@
 import { Table } from "antd"
+import { useSelector } from "react-redux"
+import { getIsDescriptionLoading } from "../../../../redux/Selectors/processesSelectors"
 
 type ProcDescriptionsPropsType = {
     columns: any
@@ -6,6 +8,7 @@ type ProcDescriptionsPropsType = {
 }
 
 export const ProcDescriptions: React.FC<ProcDescriptionsPropsType> = ({columns, data}) => {
+    const isDescriptionLoading = useSelector(getIsDescriptionLoading)
     return (
         <>
             <Table
@@ -16,6 +19,7 @@ export const ProcDescriptions: React.FC<ProcDescriptionsPropsType> = ({columns, 
                 showHeader={false} // Скрыть заголовки, если есть
                 rowKey='rowName'
                 size="small"
+                loading={isDescriptionLoading}
             />
         </>
     )

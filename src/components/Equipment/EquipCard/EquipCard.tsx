@@ -1,7 +1,7 @@
 import { Col, Row, Select, Spin, Tabs, TabsProps, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
-import { getEquipById, getEquipData, getEquipReestrDataSelector, getIsDepartmentLoading, getIsGroupLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading } from "../../../redux/Selectors/equipmentSelectors"
+import { getEquipById, getEquipData, getEquipReestrDataSelector, getIsLoading, getIsReestrDataLoading } from "../../../redux/Selectors/equipmentSelectors"
 import { AppDispatch, AppStateType } from "../../../redux/store"
 import { getEquipment, getReestrData, updateDepartment, updateGroup, updateInv, updateManufacturDate, updateManufacturer, updateNomer, updateSerial, updateVMPDepartment } from "../../../redux/Reducers/equipmentReducer"
 import { ArHelper } from "../../common/arHelper"
@@ -33,9 +33,6 @@ export const EquipCard = () => {
     const equipGroups = useSelector(getEquipGroupsSelector)
     const departments = useSelector(getDepartmentsSelector)
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
-    const isDepartmentLoading = useSelector(getIsDepartmentLoading)
-    const isVMPDepartmentLoading = useSelector(getIsVMPDepartmentLoading)
-    const isGroupLoading = useSelector(getIsGroupLoading)
     const isReestrDataLoading = useSelector(getIsReestrDataLoading)
     const reestrData = useSelector(getEquipReestrDataSelector)
 
@@ -126,7 +123,6 @@ export const EquipCard = () => {
                             size="small"
                             bordered={false}
                             options={VMPDepartmentData}
-                            loading={isVMPDepartmentLoading}
                         />
             },
             {
@@ -139,7 +135,6 @@ export const EquipCard = () => {
                             size="small"
                             bordered={false}
                             options={departmentData}
-                            loading={isDepartmentLoading}
                         />
             },
             {
@@ -157,7 +152,6 @@ export const EquipCard = () => {
                             dropdownStyle={{width: 'auto'}}
                             bordered={false}
                             options={groupsData}
-                            loading={isGroupLoading}
                         />
             },
             {

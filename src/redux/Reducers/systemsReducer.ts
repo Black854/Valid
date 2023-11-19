@@ -50,12 +50,8 @@ let initialState = {
     isLoading: false,
     technicalInfo: '',
     photos: [] as PhotosType[],
-    isDepartmentLoading: false,
-    isVMPDepartmentLoading: false,
-    isGroupLoading: false,
     isReestrDataLoading: false,
-    isIntervalLoading: false,
-    isReestrLoading: false,
+    isDescriptionLoading: false,
     sysIdArrayAtWorkAtCurrentUser: [] as SysReestrType[],
 }
 
@@ -73,18 +69,12 @@ export const systemsReducer = (state = initialState, action: ActionTypes): Initi
             return {...state, technicalInfo: action.text}
         case 'sys/SET_PHOTOS':
             return {...state, photos: action.data}
-        case 'sys/SET_IS_DEPARTMENT_LOADING':
-            return {...state, isDepartmentLoading: action.data}
-        case 'sys/SET_IS_VMP_DEPARTMENT_LOADING':
-            return {...state, isVMPDepartmentLoading: action.data}
-        case 'sys/SET_IS_GROUP_LOADING':
-            return {...state, isGroupLoading: action.data}
         case 'sys/SET_IS_REESTR_DATA_LOADING':
             return {...state, isReestrDataLoading: action.data}
-        case 'sys/SET_IS_INTERVAL_LOADING':
-            return {...state, isIntervalLoading: action.data}
         case 'sys/SET_SYS_ID_ARRAY_AT_WORK_AT_CURRENT_USER':
             return {...state, sysIdArrayAtWorkAtCurrentUser: action.data}
+        case 'sys/SET_IS_DESCRIPTION_LOADING':
+            return {...state, isDescriptionLoading: action.data}
         default:
             return state
     }
@@ -139,15 +129,17 @@ export const updateInv = (id: string, inv: string): ThunkType => async (dispatch
 }
 
 export const updateName = (id: string, name: string): ThunkType => async (dispatch) => {
+    dispatch (sysActions.setIsDescriptionLoading(true))
     let data = await systemsAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, name)
     dispatch (sysActions.pushSystemsData(data.items))
+    dispatch (sysActions.setIsDescriptionLoading(false))
 }
 
 export const updateGroup = (id: string, group: string): ThunkType => async (dispatch) => {
-    dispatch (sysActions.setIsGroupLoading(true))
+    dispatch (sysActions.setIsDescriptionLoading(true))
     let data = await systemsAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, group)
     dispatch (sysActions.pushSystemsData(data.items))
-    dispatch (sysActions.setIsGroupLoading(false))
+    dispatch (sysActions.setIsDescriptionLoading(false))
 }
 
 export const getTechnicalInfo = (id: string): ThunkType => async (dispatch) => { 
@@ -181,24 +173,24 @@ export const updatePdfDescription = (photoId: string, text: string, id: string):
 }
 
 export const updateDepartment = (id: string, department: string): ThunkType => async (dispatch) => {
-    dispatch (sysActions.setIsDepartmentLoading(true))
+    dispatch (sysActions.setIsDescriptionLoading(true))
     let data = await systemsAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, department)
     dispatch (sysActions.pushSystemsData(data.items))
-    dispatch (sysActions.setIsDepartmentLoading(false))
+    dispatch (sysActions.setIsDescriptionLoading(false))
 }
 
 export const updateVMPDepartment = (id: string, VMPdepartment: string): ThunkType => async (dispatch) => {
-    dispatch (sysActions.setIsVMPDepartmentLoading(true))
+    dispatch (sysActions.setIsDescriptionLoading(true))
     let data = await systemsAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, VMPdepartment)
     dispatch (sysActions.pushSystemsData(data.items))
-    dispatch (sysActions.setIsVMPDepartmentLoading(false))
+    dispatch (sysActions.setIsDescriptionLoading(false))
 }
 
 export const updateSysInterval = (id: string, interval: string): ThunkType => async (dispatch) => {
-    dispatch (sysActions.setIsIntervalLoading(true))
+    dispatch (sysActions.setIsDescriptionLoading(true))
     let data = await systemsAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, interval)
     dispatch (sysActions.pushSystemsData(data.items))
-    dispatch (sysActions.setIsIntervalLoading(false))
+    dispatch (sysActions.setIsDescriptionLoading(false))
 }
 
 export const updateReestrDateSys = (id: string, sysId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
@@ -247,10 +239,7 @@ const sysActions = {
     setIsLoading: () => ({ type: 'sys/IS_LOADING' } as const),
     setTechnicalInfo: (text: string) => ({ type: 'sys/SET_TECH_INFO', text } as const),
     setPhotosData: (data: PhotosType[]) => ({ type: 'sys/SET_PHOTOS', data } as const),
-    setIsDepartmentLoading: (data: boolean) => ({ type: 'sys/SET_IS_DEPARTMENT_LOADING', data } as const),
-    setIsVMPDepartmentLoading: (data: boolean) => ({ type: 'sys/SET_IS_VMP_DEPARTMENT_LOADING', data } as const),
-    setIsGroupLoading: (data: boolean) => ({ type: 'sys/SET_IS_GROUP_LOADING', data } as const),
     setIsReestrDataLoading: (data: boolean) => ({ type: 'sys/SET_IS_REESTR_DATA_LOADING', data } as const),
-    setIsIntervalLoading: (data: boolean) => ({ type: 'sys/SET_IS_INTERVAL_LOADING', data } as const),
     setSysIdArrayAtWorkAtCurrentUser: (data: any) => ({ type: 'sys/SET_SYS_ID_ARRAY_AT_WORK_AT_CURRENT_USER', data } as const),
+    setIsDescriptionLoading: (data: boolean) => ({ type: 'sys/SET_IS_DESCRIPTION_LOADING', data } as const),
 }

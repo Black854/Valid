@@ -37,7 +37,7 @@ export const FioChanger: React.FC<FioChangerType> = ({fio, record, date, allVali
           onChange={handleSelectChange}
           bordered={true}
           options={allValidatorsFio}
-          disabled={record.status === 'Выполнено'}
+          disabled={record.status === 'Выполнено' || !record.name}
           // loading={isVMPDepartmentLoading}
         />
         <Popconfirm

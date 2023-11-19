@@ -12,8 +12,8 @@ import { CardReestr } from "./CardComponents/CardReestr"
 import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
-import { getIsClassLoading, getIsDepartmentLoading, getIsLoading, getIsReestrDataLoading, getIsVMPDepartmentLoading, getPremById, getPremData, getPremReestrDataSelector } from "../../../redux/Selectors/premisesSelectors"
-import { getPremises, getReestrData, getTechnicalInfo, updateClass, updateDepartment, updateNomer, updateVMPDepartment } from "../../../redux/Reducers/premisesReducer"
+import { getIsDescriptionLoading, getIsLoading, getIsReestrDataLoading, getPremById, getPremData, getPremReestrDataSelector } from "../../../redux/Selectors/premisesSelectors"
+import { getPremises, getReestrData, getTechnicalInfo, updateClass, updateDepartment, updateMode, updateNomer, updateVMPDepartment } from "../../../redux/Reducers/premisesReducer"
 import { CleanPremList } from "./CardComponents/CleanPremList"
 import { CleanPremGroups } from "./CardComponents/CleanPremGroups"
 import { PremLabel } from "./CardComponents/PremLabel"
@@ -34,9 +34,6 @@ export const PremCard = () => {
     const premObject = useSelector((state: AppStateType) => getPremById(state, id))
     const departments = useSelector(getDepartmentsSelector)
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
-    const isDepartmentLoading = useSelector(getIsDepartmentLoading)
-    const isVMPDepartmentLoading = useSelector(getIsVMPDepartmentLoading)
-    const isClassLoading = useSelector(getIsClassLoading)
     const isReestrDataLoading = useSelector(getIsReestrDataLoading)
     const reestrData = useSelector(getPremReestrDataSelector)
     const premModes = useSelector(getPremModesSelector)
@@ -50,8 +47,6 @@ export const PremCard = () => {
             dispatch(getVMPDepartments())
         } else if (premModes.length === 0) {
             dispatch(getPremModes())
-        } else if (premModes.length === 0) {
-            // dispatch(getPremModes())
         }
     }, [dispatch, premData, premModes, departments, VMPDepartments])
 
@@ -86,6 +81,10 @@ export const PremCard = () => {
             dispatch(updateClass(id, text))
         }
 
+        const handleUpdateMode = (text: string) => {
+            dispatch(updateMode(id, text))
+        }
+
         const handleUpdateDepartment = (text: string) => {
             dispatch(updateDepartment(id, text))
         }
@@ -93,6 +92,8 @@ export const PremCard = () => {
         const handleUpdateVMPDepartment = (text: string) => {
             dispatch(updateVMPDepartment(id, text))
         }
+
+        const filteredPremModes = premModes.filter(e => e.type === 't').map(e => ({value: `${e.low} - ${e.hight} ºC`, label: `${e.low} - ${e.hight} ºC`}))
 
         const premSkladData = [
             {
@@ -105,7 +106,6 @@ export const PremCard = () => {
                             size="small"
                             bordered={false}
                             options={VMPDepartmentData}
-                            loading={isVMPDepartmentLoading}
                         />
             },
             {
@@ -118,7 +118,6 @@ export const PremCard = () => {
                             size="small"
                             bordered={false}
                             options={departmentData}
-                            loading={isDepartmentLoading}
                         />
             },
             {
@@ -136,7 +135,18 @@ export const PremCard = () => {
                             dropdownStyle={{width: 'auto'}}
                             bordered={false}
                             options={classesData}
-                            loading={isClassLoading}
+                        />
+            },
+            {
+                rowName: 'Температурный режим',
+                value: <Select
+                            defaultValue={premObject.mode}
+                            onChange={handleUpdateMode}
+                            size="small"
+                            style={{paddingRight: '20px', marginLeft: '-7px'}}
+                            dropdownStyle={{width: 'auto'}}
+                            bordered={false}
+                            options={filteredPremModes}
                         />
             },
             {
@@ -160,7 +170,6 @@ export const PremCard = () => {
                             size="small"
                             bordered={false}
                             options={VMPDepartmentData}
-                            loading={isVMPDepartmentLoading}
                         />
             },
             {
@@ -173,7 +182,6 @@ export const PremCard = () => {
                             size="small"
                             bordered={false}
                             options={departmentData}
-                            loading={isDepartmentLoading}
                         />
             },
             {
@@ -186,7 +194,18 @@ export const PremCard = () => {
                             dropdownStyle={{width: 'auto'}}
                             bordered={false}
                             options={classesData}
-                            loading={isClassLoading}
+                        />
+            },
+            {
+                rowName: 'Температурный режим',
+                value: <Select
+                            defaultValue={premObject.class}
+                            onChange={handleUpdateGroup}
+                            size="small"
+                            style={{paddingRight: '20px', marginLeft: '-7px'}}
+                            dropdownStyle={{width: 'auto'}}
+                            bordered={false}
+                            options={filteredPremModes}
                         />
             },
             {
@@ -219,7 +238,7 @@ export const PremCard = () => {
             {
               key: '2',
               label: 'Перечень валидационных работ',
-              children: <CardReestr id={premObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={premObject.class} />,
+              children: <CardReestr id={premObject.id} mode={premObject.mode} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={premObject.class} />,
             },
             {
               key: '3',

@@ -178,7 +178,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                     dispatch(deleteEquipDocument(id, record.id, 'pam', pam))
                 }
                 return  <>
-                            <Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + pam}>Просмотр</Button>
+                            <Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + pam}>Открыть</Button>
                             <Popconfirm
                                 title='Подтвердите удаление'
                                 description='Вы уверены, что хотите удалить документ?'
@@ -186,7 +186,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({id, isReestrDataLoadi
                                 cancelText='Нет'
                                 onConfirm={handleDeleteDocument}
                             >
-                                <Button danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="text" />
+                                <Button danger icon={<DeleteOutlined style={{fontSize: '12pt'}} />} type="text" >Удалить</Button>
                             </Popconfirm>
                         </>
             } else {

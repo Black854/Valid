@@ -10,8 +10,8 @@ type FioChangerType = {
     date: string
 }
 
-export const DocChanger: React.FC<FioChangerType> = ({doc, record, date}) => {
-    const options = [{value: 'Отчет по квалификации', label: 'Отчет по квалификации'}, {value: 'Отчет о периодической оценке', label: 'Отчет о периодической оценке'}]
+export const DocChanger: React.FC<FioChangerType> = ({ doc, record, date }) => {
+    const options = [{ value: 'Отчет по квалификации', label: 'Отчет по квалификации' }, { value: 'Отчет о периодической оценке', label: 'Отчет о периодической оценке' }]
     const [visible, setVisible] = useState(false)
     const [handleDoc, setDoc] = useState('')
     const dispatch: AppDispatch = useDispatch()
@@ -30,22 +30,22 @@ export const DocChanger: React.FC<FioChangerType> = ({doc, record, date}) => {
     }
     return (<>
         <Select
-          dropdownStyle={{width: 'auto'}}
-          value={doc}
-          size="small"
-          onChange={handleSelectChange}
-          bordered={true}
-          options={options}
-          disabled={record.status === 'Выполнено'}
+            dropdownStyle={{ width: 'auto' }}
+            value={doc}
+            size="small"
+            onChange={handleSelectChange}
+            bordered={true}
+            options={options}
+            disabled={record.status === 'Выполнено' || !record.name}
         />
         <Popconfirm
-          title='Подтвердите изменение'
-          description='Вы уверены, что хотите изменить тип проводимых работ?'
-          okText='Да'
-          cancelText='Нет'
-          onConfirm={handleUpdateConfirmation}
-          open={visible}
-          onCancel={() => setVisible(false)}
+            title='Подтвердите изменение'
+            description='Вы уверены, что хотите изменить тип проводимых работ?'
+            okText='Да'
+            cancelText='Нет'
+            onConfirm={handleUpdateConfirmation}
+            open={visible}
+            onCancel={() => setVisible(false)}
         />
     </>)
 }

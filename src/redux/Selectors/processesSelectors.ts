@@ -29,24 +29,12 @@ export const getProcById = (state: AppStateType, id: string | undefined ='0') =>
     return procWithId // Возвращаем объект или null, если не найден
 }
 
-export const getIsDepartmentLoading = (state: AppStateType) => {
-    return (state.processes.isDepartmentLoading)
-}
-
-export const getIsVMPDepartmentLoading = (state: AppStateType) => {
-    return (state.processes.isVMPDepartmentLoading)
-}
-
-export const getIsGroupLoading = (state: AppStateType) => {
-    return (state.processes.isGroupLoading)
-}
-
 export const getIsReestrDataLoading = (state: AppStateType) => {
     return (state.processes.isReestrDataLoading)
 }
 
-export const getIsIntervalLoading = (state: AppStateType) => {
-    return (state.processes.isIntervalLoading)
+export const getIsDescriptionLoading = (state: AppStateType) => {
+    return (state.processes.isDescriptionLoading)
 }
 
 export const getCurrentProcDataSelector = (state: AppStateType) => {

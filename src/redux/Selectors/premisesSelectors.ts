@@ -29,24 +29,8 @@ export const getPremById = (state: AppStateType, id: string | undefined ='0') =>
     return premWithId; // Возвращаем объект или null, если не найден
 }
 
-export const getIsDepartmentLoading = (state: AppStateType) => {
-    return (state.premises.isDepartmentLoading)
-}
-
-export const getIsVMPDepartmentLoading = (state: AppStateType) => {
-    return (state.premises.isVMPDepartmentLoading)
-}
-
-export const getIsClassLoading = (state: AppStateType) => {
-    return (state.premises.isClassLoading)
-}
-
 export const getIsReestrDataLoading = (state: AppStateType) => {
     return (state.premises.isReestrDataLoading)
-}
-
-export const getIsIntervalLoading = (state: AppStateType) => {
-    return (state.premises.isIntervalLoading)
 }
 
 export const getCleanPremListSelector = (state: AppStateType) => {
@@ -67,6 +51,10 @@ export const getCleanTabSelector = (state: AppStateType) => {
 
 export const getIsCleanPremGroupsLoading = (state: AppStateType) => {
     return (state.premises.isCleanPremGroupsLoading)
+}
+
+export const getIsDescriptionLoading = (state: AppStateType) => {
+    return (state.premises.isDescriptionLoading)
 }
 
 export const getCurrentPremDataSelector = (state: AppStateType) => {

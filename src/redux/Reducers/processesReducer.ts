@@ -50,12 +50,8 @@ let initialState = {
     isLoading: false,
     technicalInfo: '',
     photos: [] as PhotosType[],
-    isDepartmentLoading: false,
-    isVMPDepartmentLoading: false,
-    isGroupLoading: false,
     isReestrDataLoading: false,
-    isIntervalLoading: false,
-    isReestrLoading: false,
+    isDescriptionLoading: false,
     procIdArrayAtWorkAtCurrentUser: [] as ProcReestrType[],
 }
 
@@ -73,18 +69,12 @@ export const processesReducer = (state = initialState, action: ActionTypes): Ini
             return {...state, technicalInfo: action.text}
         case 'proc/SET_PHOTOS':
             return {...state, photos: action.data}
-        case 'proc/SET_IS_DEPARTMENT_LOADING':
-            return {...state, isDepartmentLoading: action.data}
-        case 'proc/SET_IS_VMP_DEPARTMENT_LOADING':
-            return {...state, isVMPDepartmentLoading: action.data}
-        case 'proc/SET_IS_GROUP_LOADING':
-            return {...state, isGroupLoading: action.data}
         case 'proc/SET_IS_REESTR_DATA_LOADING':
             return {...state, isReestrDataLoading: action.data}
-        case 'proc/SET_IS_INTERVAL_LOADING':
-            return {...state, isIntervalLoading: action.data}
         case 'proc/SET_PROC_ID_ARRAY_AT_WORK_AT_CURRENT_USER':
             return {...state, procIdArrayAtWorkAtCurrentUser: action.data}
+        case 'proc/SET_IS_DESCRIPTION_LOADING':
+            return {...state, isDescriptionLoading: action.data}
         default:
             return state
     }
@@ -113,41 +103,11 @@ export const deleteMainPhoto = (id: string): ThunkType => async (dispatch) => {
     dispatch (procActions.pushProcessesData(data.items))
 }
 
-export const updateNomer = (id: string, nomer: string): ThunkType => async (dispatch) => {
-    let data = await processesAPI.updateDescription(id, nomer)
-    dispatch (procActions.pushProcessesData(data.items))
-}
-
-export const updateManufacturer = (id: string, manufacturer: string): ThunkType => async (dispatch) => {
-    let data = await processesAPI.updateDescription(id, undefined, undefined, undefined, manufacturer)
-    dispatch (procActions.pushProcessesData(data.items))
-}
-
-export const updateManufacturDate = (id: string, manufacturDate: string): ThunkType => async (dispatch) => {
-    let data = await processesAPI.updateDescription(id, undefined, undefined, undefined, undefined, manufacturDate)
-    dispatch (procActions.pushProcessesData(data.items))
-}
-
-export const updateSerial = (id: string, serial: string): ThunkType => async (dispatch) => {
-    let data = await processesAPI.updateDescription(id, undefined, serial)
-    dispatch (procActions.pushProcessesData(data.items))
-}
-
-export const updateInv = (id: string, inv: string): ThunkType => async (dispatch) => {
-    let data = await processesAPI.updateDescription(id, undefined, undefined, inv)
-    dispatch (procActions.pushProcessesData(data.items))
-}
-
 export const updateName = (id: string, name: string): ThunkType => async (dispatch) => {
+    dispatch (procActions.setIsDescriptionLoading(true))
     let data = await processesAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, name)
     dispatch (procActions.pushProcessesData(data.items))
-}
-
-export const updateGroup = (id: string, group: string): ThunkType => async (dispatch) => {
-    dispatch (procActions.setIsGroupLoading(true))
-    let data = await processesAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, group)
-    dispatch (procActions.pushProcessesData(data.items))
-    dispatch (procActions.setIsGroupLoading(false))
+    dispatch (procActions.setIsDescriptionLoading(false))
 }
 
 export const getTechnicalInfo = (id: string): ThunkType => async (dispatch) => { 
@@ -181,24 +141,24 @@ export const updatePdfDescription = (photoId: string, text: string, id: string):
 }
 
 export const updateDepartment = (id: string, department: string): ThunkType => async (dispatch) => {
-    dispatch (procActions.setIsDepartmentLoading(true))
+    dispatch (procActions.setIsDescriptionLoading(true))
     let data = await processesAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, department)
     dispatch (procActions.pushProcessesData(data.items))
-    dispatch (procActions.setIsDepartmentLoading(false))
+    dispatch (procActions.setIsDescriptionLoading(false))
 }
 
 export const updateVMPDepartment = (id: string, VMPdepartment: string): ThunkType => async (dispatch) => {
-    dispatch (procActions.setIsVMPDepartmentLoading(true))
+    dispatch (procActions.setIsDescriptionLoading(true))
     let data = await processesAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, VMPdepartment)
     dispatch (procActions.pushProcessesData(data.items))
-    dispatch (procActions.setIsVMPDepartmentLoading(false))
+    dispatch (procActions.setIsDescriptionLoading(false))
 }
 
 export const updateProcInterval = (id: string, interval: string): ThunkType => async (dispatch) => {
-    dispatch (procActions.setIsIntervalLoading(true))
+    dispatch (procActions.setIsDescriptionLoading(true))
     let data = await processesAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, interval)
     dispatch (procActions.pushProcessesData(data.items))
-    dispatch (procActions.setIsIntervalLoading(false))
+    dispatch (procActions.setIsDescriptionLoading(false))
 }
 
 export const updateReestrDateProc = (id: string, procId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
@@ -247,10 +207,7 @@ const procActions = {
     setIsLoading: () => ({ type: 'proc/IS_LOADING' } as const),
     setTechnicalInfo: (text: string) => ({ type: 'proc/SET_TECH_INFO', text } as const),
     setPhotosData: (data: PhotosType[]) => ({ type: 'proc/SET_PHOTOS', data } as const),
-    setIsDepartmentLoading: (data: boolean) => ({ type: 'proc/SET_IS_DEPARTMENT_LOADING', data } as const),
-    setIsVMPDepartmentLoading: (data: boolean) => ({ type: 'proc/SET_IS_VMP_DEPARTMENT_LOADING', data } as const),
-    setIsGroupLoading: (data: boolean) => ({ type: 'proc/SET_IS_GROUP_LOADING', data } as const),
     setIsReestrDataLoading: (data: boolean) => ({ type: 'proc/SET_IS_REESTR_DATA_LOADING', data } as const),
-    setIsIntervalLoading: (data: boolean) => ({ type: 'proc/SET_IS_INTERVAL_LOADING', data } as const),
     setProcIdArrayAtWorkAtCurrentUser: (data: any) => ({ type: 'proc/SET_PROC_ID_ARRAY_AT_WORK_AT_CURRENT_USER', data } as const),
+    setIsDescriptionLoading: (data: any) => ({ type: 'proc/SET_IS_DESCRIPTION_LOADING', data } as const),
 }
