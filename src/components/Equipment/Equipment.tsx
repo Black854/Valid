@@ -62,7 +62,6 @@ export const Equipment: React.FC = () => {
                         <Image style={{
                             maxWidth: '30px',
                             maxHeight: '30px',
-                            boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
                             borderRadius: '3px',
                             overflow: 'hidden'
                         }}

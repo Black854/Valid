@@ -7,7 +7,7 @@ import { createCleanPrem, deleteCleanPrem, getCleanPremList, updateCleanPremItem
 import { getDepartmentsSelector } from "../../../../redux/Selectors/appSelectors"
 import { ColumnsType } from "antd/es/table"
 import { PlusOutlined, DeleteOutlined, SaveOutlined } from '@ant-design/icons'
-const {Text} = Typography
+const { Text } = Typography
 
 type TechnicalInfoPropsType = {
     id: string
@@ -25,20 +25,20 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
     const [messageApi, contextHolder] = message.useMessage()
     const warn = (fieldName: string) => {
         messageApi.open({
-          type: 'warning',
-          content: `Не заполнено поле "${fieldName}"`,
+            type: 'warning',
+            content: `Не заполнено поле "${fieldName}"`,
         })
     }
     const error = (nomer: string) => {
         messageApi.open({
-          type: 'error',
-          content: `Помещение с номером ${nomer} уже существует!`,
+            type: 'error',
+            content: `Помещение с номером ${nomer} уже существует!`,
         })
     }
     const success = () => {
         messageApi.open({
-          type: 'success',
-          content: `Помещение добавлено`,
+            type: 'success',
+            content: `Помещение добавлено`,
         })
     }
     const [isNewPremAdding, setIsNewPremAdding] = useState(false)
@@ -90,15 +90,15 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
             ...inputValues,
             sp: value,
         })
-      }
+    }
 
     const handleSavePrem = () => {
         if (inputValues.nomer === '') {
             warn('Номер помещения')
-        } 
+        }
         if (inputValues.sp === '') {
             warn('Подразделение')
-        } 
+        }
         if (inputValues.name === '') {
             warn('Наименование')
         }
@@ -113,7 +113,7 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
             }
         }
     }
-    
+
     const handleAddPrem = () => {
         setIsNewPremAdding(true)
     }
@@ -128,81 +128,80 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
 
     const columns: ColumnsType<CleanPremListTypeWithIndex> = [
         {
-            title: <Text strong style={{fontSize: '12pt'}}>№</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>№</Text>,
             dataIndex: 'index',
             align: 'center',
             render: (index) => index !== 0 ? index : ''
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Номер помещения</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Номер помещения</Text>,
             dataIndex: 'nomer',
-            render: (nomer, record) => record.index !== 0 ? <Text editable={{onChange: (text: string) => {handleUpdateCleanPrem(record.id, text, 'nomer')}, text: nomer}} >{`№ ${nomer}`}</Text>:
-                                                            <Input onChange={handleInputChange} type="number" name="nomer" placeholder="Введите номер" />
+            render: (nomer, record) => record.index !== 0 ? <Text editable={{ onChange: (text: string) => { handleUpdateCleanPrem(record.id, text, 'nomer') }, text: nomer }} >{`№ ${nomer}`}</Text> :
+                <Input onChange={handleInputChange} type="number" name="nomer" placeholder="Введите номер" />
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Ответственное подразделение</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Ответственное подразделение</Text>,
             dataIndex: 'sp',
             align: 'center',
-            render: (sp, record) => record.index !== 0 ?    <Select
-                                                                defaultValue={sp}
-                                                                onChange={(text) => handleUpdateCleanPrem(record.id, text, 'sp')}
-                                                                size="small"
-                                                                dropdownStyle={{width: '120px'}}
-                                                                style={{paddingRight: '20px', marginLeft: '-7px'}}
-                                                                bordered={false}
-                                                                options={departmentData}
-                                                            /> :
-                                                            <Select
-                                                                defaultValue='Не выбрано'
-                                                                options={departmentData}
-                                                                dropdownStyle={{minWidth: '120px'}}
-                                                                onChange={handleDepartmentChange}
-                                                            />
+            render: (sp, record) => record.index !== 0 ? <Select
+                defaultValue={sp}
+                onChange={(text) => handleUpdateCleanPrem(record.id, text, 'sp')}
+                size="small"
+                dropdownStyle={{ width: '120px' }}
+                style={{ paddingRight: '20px', marginLeft: '-7px' }}
+                bordered={false}
+                options={departmentData}
+            /> :
+                <Select
+                    defaultValue='Не выбрано'
+                    options={departmentData}
+                    dropdownStyle={{ minWidth: '120px' }}
+                    onChange={handleDepartmentChange}
+                />
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Наименование</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Наименование</Text>,
             dataIndex: 'name',
-            render: (name, record) =>  record.index !== 0 ? <Text editable={{onChange: (text: string) => {handleUpdateCleanPrem(record.id, text, 'name')}, text: name}} >{name}</Text> :
-                                                            <Input name="name" placeholder="Введите наименование" onChange={handleInputChange} />
+            render: (name, record) => record.index !== 0 ? <Text editable={{ onChange: (text: string) => { handleUpdateCleanPrem(record.id, text, 'name') }, text: name }} >{name}</Text> :
+                <Input name="name" placeholder="Введите наименование" onChange={handleInputChange} />
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Действия</Text>,
-            render: (name, record, index) =>    <Row>
-                                                    <Col span={18} push={3} style={{display: 'flex', flexDirection: 'column'}}>
-                                                        {(index === 0 && isNewPremAdding) ? <>  <Button style={{display: 'block'}} onClick={handleSavePrem} size="small" type="link" icon={<SaveOutlined />}>Сохранить</Button>
-                                                                                                <Button style={{display: 'block', marginTop: '5px'}} onClick={handleCancel} size="small" type="link" icon={<DeleteOutlined />}>Отмена</Button></> :
-                                                                                                <Popconfirm
-                                                                                                    title='Подтвердите удаление'
-                                                                                                    description='Вы уверены, что хотите удалить помещение? При удалении помещения оно так же удалится из всех этикеток'
-                                                                                                    okText='Да'
-                                                                                                    cancelText='Нет'
-                                                                                                    onConfirm={() => handleDeleteCleanPrem(record.id)}
-                                                                                                >
-                                                                                                    <Button style={{display: 'block', marginTop: '5px'}} size="small" danger type="link" icon={<DeleteOutlined />}>Удалить</Button>
-                                                                                                </Popconfirm>
-                                                        }
-                                                        
-                                                    </Col>
-                                                </Row>,
-            align: 'center'            
+            title: <Text strong style={{ fontSize: '12pt' }}>Действия</Text>,
+            render: (name, record, index) => <Row>
+                <Col span={18} push={3} style={{ display: 'flex', flexDirection: 'column' }}>
+                    {(index === 0 && isNewPremAdding) ? <>  <Button style={{ display: 'block' }} onClick={handleSavePrem} size="small" type="link" icon={<SaveOutlined />}>Сохранить</Button>
+                        <Button style={{ display: 'block', marginTop: '5px' }} onClick={handleCancel} size="small" type="link" icon={<DeleteOutlined />}>Отмена</Button></> :
+                        <Popconfirm
+                            title='Подтвердите удаление'
+                            description='Вы уверены, что хотите удалить помещение? При удалении помещения оно так же удалится из всех этикеток'
+                            okText='Да'
+                            cancelText='Нет'
+                            onConfirm={() => handleDeleteCleanPrem(record.id)}
+                        >
+                            <Button style={{ display: 'block', marginTop: '5px' }} size="small" danger type="link" icon={<DeleteOutlined />}>Удалить</Button>
+                        </Popconfirm>
+                    }
+
+                </Col>
+            </Row>,
+            align: 'center'
         }
     ]
 
     return (
         <>
             {contextHolder}
-            <Button icon={<PlusOutlined />} style={{position: 'absolute', top: '10px', zIndex: '1'}} onClick={handleAddPrem}>Добавить помещение</Button>
+            <Button icon={<PlusOutlined />} style={{ position: 'absolute', top: '10px', zIndex: '1' }} onClick={handleAddPrem}>Добавить помещение</Button>
             <Table
                 columns={columns}
                 dataSource={cleanPremListWithIndex}
                 bordered
-                pagination={{position: ["topRight"], defaultPageSize: 10}}
+                pagination={{ position: ["topRight"], defaultPageSize: 10 }}
                 rowKey='id'
-                style={{marginBottom: '60px'}}
+                style={{ marginBottom: '60px' }}
                 loading={isCleanPremDataLoading}
                 size="small"
             />
         </>
     )
-    
 }

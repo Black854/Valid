@@ -151,7 +151,6 @@ export const Monitoring: React.FC = () => {
                     <Image style={{
                         maxWidth: '30px',
                         maxHeight: '30px',
-                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
                         borderRadius: '3px',
                         overflow: 'hidden'}} 
                         src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}

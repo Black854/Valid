@@ -23,7 +23,11 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
     let numbersToPrint
     if (selectedRowKeys.length > 0) {
-            numbersToPrint = '№ ' + selectedRowKeys.join(', ')
+        if (selectedRowKeys.toString().includes(',')) {
+            numbersToPrint = 'Помещения № ' + selectedRowKeys.join(', ')
+        } else {
+            numbersToPrint = 'Помещение № ' + selectedRowKeys.join(', ')
+        }
     } else {
         numbersToPrint = <Text type="danger" style={{fontSize: '9pt'}}>Помещения не выбраны</Text>
     }
@@ -142,6 +146,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     const departmentPos = departments.find(e => e.name === selectedRowDepartment)?.pos || <Text type="danger" style={{fontSize: '8pt'}}>Не выбрано</Text>
     const [labelModalOpen, setLabelModalOpen] = useState(false)
     const [frameModalOpen, setFrameModalOpen] = useState(false)
+    const [iframeKey, setIframeKey] = useState(0)
     const [showModal, setShowModal] = useState(false)
     const [showModalLabelEdit, setShowModalLabelEdit] = useState(false)
     const [dataItems, setDataItems] = useState([] as string[])
@@ -150,8 +155,10 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     const handleCancel = (modalType: string) => {
         if (modalType === 'label') {
             setLabelModalOpen(false)
+            setIframeKey(prevKey => prevKey + 1)
         } else if (modalType === 'frame') {
             setFrameModalOpen(false)
+            setIframeKey(prevKey => prevKey + 1)
         } else if (modalType === 'addForm') {
             setShowModal(false)
             setCount('1')
@@ -211,7 +218,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                     rowClassName={() => 'cursorPointer'}
                     size="small"
                 />
-                <Modal title="Добавление этикетки" open={showModal} onCancel={() => handleCancel('addForm')} footer={[ <Button key="close" onClick={() => handleCancel('addForm')} type="primary">Отмена</Button>]} >
+                <Modal centered title="Добавление этикетки" open={showModal} onCancel={() => handleCancel('addForm')} footer={[ <Button key="close" onClick={() => handleCancel('addForm')} type="primary">Отмена</Button>]} >
                     <Text style={{display: 'inline-block', marginRight: '10px', marginTop: '10px'}}>Количество: </Text>
                     <Input type="number"
                         size="small"
@@ -225,7 +232,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                     {formItems}
                     <Button disabled={dataItems.length <= 0 || count === '' || parseInt(count) < 1} style={{marginTop: '15px'}} size="small" type="primary" onClick={submitForm}>Создать этикетку</Button>
                 </Modal>
-                <Modal title="Редактирование этикетки" open={showModalLabelEdit} onCancel={() => handleCancel('editForm')} footer={[ <Button key="close" onClick={() => handleCancel('editForm')} type="primary">Отмена</Button>]} >
+                <Modal centered title="Редактирование этикетки" open={showModalLabelEdit} onCancel={() => handleCancel('editForm')} footer={[ <Button key="close" onClick={() => handleCancel('editForm')} type="primary">Отмена</Button>]} >
                     <Text style={{display: 'inline-block', marginRight: '10px', marginTop: '10px'}}>Количество: </Text>
                     <Input type="number"
                         size="small"
@@ -261,15 +268,15 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                                 <td style={{height: '9mm', padding: '0 2mm'}}>
                                     Наименование объекта квалификации
                                 </td>
-                                <td style={{textAlign: 'center'}} colSpan={3}>
+                                <td style={{textAlign: 'center', lineHeight: '3mm'}} colSpan={3}>
                                     {premObject.name}
                                 </td>
                             </tr>
                             <tr>
-                                <td style={{height: '8mm', padding: '0 2mm'}}>
+                                <td style={{height: '8.5mm', padding: '0 2mm'}}>
                                     Заводской/учетный номер
                                 </td>
-                                <td style={{textAlign: 'center'}} colSpan={3}>
+                                <td style={{textAlign: 'center', lineHeight: '2.8mm'}} colSpan={3}>
                                     {numbersToPrint}
                                 </td>
                             </tr>
@@ -346,13 +353,13 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                                                         <Button style={{marginTop: '20px'}} type="default" icon={<PrinterOutlined />} onClick={() => {setFrameModalOpen(true)}}>Печать рамки</Button>}
                         {selectedRowKeys.length === 0 ? <Button style={{marginTop: '10px'}} disabled icon={<PrinterOutlined />}>Печать этикетки</Button> :
                                                         <Button style={{marginTop: '10px'}} type="primary" icon={<PrinterOutlined />} onClick={() => setLabelModalOpen(true)}>Печать этикетки</Button>}
-                        <Modal title="Печать статусной этикетки" open={labelModalOpen} onCancel={() => handleCancel('label')} footer={[ <Button key="close" onClick={() => handleCancel('label')} type="primary">Закрыть</Button> ]} >
-                            <iframe style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/et.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
+                        <Modal title="Печать статусной этикетки" open={labelModalOpen} afterOpenChange={() => handleCancel('label')} onCancel={() => handleCancel('label')} footer={[ <Button key="close" onClick={() => handleCancel('label')} type="primary">Закрыть</Button> ]} >
+                            <iframe key={iframeKey} style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/et.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
                                 &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
                             </iframe>
                         </Modal>
-                        <Modal title="Печать рамки для статусной этикетки" open={frameModalOpen} onCancel={() => handleCancel('frame')} footer={[ <Button key="close" onClick={() => handleCancel('frame')} type="primary">Закрыть</Button> ]} >
-                            <iframe key={frameModalOpen === true ? 'frameModalOpen-open' : 'frameModalOpen-closed'} style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/etWithFrames.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
+                        <Modal title="Печать рамки для статусной этикетки" afterOpenChange={() => handleCancel('frame')} open={frameModalOpen} onCancel={() => handleCancel('frame')} footer={[ <Button key="close" onClick={() => handleCancel('frame')} type="primary">Закрыть</Button> ]} >
+                            <iframe key={iframeKey} style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/etWithFrames.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
                                 &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
                             </iframe>
                         </Modal>

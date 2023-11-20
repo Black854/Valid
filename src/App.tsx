@@ -20,6 +20,7 @@ import { Instruments } from './components/Instruments/Instruments'
 import { InstCard } from './components/Instruments/InstCard/InstCard'
 import { Signal } from './components/Signal/Signal'
 import { Monplans } from './components/Monplans/Monplans'
+import { Reports } from './components/Monplans/Reports'
 const { theme } = require('antd/lib')
 
 export const App: React.FC = () => {
@@ -58,6 +59,8 @@ export const App: React.FC = () => {
                 <Route path="/signal" element={<Signal />} />
                 <Route path="/monplans" element={<Monplans />} />
                 <Route path="/monplans/:year/:month" element={<Monplans />} />
+                <Route path="/reports" element={<Reports />} />
+                <Route path="/reports/:year/:month" element={<Reports />} />
               </Routes> 
             <FloatButton.BackTop />
             </Layout>

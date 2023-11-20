@@ -10,22 +10,17 @@ import { ColumnsType } from "antd/es/table"
 import empty from './../../img/empty.png'
 import { getAllValidatorsSelector } from "../../redux/Selectors/appSelectors"
 import { getAllValidators } from "../../redux/Reducers/appReducer"
-import { FioChanger } from "./PlansComponents/FioChanger"
-import { DocChanger } from "./PlansComponents/DocChanger"
 import 'dayjs/locale/ru'
-import { DateChanger } from "./PlansComponents/Datechanger"
-import { DeletePlans } from "./PlansComponents/DeletePlans"
 
 const { Text } = Typography
 
 type MenuItem = Required<MenuProps>['items'][number]
 
-export const Monplans: React.FC = ({ }) => {
+export const Reports: React.FC = ({ }) => {
   const dispatch: AppDispatch = useDispatch()
   const monthList = useSelector(getMonthListSelector)
   const allValidators = useSelector(getAllValidatorsSelector)
   const emptyFioObject = [{ value: '', label: <Text type="warning">Не указано</Text> }]
-  const allValidatorsFio = [...emptyFioObject, ...allValidators.map(e => ({ value: e.fio, label: e.fio }))]
   const [modalOpen, setModalOpen] = useState(false)
   const [iframeKey, setIframeKey] = useState(0)
   const params = useParams()
@@ -51,11 +46,12 @@ export const Monplans: React.FC = ({ }) => {
   useEffect(() => {
     dispatch(getAllValidators())
   }, [])
+
   const handleMenuClick = (key: string) => {
     const year = key.slice(7, 11)
     const monthNumber = key.slice(11, 13).padStart(2, '0')
     if (key !== 'item-print') {
-      const url = `/monplans/${year}/${monthNumber}`
+      const url = `/reports/${year}/${monthNumber}`
       navigate(url)
     } else {
       setModalOpen(true)
@@ -117,30 +113,31 @@ export const Monplans: React.FC = ({ }) => {
     {
       title: <Text strong style={{ fontSize: '12pt' }}>Сроки</Text>,
       dataIndex: 'date',
-      render: (startObjectDate, record) => {
-
-        return <DateChanger record={record} startDate={startObjectDate} date={date} />
-      },
+      render: (startObjectDate, record) => startObjectDate ? record.date2 ? <Text type={record.status === 'Выполнено' ? "success" : "warning"}>{startObjectDate} - {record.date2}</Text>:
+                                                                            <Text type={record.status === 'Выполнено' ? "success" : "warning"}>{startObjectDate}</Text> : <Text type="warning">Не указаны</Text>,
       align: 'center'
     },
     {
       title: <Text strong style={{ fontSize: '12pt' }}>Ответственный</Text>,
       dataIndex: 'fio',
-      render: (fio, record) => <FioChanger allValidatorsFio={allValidatorsFio} date={date} fio={fio} record={record} key={record.id} />,
+      render: (fio, record) => fio ? <Text type={record.status === 'Выполнено' ? "success" : "warning"}>{fio}</Text> : <Text type="warning">Не указано</Text>,
       width: '10%',
       align: 'center'
     },
     {
       title: <Text strong style={{ fontSize: '12pt' }}>Результат</Text>,
       dataIndex: 'doc',
-      render: (doc, record) => <DocChanger date={date} doc={doc} record={record} key={record.id} />,
+      render: (doc, record) => doc ? <Text type={record.status === 'Выполнено' ? "success" : "warning"}>{doc}</Text> : <Text type="warning">Не указано</Text>,
       sorter: (a, b) => a.doc.localeCompare(b.doc),
       sortDirections: ['ascend', 'descend'],
       width: '12%',
       align: 'center',
     },
     {
-      render: (text, record) => <DeletePlans month={month} record={record} />,
+      title: <Text strong style={{ fontSize: '12pt' }}>Статус</Text>,
+      dataIndex: 'status',
+      render: (status, record) => <Text type={status === 'Выполнено' ? "success" : "warning"}>{status}</Text>,
+      width: '10%',
       align: 'center',
     },
   ]
@@ -174,7 +171,7 @@ export const Monplans: React.FC = ({ }) => {
       return Object.entries(monthsByYear).map(([year, months]) => {
         const yearSubMenu: MenuItem = {
           key: `group-${year}`,
-          label: `Планы за ${year} год`,
+          label: `Отчёты за ${year} год`,
           type: 'group',
           children: months.map((month, index) => {
             const { month: monthStr } = month
@@ -203,7 +200,7 @@ export const Monplans: React.FC = ({ }) => {
     const dynamicItems = generateMenuItems(monthsByYear);
 
     const items: MenuProps['items'] = [
-      getItem('Печать плана', 'print', <PrinterOutlined />),
+      getItem('Печать отчёта', 'print', <PrinterOutlined />),
       { type: 'divider' },
       ...dynamicItems,
       { type: 'divider' }
@@ -254,17 +251,17 @@ export const Monplans: React.FC = ({ }) => {
             dataSource={data}
             bordered
             pagination={false}
-            title={() => <Text style={{ fontSize: '14pt' }}>План работ на {date} (всего: {data.length})</Text>}
+            title={() => <Text style={{ fontSize: '14pt' }}>Отчёт о проведенных работах за {date} (всего: {data.length})</Text>}
             size="small"
             style={{ marginBottom: '100px' }}
           />
-          <Modal open={modalOpen} centered onCancel={() => setModalOpen(false)} afterOpenChange={() => setModalOpen(false)} >
-            <iframe width={450} height={700} key={iframeKey} src={`http://10.85.10.212/ov/api/printForms/monthplan_print.php?y_old=${year}&m_old=${month}`}></iframe>
+          <Modal open={modalOpen} centered onCancel={() => setModalOpen(false)} afterOpenChange={() => setModalOpen(false)}>
+            <iframe width={450} height={700} key={iframeKey} src={`http://10.85.10.212/ov/api/printForms/report_print.php?y_old=${year}&m_old=${month}`}></iframe>
           </Modal>
         </Col>
       </Row>
     )
   } else {
-    return <>Здесь пусто, потому что мы не нашли никаких планов. Наверное вы видите свежеустановленную программу</>
+    return <>Здесь пусто, потому что мы не нашли никаких отчётов. Наверное вы видите свежеустановленную программу</>
   }
 }

@@ -62,7 +62,6 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({premObject, id}) => {
                     style={{
                         maxWidth: '100%',
                         maxHeight: '45vh',
-                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
                         borderRadius: '10px',
                         overflow: 'hidden'
                     }}

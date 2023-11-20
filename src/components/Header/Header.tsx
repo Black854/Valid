@@ -1,7 +1,8 @@
 import React from "react"
 import {Link, NavLink, useLocation} from 'react-router-dom'
-import { Col, Menu, MenuProps, Row, Switch, Typography } from 'antd'
+import { Col, Image, Menu, MenuProps, Row, Switch, Typography } from 'antd'
 import { Header } from "antd/es/layout/layout"
+import logo from './../../img/logo192.png'
 
 const { Text } = Typography
 
@@ -26,6 +27,8 @@ export const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
             return "/instruments"
         } else if (pathname.includes("/monplans")) {
             return "/monplans"
+        } else if (pathname.includes("/reports")) {
+            return "/reports"
         }
         return pathname
     }
@@ -54,9 +57,12 @@ export const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
     ]
 
     return <>
-        <Header >
+        <Header style={{margin: '0px', padding: '0px'}} >
             <Row>
-                <Col span={22}>
+                <Col span={1} style={{textAlign: 'center'}}>
+                    <Image src={logo} style={{width: '40px', height: '40px', display: 'inline'}} preview={false} />
+                </Col>
+                <Col span={21}>
                     <Menu
                         theme="dark"
                         mode="horizontal"
@@ -65,7 +71,7 @@ export const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
                         style={{backgroundColor: 'none'}}
                     />
                 </Col>
-                <Col span={2} style={{ textAlign: 'right'}}>
+                <Col span={2} style={{ textAlign: 'right', paddingRight: '10px'}}>
                     <Text type="warning">Тема  </Text>
                     <Switch checked={typeTheme === 'light'} onChange={swithTheme} checkedChildren="Темная" unCheckedChildren="Светлая"  />
                 </Col>
