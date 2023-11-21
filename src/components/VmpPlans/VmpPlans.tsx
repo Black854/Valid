@@ -1,12 +1,17 @@
 import { Col, Menu, MenuProps, Modal, Row, Table, Typography, message } from "antd"
-import { PrinterOutlined, EyeOutlined, CalendarOutlined } from '@ant-design/icons'
-import { useNavigate, useParams } from "react-router-dom"
+import { PrinterOutlined, EyeOutlined, CalendarOutlined, FileWordOutlined } from '@ant-design/icons'
+import { NavLink, useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
 import { useEffect } from "react"
 import { AppDispatch } from "../../redux/store"
-import { getVMPData } from "../../redux/Reducers/vmpReducer"
-const { Text } = Typography
+import { VMPDataType, getVMPData } from "../../redux/Reducers/vmpReducer"
+import { ColumnsType } from "antd/es/table"
+import ColumnGroup from "antd/es/table/ColumnGroup"
+import Column from "antd/es/table/Column"
+import { getVMPDataSelector } from "../../redux/Selectors/vmpSelectors"
+import { plansDataBuilder } from "./plansDataBuilder"
+const { Text, Link } = Typography
 
 export const VmpPlans: React.FC = () => {
 
@@ -21,22 +26,49 @@ export const VmpPlans: React.FC = () => {
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
     const VMPName = VMPDepartments.find(e => e.id === params.number)?.vmpname2
     const tableName = VMPDepartments.find(e => e.id === params.number)?.vmptablename
-    console.log(tableName)
+    const VMPData = useSelector(getVMPDataSelector)
+
+    const data1 = plansDataBuilder(VMPData, '1')
+    const data2 = plansDataBuilder(VMPData, '3')
+    type dataType = {
+        index: number
+        key: number
+        id: string
+        name: string
+        tablename: string
+        idfromtable: string
+        typeval: string
+        1: string
+        2: string
+        3: string
+        4: string
+        5: string
+        6: string
+        7: string
+        8: string
+        9: string
+        10: string
+        11: string
+        12: string
+    }
+
+    const data: dataType[] = [...data1, ...data2].map((e, index) => ({ ...e, index: index + 1, key: index + 1}))
+
     useEffect(() => {
         if (tableName && params.year) {
             dispatch(getVMPData(tableName, params.year))
         }
-    }, [tableName,  params.year])
+    }, [tableName, params.year])
 
     const handleMenuClick = (key: string) => {
         const year = key.slice(7, 11)
         const monthNumber = key.slice(11, 13).padStart(2, '0')
         if (key === 'vmpPlanPrint') {
-            // const url = `/reports/${year}/${monthNumber}`
-            // navigate(url)
             // setModalOpen(true)
             // setIframeKey(prevKey => prevKey + 1)
         } else if (key === 'vmpReportPrint') {
+
+        } else if (key === 'vmpPlanImport') {
 
         } else {
             const url = `/vmp/${params.number}/${key}`
@@ -55,6 +87,7 @@ export const VmpPlans: React.FC = () => {
                     defaultOpenKeys={[`yearGroup`]}
                     selectedKeys={[`${params.year}`]}
                 >
+                    <Menu.Item key='vmpPlanImport' icon={<FileWordOutlined />}>Импорт плана</Menu.Item>
                     <Menu.Item key='vmpPlanPrint' icon={<PrinterOutlined />}>Печать плана</Menu.Item>
                     <Menu.Item key='vmpReportPrint' icon={<PrinterOutlined />}>Печать отчёта</Menu.Item>
                     <Menu.SubMenu key='yearGroup' title='Год графика' icon={<CalendarOutlined />}>
@@ -66,17 +99,114 @@ export const VmpPlans: React.FC = () => {
             </Col>
             <Col span={19}>
                 <Table
-                    //   columns={columns}
-                    //   dataSource={data}
+                    dataSource={data}
                     bordered
                     pagination={false}
                     title={() => <Text style={{ fontSize: '14pt' }}>График проведения валидационных работ {VMPName} на {params.year} г.</Text>}
                     size="small"
                     style={{ marginBottom: '100px' }}
-                />
+                    
+                >
+                    <Column title={<Text>№</Text>} dataIndex='index' key="number" align="center" />
+                    <Column
+                        title={<Text>Наименование объекта</Text>}
+                        dataIndex='name'
+                        key="name"
+                        width='30%'
+                        render={(name, record: dataType) => <NavLink to={`/${record.tablename}/${record.idfromtable}`}>{name}</NavLink>}
+                    />
+                    <ColumnGroup title="Период проведения работ/трудозатраты чел/рабочих дней" align="center">
+                        <Column
+                            title={<Text>1</Text>}
+                            dataIndex='1'
+                            key="1"
+                            align="center"
+                            render={(text, record: dataType) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
+                        />
+                        <Column
+                            title={<Text>2</Text>}
+                            dataIndex='2'
+                            key="2"
+                            align="center"
+                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
+                        />
+                        <Column
+                            title={<Text>3</Text>}
+                            dataIndex='3'
+                            key="3"
+                            align="center"
+                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
+                        />
+                        <Column
+                            title={<Text>4</Text>}
+                            dataIndex='4'
+                            key="4"
+                            align="center"
+                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
+                        />
+                        <Column
+                            title={<Text>5</Text>}
+                            dataIndex='5'
+                            key="5"
+                            align="center"
+                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
+                        />
+                        <Column
+                            title={<Text>6</Text>}
+                            dataIndex='6'
+                            key="6"
+                            align="center"
+                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
+                        />
+                        <Column
+                            title={<Text>7</Text>}
+                            dataIndex='7'
+                            key="7"
+                            align="center"
+                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
+                        />
+                        <Column
+                            title={<Text>8</Text>}
+                            dataIndex='8'
+                            key="8"
+                            align="center"
+                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
+                        />
+                        <Column
+                            title={<Text>9</Text>}
+                            dataIndex='9'
+                            key="9"
+                            align="center"
+                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
+                        />
+                        <Column
+                            title={<Text>10</Text>}
+                            dataIndex='10'
+                            key="10"
+                            align="center"
+                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
+                        />
+                        <Column
+                            title={<Text>11</Text>}
+                            dataIndex='11'
+                            key="11"
+                            align="center"
+                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
+                        />
+                        <Column
+                            title={<Text>12</Text>}
+                            dataIndex='12'
+                            key="12"
+                            align="center"
+                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
+                        />
+                    </ColumnGroup>
+                    <Column title={<Text>Отметка о выполнении</Text>} dataIndex='' key="" align="center" />
+                    <Column title={<Text>Код документа</Text>} dataIndex='' key="" align="center" />
+                </Table>
                 {/* <Modal open={modalOpen} centered onCancel={() => setModalOpen(false)} afterOpenChange={() => setModalOpen(false)}>
-              <iframe width={450} height={700} key={iframeKey} src={`http://10.85.10.212/ov/api/printForms/report_print.php?y_old=${year}&m_old=${month}`}></iframe>
-            </Modal> */}
+                <iframe width={450} height={700} key={iframeKey} src={`http://10.85.10.212/ov/api/printForms/report_print.php?y_old=${year}&m_old=${month}`}></iframe>
+                </Modal> */}
             </Col>
         </Row>
     )

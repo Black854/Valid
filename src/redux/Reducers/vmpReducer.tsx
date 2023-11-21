@@ -2,12 +2,12 @@ import { ThunkAction } from "redux-thunk"
 import { AppStateType, InferActionsTypes } from "../store"
 import { vmpAPI } from "../../api/vmpAPI"
 
-type VMPDataType = {
+export type VMPDataType = {
     id: string
     name: string
     tablename: string
     idfromtable: string
-    typeval: number
+    typeval: string
     1: string
     2: string
     3: string
