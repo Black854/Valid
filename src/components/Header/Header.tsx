@@ -1,8 +1,12 @@
-import React from "react"
+import React, { useEffect } from "react"
 import {Link, NavLink, useLocation} from 'react-router-dom'
 import { Col, Image, Menu, MenuProps, Row, Switch, Typography } from 'antd'
 import { Header } from "antd/es/layout/layout"
 import logo from './../../img/logo192.png'
+import { useDispatch, useSelector } from "react-redux"
+import { getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
+import { getVMPDepartments } from "../../redux/Reducers/appReducer"
+import { AppDispatch } from "../../redux/store"
 
 const { Text } = Typography
 
@@ -13,7 +17,15 @@ type HeaderPropsType = {
 
 export const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
     const location = useLocation()
-
+    const dispatch: AppDispatch = useDispatch()
+    const VMPDepartments = useSelector(getVMPDepartmentsSelector)
+    useEffect(() => {
+        VMPDepartments.length === 0 && dispatch(getVMPDepartments())
+    }, [])
+    const currentYear = new Date().getFullYear()
+    const filteredVMPDepartments = VMPDepartments.filter(e => e.isactive === '').map(e => ({key: `/vmp/${e.id}`, label: <Link to={`/vmp/${e.id}/${currentYear}`}>{e.menuname}</Link>}))
+    const vmpTables = VMPDepartments.filter(e => e.isactive === '').map(e => "/vmp/" + e.id)
+    
     const getPathnameWithoutTrailingSlash = (pathname: string) => {
         if (pathname.includes("/equipment")) {
             return "/equipment"
@@ -30,6 +42,13 @@ export const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
         } else if (pathname.includes("/reports")) {
             return "/reports"
         }
+
+        for (const table of vmpTables) {
+            if (pathname.includes(table)) {
+              return table
+            }
+        }
+        
         return pathname
     }
 
@@ -47,9 +66,7 @@ export const Header1: React.FC<HeaderPropsType> = ({swithTheme, typeTheme}) => {
         {key: '2', label: `Планы`, children: [
             {key: '/monplans', label: <Link to='/monplans'>План на месяц</Link>},
             {key: '/reports', label: <Link to='/reports'>Отчет за месяц</Link>},
-            {key: '/vmpl', label: <Link to='/vmpl'>График ВМП ЦС</Link>},
-            {key: '/vmp2', label: <Link to='/vmp2'>График ВМП ОКК</Link>},
-            {key: '/vmp3', label: <Link to='/vmp3'>График ВМП ЛИП</Link>},
+            ...filteredVMPDepartments,
             {key: '/vacations', label: <Link to='/vacations'>График отпусков</Link>}]
         },
         {key: '/paperplanes', label: <Link to='/paperplanes'>Схемы</Link>},

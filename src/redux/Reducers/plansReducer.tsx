@@ -33,9 +33,9 @@ type InitialStateType = typeof initialState
 export const plansReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case 'plans/SET_MONTH_LIST':
-            return {...state, monthList: action.data}
-        case 'plans/SET_PLANS': 
-            return {...state, plans: action.data }
+            return { ...state, monthList: action.data }
+        case 'plans/SET_PLANS':
+            return { ...state, plans: action.data }
         default:
             return state
     }
@@ -66,10 +66,15 @@ export const updatePlansDates = (startDate: string, endDate: string, objectId: s
     dispatch(plansActions.setPlans(data.items))
 }
 
+export const updateReportStatus = (status: string, objectId: string, tableName: string, recordId: string, month: string): ThunkType => async (dispatch) => {
+    let data = await plansAPI.updateReportStatus(status, objectId, tableName, recordId, month)
+    dispatch(plansActions.setPlans(data.items))
+}
+
 type ActionTypes = InferActionsTypes<typeof plansActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 const plansActions = {
-    setMonthList: ( data: MonthListItem[] ) => ({type: 'plans/SET_MONTH_LIST', data} as const),
-    setPlans: ( data: PlansType[] ) => ({type: 'plans/SET_PLANS', data} as const),
+    setMonthList: (data: MonthListItem[]) => ({ type: 'plans/SET_MONTH_LIST', data } as const),
+    setPlans: (data: PlansType[]) => ({ type: 'plans/SET_PLANS', data } as const),
 }

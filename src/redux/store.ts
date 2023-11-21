@@ -8,6 +8,7 @@ import { systemsReducer } from './Reducers/systemsReducer';
 import { processesReducer } from './Reducers/processesReducer';
 import { instrumentsReducer } from './Reducers/instrumentsReducer';
 import { plansReducer } from './Reducers/plansReducer';
+import { vmpReducer } from './Reducers/vmpReducer';
 
 let rootReducer = combineReducers({
   app: appReducer,
@@ -17,7 +18,8 @@ let rootReducer = combineReducers({
   processes: processesReducer,
   instruments: instrumentsReducer,
   auth: authReducer,
-  plans: plansReducer
+  plans: plansReducer,
+  vmp: vmpReducer
 })
 
 type RootReducerType = typeof rootReducer

@@ -79,11 +79,11 @@ export const Monplans: React.FC = ({ }) => {
       dataIndex: 'index'
     },
     {
-      title: <Text strong style={{ fontSize: '12pt' }}>СП ВМП</Text>,
+      title: <Text strong style={{ fontSize: '12pt' }}>ВМП</Text>,
       dataIndex: 'sp',
       sorter: (a, b) => a.sp.localeCompare(b.sp),
       sortDirections: ['ascend', 'descend'],
-      width: '7%',
+      width: '5%',
       align: 'center',
     },
     {
@@ -92,12 +92,13 @@ export const Monplans: React.FC = ({ }) => {
       render: (text, record) => (
         <Row>
           <Col span={1}>
-            <Image style={{
-              maxWidth: '30px',
-              maxHeight: '30px',
-              borderRadius: '3px',
-              overflow: 'hidden'
-            }}
+            <Image
+              style={{
+                maxWidth: '30px',
+                maxHeight: '30px',
+                borderRadius: '3px',
+                overflow: 'hidden'
+              }}
               src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
               preview={{ mask: <EyeOutlined style={{ fontSize: '12pt' }} /> }}
             />
@@ -233,7 +234,7 @@ export const Monplans: React.FC = ({ }) => {
                           matchedMonthIndex = months.findIndex(month => child.label?.toString().includes(month))
                         }
                         return child && 'label' in child && (
-                          <Menu.Item key={`g${menuItem.key}${(matchedMonthIndex + 1).toString().padStart(2, '0')}`} icon={<EyeOutlined />}>{child.label}</Menu.Item>
+                          <Menu.Item key={`g${menuItem.key}${(matchedMonthIndex + 1).toString().padStart(2, '0')}`}>{child.label}</Menu.Item>
                         )
                       })}
                     </Menu.SubMenu>

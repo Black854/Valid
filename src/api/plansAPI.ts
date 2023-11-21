@@ -7,13 +7,13 @@ const instance = axios.create({
 })
 
 export const plansAPI = {
-    getMonthList () {
-        return instance.get(`getMonthList.php`).then (response => {
+    getMonthList() {
+        return instance.get(`getMonthList.php`).then(response => {
             return response.data
         })
     },
     getPlans(month: string) {
-        return instance.get(`getPlans.php?month=${month}`).then (response => {
+        return instance.get(`getPlans.php?month=${month}`).then(response => {
             return response.data
         })
     },
@@ -25,7 +25,7 @@ export const plansAPI = {
             recordId,
             month
         }
-        return instance.post(`updatePlansFio.php`, requestData, {}).then (response => {
+        return instance.post(`updatePlansFio.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -37,7 +37,7 @@ export const plansAPI = {
             recordId,
             month
         }
-        return instance.post(`updatePlansDoc.php`, requestData, {}).then (response => {
+        return instance.post(`updatePlansDoc.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -50,7 +50,7 @@ export const plansAPI = {
             recordId,
             month
         }
-        return instance.post(`updatePlansDates.php`, requestData, {}).then (response => {
+        return instance.post(`updatePlansDates.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -61,7 +61,19 @@ export const plansAPI = {
             recordId,
             month
         }
-        return instance.post(`deletePlans.php`, requestData, {}).then (response => {
+        return instance.post(`deletePlans.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    updateReportStatus(status: string, objectId: string, tableName: string, recordId: string, month: string) {
+        const requestData = {
+            status,
+            objectId,
+            tableName,
+            recordId,
+            month
+        }
+        return instance.post(`updateReportStatus.php`, requestData, {}).then(response => {
             return response.data
         })
     },

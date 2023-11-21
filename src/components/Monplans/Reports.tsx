@@ -1,10 +1,10 @@
-import { Col, Image, Menu, MenuProps, Modal, Row, Table, Typography } from "antd"
+import { Col, Image, Menu, MenuProps, Modal, Row, Table, Typography, message } from "antd"
 import { PrinterOutlined, EyeOutlined, CalendarOutlined } from '@ant-design/icons'
 import { NavLink, useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../redux/store"
 import { useEffect, useState } from "react"
-import { PlansType, getMonthList, getPlans, MonthListItem } from "../../redux/Reducers/plansReducer"
+import { PlansType, getMonthList, getPlans, MonthListItem, updateReportStatus } from "../../redux/Reducers/plansReducer"
 import { getMonthListSelector, getPlansSelector } from "../../redux/Selectors/plansSelectors"
 import { ColumnsType } from "antd/es/table"
 import empty from './../../img/empty.png'
@@ -46,6 +46,15 @@ export const Reports: React.FC = ({ }) => {
   useEffect(() => {
     dispatch(getAllValidators())
   }, [])
+  const [messageApi, contextHolder] = message.useMessage()
+
+  const error = (errorText: string) => {
+    messageApi.open({
+      type: 'warning',
+      content: errorText,
+      duration: 7
+    })
+  }
 
   const handleMenuClick = (key: string) => {
     const year = key.slice(7, 11)
@@ -56,6 +65,16 @@ export const Reports: React.FC = ({ }) => {
     } else {
       setModalOpen(true)
       setIframeKey(prevKey => prevKey + 1)
+    }
+  }
+
+  const handleUpdateReportStatus = (text: string, record: PlansType) => {
+    if (text === '') {
+      error('Текст статуса не может быть пустым')
+    } else if (text.includes('Выполнено') || text.includes('выполнено')) {
+      error('Нельзя установить статус «Выполнено» таким образом. Статус «Выполнено» устанавливается при завершении задачи.')
+    } else if (text !== record.status) {
+      dispatch(updateReportStatus(text, record.idfromtable, record.tablename, record.id, `${month}.${year}`))
     }
   }
 
@@ -75,11 +94,11 @@ export const Reports: React.FC = ({ }) => {
       dataIndex: 'index'
     },
     {
-      title: <Text strong style={{ fontSize: '12pt' }}>СП ВМП</Text>,
+      title: <Text strong style={{ fontSize: '12pt' }}>ВМП</Text>,
       dataIndex: 'sp',
       sorter: (a, b) => a.sp.localeCompare(b.sp),
       sortDirections: ['ascend', 'descend'],
-      width: '7%',
+      width: '5%',
       align: 'center',
     },
     {
@@ -113,8 +132,8 @@ export const Reports: React.FC = ({ }) => {
     {
       title: <Text strong style={{ fontSize: '12pt' }}>Сроки</Text>,
       dataIndex: 'date',
-      render: (startObjectDate, record) => startObjectDate ? record.date2 ? <Text type={record.status === 'Выполнено' ? "success" : "warning"}>{startObjectDate} - {record.date2}</Text>:
-                                                                            <Text type={record.status === 'Выполнено' ? "success" : "warning"}>{startObjectDate}</Text> : <Text type="warning">Не указаны</Text>,
+      render: (startObjectDate, record) => startObjectDate ? record.date2 ? <Text type={record.status === 'Выполнено' ? "success" : "warning"}>{startObjectDate} - {record.date2}</Text> :
+        <Text type={record.status === 'Выполнено' ? "success" : "warning"}>{startObjectDate}</Text> : <Text type="warning">Не указаны</Text>,
       align: 'center'
     },
     {
@@ -136,7 +155,8 @@ export const Reports: React.FC = ({ }) => {
     {
       title: <Text strong style={{ fontSize: '12pt' }}>Статус</Text>,
       dataIndex: 'status',
-      render: (status, record) => <Text type={status === 'Выполнено' ? "success" : "warning"}>{status}</Text>,
+      render: (status, record) => status === 'Выполнено' ? <Text type='success'>{status}</Text> :
+        <Text type='warning' editable={{ onChange: (text) => handleUpdateReportStatus(text, record) }}>{status}</Text>,
       width: '10%',
       align: 'center',
     },
@@ -187,17 +207,17 @@ export const Reports: React.FC = ({ }) => {
     }
     const monthsByYear: Record<string, MonthListItem[]> = {}
     monthList.forEach((item) => {
-      const { month } = item;
-      const monthYear = month.split('.');
-      const year = monthYear[1];
+      const { month } = item
+      const monthYear = month.split('.')
+      const year = monthYear[1]
 
       if (!monthsByYear[year]) {
-        monthsByYear[year] = [];
+        monthsByYear[year] = []
       }
-      monthsByYear[year].push(item);
+      monthsByYear[year].push(item)
     })
 
-    const dynamicItems = generateMenuItems(monthsByYear);
+    const dynamicItems = generateMenuItems(monthsByYear)
 
     const items: MenuProps['items'] = [
       getItem('Печать отчёта', 'print', <PrinterOutlined />),
@@ -209,6 +229,7 @@ export const Reports: React.FC = ({ }) => {
     return (
       <Row style={{ marginTop: '10px' }}>
         <Col span={4}>
+          {contextHolder}
           <Menu
             mode="inline"
             onClick={({ key }) => handleMenuClick(key)}
@@ -230,11 +251,11 @@ export const Reports: React.FC = ({ }) => {
                           matchedMonthIndex = months.findIndex(month => child.label?.toString().includes(month))
                         }
                         return child && 'label' in child && (
-                          <Menu.Item key={`g${menuItem.key}${(matchedMonthIndex + 1).toString().padStart(2, '0')}`} icon={<EyeOutlined />}>{child.label}</Menu.Item>
+                          <Menu.Item key={`g${menuItem.key}${(matchedMonthIndex + 1).toString().padStart(2, '0')}`}>{child.label}</Menu.Item>
                         )
                       })}
                     </Menu.SubMenu>
-                  );
+                  )
                 } else if (menuItem.type === 'divider') {
                   return <Menu.Divider key={`divider-${index}`} />
                 } else if ('label' in menuItem) {

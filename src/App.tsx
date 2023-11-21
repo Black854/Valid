@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Layout, ConfigProvider, FloatButton} from 'antd'
+import { Layout, ConfigProvider, FloatButton, Typography } from 'antd'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import './App.css'
@@ -21,7 +21,9 @@ import { InstCard } from './components/Instruments/InstCard/InstCard'
 import { Signal } from './components/Signal/Signal'
 import { Monplans } from './components/Monplans/Monplans'
 import { Reports } from './components/Monplans/Reports'
+import { VmpPlans } from './components/VmpPlans/VmpPlans'
 const { theme } = require('antd/lib')
+const { Text } = Typography
 
 export const App: React.FC = () => {
   const [typeTheme, setTheme] = useState('dark') // Изначально устанавливаем темную тему
@@ -39,8 +41,8 @@ export const App: React.FC = () => {
   return (
     <Router>
       <Provider store={store}>
-        <ConfigProvider theme={{algorithm: typeTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm }} >
-          <Layout style={{minHeight: '100vh'}}>
+        <ConfigProvider theme={{ algorithm: typeTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm }} >
+          <Layout style={{ minHeight: '100vh' }}>
             <Header1 swithTheme={handleThemeChange} typeTheme={typeTheme} />
             <Layout>
               <Routes>
@@ -61,8 +63,11 @@ export const App: React.FC = () => {
                 <Route path="/monplans/:year/:month" element={<Monplans />} />
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/reports/:year/:month" element={<Reports />} />
-              </Routes> 
-            <FloatButton.BackTop />
+                <Route path="/vmp" element={<VmpPlans />} />
+                <Route path="/vmp/:number/:year" element={<VmpPlans />} />
+                <Route path="*" element={<Text type='warning'>404 Страница не найдена</Text>} />
+              </Routes>
+              <FloatButton.BackTop />
             </Layout>
             <CustomFooter />
           </Layout>
