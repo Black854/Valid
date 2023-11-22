@@ -4,10 +4,14 @@ import { vmpAPI } from "../../api/vmpAPI"
 
 export type VMPDataType = {
     id: string
+    vo: string
     name: string
     tablename: string
     idfromtable: string
     typeval: string
+    status: string
+    codedoc: string
+    0: string
     1: string
     2: string
     3: string
@@ -19,7 +23,6 @@ export type VMPDataType = {
     9: string
     10: string
     11: string
-    12: string
 }
 
 const initialState = {

@@ -116,7 +116,7 @@ export const Processes: React.FC = () => {
                     <Table
                         columns={columns}
                         dataSource={data}
-                        bordered
+                        bordered={false}
                         pagination={false}
                         title={() => <Text style={{ fontSize: '14pt' }}>Оборудование (всего: {procData.length})</Text>}
                         size="small"

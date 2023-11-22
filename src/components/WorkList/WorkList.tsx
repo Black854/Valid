@@ -221,7 +221,7 @@ export const WorkList: React.FC = () => {
                             }
                         }}
                         dataSource={data}
-                        bordered
+                        bordered={false}
                         pagination={false}
                         title={() => <Text style={{fontSize: '14pt'}}>Мои задачи (всего: {data.length})</Text>}
                         size="small"

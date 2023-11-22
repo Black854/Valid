@@ -309,6 +309,6 @@ export const SysTasks: React.FC<EquipTasks> = ({mySysDataIdArray, mySysData, rec
         data = [data2]
     }
 
-    return thisObject?.typeval === '1' ? <Table columns={[...protocolColumns, ...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered />:
-           thisObject?.typeval === '3' ? <Table columns={[...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered /> : null
+    return thisObject?.typeval === '1' ? <Table columns={[...protocolColumns, ...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered={false} />:
+           thisObject?.typeval === '3' ? <Table columns={[...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered={false} /> : null
 }

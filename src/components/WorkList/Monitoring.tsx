@@ -226,7 +226,7 @@ export const Monitoring: React.FC = () => {
                             }
                         }}
                         dataSource={data}
-                        bordered
+                        bordered={false}
                         pagination={false}
                         title={() => <Text style={{fontSize: '14pt'}}>Все задачи (всего: {data.length})</Text>}
                         size="small"

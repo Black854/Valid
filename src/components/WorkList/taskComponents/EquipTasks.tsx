@@ -310,11 +310,11 @@ export const EquipTasks: React.FC<EquipTasks> = ({myEquipDataIdArray, myEquipDat
     }
 
     return thisObject?.typeval === '1' ? (
-        rec.class === 'Термостаты' ? <Table columns={[...protocolColumns, ...reportColumns, ...pamColumn, ...pam2Column, ...labelColumn]} dataSource={data} pagination={false} bordered /> :
-        rec.class === 'Термоконтейнеры' ? <Table columns={[...protocolColumns, ...reportColumns, ...pamColumn]} dataSource={data} pagination={false} bordered />:
-        <Table columns={[...protocolColumns, ...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered />
+        rec.class === 'Термостаты' ? <Table columns={[...protocolColumns, ...reportColumns, ...pamColumn, ...pam2Column, ...labelColumn]} dataSource={data} pagination={false} bordered={false} /> :
+        rec.class === 'Термоконтейнеры' ? <Table columns={[...protocolColumns, ...reportColumns, ...pamColumn]} dataSource={data} pagination={false} bordered={false} />:
+        <Table columns={[...protocolColumns, ...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered={false} />
     ) : thisObject?.typeval === '3' ? (
-        rec.class === 'Термоконтейнеры' ? <Table columns={[...reportColumns]} dataSource={data} pagination={false} bordered /> :
-        <Table columns={[...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered />
+        rec.class === 'Термоконтейнеры' ? <Table columns={[...reportColumns]} dataSource={data} pagination={false} bordered={false} /> :
+        <Table columns={[...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered={false} />
     ) : null
 }

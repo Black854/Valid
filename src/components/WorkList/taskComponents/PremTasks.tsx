@@ -339,14 +339,14 @@ export const PremTasks: React.FC<PremTasks> = ({myPremData, error, rec, myPremDa
     }
     
     return thisObject?.typeval === '1' ? (
-        (rec.class === 'Чистые' ||  rec.class === 'Контролируемые') ? <Table columns={[...protocolColumns, ...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered /> :
+        (rec.class === 'Чистые' ||  rec.class === 'Контролируемые') ? <Table columns={[...protocolColumns, ...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered={false} /> :
         rec.class === 'Складские' && (rec.mode === '2 - 8 ºC' || rec.mode === 'минус 30 - 35 ºC') ?
-        <Table columns={[...protocolColumns, ...reportColumns, ...seasonColumn, ...pamColumn, ...pam2Column, ...labelColumn]} dataSource={data} pagination={false} bordered /> :
-        <Table columns={[...protocolColumns, ...reportColumns, ...seasonColumn, ...labelColumn]} dataSource={data} pagination={false} bordered />
+        <Table columns={[...protocolColumns, ...reportColumns, ...seasonColumn, ...pamColumn, ...pam2Column, ...labelColumn]} dataSource={data} pagination={false} bordered={false} /> :
+        <Table columns={[...protocolColumns, ...reportColumns, ...seasonColumn, ...labelColumn]} dataSource={data} pagination={false} bordered={false} />
     ) : thisObject?.typeval === '3' ? (
-        (rec.class === 'Чистые' ||  rec.class === 'Контролируемые') ? <Table columns={[...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered /> :
+        (rec.class === 'Чистые' ||  rec.class === 'Контролируемые') ? <Table columns={[...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered={false} /> :
         rec.class === 'Складские' && (rec.mode === '2 - 8 ºC' || rec.mode === 'минус 30 - 35 ºC') ?
-        <Table columns={[...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered /> :
-        <Table columns={[...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered />
+        <Table columns={[...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered={false} /> :
+        <Table columns={[...reportColumns, ...labelColumn]} dataSource={data} pagination={false} bordered={false} />
     ) : null
 }

@@ -229,6 +229,6 @@ export const ProcTasks: React.FC<EquipTasks> = ({myProcDataIdArray, myProcData, 
         data = [data2]
     }
     console.log('123')
-    return  thisObject?.typeval === '1' ? <Table columns={[...protocolColumns, ...reportColumns]} dataSource={data} pagination={false} bordered /> :
-            thisObject?.typeval === '3' ? <Table columns={[...reportColumns]} dataSource={data} pagination={false} bordered /> : null
+    return  thisObject?.typeval === '1' ? <Table columns={[...protocolColumns, ...reportColumns]} dataSource={data} pagination={false} bordered={false} /> :
+            thisObject?.typeval === '3' ? <Table columns={[...reportColumns]} dataSource={data} pagination={false} bordered={false} /> : null
 }

@@ -115,7 +115,7 @@ export const Systems: React.FC = () => {
                     <Table
                         columns={columns}
                         dataSource={data}
-                        bordered
+                        bordered={false}
                         pagination={false}
                         title={() => <Text style={{fontSize: '14pt'}}>Оборудование (всего: {sysData.length})</Text>}
                         size="small"
