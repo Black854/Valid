@@ -1,4 +1,4 @@
-import { Typography, Col, Image, Row, Spin, Table } from "antd";
+import { Typography, Col, Image, Row, Spin, Table, Card } from "antd";
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table';
 import { useDispatch, useSelector } from "react-redux";
@@ -139,17 +139,19 @@ export const Equipment: React.FC = () => {
         return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
     }
     return (
-        <Content style={{ padding: '20px 0', marginBottom: '40px' }}>
+        <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
             <Row>
-                <Col span={22} push={1}>
-                    <Table
-                        columns={columns}
-                        dataSource={data}
-                        bordered={false}
-                        pagination={{ defaultPageSize: 20 }}
-                        title={() => <Text style={{ fontSize: '14pt' }}>Оборудование (всего: {equipData.length})</Text>}
-                        size="small"
-                    />
+                <Col push={1} xs={4} sm={22} md={22} lg={22} xl={22} xxl={22} >
+                    <Card>
+                        <Table
+                            columns={columns}
+                            dataSource={data}
+                            bordered={false}
+                            pagination={{ defaultPageSize: 20 }}
+                            title={() => <Text style={{ fontSize: '14pt' }}>Оборудование (всего: {equipData.length})</Text>}
+                            size="small"
+                        />
+                    </Card>
                 </Col>
             </Row>
         </Content>
