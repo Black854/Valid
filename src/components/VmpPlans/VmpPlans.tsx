@@ -217,7 +217,7 @@ export const VmpPlans: React.FC = () => {
                         dataIndex='codedoc'
                         key="codedoc"
                         align="right"
-                        width='25%'
+                        width='27%'
                         render={(codedoc: string, record: dataType) => record.vo ? record.vo !== '' && <><Text type={record.status === 'Выполнено' ? 'success' : undefined}>{codedoc}</Text><Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + record.vo} /></> : <Text type={record.status === 'Выполнено' ? 'success' : undefined}>{codedoc}</Text> }
                     />
                 </Table>
