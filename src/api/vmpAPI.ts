@@ -12,4 +12,14 @@ export const vmpAPI = {
             return response.data
         })
     },
+    getObjectVMPPlansData(objectId: string, sp: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes') {
+        const requestData = {
+            objectId,
+            sp,
+            objectType
+        }
+        return instance.post(`getObjectVMPPlansData.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
 }

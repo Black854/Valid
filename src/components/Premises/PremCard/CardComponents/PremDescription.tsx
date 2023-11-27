@@ -7,20 +7,16 @@ type PremDescriptionsPropsType = {
     data: any
 }
 
-export const PremDescriptions: React.FC<PremDescriptionsPropsType> = ({columns, data}) => {
+export const PremDescriptions: React.FC<PremDescriptionsPropsType> = ({ columns, data }) => {
     const isDescriptionLoading = useSelector(getIsDescriptionLoading)
-    return (
-        <>
-            <Table
+    return  <Table
                 columns={columns}
                 dataSource={data}
                 bordered
-                pagination={false} 
+                pagination={false}
                 showHeader={false}
                 rowKey='rowName'
                 size="small"
                 loading={isDescriptionLoading}
             />
-        </>
-    )
 }

@@ -26,7 +26,8 @@ export type VMPDataType = {
 }
 
 const initialState = {
-    VMPData: [] as VMPDataType[]
+    VMPData: [] as VMPDataType[],
+    objectVMPPlansData: [] as VMPDataType[]
 }
 
 type InitialStateType = typeof initialState
@@ -34,6 +35,8 @@ export const vmpReducer = (state = initialState, action: ActionTypes): InitialSt
     switch (action.type) {
         case 'vmp/SET_VMP_DATA':
             return { ...state, VMPData: action.data }
+        case 'vmp/SET_OBJECT_VMP_PLANS_DATA':
+            return {...state, objectVMPPlansData: action.data}
         default:
             return state
     }
@@ -44,9 +47,15 @@ export const getVMPData = (tablename: string, year: string): ThunkType => async 
     dispatch(vmpActions.setVMPData(data.items))
 }
 
+export const getObjectVMPPlansData = (objectId: string, sp: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
+    let data = await vmpAPI.getObjectVMPPlansData(objectId, sp, objectType)
+    dispatch(vmpActions.setObjectVMPPlansData(data.items))
+}
+
 type ActionTypes = InferActionsTypes<typeof vmpActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 const vmpActions = {
     setVMPData: (data: VMPDataType[]) => ({ type: 'vmp/SET_VMP_DATA', data } as const),
+    setObjectVMPPlansData: (data: VMPDataType[]) => ({ type: 'vmp/SET_OBJECT_VMP_PLANS_DATA', data } as const),
 }
