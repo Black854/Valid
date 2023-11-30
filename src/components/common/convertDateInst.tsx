@@ -1,14 +1,9 @@
-import { DatePicker, Input, Popconfirm, Typography } from 'antd'
+import { DatePicker, Popconfirm, Typography } from 'antd'
 import dayjs from 'dayjs'
 import { format } from 'date-fns'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { updateReestrDateEquip } from '../../redux/Reducers/equipmentReducer'
 import { AppDispatch } from '../../redux/store'
-import { updateReestrDatePrem } from '../../redux/Reducers/premisesReducer'
-import { datePickerLocale } from './datePickerLocale'
-import { updateReestrDateSys } from '../../redux/Reducers/systemsReducer'
-import { updateReestrDateProc } from '../../redux/Reducers/processesReducer'
 import { updateEndDate, updateStartDate } from '../../redux/Reducers/instrumentsReducer'
 const { Text } = Typography
 
@@ -81,7 +76,7 @@ export const ConvertDateInst: React.FC<ConvertDateType> = ({id, date, dateType, 
                         cancelText="Нет"
                         open={isPopconfirmVisible}
                     >
-                        <DatePicker size='small' disabledDate={disabledDate} locale={datePickerLocale} allowClear format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false} onChange={(date) => handleDateChange(date)}  />
+                        <DatePicker size='small' disabledDate={disabledDate} allowClear format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false} onChange={(date) => handleDateChange(date)}  />
                     </Popconfirm>
         }
     } else {
@@ -94,7 +89,7 @@ export const ConvertDateInst: React.FC<ConvertDateType> = ({id, date, dateType, 
                     cancelText="Нет"
                     open={isPopconfirmVisible}
                 >
-                    <DatePicker disabledDate={disabledDate} style={{width: '200px'}} size='small' placeholder={date === '' ? 'Не подлежит поверке' : ''} locale={datePickerLocale} allowClear={false} format={'DD.MM.YYYY'} bordered={false} onChange={(date) => handleDateChange(date)}  />
+                    <DatePicker disabledDate={disabledDate} style={{width: '200px'}} size='small' placeholder={date === '' ? 'Не подлежит поверке' : ''} allowClear={false} format={'DD.MM.YYYY'} bordered={false} onChange={(date) => handleDateChange(date)}  />
                 </Popconfirm>
     }
     return <></>

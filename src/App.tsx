@@ -22,6 +22,7 @@ import { Signal } from './components/Signal/Signal'
 import { Monplans } from './components/Monplans/Monplans'
 import { Reports } from './components/Monplans/Reports'
 import { VmpPlans } from './components/VmpPlans/VmpPlans'
+import ruRU from 'antd/es/locale/ru_RU'
 const { theme } = require('antd/lib')
 const { Text } = Typography
 
@@ -41,7 +42,7 @@ export const App: React.FC = () => {
   return (
     <Router>
       <Provider store={store}>
-        <ConfigProvider theme={{ algorithm: typeTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm }} >
+        <ConfigProvider theme={{ algorithm: typeTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm }} locale={ruRU} >
           <Layout style={{ minHeight: '100vh' }}>
             <Header1 swithTheme={handleThemeChange} typeTheme={typeTheme} />
             <Layout>

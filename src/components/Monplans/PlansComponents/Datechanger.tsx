@@ -1,10 +1,9 @@
-import { DatePicker, Popconfirm, Select } from "antd"
+import { DatePicker, Popconfirm } from "antd"
 import { useState } from "react"
 import { AppDispatch } from "../../../redux/store"
 import { useDispatch } from "react-redux"
 import { updatePlansDates } from "../../../redux/Reducers/plansReducer"
 import 'dayjs/locale/ru'
-import { datePickerLocale } from './../../common/datePickerLocale'
 import dayjs from 'dayjs'
 
 type FioChangerType = {
@@ -47,7 +46,6 @@ export const DateChanger: React.FC<FioChangerType> = ({ startDate, record, date 
     const dateFormat = 'DD.MM.YYYY'
     return (<>
         <DatePicker.RangePicker
-            locale={datePickerLocale}
             allowClear
             value={startDate !== '' ? record.date2 !== '' ? [dayjs(startDate !== '' ? startDate : null, dateFormat), dayjs(record.date2, dateFormat)] : [dayjs(startDate, dateFormat), null] : [null, null]}
             format={dateFormat}

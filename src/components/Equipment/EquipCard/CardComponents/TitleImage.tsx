@@ -1,11 +1,11 @@
 import { Button, Image, Popconfirm, Typography, message } from "antd"
-import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
+import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import empty from './../../../../img/empty.png'
-import { useDispatch } from "react-redux";
-import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/equipmentReducer";
-import { useParams } from "react-router-dom";
-import { EyeOutlined} from '@ant-design/icons';
-import { AppDispatch } from "../../../../redux/store";
+import { useDispatch } from "react-redux"
+import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/equipmentReducer"
+import { EyeOutlined} from '@ant-design/icons'
+import { AppDispatch } from "../../../../redux/store"
+import Title from "antd/es/typography/Title"
 const {Text} = Typography
 
 interface DataType {
@@ -74,7 +74,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => 
         <>  
             {contextHolder}
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
-                <Text strong editable={{onChange: (text: string) => handleUpdateName(text)}} style={{color: '#167afe', fontSize: '12pt', display: 'block', marginBottom: '20px'}}>{equipObject.name}</Text>
+                <Title editable={{onChange: (text: string) => handleUpdateName(text)}} style={{marginBottom: '20px'}} level={4}>{equipObject.name}</Title>
                 <Image
                     src={equipObject.foto ? "http://10.85.10.212/ov/" + equipObject.foto : empty}
                     preview = { equipObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }

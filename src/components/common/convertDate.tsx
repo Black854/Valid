@@ -1,4 +1,4 @@
-import { DatePicker, Input, Popconfirm, Typography } from 'antd'
+import { DatePicker, Popconfirm, Typography } from 'antd'
 import dayjs from 'dayjs'
 import { format } from 'date-fns'
 import { useState } from 'react'
@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux'
 import { updateReestrDateEquip } from '../../redux/Reducers/equipmentReducer'
 import { AppDispatch } from '../../redux/store'
 import { updateReestrDatePrem } from '../../redux/Reducers/premisesReducer'
-import { datePickerLocale } from './datePickerLocale'
 import { updateReestrDateSys } from '../../redux/Reducers/systemsReducer'
 import { updateReestrDateProc } from '../../redux/Reducers/processesReducer'
 const { Text } = Typography
@@ -77,7 +76,7 @@ export const ConvertDate: React.FC<ConvertDateType> = ({id, objectId, date, date
                         open={isPopconfirmVisible}
 
                     >
-                        <DatePicker size='small' locale={datePickerLocale} allowClear={false} format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false} onChange={(date) => handleDateChange(date)}  />
+                        <DatePicker size='small' allowClear={false} format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false} onChange={(date) => handleDateChange(date)}  />
                     </Popconfirm>
         }
     }

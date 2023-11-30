@@ -1,11 +1,12 @@
 import React, { useEffect } from "react"
 import { AppDispatch } from "../../../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
-import { VMPDataType, getObjectVMPPlansData } from "../../../../redux/Reducers/vmpReducer"
+import { getObjectVMPPlansData } from "../../../../redux/Reducers/vmpReducer"
 import { getObjectVMPPlansDataSelector } from "../../../../redux/Selectors/vmpSelectors"
-import { Card, Col, Layout, Row, Table, Typography } from "antd"
+import { Card, Col, Row, Table, Typography } from "antd"
 import Paragraph from "antd/es/typography/Paragraph"
 import { ColumnsType } from "antd/es/table"
+import Title from "antd/es/typography/Title"
 
 const { Text } = Typography
 
@@ -27,102 +28,102 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType })
     const data3 = [
         {
             rowName: 'Январь',
-            value: <Text>{data1[0]?.[0]}</Text>
+            value: data1[0]?.[0] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data1[0]?.[0]} дней</Text>
         },
         {
             rowName: 'Февраль',
-            value: <Text>{data1[0]?.[1]}</Text>
+            value: data1[0]?.[1] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data1[0]?.[1]} дней</Text>
         },
         {
             rowName: 'Март',
-            value: <Text>{data1[0]?.[2]}</Text>
+            value: data1[0]?.[2] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data1[0]?.[2]} дней</Text>
         },
         {
             rowName: 'Апрель',
-            value: <Text>{data1[0]?.[3]}</Text>
+            value: data1[0]?.[3] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data1[0]?.[3]} дней</Text>
         },
         {
             rowName: 'Май',
-            value: <Text>{data1[0]?.[4]}</Text>
+            value: data1[0]?.[4] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data1[0]?.[4]} дней</Text>
         },
         {
             rowName: 'Июнь',
-            value: <Text>{data1[0]?.[5]}</Text>
+            value: data1[0]?.[5] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data1[0]?.[5]} дней</Text>
         },
         {
             rowName: 'Июль',
-            value: <Text>{data1[0]?.[6]}</Text>
+            value: data1[0]?.[6] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data1[0]?.[6]} дней</Text>
         },
         {
             rowName: 'Август',
-            value: <Text>{data1[0]?.[7]}</Text>
+            value: data1[0]?.[7] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data1[0]?.[7]} дней</Text>
         },
         {
             rowName: 'Сентябрь  ',
-            value: <Text>{data1[0]?.[8]}</Text>
+            value: data1[0]?.[8] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data1[0]?.[8]} дней</Text>
         },
         {
             rowName: 'Октябрь',
-            value: <Text>{data1[0]?.[9]}</Text>
+            value: data1[0]?.[9] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data1[0]?.[9]} дней</Text>
         },
         {
             rowName: 'Ноябрь',
-            value: <Text>{data1[0]?.[10]}</Text>
+            value: data1[0]?.[10] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data1[0]?.[10]} дней</Text>
         },
         {
             rowName: 'Декабрь',
-            value: <Text>{data1[0]?.[11]}</Text>
+            value: data1[0]?.[11] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data1[0]?.[11]} дней</Text>
         },
     ]
 
     const data4 = [
         {
             rowName: 'Январь',
-            value: <Text>{data2[0]?.[0]}</Text>
+            value: data2[0]?.[0] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data2[0]?.[0]} дней</Text>
         },
         {
             rowName: 'Февраль',
-            value: <Text>{data2[0]?.[1]}</Text>
+            value: data2[0]?.[1] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data2[0]?.[1]} дней</Text>
         },
         {
             rowName: 'Март',
-            value: <Text>{data2[0]?.[2]}</Text>
+            value: data2[0]?.[2] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data2[0]?.[2]} дней</Text>
         },
         {
             rowName: 'Апрель',
-            value: <Text>{data2[0]?.[3]}</Text>
+            value: data2[0]?.[3] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data2[0]?.[3]} дней</Text>
         },
         {
             rowName: 'Май',
-            value: <Text>{data2[0]?.[4]}</Text>
+            value: data2[0]?.[4] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data2[0]?.[4]} дней</Text>
         },
         {
             rowName: 'Июнь',
-            value: <Text>{data2[0]?.[5]}</Text>
+            value: data2[0]?.[5] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data2[0]?.[5]} дней</Text>
         },
         {
             rowName: 'Июль',
-            value: <Text>{data2[0]?.[6]}</Text>
+            value: data2[0]?.[6] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data2[0]?.[6]} дней</Text>
         },
         {
             rowName: 'Август',
-            value: <Text>{data2[0]?.[7]}</Text>
+            value: data2[0]?.[7] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data2[0]?.[7]} дней</Text>
         },
         {
             rowName: 'Сентябрь  ',
-            value: <Text>{data2[0]?.[8]}</Text>
+            value: data2[0]?.[8] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data2[0]?.[8]} дней</Text>
         },
         {
             rowName: 'Октябрь',
-            value: <Text>{data2[0]?.[9]}</Text>
+            value: data2[0]?.[9] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data2[0]?.[9]} дней</Text>
         },
         {
             rowName: 'Ноябрь',
-            value: <Text>{data2[0]?.[10]}</Text>
+            value: data2[0]?.[10] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data2[0]?.[10]} дней</Text>
         },
         {
             rowName: 'Декабрь',
-            value: <Text>{data2[0]?.[11]}</Text>
+            value: data2[0]?.[11] === '0' ? <Text type="warning">Не запланировано</Text> : <Text type="success">{data2[0]?.[11]} дней</Text>
         },
     ]
 
@@ -133,35 +134,32 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType })
         },
         {
             dataIndex: 'value',
-            width: '20%'
+            width: '30%'
         },
     ]
 
     return (
-        <Row style={{ marginBottom: '100px' }}>
-            <Col span={11}>
-
-                {data1.length > 0 ?
+        <Card style={{ marginBottom: '100px', padding: '0px' }}>
+            <Row>
+                <Col span={11}>
                     <Table
-                        title={() => <Text style={{ fontSize: '14pt' }}>Квалификация</Text>}
+                        title={() => <Text style={{ fontSize: '14pt' }}>Отчет по квалификации</Text>}
                         showHeader={false}
                         columns={data1.length > 0 ? columns : undefined}
                         dataSource={data1.length > 0 ? data3 : undefined}
                         pagination={false}
-                        bordered
-                    /> :
-                    <Text type="secondary">Нет данных</Text>}
-            </Col>
-            <Col span={11} push={2}>
-                <Table
-                    title={() => <Text style={{ fontSize: '14pt' }}>Оценка валидационного статуса</Text>}
-                    showHeader={false}
-                    columns={data2.length > 0 ? columns : undefined}
-                    dataSource={data2.length > 0 ? data4 : undefined}
-                    pagination={false}
-                    bordered
-                />
-            </Col>
-        </Row>
+                    />
+                </Col>
+                <Col span={11} push={2}>
+                    <Table
+                        title={() => <Text style={{ fontSize: '14pt' }}>Оценка валидационного статуса</Text>}
+                        showHeader={false}
+                        columns={data2.length > 0 ? columns : undefined}
+                        dataSource={data2.length > 0 ? data4 : undefined}
+                        pagination={false}
+                    />
+                </Col>
+            </Row>
+        </Card>
     )
 }

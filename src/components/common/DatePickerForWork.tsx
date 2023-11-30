@@ -6,7 +6,6 @@ import { AppDispatch } from '../../redux/store'
 import { getCurrentPremData, updateReestrDatePrem } from '../../redux/Reducers/premisesReducer'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
-import { datePickerLocale } from './datePickerLocale'
 import { getCurrentEquipData, updateReestrDateEquip } from '../../redux/Reducers/equipmentReducer'
 import { getCurrentSysData, updateReestrDateSys } from '../../redux/Reducers/systemsReducer'
 import { getCurrentProcData, updateReestrDateProc } from '../../redux/Reducers/processesReducer'
@@ -97,7 +96,7 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({id, objectId, date
                         cancelText="Нет"
                         open={isPopconfirmVisible}
                         >
-                        <DatePicker locale={datePickerLocale} style={{ borderColor: '#87d068', accentColor: 'green', color: 'red' }} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} value={dayjs(date, dateFormat)} onChange={(date) => handleDateChange(date)}  /> 
+                        <DatePicker style={{ borderColor: '#87d068', accentColor: 'green', color: 'red' }} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} value={dayjs(date, dateFormat)} onChange={(date) => handleDateChange(date)}  /> 
                     </Popconfirm>
         }
     } else {
@@ -110,7 +109,7 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({id, objectId, date
                     cancelText="Нет"
                     open={isPopconfirmVisible}
                     >
-                    <DatePicker locale={datePickerLocale} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} onChange={(date) => handleDateChange(date)}  />
+                    <DatePicker size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} onChange={(date) => handleDateChange(date)}  />
                 </Popconfirm>
     }
     return <></>
