@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { EyeOutlined} from '@ant-design/icons';
 import { AppDispatch } from "../../../../redux/store";
 import { DataType, deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/premisesReducer";
+import Title from "antd/es/typography/Title";
 const {Text} = Typography
 
 type TitleImagePropsType = {
@@ -55,7 +56,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({premObject, id}) => {
         <>
             {contextHolder}
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
-                <Text strong editable={{text: premObject.name, onChange: (text: string) => handleUpdateName(text)}} style={{color: '#167afe', fontSize: '12pt', display: 'block', marginBottom: '20px'}}>{ premObject.class==='Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name }</Text>
+                <Title editable={{text: premObject.name, onChange: (text: string) => handleUpdateName(text)}} style={{marginBottom: '20px'}} level={4}>{ premObject.class==='Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name }</Title>
                 <Image
                     src={premObject.foto ? "http://10.85.10.212/ov/" + premObject.foto : empty}
                     preview = { premObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }

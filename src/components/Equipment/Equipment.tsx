@@ -232,7 +232,7 @@ export const Equipment: React.FC = () => {
     <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
       <Row>
         <Col push={1} xs={4} sm={22} md={22} lg={22} xl={22} xxl={22} >
-          <Card>
+          {/* <Card> */}
             <Table
               columns={columns}
               dataSource={data}
@@ -241,7 +241,7 @@ export const Equipment: React.FC = () => {
               title={() => <Text style={{ fontSize: '14pt' }}>Оборудование (всего: {equipData.length})</Text>}
               size="small"
             />
-          </Card>
+          {/* </Card> */}
         </Col>
       </Row>
     </Content>

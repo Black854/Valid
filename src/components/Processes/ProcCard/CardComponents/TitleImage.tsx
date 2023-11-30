@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom"
 import { EyeOutlined} from '@ant-design/icons'
 import { AppDispatch } from "../../../../redux/store"
 import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/processesReducer"
+import Title from "antd/es/typography/Title"
 const {Text} = Typography
 
 interface DataType {
@@ -74,8 +75,8 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({procObject, id}) => {
         <>  
             {contextHolder}
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
-                <Text strong editable={{onChange: (text: string) => handleUpdateName(text)}} style={{color: '#167afe', fontSize: '12pt', display: 'block', marginBottom: '20px'}}>{procObject.name}</Text>
-                <Image
+                <Title editable={{ onChange: (text: string) => handleUpdateName(text) }} style={{ marginBottom: '20px' }} level={4}>{procObject.name}</Title>
+               <Image
                     src={procObject.foto ? "http://10.85.10.212/ov/" + procObject.foto : empty}
                     preview = { procObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }
                     style={{

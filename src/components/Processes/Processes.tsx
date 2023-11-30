@@ -1,15 +1,19 @@
-import { Typography, Col, Image, Row, Spin, Table } from "antd"
+import { Typography, Col, Image, Row, Spin, Table, Button, Input, Space } from "antd"
 import { Content } from "antd/es/layout/layout"
-import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
 import { EyeOutlined } from '@ant-design/icons'
 import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
-import React from "react"
+import React, { useRef, useState } from "react"
 import { AppDispatch } from "../../redux/store"
 import { getIsLoading, getProcData } from "../../redux/Selectors/processesSelectors"
 import { getProcesses } from "../../redux/Reducers/processesReducer"
+import { SearchOutlined } from '@ant-design/icons';
+import Highlighter from 'react-highlight-words';
+import type { InputRef } from 'antd';
+import type { ColumnType, ColumnsType } from 'antd/es/table';
+import type { FilterConfirmProps } from 'antd/es/table/interface';
 
 const { Text } = Typography;
 
@@ -24,6 +28,8 @@ interface DataType {
     ar: string
     foto: string
 }
+
+type DataIndex = keyof DataType;
 
 export const Processes: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
@@ -46,6 +52,79 @@ export const Processes: React.FC = () => {
         ar: e.ar,
         foto: e.foto
     }))
+
+    const [searchText, setSearchText] = useState('');
+    const [searchedColumn, setSearchedColumn] = useState('');
+    const searchInput = useRef<InputRef>(null);
+
+    const handleSearch = (
+        selectedKeys: string[],
+        confirm: (param?: FilterConfirmProps) => void,
+        dataIndex: DataIndex,
+    ) => {
+        confirm();
+        setSearchText(selectedKeys[0]);
+        setSearchedColumn(dataIndex);
+    };
+
+    const handleReset = (clearFilters: () => void) => {
+        clearFilters();
+        setSearchText('');
+    };
+
+    const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+            <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+                <Input
+                    ref={searchInput}
+                    placeholder={`Введите наименование объекта`}
+                    value={selectedKeys[0]}
+                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+                    style={{ marginBottom: 8, display: 'block' }}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Найти
+                    </Button>
+                    <Button
+                        onClick={() => { clearFilters && handleReset(clearFilters); confirm({ closeDropdown: false }) }}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Сброс
+                    </Button>
+                    <Button
+                        size="small"
+                        onClick={() => {
+                            close();
+                        }}
+                    >
+                        Закрыть
+                    </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: (filtered: boolean) => (
+            <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
+        ),
+        onFilter: (value, record) =>
+            record[dataIndex]
+                .toString()
+                .toLowerCase()
+                .includes((value as string).toLowerCase()),
+        onFilterDropdownOpenChange: (visible) => {
+            if (visible) {
+                setTimeout(() => searchInput.current?.select(), 100);
+            }
+        }
+    })
 
     const columns: ColumnsType<DataType> = [
         {
@@ -70,10 +149,20 @@ export const Processes: React.FC = () => {
                         />
                     </Col>
                     <Col span={23}>
-                        <NavLink to={record.id} style={{ fontSize: '12pt', marginLeft: '10px' }}>{text}</NavLink>
+                        <NavLink to={record.id} style={{ fontSize: '12pt', marginLeft: '10px' }}>
+                            <Highlighter
+                                highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                                searchWords={[searchText]}
+                                autoEscape
+                                textToHighlight={text ?
+                                    text.toString()
+                                    : ''}
+                            />
+                        </NavLink>
                     </Col>
                 </Row>),
-            sorter: (a, b) => a.name.localeCompare(b.name)
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            ...getColumnSearchProps('name'),
         },
         {
             title: <Text strong style={{ fontSize: '12pt' }}>Подразделение</Text>,
@@ -118,7 +207,7 @@ export const Processes: React.FC = () => {
                         dataSource={data}
                         bordered={false}
                         pagination={false}
-                        title={() => <Text style={{ fontSize: '14pt' }}>Оборудование (всего: {procData.length})</Text>}
+                        title={() => <Text style={{ fontSize: '14pt' }}>Процессы (всего: {procData.length})</Text>}
                         size="small"
                         style={{ marginBottom: '30px' }}
                     />

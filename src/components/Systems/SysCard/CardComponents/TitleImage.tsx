@@ -3,10 +3,11 @@ import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import empty from './../../../../img/empty.png'
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { EyeOutlined} from '@ant-design/icons';
+import { EyeOutlined } from '@ant-design/icons';
 import { AppDispatch } from "../../../../redux/store";
 import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/systemsReducer";
-const {Text} = Typography
+import Title from "antd/es/typography/Title";
+const { Text } = Typography
 
 interface DataType {
     ar: string
@@ -31,17 +32,17 @@ type TitleImagePropsType = {
     id: string
 }
 
-export const TitleImage: React.FC<TitleImagePropsType> = ({sysObject, id}) => {
+export const TitleImage: React.FC<TitleImagePropsType> = ({ sysObject, id }) => {
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
-    
+
     const error = (fileName: string) => {
         messageApi.open({
-          type: 'error',
-          content: `Расширение файла ${fileName} не соответствует разрешенным`,
+            type: 'error',
+            content: `Расширение файла ${fileName} не соответствует разрешенным`,
         })
     }
-    
+
     const onSelectPhoto = (e: any) => {
         if (e.currentTarget.files.length > 0) {
             const fileName = e.currentTarget.files[0].name
@@ -71,13 +72,13 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({sysObject, id}) => {
     let fileInputRef: any = null
 
     return (
-        <>  
+        <>
             {contextHolder}
-            <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
-                <Text strong editable={{onChange: (text: string) => handleUpdateName(text)}} style={{color: '#167afe', fontSize: '12pt', display: 'block', marginBottom: '20px'}}>{sysObject.name}</Text>
+            <div style={{ width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px' }}>
+                <Title editable={{ onChange: (text: string) => handleUpdateName(text) }} style={{ marginBottom: '20px' }} level={4}>{sysObject.name}</Title>
                 <Image
                     src={sysObject.foto ? "http://10.85.10.212/ov/" + sysObject.foto : empty}
-                    preview = { sysObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }
+                    preview={sysObject.foto ? { mask: <><EyeOutlined style={{ fontSize: '12pt' }} /><Text style={{ color: 'white', marginLeft: '10px' }}>Просмотр</Text></> } : false}
                     style={{
                         maxWidth: '100%',
                         maxHeight: '45vh',
@@ -87,22 +88,22 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({sysObject, id}) => {
                     rootClassName="titleImage"
                 />
             </div>
-            { !sysObject.foto && <>
-                <input id="uploadPhoto" accept="image/jpeg, image/png" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
-                <Button htmlType="submit" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
-                </>
+            {!sysObject.foto && <>
+                <input id="uploadPhoto" accept="image/jpeg, image/png" type="file" style={{ display: 'none' }} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
+                <Button htmlType="submit" icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
+            </>
             }
-            { sysObject.foto && id && <>
-                    <Popconfirm
-                        title='Подтвердите удаление'
-                        description='Вы уверены, что хотите удалить фотографию?'
-                        okText='Да'
-                        cancelText='Нет'
-                        onConfirm={handleDeleteFoto}
-                    >
-                        <Button icon={<DeleteOutlined style={{fontSize: '12pt'}} />} danger>Удалить фото</Button>
-                    </Popconfirm>
-                </>  }
+            {sysObject.foto && id && <>
+                <Popconfirm
+                    title='Подтвердите удаление'
+                    description='Вы уверены, что хотите удалить фотографию?'
+                    okText='Да'
+                    cancelText='Нет'
+                    onConfirm={handleDeleteFoto}
+                >
+                    <Button icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} danger>Удалить фото</Button>
+                </Popconfirm>
+            </>}
         </>
     )
 }

@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux"
 import { EyeOutlined} from '@ant-design/icons'
 import { AppDispatch } from "../../../../redux/store"
 import { DataType, deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/instrumentsReducer"
+import Title from "antd/es/typography/Title"
 const {Text} = Typography
 
 type TitleImagePropsType = {
@@ -55,7 +56,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({instObject, id}) => {
         <>  
             {contextHolder}
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
-                <Text strong editable={{onChange: (text: string) => handleUpdateName(text)}} style={{color: '#167afe', fontSize: '12pt', display: 'block', marginBottom: '20px'}}>{instObject.name}</Text>
+                <Title editable={{onChange: (text: string) => handleUpdateName(text)}} style={{marginBottom: '20px'}} level={4}>{instObject.name }</Title>
                 <Image
                     src={instObject.foto ? "http://10.85.10.212/ov/" + instObject.foto : empty}
                     preview = { instObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }
