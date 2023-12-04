@@ -227,7 +227,7 @@ export const Reports: React.FC = ({ }) => {
     ]
 
     return (
-      <Row style={{ marginTop: '10px' }}>
+      <Row style={{ marginTop: '10px', marginBottom: '80px' }}>
         <Col span={4}>
           {contextHolder}
           <Menu

@@ -298,7 +298,8 @@ export const Signal: React.FC = () => {
         },
         {
             title: <Text strong style={{fontSize: '12pt'}}>Информация</Text>,
-            render: () => { return <Text>Здесь будут планы работ</Text> },
+            dataIndex: 'type1',
+            render: (type1, record) => { return <Text>Здесь будут планы работ</Text> },
             width: '10%',
             align: 'center'
         },

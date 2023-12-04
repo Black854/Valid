@@ -48,15 +48,14 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
                 return table
             }
         }
-
         return pathname
     }
 
     const items: MenuProps['items'] = [
         {
             key: '1', label: 'Квалификация', children: [
-                { key: '/work', label: <Link to='/work'>Рабочий лист</Link> },
-                { key: '/monitoring', label: <Link to='/monitoring'>Мониторинг</Link> },
+                { key: '/work', label: <Link to='/work'>Мои задачи</Link> },
+                { key: '/monitoring', label: <Link to='/monitoring'>Все задачи</Link> },
                 { key: '/signal', label: <Link to='/signal'>Сигнальный лист</Link> },
                 { key: '/premises', label: <Link to='/premises'>Помещения</Link> },
                 { key: '/equipment', label: <NavLink to='/equipment'>Оборудование</NavLink> },

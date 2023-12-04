@@ -57,8 +57,8 @@ export const updateVMPPlansData = (daysCount: number, month: number, recordId: s
     dispatch(vmpActions.setObjectVMPPlansData(data.items))
 }
 
-export const createVMPPlansData = (daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
-    let data = await vmpAPI.updateVMPPlansData(daysCount, month, recordId, sp, objectId, objectType)
+export const createVMPPlansData = (objectName: string, objectId: string, sp: string, typeval: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
+    let data = await vmpAPI.createVMPPlansData(objectName, objectId, sp, typeval, objectType)
     dispatch(vmpActions.setObjectVMPPlansData(data.items))
 }
 

@@ -15,6 +15,7 @@ import { getIsLoading, getIsReestrDataLoading, getProcById, getProcData, getProc
 import { getProcesses, getReestrData, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/processesReducer"
 import { ProcDescriptions } from "./CardComponents/ProcDescription"
 import { ProcLabel } from "./CardComponents/ProcLabel"
+import { CardPlans } from "../../common/CardPlans"
 const { Text } = Typography
 
 export const ProcCard = () => {
@@ -146,7 +147,12 @@ export const ProcCard = () => {
               children: <PhotosBlock id={procObject.id} />,
             },
             {
-              key: '5',
+                key: '5',
+                label: 'График работ',
+                children: <CardPlans objectName={procObject.name} objectId={procObject.id} sp={procObject.sp} objectType="processes" />,
+            },
+            {
+              key: '6',
               label: 'Статусная этикетка',
               children: <ProcLabel procObject={procObject} reestrData={reestrData} />,
               disabled: procObject.ar === '0' || procObject.ar === '12' || procObject.ar === '15' || procObject.date === null ? true : false

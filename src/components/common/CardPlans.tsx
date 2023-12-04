@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react"
-import { AppDispatch } from "../../../../redux/store"
+import { AppDispatch } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
-import { getObjectVMPPlansData } from "../../../../redux/Reducers/vmpReducer"
-import { getObjectVMPPlansDataSelector } from "../../../../redux/Selectors/vmpSelectors"
+import { createVMPPlansData, getObjectVMPPlansData } from "../../redux/Reducers/vmpReducer"
+import { getObjectVMPPlansDataSelector } from "../../redux/Selectors/vmpSelectors"
 import { SaveOutlined } from '@ant-design/icons'
 import { Button, Card, Col, InputNumber, Row, Table, Typography } from "antd"
-import { CardPlansHelper } from "../../../common/CardPlansHelper"
+import { CardPlansHelper } from "./CardPlansHelper"
 
 const { Text } = Typography
 
 type CardPlansType = {
     objectId: string
+    objectName: string
     sp: string
     objectType: 'premises' | 'equipment' | 'systems' | 'processes'
 }
 
-export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType }) => {
+export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType, objectName }) => {
     const dispatch: AppDispatch = useDispatch()
     useEffect(() => {
         dispatch(getObjectVMPPlansData(objectId, sp, objectType))
@@ -162,7 +163,7 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType })
     ]
 
     const handleCreateObjectPlansData = (typeval: '1' | '3') => {
-        // dispatch(create...)
+        dispatch(createVMPPlansData(objectName, objectId, sp, typeval, objectType))
     }
 
     return (
@@ -177,7 +178,7 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType })
                         pagination={false}
                         size="small"
                     />
-                    {data1.length === 0 && <Button type="default" onClick={() => handleCreateObjectPlansData('1')} style={{marginTop: '20px'}}>Добавить данные</Button>}
+                    {data1.length === 0 && <Button type="default" onClick={() => handleCreateObjectPlansData('1')} style={{ marginTop: '20px' }}>Добавить данные</Button>}
                 </Col>
                 <Col span={11} push={2}>
                     <Table
@@ -188,7 +189,7 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType })
                         pagination={false}
                         size="small"
                     />
-                    {data2.length === 0 && <Button type="default" onClick={() => handleCreateObjectPlansData('3')} style={{marginTop: '20px'}}>Добавить данные</Button>}
+                    {data2.length === 0 && <Button type="default" onClick={() => handleCreateObjectPlansData('3')} style={{ marginTop: '20px' }}>Добавить данные</Button>}
                 </Col>
             </Row>
         </Card>

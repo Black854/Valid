@@ -17,7 +17,7 @@ import { getPremises, getReestrData, getTechnicalInfo, updateClass, updateDepart
 import { CleanPremList } from "./CardComponents/CleanPremList"
 import { CleanPremGroups } from "./CardComponents/CleanPremGroups"
 import { PremLabel } from "./CardComponents/PremLabel"
-import { CardPlans } from "./CardComponents/CardPlans"
+import { CardPlans } from "../../common/CardPlans"
 const { Text } = Typography
 
 export const PremCard = () => {
@@ -254,7 +254,7 @@ export const PremCard = () => {
             {
                 key: '5',
                 label: 'График работ',
-                children: <CardPlans objectId={premObject.id} sp={premObject.sp} objectType="premises" />,
+                children: <CardPlans objectName={premObject.class==='Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name} objectId={premObject.id} sp={premObject.sp} objectType="premises" />,
             },
         ]
 

@@ -42,6 +42,8 @@ export type EquipReestrType = {
     typeval: string
     vo: string
     vp: string
+    type1?: any
+    type2?: any
 }
 
 let initialState = {

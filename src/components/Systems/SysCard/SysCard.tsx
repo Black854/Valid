@@ -15,6 +15,7 @@ import { getIsLoading, getIsReestrDataLoading, getSysById, getSysData, getSysRee
 import { getReestrData, getSystems, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/systemsReducer"
 import { SysDescriptions } from "./CardComponents/SysDescription"
 import { SysLabel } from "./CardComponents/SysLabel"
+import { CardPlans } from "../../common/CardPlans"
 const { Text } = Typography
 
 export const SysCard = () => {
@@ -146,7 +147,12 @@ export const SysCard = () => {
               children: <PhotosBlock id={sysObject.id} />,
             },
             {
-              key: '5',
+                key: '5',
+                label: 'График работ',
+                children: <CardPlans objectName={sysObject.name} objectId={sysObject.id} sp={sysObject.sp} objectType="systems" />,
+            },
+            {
+              key: '6',
               label: 'Статусная этикетка',
               children: <SysLabel sysObject={sysObject} reestrData={reestrData} />,
               disabled: sysObject.ar === '0' || sysObject.ar === '12' || sysObject.ar === '15' || sysObject.date === null ? true : false

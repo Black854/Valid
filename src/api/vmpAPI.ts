@@ -37,4 +37,20 @@ export const vmpAPI = {
             : null
         })
     },
+    createVMPPlansData(objectName: string, objectId: string, sp: string, typeval: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes') {
+        const requestData = {
+            objectName,
+            objectId,
+            sp,
+            typeval,
+            objectType
+        }
+        return instance.post(`createVMPPlansData.php`, requestData, {}).then(response => {
+            return response.data ?
+                vmpAPI.getObjectVMPPlansData(objectId, sp, objectType).then(response => {
+                    return response
+                })
+            : null
+        })
+    },
 }
