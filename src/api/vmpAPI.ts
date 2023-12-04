@@ -22,4 +22,19 @@ export const vmpAPI = {
             return response.data
         })
     },
+    updateVMPPlansData(daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes') {
+        const requestData = {
+            daysCount,
+            month,
+            recordId,
+            sp
+        }
+        return instance.post(`updateVMPPlansData.php`, requestData, {}).then(response => {
+            return response.data ?
+                vmpAPI.getObjectVMPPlansData(objectId, sp, objectType).then(response => {
+                    return response
+                })
+            : null
+        })
+    },
 }

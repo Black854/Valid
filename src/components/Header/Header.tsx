@@ -79,7 +79,9 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
         <Header style={{ margin: '0px', padding: '0px' }} >
             <Row>
                 <Col style={{ textAlign: 'center' }} xs={4} sm={3} md={2} lg={2} xl={2} xxl={1}>
-                    <Image src={logo} style={{ width: '40px', height: '40px', display: 'inline' }} preview={false} />
+                    <Link to="/work">
+                        <Image src={logo} style={{ width: '40px', height: '40px', display: 'inline' }} preview={false} />
+                    </Link>
                 </Col>
                 <Col xs={10} sm={15} md={18} lg={19} xl={19} xxl={21}>
                     <Menu

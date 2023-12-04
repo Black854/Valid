@@ -161,6 +161,10 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType })
         },
     ]
 
+    const handleCreateObjectPlansData = (typeval: '1' | '3') => {
+        // dispatch(create...)
+    }
+
     return (
         <Card style={{ marginBottom: '100px', padding: '0px' }} size="small">
             <Row>
@@ -173,6 +177,7 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType })
                         pagination={false}
                         size="small"
                     />
+                    {data1.length === 0 && <Button type="default" onClick={() => handleCreateObjectPlansData('1')} style={{marginTop: '20px'}}>Добавить данные</Button>}
                 </Col>
                 <Col span={11} push={2}>
                     <Table
@@ -183,6 +188,7 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType })
                         pagination={false}
                         size="small"
                     />
+                    {data2.length === 0 && <Button type="default" onClick={() => handleCreateObjectPlansData('3')} style={{marginTop: '20px'}}>Добавить данные</Button>}
                 </Col>
             </Row>
         </Card>

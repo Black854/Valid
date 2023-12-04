@@ -253,7 +253,7 @@ export const PremCard = () => {
             },
             {
                 key: '5',
-                label: 'Планирование работ',
+                label: 'График работ',
                 children: <CardPlans objectId={premObject.id} sp={premObject.sp} objectType="premises" />,
             },
         ]

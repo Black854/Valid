@@ -94,7 +94,7 @@ export const Equipment: React.FC = () => {
             Найти
           </Button>
           <Button
-            onClick={() => {clearFilters && handleReset(clearFilters); confirm({ closeDropdown: false })}}
+            onClick={() => { clearFilters && handleReset(clearFilters); confirm({ closeDropdown: false }) }}
             size="small"
             style={{ width: 90 }}
           >
@@ -158,7 +158,7 @@ export const Equipment: React.FC = () => {
                   text.toString()
                   : ''}
               />
-              </NavLink>
+            </NavLink>
           </Col>
         </Row>),
       sorter: (a, b) => a.name.localeCompare(b.name),
@@ -232,16 +232,14 @@ export const Equipment: React.FC = () => {
     <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
       <Row>
         <Col push={1} xs={4} sm={22} md={22} lg={22} xl={22} xxl={22} >
-          {/* <Card> */}
-            <Table
-              columns={columns}
-              dataSource={data}
-              bordered={false}
-              pagination={{ defaultPageSize: 20 }}
-              title={() => <Text style={{ fontSize: '14pt' }}>Оборудование (всего: {equipData.length})</Text>}
-              size="small"
-            />
-          {/* </Card> */}
+          <Table
+            columns={columns}
+            dataSource={data}
+            bordered={false}
+            pagination={{ defaultPageSize: 20 }}
+            title={() => <Text style={{ fontSize: '14pt' }}>Оборудование (всего: {equipData.length})</Text>}
+            size="small"
+          />
         </Col>
       </Row>
     </Content>
