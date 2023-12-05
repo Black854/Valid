@@ -1,6 +1,7 @@
 import { ThunkAction } from "redux-thunk"
 import { equipmentAPI } from "../../api/equipmentAPI"
 import { AppStateType, InferActionsTypes } from "../store"
+import { VMPDataTypeForPlansComponent } from "./vmpReducer"
 
 export type DataType = {
     id: string
@@ -42,8 +43,8 @@ export type EquipReestrType = {
     typeval: string
     vo: string
     vp: string
-    type1?: any
-    type2?: any
+    type1?: VMPDataTypeForPlansComponent
+    type2?: VMPDataTypeForPlansComponent
 }
 
 let initialState = {

@@ -1,6 +1,7 @@
 import { ThunkAction } from "redux-thunk"
 import { systemsAPI } from "../../api/systemsAPI"
 import { AppStateType, InferActionsTypes } from "../store"
+import { VMPDataTypeForPlansComponent } from "./vmpReducer"
 
 export type DataType = {
     id: string
@@ -42,6 +43,8 @@ export type SysReestrType = {
     typeval: string
     vo: string
     vp: string
+    type1?: VMPDataTypeForPlansComponent
+    type2?: VMPDataTypeForPlansComponent
 }
 
 let initialState = {

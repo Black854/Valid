@@ -1,6 +1,7 @@
 import { ThunkAction } from "redux-thunk"
 import { premisesAPI } from "../../api/premisesAPI"
 import { AppStateType, InferActionsTypes } from "../store"
+import { VMPDataTypeForPlansComponent } from "./vmpReducer"
 
 export type DataType = {
     mode: string
@@ -38,6 +39,8 @@ export type PremReestrType = {
     typeval: string
     vo: string
     vp: string
+    type1?: VMPDataTypeForPlansComponent
+    type2?: VMPDataTypeForPlansComponent
 }
 
 type TechnicalInfoType = {

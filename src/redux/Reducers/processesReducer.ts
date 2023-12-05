@@ -1,6 +1,7 @@
 import { ThunkAction } from "redux-thunk"
 import { AppStateType, InferActionsTypes } from "../store"
 import { processesAPI } from "../../api/processesAPI"
+import { VMPDataTypeForPlansComponent } from "./vmpReducer"
 
 export type DataType = {
     id: string
@@ -42,6 +43,8 @@ export type ProcReestrType = {
     typeval: string
     vo: string
     vp: string
+    type1?: VMPDataTypeForPlansComponent
+    type2?: VMPDataTypeForPlansComponent
 }
 
 let initialState = {

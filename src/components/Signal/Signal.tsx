@@ -3,7 +3,7 @@ import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
 import { getPremData, getIsLoading, getCurrentPremDataSelector } from "../../redux/Selectors/premisesSelectors"
-import { EyeOutlined} from '@ant-design/icons'
+import { EyeOutlined } from '@ant-design/icons'
 import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
@@ -19,9 +19,10 @@ import { getCurrentProcData, getProcesses } from "../../redux/Reducers/processes
 import { getCurrentSysDataSelector, getSysData } from "../../redux/Selectors/systemsSelectors"
 import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/processesSelectors"
 import { addMonths, format, subMonths } from "date-fns"
+import { PlansComponent } from "./PlansComponent"
 
 const { Text } = Typography
-  
+
 export const Signal: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
     useEffect(() => {
@@ -49,7 +50,7 @@ export const Signal: React.FC = () => {
     const premNewData = premData.map(e => ({
         objectType: 'premises' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
-        key: 'prem'+e.id,
+        key: 'prem' + e.id,
         sp2: e.sp2,
         name: e.name,
         nomer: e.nomer,
@@ -71,7 +72,7 @@ export const Signal: React.FC = () => {
         else if (ar === '13') { monthCount = 7 }
         else if (ar === '14') { monthCount = 61 }
         else if (ar === '16') { monthCount = 61 }
-        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15')  {
+        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
 
@@ -85,12 +86,12 @@ export const Signal: React.FC = () => {
         } else if ((e.date === null || e.date === '') && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             return e.date === null || e.date === ''
         }
-    } )
-    
+    })
+
     const equipNewData = equipData.map(e => ({
         objectType: 'equipment' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
-        key: 'equip'+e.id,
+        key: 'equip' + e.id,
         sp2: e.sp2,
         name: e.name,
         nomer: e.nomer,
@@ -112,7 +113,7 @@ export const Signal: React.FC = () => {
         else if (ar === '13') { monthCount = 7 }
         else if (ar === '14') { monthCount = 61 }
         else if (ar === '16') { monthCount = 61 }
-        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15')  {
+        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
 
@@ -126,12 +127,12 @@ export const Signal: React.FC = () => {
         } else if ((e.date === null || e.date === '') && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             return e.date === null || e.date === ''
         }
-    } )
+    })
 
     const sysNewData = sysData.map(e => ({
         objectType: 'systems' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
-        key: 'sys'+e.id,
+        key: 'sys' + e.id,
         sp2: e.sp2,
         name: e.name,
         nomer: 'none',
@@ -153,7 +154,7 @@ export const Signal: React.FC = () => {
         else if (ar === '13') { monthCount = 7 }
         else if (ar === '14') { monthCount = 61 }
         else if (ar === '16') { monthCount = 61 }
-        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15')  {
+        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
 
@@ -167,12 +168,12 @@ export const Signal: React.FC = () => {
         } else if ((e.date === null || e.date === '') && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             return e.date === null || e.date === ''
         }
-    } )
+    })
 
     const procNewData = procData.map(e => ({
         objectType: 'processes' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
-        key: 'proc'+e.id,
+        key: 'proc' + e.id,
         sp2: e.sp2,
         name: e.name,
         nomer: 'none',
@@ -194,7 +195,7 @@ export const Signal: React.FC = () => {
         else if (ar === '13') { monthCount = 7 }
         else if (ar === '14') { monthCount = 61 }
         else if (ar === '16') { monthCount = 61 }
-        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15')  {
+        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
 
@@ -208,7 +209,7 @@ export const Signal: React.FC = () => {
         } else if ((e.date === null || e.date === '') && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             return e.date === null || e.date === ''
         }
-    } )
+    })
 
     const myPremDataIdArray = premNewData.map(e => e.id)
     const myEquipDataIdArray = equipNewData.map(e => e.id)
@@ -232,36 +233,37 @@ export const Signal: React.FC = () => {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: <Text strong style={{fontSize: '12pt'}}>№</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>№</Text>,
             dataIndex: 'index',
             render: (text, record, index) => index + 1,
             align: 'center'
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Наименование</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Наименование</Text>,
             dataIndex: 'name',
             render: (text, record) => (
-            <Row>
-                <Col span={1}>
-                    <Image style={{
-                        maxWidth: '30px',
-                        maxHeight: '30px',
-                        borderRadius: '3px',
-                        overflow: 'hidden'}} 
-                        src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
-                        preview = {{mask: <EyeOutlined style={{fontSize: '12pt'}} />}}
-                    />
-                </Col>
-                <Col span={23}>
-                    <NavLink to={'/' + record.objectType + '/' + record.id} style={{fontSize: '12pt', marginLeft: '10px'}}>
-                        {record.class==='Складские' ? `Помещение ${record.nomer} «${text}»` : text}
-                    </NavLink>
-                </Col>  
-            </Row>),
+                <Row>
+                    <Col span={1}>
+                        <Image style={{
+                            maxWidth: '30px',
+                            maxHeight: '30px',
+                            borderRadius: '3px',
+                            overflow: 'hidden'
+                        }}
+                            src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
+                            preview={{ mask: <EyeOutlined style={{ fontSize: '12pt' }} /> }}
+                        />
+                    </Col>
+                    <Col span={23}>
+                        <NavLink to={'/' + record.objectType + '/' + record.id} style={{ fontSize: '12pt', marginLeft: '10px' }}>
+                            {record.class === 'Складские' ? `Помещение ${record.nomer} «${text}»` : text}
+                        </NavLink>
+                    </Col>
+                </Row>),
             sorter: (a, b) => a.name.localeCompare(b.name)
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Подразделение</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Подразделение</Text>,
             dataIndex: 'sp2',
             filters: [
                 { text: 'МБЛ', value: 'МБЛ' },
@@ -279,34 +281,34 @@ export const Signal: React.FC = () => {
             align: 'center',
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Статус</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Статус</Text>,
             dataIndex: 'fio',
-            render: (fio, record) => { return <>
-                {fio === '' ?  <Text type='warning'>Не в работе</Text> :
-                                <Text>{`Выполняет ${fio}`}</Text>}
-                {fio !== '' && <ProgressHelper record={record} myEquipData={myEquipData} myPremData={myPremData} myProcData={myProcData} mySysData={mySysData}/>}
-            </> },
+            render: (fio, record) => {
+                return <>
+                    {fio === '' ? <Text type='warning'>Не в работе</Text> :
+                        <Text>{`Выполняет ${fio}`}</Text>}
+                    {fio !== '' && <ProgressHelper record={record} myEquipData={myEquipData} myPremData={myPremData} myProcData={myProcData} mySysData={mySysData} />}
+                </>
+            },
             width: '12%',
             align: 'center'
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Срок (до)</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Срок (до)</Text>,
             dataIndex: 'date',
             render: (date, record) => { return <RenderDateHelper date={date} record={record} /> },
             width: '10%',
             align: 'center'
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Информация</Text>,
+            title: <Text strong style={{ fontSize: '12pt',textAlign: 'center', display: 'block' }}>Информация</Text>,
             dataIndex: 'type1',
-            render: (type1, record) => { return <Text>Здесь будут планы работ</Text> },
-            width: '10%',
-            align: 'center'
+            render: (type1, record) => { return <PlansComponent record={record} myEquipData={myEquipData} myPremData={myPremData} myProcData={myProcData} mySysData={mySysData} /> },
+            width: '13%',
         },
-        
     ]
-    return (isLoading) ? <Spin size="large" style={{width: '60px', height: '60px', margin: '30px auto 10px auto'}} /> :
-        <Content style={{padding: '20px 0',  marginBottom: '60px' }}>
+    return (isLoading) ? <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} /> :
+        <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
             {contextHolder}
             <Row>
                 <Col span={22} push={1}>
@@ -315,7 +317,7 @@ export const Signal: React.FC = () => {
                         dataSource={data}
                         bordered
                         pagination={false}
-                        title={() => <Text style={{fontSize: '14pt'}}>Сигнальный лист (всего: {data.length})</Text>}
+                        title={() => <Text style={{ fontSize: '14pt' }}>Сигнальный лист (всего: {data.length})</Text>}
                         size="small"
                     />
                 </Col>
