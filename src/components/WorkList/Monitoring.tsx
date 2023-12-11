@@ -3,7 +3,7 @@ import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
 import { getPremData, getIsLoading, getCurrentPremDataSelector } from "../../redux/Selectors/premisesSelectors"
-import { EyeOutlined} from '@ant-design/icons'
+import { EyeOutlined } from '@ant-design/icons'
 import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
@@ -26,7 +26,7 @@ import { ProcTasks } from "./taskComponents/ProcTasks"
 import { SysTasks } from "./taskComponents/SysTasks"
 
 const { Text } = Typography
-  
+
 export const Monitoring: React.FC = () => {
     useEffect(() => {
         dispatch(getPremises())
@@ -53,12 +53,12 @@ export const Monitoring: React.FC = () => {
     // const AuthUserName = useSelector(getAuthUserNameSelector)
     const allValidators = useSelector(getAllValidatorsSelector)
 
-    const usersFilters = allValidators.map((e: AllValidatorsType) => ({ value: e.fio, text: e.fio}))
+    const usersFilters = allValidators.map((e: AllValidatorsType) => ({ value: e.fio, text: e.fio }))
 
     const premNewData = premData.map(e => ({
         objectType: 'premises' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
-        key: 'prem'+e.id,
+        key: 'prem' + e.id,
         sp2: e.sp2,
         name: e.name,
         nomer: e.nomer,
@@ -69,11 +69,11 @@ export const Monitoring: React.FC = () => {
         foto: e.foto,
         fio: e.fio
     })).filter(e => e.fio !== '')
-    
+
     const equipNewData = equipData.map(e => ({
         objectType: 'equipment' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
-        key: 'equip'+e.id,
+        key: 'equip' + e.id,
         sp2: e.sp2,
         name: e.name,
         nomer: e.nomer,
@@ -88,7 +88,7 @@ export const Monitoring: React.FC = () => {
     const sysNewData = sysData.map(e => ({
         objectType: 'systems' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
-        key: 'sys'+e.id,
+        key: 'sys' + e.id,
         sp2: e.sp2,
         name: e.name,
         nomer: 'none',
@@ -103,7 +103,7 @@ export const Monitoring: React.FC = () => {
     const procNewData = procData.map(e => ({
         objectType: 'processes' as 'equipment' | 'premises' | 'systems' | 'processes',
         id: e.id,
-        key: 'proc'+e.id,
+        key: 'proc' + e.id,
         sp2: e.sp2,
         name: e.name,
         nomer: 'none',
@@ -119,7 +119,7 @@ export const Monitoring: React.FC = () => {
     const myEquipDataIdArray = equipNewData.map(e => e.id)
     const mySysDataIdArray = sysNewData.map(e => e.id)
     const myProcDataIdArray = procNewData.map(e => e.id)
-    
+
     const myPremData = useSelector(getCurrentPremDataSelector)
     const myEquipData = useSelector(getCurrentEquipDataSelector)
     const mySysData = useSelector(getCurrentSysDataSelector)
@@ -137,43 +137,46 @@ export const Monitoring: React.FC = () => {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: <Text strong style={{fontSize: '12pt'}}>№</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>№</Text>,
             dataIndex: 'index',
             render: (text, record, index) => index + 1,
-            align: 'center'
-        },
-        {
-            title: <Text strong style={{fontSize: '12pt'}}>Наименование</Text>,
-            dataIndex: 'name',
-            render: (text, record) => (
-            <Row>
-                <Col span={1}>
-                    <Image style={{
-                        maxWidth: '30px',
-                        maxHeight: '30px',
-                        borderRadius: '3px',
-                        overflow: 'hidden'}} 
-                        src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
-                        preview = {{mask: <EyeOutlined style={{fontSize: '12pt'}} />}}
-                    />
-                </Col>
-                <Col span={23}>
-                    <NavLink to={'/' + record.objectType + '/' + record.id} style={{fontSize: '12pt', marginLeft: '10px'}}>
-                        {record.class==='Складские' ? `Помещение ${record.nomer} «${text}»` : text}
-                    </NavLink>
-                </Col>  
-            </Row>),
-            sorter: (a, b) => a.name.localeCompare(b.name)
-        },
-        {
-            title: <Text strong style={{fontSize: '12pt'}}>Прогресс</Text>,
-            render: (text, record, index) => {
-                return <ProgressHelper key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} mySysData={mySysData} myProcData={myProcData} />
-            },
             align: 'center',
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Исполнитель</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Наименование</Text>,
+            dataIndex: 'name',
+            render: (text, record) => (
+                <Row>
+                    <Col span={1}>
+                        <Image style={{
+                            maxWidth: '30px',
+                            maxHeight: '30px',
+                            borderRadius: '3px',
+                            overflow: 'hidden'
+                        }}
+                            src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
+                            preview={{ mask: <EyeOutlined style={{ fontSize: '12pt' }} /> }}
+                        />
+                    </Col>
+                    <Col span={23}>
+                        <NavLink to={'/' + record.objectType + '/' + record.id} style={{ fontSize: '12pt', marginLeft: '10px' }}>
+                            {record.class === 'Складские' ? `Помещение ${record.nomer} «${text}»` : text}
+                        </NavLink>
+                    </Col>
+                </Row>),
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            width: '50%'
+        },
+        {
+            title: <Text strong style={{ fontSize: '12pt' }}>Прогресс</Text>,
+            render: (text, record, index) => {
+                return <ProgressHelper type="mon" key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} mySysData={mySysData} myProcData={myProcData} />
+            },
+            align: 'center',
+            width: '10%'
+        },
+        {
+            title: <Text strong style={{ fontSize: '12pt' }}>Исполнитель</Text>,
             dataIndex: 'fio',
             render: (fio) => {
                 return <Text>{fio}</Text>
@@ -184,7 +187,7 @@ export const Monitoring: React.FC = () => {
             sorter: (a, b) => a.fio.localeCompare(b.fio)
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Подразделение</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Подразделение</Text>,
             dataIndex: 'sp2',
             filters: [
                 { text: 'МБЛ', value: 'МБЛ' },
@@ -202,15 +205,15 @@ export const Monitoring: React.FC = () => {
             align: 'center',
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Дата (до)</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Дата (до)</Text>,
             dataIndex: 'date',
             render: (date, record) => { return <RenderDateHelper date={date} record={record} /> },
             width: '10%',
             align: 'center'
         },
     ]
-    return (isLoading) ? <Spin size="large" style={{width: '60px', height: '60px', margin: '30px auto 10px auto'}} /> :
-        <Content style={{padding: '20px 0',  marginBottom: '60px' }}>
+    return (isLoading) ? <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} /> :
+        <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
             {contextHolder}
             <Row>
                 <Col span={22} push={1}>
@@ -218,17 +221,17 @@ export const Monitoring: React.FC = () => {
                         columns={columns}
                         expandable={{
                             expandedRowRender: (rec) => {
-                                return rec.objectType === 'premises' ? <PremTasks myPremData={myPremData} error={error} rec={rec} myPremDataIdArray={myPremDataIdArray}/> :
-                                rec.objectType === 'equipment' ? <EquipTasks myEquipData={myEquipData} error={error} rec={rec} myEquipDataIdArray={myEquipDataIdArray}/> :
-                                rec.objectType === 'systems' ? <SysTasks mySysData={mySysData} error={error} rec={rec} mySysDataIdArray={mySysDataIdArray}/> :
-                                rec.objectType === 'processes' ? <ProcTasks myProcData={myProcData} error={error} rec={rec} myProcDataIdArray={myProcDataIdArray}/> :
-                                null
+                                return rec.objectType === 'premises' ? <PremTasks myPremData={myPremData} error={error} rec={rec} myPremDataIdArray={myPremDataIdArray} /> :
+                                    rec.objectType === 'equipment' ? <EquipTasks myEquipData={myEquipData} error={error} rec={rec} myEquipDataIdArray={myEquipDataIdArray} /> :
+                                        rec.objectType === 'systems' ? <SysTasks mySysData={mySysData} error={error} rec={rec} mySysDataIdArray={mySysDataIdArray} /> :
+                                            rec.objectType === 'processes' ? <ProcTasks myProcData={myProcData} error={error} rec={rec} myProcDataIdArray={myProcDataIdArray} /> :
+                                                null
                             }
                         }}
                         dataSource={data}
                         bordered={false}
                         pagination={false}
-                        title={() => <Text style={{fontSize: '14pt'}}>Все задачи (всего: {data.length})</Text>}
+                        title={() => <Text style={{ fontSize: '14pt' }}>Все задачи (всего: {data.length})</Text>}
                         size="small"
                     />
                 </Col>

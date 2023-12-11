@@ -287,7 +287,7 @@ export const Signal: React.FC = () => {
                 return <>
                     {fio === '' ? <Text type='warning'>Не в работе</Text> :
                         <Text>{`Выполняет ${fio}`}</Text>}
-                    {fio !== '' && <ProgressHelper record={record} myEquipData={myEquipData} myPremData={myPremData} myProcData={myProcData} mySysData={mySysData} />}
+                    {fio !== '' && <ProgressHelper type="work" record={record} myEquipData={myEquipData} myPremData={myPremData} myProcData={myProcData} mySysData={mySysData} />}
                 </>
             },
             width: '12%',

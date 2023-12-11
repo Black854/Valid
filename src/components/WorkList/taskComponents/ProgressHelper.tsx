@@ -3,22 +3,41 @@ import { PremReestrType } from "../../../redux/Reducers/premisesReducer"
 import { EquipReestrType } from "../../../redux/Reducers/equipmentReducer"
 import { SysReestrType } from "../../../redux/Reducers/systemsReducer"
 import { ProcReestrType } from "../../../redux/Reducers/processesReducer"
+import { AppDispatch } from "../../../redux/store"
+import { useDispatch } from "react-redux"
+import { setCancelTask, setSuccessTask } from "../../../redux/Reducers/workReducer"
+
+type RecordType = {
+    objectType: "equipment" | "premises" | "systems" | "processes"
+    id: string
+    key: string
+    sp2: string
+    name: string
+    nomer: string
+    class: string
+    mode: string
+    date: string
+    ar: string
+    foto: string
+    fio: string
+}
 
 type ProgresssHelper = {
-    record: any
+    record: RecordType
     myPremData: PremReestrType[]
     myEquipData: EquipReestrType[]
     mySysData: SysReestrType[]
     myProcData: ProcReestrType[]
+    type: 'work' | 'mon'
 }
 
-export const ProgressHelper: React.FC<ProgresssHelper> = ({record, myPremData, myEquipData, mySysData, myProcData}) => {
+export const ProgressHelper: React.FC<ProgresssHelper> = ({ record, myPremData, myEquipData, mySysData, myProcData, type }) => {
     let a: number = 0
     let b: number = 1
     const thisObject = record.objectType === 'premises' ? myPremData.find(e => e.idfromtable === record.id) :
-    record.objectType === 'equipment' ? myEquipData.find(e => e.idfromtable === record.id) :
-    record.objectType === 'systems' ? mySysData?.find(e => e.idfromtable === record.id) :
-    record.objectType === 'processes' ? myProcData?.find(e => e.idfromtable === record.id) : null
+        record.objectType === 'equipment' ? myEquipData.find(e => e.idfromtable === record.id) :
+            record.objectType === 'systems' ? mySysData?.find(e => e.idfromtable === record.id) :
+                record.objectType === 'processes' ? myProcData?.find(e => e.idfromtable === record.id) : null
     if (record.objectType === 'premises') {
         if (thisObject?.typeval === '1') {
             if (record.class === 'Чистые' || record.class === 'Контролируемые') {
@@ -157,6 +176,93 @@ export const ProgressHelper: React.FC<ProgresssHelper> = ({record, myPremData, m
             a += thisObject?.dvo !== '' ? 1 : 0
         }
     }
-    let c = Math.round((a/b)*100)
-    return <Progress type="line" steps={b} percent={c} size={[12, 7]} style={{margin: '0px', padding: '0px'}} status={c === 100 ? 'success' : 'normal'} />
+
+    const dispatch: AppDispatch = useDispatch()
+
+    const handleCancelTask = (objectId: string, objectType: "equipment" | "premises" | "systems" | "processes") => {
+        console.log(objectId)
+        dispatch(setCancelTask(objectId, objectType))
+    }
+
+    const handleSuccessTask = (objectId: string, objectType: "equipment" | "premises" | "systems" | "processes") => {
+        console.log(objectId)
+        console.log(objectType)
+        dispatch(setSuccessTask(objectId, objectType))
+    }
+
+    let c = Math.round((a / b) * 100)
+    if (type === 'mon') {
+        if (c === 100) {
+            return <>
+                <Space style={{ textAlign: 'left' }}>
+                    <Progress type="dashboard" size={[50, 50]} percent={c} steps={b} style={{ margin: '0px', padding: '0px', float: 'left' }} status={c === 100 ? 'success' : 'normal'} />
+                    <div style={{ float: 'left', marginLeft: '10px' }}>
+                        <Popconfirm
+                            title='Подтвердите изменение'
+                            description='Вы уверены, что хотите завершить задачу?'
+                            okText='Да'
+                            cancelText='Нет'
+                            onConfirm={() => handleSuccessTask(record.id, record.objectType)}
+                        >
+                            <Button style={{ display: 'inline' }} size="small" type="link">Завершить задачу</Button>
+                        </Popconfirm>
+                        <Popconfirm
+                            title='Подтвердите изменение'
+                            description='Вы уверены, что хотите отменить задачу?'
+                            okText='Да'
+                            cancelText='Нет'
+                            onConfirm={() => handleCancelTask(record.id, record.objectType)}
+                        >
+                            <Button style={{ display: 'inline' }} size="small" type="link">Отменить задачу</Button>
+                        </Popconfirm>
+                    </div>
+                </Space>
+            </>
+        } else if (record.objectType === 'processes' && c >= 50) {
+            return <>
+                <Space style={{ textAlign: 'left' }}>
+                    <Progress type="dashboard" size={[50, 50]} percent={c} steps={b} style={{ margin: '0px', padding: '0px', float: 'left' }} status={c >= 100 ? 'success' : 'normal'} />
+                    <div style={{ float: 'left', marginLeft: '10px' }}>
+                        <Popconfirm
+                            title='Подтвердите изменение'
+                            description='Вы уверены, что хотите завершить задачу?'
+                            okText='Да'
+                            cancelText='Нет'
+                            onConfirm={() => handleSuccessTask(record.id, record.objectType)}
+                        >
+                            <Button style={{ display: 'inline' }} size="small" type="link">Завершить задачу</Button>
+                        </Popconfirm>
+                        <Popconfirm
+                            title='Подтвердите изменение'
+                            description='Вы уверены, что хотите отменить задачу?'
+                            okText='Да'
+                            cancelText='Нет'
+                            onConfirm={() => handleCancelTask(record.id, record.objectType)}
+                        >
+                            <Button style={{ display: 'inline' }} size="small" type="link">Отменить задачу</Button>
+                        </Popconfirm>
+                    </div>
+                </Space>
+            </>
+        } else {
+            return <>
+                <Space style={{ textAlign: 'left', float: 'left' }}>
+                    <Progress type="dashboard" size={[50, 50]} percent={c} steps={b} style={{ margin: '0px', padding: '0px', float: 'left' }} status={c >= 100 ? 'success' : 'normal'} />
+                    <div style={{ float: 'left', marginLeft: '10px' }}>
+                        <Popconfirm
+                            title='Подтвердите изменение'
+                            description='Вы уверены, что хотите отменить задачу?'
+                            okText='Да'
+                            cancelText='Нет'
+                            onConfirm={() => handleCancelTask(record.id, record.objectType)}
+                        >
+                            <Button style={{ display: 'inline' }} size="small" type="link">Отменить задачу</Button>
+                        </Popconfirm >
+                    </div>
+                </Space>
+            </>
+        }
+    } else {
+        return <Progress type="line" steps={b} percent={c} size={[12, 5]} style={{ margin: '0px', padding: '0px' }} status={c === 100 ? 'success' : 'normal'} />
+    }
 }

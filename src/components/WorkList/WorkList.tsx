@@ -174,7 +174,7 @@ export const WorkList: React.FC = () => {
         {
             title: <Text strong style={{fontSize: '12pt'}}>Прогресс</Text>,
             render: (text, record, index) => {
-                return <ProgressHelper key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} mySysData={mySysData} myProcData={myProcData} />
+                return <ProgressHelper type="work" key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} mySysData={mySysData} myProcData={myProcData} />
             },
             align: 'center',
         },

@@ -22,10 +22,18 @@ import { Reports } from './components/Monplans/Reports'
 import { VmpPlans } from './components/VmpPlans/VmpPlans'
 import { Result404 } from './components/common/Results/404'
 import ruRU from 'antd/es/locale/ru_RU'
+import { Login } from './components/Login/Login'
+import { getIsAuthSelector } from './redux/Selectors/authSelectors'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch } from './redux/store'
+import { loginOfCookieData } from './redux/Reducers/authReducer'
 
 export const App: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
+  const dispatch: AppDispatch = useDispatch()
+  const isAuth = useSelector(getIsAuthSelector)
+  !isAuth && dispatch(loginOfCookieData())
   const [typeTheme, setTheme] = useState('dark') // Изначально устанавливаем темную тему
   const { theme } = require('antd/lib')
   const handleThemeChange = (checked: boolean) => {
@@ -41,6 +49,7 @@ export const App: React.FC = () => {
         <Header1 swithTheme={handleThemeChange} typeTheme={typeTheme} />
         <Layout>
           <Routes>
+            <Route path="/login" element={<Login />} />
             <Route path="/equipment" element={<Equipment />} />
             <Route path="/equipment/:id" element={<EquipCard />} />
             <Route path="/premises" element={<Premises />} />

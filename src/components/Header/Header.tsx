@@ -1,12 +1,15 @@
 import React, { useEffect } from "react"
-import { Link, NavLink, useLocation } from 'react-router-dom'
-import { Col, Image, Menu, MenuProps, Row, Switch, Typography } from 'antd'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { Button, Col, Image, Menu, MenuProps, Row, Typography } from 'antd'
 import { Header } from "antd/es/layout/layout"
 import logo from './../../img/logo192.png'
 import { useDispatch, useSelector } from "react-redux"
 import { getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
 import { getVMPDepartments } from "../../redux/Reducers/appReducer"
 import { AppDispatch } from "../../redux/store"
+import { getAuthUserNameSelector, getIsAuthSelector } from "../../redux/Selectors/authSelectors"
+import { logout } from "../../redux/Reducers/authReducer"
+import { LogoutOutlined } from "@ant-design/icons"
 
 const { Text } = Typography
 
@@ -17,8 +20,11 @@ type HeaderPropsType = {
 
 export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) => {
     const location = useLocation()
+    const navigate = useNavigate()
     const dispatch: AppDispatch = useDispatch()
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
+    const isAuth = useSelector(getIsAuthSelector)
+    const userName = useSelector(getAuthUserNameSelector)
     useEffect(() => {
         VMPDepartments.length === 0 && dispatch(getVMPDepartments())
     }, [])
@@ -73,8 +79,11 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
         { key: '/paperplanes', label: <Link to='/paperplanes'>Схемы</Link> },
         { key: '/docs', label: <Link to='/docs'>Документация</Link> }
     ]
-
-    return <>
+    { !isAuth && location.pathname !== '/login' && navigate('/login') }
+    const handleLogout = () => {
+        dispatch(logout())
+    }
+    return isAuth ? <>
         <Header style={{ margin: '0px', padding: '0px' }} >
             <Row>
                 <Col style={{ textAlign: 'center' }} xs={4} sm={3} md={2} lg={2} xl={2} xxl={1}>
@@ -82,20 +91,25 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
                         <Image src={logo} style={{ width: '40px', height: '40px', display: 'inline' }} preview={false} />
                     </Link>
                 </Col>
-                <Col xs={10} sm={15} md={18} lg={19} xl={19} xxl={21}>
-                    <Menu
-                        theme="dark"
-                        mode="horizontal"
-                        selectedKeys={[getPathnameWithoutTrailingSlash(location.pathname)]}
-                        items={items}
-                        style={{ backgroundColor: 'none' }}
-                    />
+                <Col xs={10} sm={15} md={18} lg={19} xl={19} xxl={18}>
+                    {isAuth &&
+                        <Menu
+                            theme="dark"
+                            mode="horizontal"
+                            selectedKeys={[getPathnameWithoutTrailingSlash(location.pathname)]}
+                            items={items}
+                            style={{ backgroundColor: 'none' }}
+                        />
+                    }
                 </Col>
-                <Col style={{ textAlign: 'right', paddingRight: '10px' }} xs={10} sm={6} md={4} lg={3} xl={3} xxl={2}>
-                    <Text type="warning">Тема  </Text>
-                    <Switch checked={typeTheme === 'light'} onChange={swithTheme} checkedChildren="Темная" unCheckedChildren="Светлая" />
+                <Col style={{ textAlign: 'right', paddingRight: '10px' }} xxl={4}>
+                    <Text>{userName}</Text>
+                    <Button type="link" icon={<LogoutOutlined />} onClick={handleLogout}>Выход</Button>
+                </Col>
+                <Col style={{ textAlign: 'right', paddingRight: '10px' }} xs={10} sm={6} md={4} lg={3} xl={3} xxl={1}>
+                    <Button shape="circle" onClick={() => swithTheme(typeTheme === 'dark' ? true : false)} type={typeTheme === 'dark' ? 'primary' : 'link'} icon={<Image width={20} preview={false} src='https://i.ibb.co/FxzBYR9/night.png' />} />
                 </Col>
             </Row>
         </Header>
-    </>
+    </> : <></>
 }
