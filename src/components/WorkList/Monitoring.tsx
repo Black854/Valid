@@ -1,4 +1,4 @@
-import { Typography, Col, Image, Row, Spin, Table, Badge, Space, Dropdown, TableColumnsType, Progress, Button, Popconfirm, message } from "antd"
+import { Typography, Col, Image, Row, Spin, Table, message } from "antd"
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
@@ -11,7 +11,6 @@ import React, { useEffect } from "react"
 import { AppDispatch } from "../../redux/store"
 import { getCurrentPremData, getPremises } from "../../redux/Reducers/premisesReducer"
 import { getCurrentEquipDataSelector, getEquipData } from "../../redux/Selectors/equipmentSelectors"
-import { getAuthUserNameSelector } from "../../redux/Selectors/authSelectors"
 import { getCurrentEquipData, getEquipment } from "../../redux/Reducers/equipmentReducer"
 import { EquipTasks } from "./taskComponents/EquipTasks"
 import { PremTasks } from "./taskComponents/PremTasks"
@@ -50,7 +49,6 @@ export const Monitoring: React.FC = () => {
     const sysData = useSelector(getSysData)
     const procData = useSelector(getProcData)
     const isLoading = useSelector(getIsLoading)
-    // const AuthUserName = useSelector(getAuthUserNameSelector)
     const allValidators = useSelector(getAllValidatorsSelector)
 
     const usersFilters = allValidators.map((e: AllValidatorsType) => ({ value: e.fio, text: e.fio }))
