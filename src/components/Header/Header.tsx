@@ -10,6 +10,7 @@ import { AppDispatch } from "../../redux/store"
 import { getAuthUserNameSelector, getIsAuthSelector } from "../../redux/Selectors/authSelectors"
 import { logout } from "../../redux/Reducers/authReducer"
 import { LogoutOutlined } from "@ant-design/icons"
+import darkIcon from './../../img/dark.png'
 
 const { Text } = Typography
 
@@ -103,11 +104,11 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
                     }
                 </Col>
                 <Col style={{ textAlign: 'right', paddingRight: '10px' }} xxl={4}>
-                    <Text>{userName}</Text>
+                    <Text style={{color: 'gold', fontSize: '12pt'}}>{userName}</Text>
                     <Button type="link" icon={<LogoutOutlined />} onClick={handleLogout}>Выход</Button>
                 </Col>
                 <Col style={{ textAlign: 'right', paddingRight: '10px' }} xs={10} sm={6} md={4} lg={3} xl={3} xxl={1}>
-                    <Button shape="circle" onClick={() => swithTheme(typeTheme === 'dark' ? true : false)} type={typeTheme === 'dark' ? 'primary' : 'link'} icon={<Image width={20} preview={false} src='https://i.ibb.co/FxzBYR9/night.png' />} />
+                    <Button shape="circle" onClick={() => swithTheme(typeTheme === 'dark' ? true : false)} type={typeTheme === 'dark' ? 'primary' : 'link'} icon={<Image width={20} preview={false} src={darkIcon} />} />
                 </Col>
             </Row>
         </Header>

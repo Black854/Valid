@@ -15,7 +15,7 @@ import { getCurrentEquipData, getEquipment } from "../../redux/Reducers/equipmen
 import { EquipTasks } from "./taskComponents/EquipTasks"
 import { PremTasks } from "./taskComponents/PremTasks"
 import { ProgressHelper } from "./taskComponents/ProgressHelper"
-import { AllValidatorsType, getAllValidators } from "../../redux/Reducers/appReducer"
+import { getAllValidators } from "../../redux/Reducers/appReducer"
 import { getCurrentSysData, getSystems } from "../../redux/Reducers/systemsReducer"
 import { getCurrentProcData, getProcesses } from "../../redux/Reducers/processesReducer"
 import { getCurrentSysDataSelector, getSysData } from "../../redux/Selectors/systemsSelectors"
