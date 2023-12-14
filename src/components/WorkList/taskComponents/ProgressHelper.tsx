@@ -1,4 +1,4 @@
-import { Typography, Col, Image, Row, Spin, Table, Badge, Space, Dropdown, TableColumnsType, Progress, Button, Popconfirm, message } from "antd"
+import { Space, Progress, Button, Popconfirm } from "antd"
 import { PremReestrType } from "../../../redux/Reducers/premisesReducer"
 import { EquipReestrType } from "../../../redux/Reducers/equipmentReducer"
 import { SysReestrType } from "../../../redux/Reducers/systemsReducer"

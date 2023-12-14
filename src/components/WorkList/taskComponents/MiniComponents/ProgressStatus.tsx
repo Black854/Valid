@@ -1,10 +1,8 @@
-import { useDispatch } from "react-redux"
 import { EquipReestrType } from "../../../../redux/Reducers/equipmentReducer"
 import { PremReestrType } from "../../../../redux/Reducers/premisesReducer"
 import { ProcReestrType } from "../../../../redux/Reducers/processesReducer"
 import { SysReestrType } from "../../../../redux/Reducers/systemsReducer"
-import { AppDispatch } from "../../../../redux/store"
-import { Card, Progress } from "antd"
+import { Progress } from "antd"
 
 type RecordType = {
     objectType: "equipment" | "premises" | "systems" | "processes"

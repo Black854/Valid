@@ -1,28 +1,47 @@
 import { Button, Popconfirm, Typography } from "antd"
 import { AppDispatch } from "../../../../redux/store"
 import { useDispatch } from "react-redux"
-import { deleteEquipDocument, getCurrentEquipData, updateReestrDocsCodeEquip, uploadEquipDocument } from "../../../../redux/Reducers/equipmentReducer"
+import { deleteEquipDocument, getCurrentEquipData, uploadEquipDocument } from "../../../../redux/Reducers/equipmentReducer"
 import { DeleteOutlined, FileWordOutlined, UploadOutlined } from "@ant-design/icons"
+import { deletePremDocument, getCurrentPremData, uploadPremDocument } from "../../../../redux/Reducers/premisesReducer"
+import { deleteSysDocument, getCurrentSysData, uploadSysDocument } from "../../../../redux/Reducers/systemsReducer"
+import { deleteProcDocument, getCurrentProcData, uploadProcDocument } from "../../../../redux/Reducers/processesReducer"
 
 const { Text } = Typography
 
 type PropsType = {
     data: any,
     rec: any,
-    myEquipDataIdArray: any
+    myEquipDataIdArray?: any,
+    myPremDataIdArray?: any,
+    mySysDataIdArray?: any,
+    myProcDataIdArray?: any,
+    objectType: 'equipment' | 'premises' | 'systems' | 'processes'
     error: (fileName: string) => void
 }
 
-export const PamUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, error }) => {
+export const PamUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, error }) => {
     const dispatch: AppDispatch = useDispatch()
 
 
     if (data.pam !== '') {
         const fileSegments = data.pam.split('/')
         const fileName = fileSegments[fileSegments.length - 1]
+
         const handleDeleteDocument = async () => {
-            await dispatch(deleteEquipDocument(rec.id, data.id, 'pam', data.pam))
-            await dispatch(getCurrentEquipData(myEquipDataIdArray))
+            if (objectType === 'equipment') {
+                await dispatch(deleteEquipDocument(rec.id, data.id, 'pam', data.pam))
+                await dispatch(getCurrentEquipData(myEquipDataIdArray))
+            } else if (objectType === 'premises') {
+                await dispatch(deletePremDocument(rec.id, data.id, 'pam', data.pam))
+                await dispatch(getCurrentPremData(myPremDataIdArray))
+            } else if (objectType === 'systems') {
+                await dispatch(deleteSysDocument(rec.id, data.id, 'pam', data.pam))
+                await dispatch(getCurrentSysData(mySysDataIdArray))
+            } else if (objectType === 'processes') {
+                await dispatch(deleteProcDocument(rec.id, data.id, 'pam', data.pam))
+                await dispatch(getCurrentProcData(myProcDataIdArray))
+            }
         }
         return <>
             <Text type="success" style={{ width: '95%' }}>{fileName}</Text>
@@ -50,8 +69,19 @@ export const PamUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, 
 
                 if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                     // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                    await dispatch(uploadEquipDocument(rec.id, data.id, 'pam', e.currentTarget.files[0]))
-                    await dispatch(getCurrentEquipData(myEquipDataIdArray))
+                    if (objectType === 'equipment') {
+                        await dispatch(uploadEquipDocument(rec.id, data.id, 'pam', e.currentTarget.files[0]))
+                        await dispatch(getCurrentEquipData(myEquipDataIdArray))
+                    } else if (objectType === 'premises') {
+                        await dispatch(uploadPremDocument(rec.id, data.id, 'pam', e.currentTarget.files[0]))
+                        await dispatch(getCurrentPremData(myPremDataIdArray))
+                    } else if (objectType === 'systems') {
+                        await dispatch(uploadSysDocument(rec.id, data.id, 'pam', e.currentTarget.files[0]))
+                        await dispatch(getCurrentSysData(mySysDataIdArray))
+                    } else if (objectType === 'processes') {
+                        await dispatch(uploadProcDocument(rec.id, data.id, 'pam', e.currentTarget.files[0]))
+                        await dispatch(getCurrentProcData(myProcDataIdArray))
+                    }
                 } else {
                     // Файл имеет недопустимое расширение
                     error(fileName)
