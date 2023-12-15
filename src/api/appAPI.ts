@@ -37,4 +37,9 @@ export const appAPI = {
             return response.data
         })
     },
+    getVacationsData () {
+        return instance.get(`getVacationsData.php`).then (response => {
+            return response.data
+        })
+    },
 }

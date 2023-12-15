@@ -51,6 +51,13 @@ export type AllValidatorsType = {
     access: string
 }
 
+export type VacationsType = {
+    id: string
+    fio: string
+    month: string
+    date: string
+}
+
 const initialState = {
     isInitialized: true,
     equipGroups: [] as EquipGroup[],
@@ -74,7 +81,8 @@ const initialState = {
     ] as IntervalsType[],
     premModes: [] as PremModesType[],
     sopCodeForm: '',
-    allValidators: [] as AllValidatorsType[]
+    allValidators: [] as AllValidatorsType[],
+    vacationsData: [] as VacationsType[]
 }
 
 type InitialStateType = typeof initialState
@@ -92,6 +100,8 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
             return {...state, sopCodeForm: action.data}
         case 'app/SET_ALL_VALIDATORS':
             return {...state, allValidators: action.data}
+        case 'app/SET_VACATIONS_VATA':
+            return {...state, vacationsData: action.data}
         default:
             return state
     }
@@ -127,6 +137,11 @@ export const getAllValidators = (): ThunkType => async (dispatch) => {
     dispatch(appActions.setAllValidators(data.items))
 }
 
+export const getVacationsData = (): ThunkType => async (dispatch) => {
+    let data = await appAPI.getVacationsData()
+    dispatch(appActions.setVacationsData(data.items))
+}
+
 type ActionTypes = InferActionsTypes<typeof appActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
@@ -137,4 +152,5 @@ const appActions = {
     setPremModes: ( data: PremModesType[] ) => ({type: 'app/SET_PREM_MODES', data} as const),
     setSopCodeForm: ( data: string ) => ({type: 'app/SET_SOP_CODE_FORM', data} as const),
     setAllValidators: ( data: AllValidatorsType[] ) => ({type: 'app/SET_ALL_VALIDATORS', data} as const),
+    setVacationsData: ( data: VacationsType[] ) => ({type: 'app/SET_VACATIONS_VATA', data} as const),
 }
