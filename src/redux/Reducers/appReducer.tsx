@@ -65,7 +65,7 @@ const initialState = {
     vmpDepartments: [] as VMPDepartmentsType[],
     intervals: [
         { value: '0', label: 'Не валидируется', interval: '0' },
-        { value: '0,5', label: '1 раз в год c промежуточным контролем', interval: '13'},
+        { value: '0,5', label: '1 раз в год c промежуточным контролем', interval: '13' },
         { value: '13', label: '1 раз в полгода', interval: '7' },
         { value: '1', label: '1 раз в год', interval: '13' },
         { value: '2', label: '1 раз в 2 года', interval: '25' },
@@ -82,26 +82,29 @@ const initialState = {
     premModes: [] as PremModesType[],
     sopCodeForm: '',
     allValidators: [] as AllValidatorsType[],
-    vacationsData: [] as VacationsType[]
+    vacationsData: [] as VacationsType[],
+    vacationsIsLoading: false
 }
 
 type InitialStateType = typeof initialState
 export const appReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case 'app/SET_EQUIP_GROUPS':
-            return {...state, equipGroups: action.data}
+            return { ...state, equipGroups: action.data }
         case 'app/SET_DEPARTMENTS':
-            return {...state, departments: action.data}
+            return { ...state, departments: action.data }
         case 'app/SET_VMP_DEPARTMENTS':
-            return {...state, vmpDepartments: action.data}
+            return { ...state, vmpDepartments: action.data }
         case 'app/SET_PREM_MODES':
-            return {...state, premModes: action.data}
+            return { ...state, premModes: action.data }
         case 'app/SET_SOP_CODE_FORM':
-            return {...state, sopCodeForm: action.data}
+            return { ...state, sopCodeForm: action.data }
         case 'app/SET_ALL_VALIDATORS':
-            return {...state, allValidators: action.data}
+            return { ...state, allValidators: action.data }
         case 'app/SET_VACATIONS_VATA':
-            return {...state, vacationsData: action.data}
+            return { ...state, vacationsData: action.data, vacationsIsLoading: false }
+        case 'app/SET_VACATIONS_IS_LOADING':
+            return { ...state, vacationsIsLoading: true }
         default:
             return state
     }
@@ -138,7 +141,20 @@ export const getAllValidators = (): ThunkType => async (dispatch) => {
 }
 
 export const getVacationsData = (): ThunkType => async (dispatch) => {
+    dispatch(appActions.setVacationsIsLoading())
     let data = await appAPI.getVacationsData()
+    dispatch(appActions.setVacationsData(data.items))
+}
+
+export const setVacationsData = (fio: string, dates: string, month: string): ThunkType => async (dispatch) => {
+    dispatch(appActions.setVacationsIsLoading())
+    let data = await appAPI.setVacationsData(fio, dates, month)
+    dispatch(appActions.setVacationsData(data.items))
+}
+
+export const deleteVacationsData = (fio: string, month: string): ThunkType => async (dispatch) => {
+    dispatch(appActions.setVacationsIsLoading())
+    let data = await appAPI.deleteVacationsData(fio, month)
     dispatch(appActions.setVacationsData(data.items))
 }
 
@@ -146,11 +162,12 @@ type ActionTypes = InferActionsTypes<typeof appActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 const appActions = {
-    setEquipGroups: ( data: EquipGroup[] ) => ({type: 'app/SET_EQUIP_GROUPS', data} as const),
-    setDepartments: ( data: DepartmentsType[] ) => ({type: 'app/SET_DEPARTMENTS', data} as const),
-    setVMPDepartments: ( data: VMPDepartmentsType[] ) => ({type: 'app/SET_VMP_DEPARTMENTS', data} as const),
-    setPremModes: ( data: PremModesType[] ) => ({type: 'app/SET_PREM_MODES', data} as const),
-    setSopCodeForm: ( data: string ) => ({type: 'app/SET_SOP_CODE_FORM', data} as const),
-    setAllValidators: ( data: AllValidatorsType[] ) => ({type: 'app/SET_ALL_VALIDATORS', data} as const),
-    setVacationsData: ( data: VacationsType[] ) => ({type: 'app/SET_VACATIONS_VATA', data} as const),
+    setEquipGroups: (data: EquipGroup[]) => ({ type: 'app/SET_EQUIP_GROUPS', data } as const),
+    setDepartments: (data: DepartmentsType[]) => ({ type: 'app/SET_DEPARTMENTS', data } as const),
+    setVMPDepartments: (data: VMPDepartmentsType[]) => ({ type: 'app/SET_VMP_DEPARTMENTS', data } as const),
+    setPremModes: (data: PremModesType[]) => ({ type: 'app/SET_PREM_MODES', data } as const),
+    setSopCodeForm: (data: string) => ({ type: 'app/SET_SOP_CODE_FORM', data } as const),
+    setAllValidators: (data: AllValidatorsType[]) => ({ type: 'app/SET_ALL_VALIDATORS', data } as const),
+    setVacationsData: (data: VacationsType[]) => ({ type: 'app/SET_VACATIONS_VATA', data } as const),
+    setVacationsIsLoading: () => ({ type: 'app/SET_VACATIONS_IS_LOADING' } as const),
 }

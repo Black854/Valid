@@ -42,4 +42,23 @@ export const appAPI = {
             return response.data
         })
     },
+    setVacationsData (fio: string, dates: string, month: string) {
+        const requestData = {
+            fio,
+            dates,
+            month
+        }
+        return instance.post(`setVacationsData.php`, requestData, {}).then (response => {
+            return response.data
+        })
+    },
+    deleteVacationsData (fio: string, month: string) {
+        const requestData = {
+            fio,
+            month
+        }
+        return instance.post(`deleteVacationsData.php`, requestData, {}).then (response => {
+            return response.data
+        })
+    },
 }

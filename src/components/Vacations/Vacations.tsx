@@ -1,20 +1,15 @@
-import { Typography, Table, Row, Col, DatePicker, Button, Calendar, theme, CalendarProps } from "antd"
+import { Typography, Table, Row, Col, DatePicker, Button, Calendar, theme, CalendarProps, Modal, Input } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { getAllValidatorsSelector, getVacationsDataSelector } from "../../redux/Selectors/appSelectors"
+import { getAllValidatorsSelector, getVacationsDataSelector, vacationsIsLoadingSelector } from "../../redux/Selectors/appSelectors"
 import { Content } from "antd/es/layout/layout"
-import { ColumnsType } from "antd/es/table"
 import Column from "antd/es/table/Column"
 import ColumnGroup from "antd/es/table/ColumnGroup"
-import { RangePickerProps } from "antd/es/date-picker"
-import dayjs from 'dayjs'
-import type { Dayjs } from 'dayjs';
-import Title from "antd/es/typography/Title"
 import { useEffect } from "react"
 import { AppDispatch } from "../../redux/store"
 import { getAllValidators, getVacationsData } from "../../redux/Reducers/appReducer"
+import { CellRenderHelper } from "./Components/CellRenderHelper"
 
 const { Text } = Typography
-const { RangePicker } = DatePicker
 
 type DataType = {
     fio: string
@@ -32,10 +27,10 @@ type DataType = {
     month12: string
 }
 
-
 export const Vacations: React.FC = () => {
     const AllValidators = useSelector(getAllValidatorsSelector)
     const vacationsData = useSelector(getVacationsDataSelector)
+    const vacationsIsLoading = useSelector(vacationsIsLoadingSelector)
     const dispatch: AppDispatch = useDispatch()
 
     useEffect(() => {
@@ -48,15 +43,15 @@ export const Vacations: React.FC = () => {
     const data = AllValidators.sort((a, b) => {
         const fioA = a.fio.toLowerCase();
         const fioB = b.fio.toLowerCase();
-      
+
         if (fioA < fioB) {
-          return -1;
+            return -1;
         }
         if (fioA > fioB) {
-          return 1;
+            return 1;
         }
         return 0;
-      }).map(e => ({
+    }).map(e => ({
         fio: e.fio,
         month1: vacationsData.find(data => data.fio === e.fio && data.month == `01.${currentYear}`)?.date,
         month2: vacationsData.find(data => data.fio === e.fio && data.month == `02.${currentYear}`)?.date,
@@ -72,21 +67,6 @@ export const Vacations: React.FC = () => {
         month12: vacationsData.find(data => data.fio === e.fio && data.month == `12.${currentYear}`)?.date,
     }))
 
-    const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-        const currentYear = dayjs().year(); // Получаем текущий год
-        const currentMonth = dayjs().month(); // Получаем текущий месяц (январь = 0)
-
-        const selectedYear = dayjs(current).year(); // Получаем год выбранной даты
-        const selectedMonth = dayjs(current).month(); // Получаем месяц выбранной даты
-
-        // Разрешаем только даты из января текущего года
-        return !(selectedYear === currentYear && selectedMonth === 0);
-    }
-
-    const currentDate = dayjs() // Получаем текущую дату
-    const defaultStartDate = currentDate.startOf('year').add(1, 'month').subtract(1, 'day') // Начало текущего года
-    const defaultEndDate = currentDate.startOf('year').add(12, 'month').subtract(12, 'day') // Конец января текущего года
-
     return (
         <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
             <Row>
@@ -98,13 +78,14 @@ export const Vacations: React.FC = () => {
                         rowKey='rowName'
                         title={() => <Text style={{ fontSize: '14pt' }}>График отпусков</Text>}
                         size="small"
+                        loading={vacationsIsLoading}
                     >
                         <Column
                             title={<Text>Ф.И.О. сотрудника</Text>}
                             dataIndex='fio'
                             align="center"
                             key="fio"
-                            render={(fio) => <Text style={{fontSize: '13pt'}}>{fio}</Text>}
+                            render={(fio) => <Text style={{ fontSize: '13pt' }}>{fio}</Text>}
                         />
                         <ColumnGroup title="Даты фактического отсутствия" align="center">
                             <Column
@@ -112,97 +93,96 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month1'
                                 key="1"
                                 align="center"
-                                render={(text, record: DataType) => text !== '0' ? <RangePicker allowClear size="small" disabledDate={disabledDate} 
-                                picker="date" defaultValue={[defaultStartDate, defaultEndDate]} /> : <Button>123</Button>}
-                                width='7%'
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={0} fio={record.fio} year={'2023'} />}
+                                width='7.5%'
                             />
                             <Column
                                 title={<Text>Февраль</Text>}
                                 dataIndex='month2'
                                 key="2"
                                 align="center"
-                                render={(text) => text ? <Text>{text}</Text> : <Button>123</Button>}
-                                width='7%'
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={1} fio={record.fio} year={'2023'} />}
+                                width='7.5%'
                             />
                             <Column
                                 title={<Text>Март</Text>}
                                 dataIndex='month3'
                                 key="3"
                                 align="center"
-                                render={(text) => text ? <Text>{text}</Text> : <Button>123</Button>}
-                                width='7%'
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={2} fio={record.fio} year={'2023'} />}
+                                width='7.5%'
                             />
                             <Column
                                 title={<Text>Апрель</Text>}
                                 dataIndex='month4'
                                 key="4"
                                 align="center"
-                                render={(text) => text ? <Text>{text}</Text> : <Button>123</Button>}
-                                width='7%'
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={3} fio={record.fio} year={'2023'} />}
+                                width='7.5%'
                             />
                             <Column
                                 title={<Text>Май</Text>}
                                 dataIndex='month5'
                                 key="5"
                                 align="center"
-                                render={(text) => text ? <Text>{text}</Text> : <Button>123</Button>}
-                                width='7%'
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={4} fio={record.fio} year={'2023'} />}
+                                width='7.5%'
                             />
                             <Column
                                 title={<Text>Июнь</Text>}
                                 dataIndex='month6'
                                 key="6"
                                 align="center"
-                                render={(text) => text ? <Text>{text}</Text> : <Button>123</Button>}
-                                width='7%'
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={5} fio={record.fio} year={'2023'} />}
+                                width='7.5%'
                             />
                             <Column
                                 title={<Text>Июль</Text>}
                                 dataIndex='month7'
                                 key="7"
                                 align="center"
-                                render={(text) => text ? <Text>{text}</Text> : <Button>123</Button>}
-                                width='7%'
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={6} fio={record.fio} year={'2023'} />}
+                                width='7.5%'
                             />
                             <Column
                                 title={<Text>Август</Text>}
                                 dataIndex='month8'
                                 key="8"
                                 align="center"
-                                render={(text) => text ? <Text>{text}</Text> : <Button>123</Button>}
-                                width='7%'
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={7} fio={record.fio} year={'2023'} />}
+                                width='7.5%'
                             />
                             <Column
                                 title={<Text>Сентябрь</Text>}
                                 dataIndex='month9'
                                 key="9"
                                 align="center"
-                                render={(text) => text ? <Text>{text}</Text> : <Button>123</Button>}
-                                width='7%'
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={8} fio={record.fio} year={'2023'} />}
+                                width='7.5%'
                             />
                             <Column
                                 title={<Text>Октябрь</Text>}
                                 dataIndex='month10'
                                 key="10"
                                 align="center"
-                                render={(text) => text ? <Text>{text}</Text> : <Button>123</Button>}
-                                width='7%'
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={9} fio={record.fio} year={'2023'} />}
+                                width='7.5%'
                             />
                             <Column
                                 title={<Text>Ноябрь</Text>}
                                 dataIndex='month11'
                                 key="11"
                                 align="center"
-                                render={(text) => text ? <Text>{text}</Text> : <Button>123</Button>}
-                                width='7%'
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={10} fio={record.fio} year={'2023'} />}
+                                width='7.5%'
                             />
                             <Column
                                 title={<Text>Декабрь</Text>}
                                 dataIndex='month12'
                                 key="12"
                                 align="center"
-                                render={(text) => text ? <Text>{text}</Text> : <Button>123</Button>}
-                                width='7%'
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={11} fio={record.fio} year={'2023'} />}
+                                width='7.5%'
                             />
                         </ColumnGroup>
                     </Table>
