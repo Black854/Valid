@@ -47,6 +47,14 @@ export type EquipReestrType = {
     type2?: VMPDataTypeForPlansComponent
 }
 
+export type NewEquipObjectType = {
+    spVMP: string,
+    sp: string,
+    name: string,
+    group: string,
+    ar: string
+}
+
 let initialState = {
     data: [] as DataType[],
     reestrData: [] as EquipReestrType[],
@@ -64,176 +72,176 @@ type InitialStateType = typeof initialState
 export const equipmentReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case 'equip/PUSH_EQ_DATA':
-            return {...state, data: action.data}
+            return { ...state, data: action.data }
         case 'equip/IS_LOADING':
-            return {...state, isLoading: action.data}
+            return { ...state, isLoading: action.data }
         case 'equip/PUSH_REESTR_DATA':
-            return {...state, reestrData: action.data}            
+            return { ...state, reestrData: action.data }
         case 'equip/SET_TECH_INFO':
-            return {...state, technicalInfo: action.text}
+            return { ...state, technicalInfo: action.text }
         case 'equip/SET_PHOTOS':
-            return {...state, photos: action.data}
+            return { ...state, photos: action.data }
         case 'equip/SET_EQUIP_ID_ARRAY_AT_WORK_AT_CURRENT_USER':
-            return {...state, equipIdArrayAtWorkAtCurrentUser: action.data}
+            return { ...state, equipIdArrayAtWorkAtCurrentUser: action.data }
         case 'equip/SET_IS_DESCRIPTION_LOADING':
-            return {...state, isDescriptionLoading: action.data}
+            return { ...state, isDescriptionLoading: action.data }
         case 'equip/SET_IS_REESTR_DATA_LOADING':
-            return {...state, isReestrDataLoading: action.data}
+            return { ...state, isReestrDataLoading: action.data }
         default:
             return state
     }
 }
 
 export const getEquipment = (): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsLoading(true))
+    dispatch(equipActions.setIsLoading(true))
     let data = await equipmentAPI.getEquipment()
-    dispatch (equipActions.pushEquipmentData(data.items))
-    dispatch (equipActions.setIsLoading(false))
+    dispatch(equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.setIsLoading(false))
 }
 
 export const getReestrData = (id: string): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsReestrDataLoading(true))
+    dispatch(equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.getReestrData(id)
-    dispatch (equipActions.pushReestrData(data.items))
-    dispatch (equipActions.setIsReestrDataLoading(false))
+    dispatch(equipActions.pushReestrData(data.items))
+    dispatch(equipActions.setIsReestrDataLoading(false))
 }
 
 export const uploadMainPhoto = (id: string, file: File): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.uploadMainPhoto(id, file)
-    dispatch (equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.pushEquipmentData(data.items))
 }
 
 export const deleteMainPhoto = (id: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.deleteMainPhoto(id)
-    dispatch (equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.pushEquipmentData(data.items))
 }
 
 export const updateNomer = (id: string, nomer: string): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsDescriptionLoading(true))
+    dispatch(equipActions.setIsDescriptionLoading(true))
     let data = await equipmentAPI.updateDescription(id, nomer)
-    dispatch (equipActions.pushEquipmentData(data.items))
-    dispatch (equipActions.setIsDescriptionLoading(false))
+    dispatch(equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.setIsDescriptionLoading(false))
 }
 
 export const updateManufacturer = (id: string, manufacturer: string): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsDescriptionLoading(true))
+    dispatch(equipActions.setIsDescriptionLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, manufacturer)
-    dispatch (equipActions.pushEquipmentData(data.items))
-    dispatch (equipActions.setIsDescriptionLoading(false))
+    dispatch(equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.setIsDescriptionLoading(false))
 }
 
 export const updateManufacturDate = (id: string, manufacturDate: string): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsDescriptionLoading(true))
+    dispatch(equipActions.setIsDescriptionLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, manufacturDate)
-    dispatch (equipActions.pushEquipmentData(data.items))
-    dispatch (equipActions.setIsDescriptionLoading(false))
+    dispatch(equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.setIsDescriptionLoading(false))
 }
 
 export const updateSerial = (id: string, serial: string): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsDescriptionLoading(true))
+    dispatch(equipActions.setIsDescriptionLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, serial)
-    dispatch (equipActions.pushEquipmentData(data.items))
-    dispatch (equipActions.setIsDescriptionLoading(false))
+    dispatch(equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.setIsDescriptionLoading(false))
 }
 
 export const updateInv = (id: string, inv: string): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsDescriptionLoading(true))
+    dispatch(equipActions.setIsDescriptionLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, inv)
-    dispatch (equipActions.pushEquipmentData(data.items))
-    dispatch (equipActions.setIsDescriptionLoading(false))
+    dispatch(equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.setIsDescriptionLoading(false))
 }
 
 export const updateName = (id: string, name: string): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsDescriptionLoading(true))
+    dispatch(equipActions.setIsDescriptionLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, name)
-    dispatch (equipActions.pushEquipmentData(data.items))
-    dispatch (equipActions.setIsDescriptionLoading(false))
+    dispatch(equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.setIsDescriptionLoading(false))
 }
 
 export const updateGroup = (id: string, group: string): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsDescriptionLoading(true))
+    dispatch(equipActions.setIsDescriptionLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, group)
-    dispatch (equipActions.pushEquipmentData(data.items))
-    dispatch (equipActions.setIsDescriptionLoading(false))
+    dispatch(equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.setIsDescriptionLoading(false))
 }
 
-export const getTechnicalInfo = (id: string): ThunkType => async (dispatch) => { 
+export const getTechnicalInfo = (id: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.getTechnicalInfo(id)
     dispatch(equipActions.setTechnicalInfo(data.tech))
 }
 
-export const updateTechnicalInfo = (id: string, text: string): ThunkType => async (dispatch) => { 
+export const updateTechnicalInfo = (id: string, text: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.updateTechnicalInfo(id, text)
     dispatch(equipActions.setTechnicalInfo(data.tech))
 }
 
-export const getPhotos = (id: string): ThunkType => async (dispatch) => { 
+export const getPhotos = (id: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.getPhotos(id)
     dispatch(equipActions.setPhotosData(data.photos))
 }
 
-export const uploadPhotos = (id: string, file: any): ThunkType => async (dispatch) => { 
+export const uploadPhotos = (id: string, file: any): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.uploadPhotos(id, file)
     dispatch(equipActions.setPhotosData(data.photos))
 }
 
-export const deletePhoto = (id: string, photoId: string): ThunkType => async (dispatch) => { 
+export const deletePhoto = (id: string, photoId: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.deletePhoto(id, photoId)
     dispatch(equipActions.setPhotosData(data.photos))
 }
 
-export const updatePdfDescription = (photoId: string, text: string, id: string): ThunkType => async (dispatch) => { 
+export const updatePdfDescription = (photoId: string, text: string, id: string): ThunkType => async (dispatch) => {
     let data = await equipmentAPI.updatePdfDescription(photoId, text, id)
     dispatch(equipActions.setPhotosData(data.photos))
 }
 
 export const updateDepartment = (id: string, department: string): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsDescriptionLoading(true))
+    dispatch(equipActions.setIsDescriptionLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, department)
-    dispatch (equipActions.pushEquipmentData(data.items))
-    dispatch (equipActions.setIsDescriptionLoading(false))
+    dispatch(equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.setIsDescriptionLoading(false))
 }
 
 export const updateVMPDepartment = (id: string, VMPdepartment: string): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsDescriptionLoading(true))
+    dispatch(equipActions.setIsDescriptionLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, VMPdepartment)
-    dispatch (equipActions.pushEquipmentData(data.items))
-    dispatch (equipActions.setIsDescriptionLoading(false))
+    dispatch(equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.setIsDescriptionLoading(false))
 }
 
 export const updateEquipInterval = (id: string, interval: string): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsDescriptionLoading(true))
+    dispatch(equipActions.setIsDescriptionLoading(true))
     let data = await equipmentAPI.updateDescription(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, interval)
-    dispatch (equipActions.pushEquipmentData(data.items))
-    dispatch (equipActions.setIsDescriptionLoading(false))
+    dispatch(equipActions.pushEquipmentData(data.items))
+    dispatch(equipActions.setIsDescriptionLoading(false))
 }
 
 export const updateReestrDateEquip = (id: string, equipId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsReestrDataLoading(true))
+    dispatch(equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.updateReestrDate(id, equipId, date, dateType)
-    dispatch (equipActions.pushReestrData(data.items))
-    dispatch (equipActions.setIsReestrDataLoading(false))
+    dispatch(equipActions.pushReestrData(data.items))
+    dispatch(equipActions.setIsReestrDataLoading(false))
 }
 
 export const updateReestrDocsCodeEquip = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsReestrDataLoading(true))
+    dispatch(equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.updateReestrDocsCode(id, recordId, text, dataType)
-    dispatch (equipActions.pushReestrData(data.items))
-    dispatch (equipActions.setIsReestrDataLoading(false))
+    dispatch(equipActions.pushReestrData(data.items))
+    dispatch(equipActions.setIsReestrDataLoading(false))
 }
 
 export const uploadEquipDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsReestrDataLoading(true))
+    dispatch(equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.uploadDocument(objectId, recordId, dataType, file)
-    dispatch (equipActions.pushReestrData(data.items))
-    dispatch (equipActions.setIsReestrDataLoading(false))
+    dispatch(equipActions.pushReestrData(data.items))
+    dispatch(equipActions.setIsReestrDataLoading(false))
 }
 
 export const deleteEquipDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', url: string): ThunkType => async (dispatch) => {
-    dispatch (equipActions.setIsReestrDataLoading(true))
+    dispatch(equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.deleteDocument(objectId, recordId, dataType, url)
-    dispatch (equipActions.pushReestrData(data.items))
-    dispatch (equipActions.setIsReestrDataLoading(false))
+    dispatch(equipActions.pushReestrData(data.items))
+    dispatch(equipActions.setIsReestrDataLoading(false))
 }
 
 export const getCurrentEquipData = (myEquipDataIdArray: Array<string>): ThunkType => async (dispatch) => {
@@ -243,6 +251,17 @@ export const getCurrentEquipData = (myEquipDataIdArray: Array<string>): ThunkTyp
 
 export const updateEquipWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string): ThunkType => async (dispatch) => {
     await equipmentAPI.updateEquipWorkData(recordId, changeParam, text)
+}
+
+export const createNewObject = (data: NewEquipObjectType): ThunkType => async (dispatch) => {
+    dispatch(equipActions.setIsLoading(true))
+    const responseData = await equipmentAPI.createNewObject(data)
+    if (responseData.resultCode === '0') {
+        dispatch(equipActions.pushEquipmentData(responseData.items))
+    } else {
+        console.log('someError')
+    }
+    dispatch(equipActions.setIsLoading(false))
 }
 
 type ActionTypes = InferActionsTypes<typeof equipActions>

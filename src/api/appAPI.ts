@@ -7,57 +7,57 @@ const instance = axios.create({
 })
 
 export const appAPI = {
-    getEquipGroups (type: 'active' | 'all') {
-        return instance.get(`getEquipGroups.php?type=${type}`).then (response => {
+    getEquipGroups(type: 'active' | 'all') {
+        return instance.get(`getEquipGroups.php?type=${type}`).then(response => {
             return response.data
         })
     },
-    getPremModes () {
-        return instance.get(`getPremModes.php`).then (response => {
+    getPremModes() {
+        return instance.get(`getPremModes.php`).then(response => {
             return response.data
         })
     },
-    getDepartments () {
-        return instance.get(`getDepartments.php`).then (response => {
+    getDepartments() {
+        return instance.get(`getDepartments.php`).then(response => {
             return response.data
         })
     },
-    getVMPDepartments () {
-        return instance.get(`getVMPDepartments.php`).then (response => {
+    getVMPDepartments() {
+        return instance.get(`getVMPDepartments.php`).then(response => {
             return response.data
         })
     },
-    getSopCodeForm () {
-        return instance.get(`getSopCodeForm.php`).then (response => {
+    getSopCodeForm() {
+        return instance.get(`getSopCodeForm.php`).then(response => {
             return response.data
         })
     },
-    getAllValidators () {
-        return instance.get(`getAllValidators.php`).then (response => {
+    getAllValidators() {
+        return instance.get(`getAllValidators.php`).then(response => {
             return response.data
         })
     },
-    getVacationsData () {
-        return instance.get(`getVacationsData.php`).then (response => {
+    getVacationsData() {
+        return instance.get(`getVacationsData.php`).then(response => {
             return response.data
         })
     },
-    setVacationsData (fio: string, dates: string, month: string) {
+    setVacationsData(fio: string, dates: string, month: string) {
         const requestData = {
             fio,
             dates,
             month
         }
-        return instance.post(`setVacationsData.php`, requestData, {}).then (response => {
+        return instance.post(`setVacationsData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
-    deleteVacationsData (fio: string, month: string) {
+    deleteVacationsData(fio: string, month: string) {
         const requestData = {
             fio,
             month
         }
-        return instance.post(`deleteVacationsData.php`, requestData, {}).then (response => {
+        return instance.post(`deleteVacationsData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
