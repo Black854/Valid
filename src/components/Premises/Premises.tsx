@@ -14,6 +14,7 @@ import Highlighter from 'react-highlight-words';
 import type { InputRef } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
+import { NewObjectForm } from "./CreateNewObjectForm"
 
 const { Text } = Typography
 
@@ -41,8 +42,7 @@ export const Premises: React.FC = () => {
     type DataType = typeof premNewData[0]
     type DataIndex = keyof DataType;
 
-    const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
+    const [searchText, setSearchText] = useState('')
     const searchInput = useRef<InputRef>(null);
 
     const handleSearch = (
@@ -51,13 +51,12 @@ export const Premises: React.FC = () => {
         dataIndex: DataIndex,
     ) => {
         confirm();
-        setSearchText(selectedKeys[0]);
-        setSearchedColumn(dataIndex);
+        setSearchText(selectedKeys[0])
     };
 
     const handleReset = (clearFilters: () => void) => {
-        clearFilters();
-        setSearchText('');
+        clearFilters()
+        setSearchText('')
     };
 
     const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
@@ -116,13 +115,12 @@ export const Premises: React.FC = () => {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: <Text strong style={{ fontSize: '12pt' }}>№</Text>,
+            title: <Text>№</Text>,
             dataIndex: 'index',
-            render: (text, record, index) => index + 1,
             align: 'center'
         },
         {
-            title: <Text strong style={{ fontSize: '12pt' }}>Наименование</Text>,
+            title: <Text>Наименование</Text>,
             dataIndex: 'name2',
             render: (text, record) => (
                 <Row>
@@ -154,7 +152,7 @@ export const Premises: React.FC = () => {
             ...getColumnSearchProps('name2'),
         },
         {
-            title: <Text strong style={{ fontSize: '12pt' }}>Подразделение</Text>,
+            title: <Text>Подразделение</Text>,
             dataIndex: 'sp2',
             filters: [
                 { text: 'МБЛ', value: 'МБЛ' },
@@ -172,7 +170,7 @@ export const Premises: React.FC = () => {
             align: 'center',
         },
         {
-            title: <Text strong style={{ fontSize: '12pt' }}>Группа</Text>,
+            title: <Text>Группа</Text>,
             dataIndex: 'class',
             filters: [
                 { text: 'Контролируемые', value: 'Контролируемые' },
@@ -187,7 +185,7 @@ export const Premises: React.FC = () => {
             align: 'center',
         },
         {
-            title: <Text strong style={{ fontSize: '12pt' }}>Дата (до)</Text>,
+            title: <Text>Дата (до)</Text>,
             dataIndex: 'date',
             render: (date, record) => { return <RenderDateHelper date={date} record={record} /> },
             width: '10%',
@@ -195,7 +193,11 @@ export const Premises: React.FC = () => {
         },
     ]
 
-    const data: DataType[] = premNewData
+    const data: DataType[] = premNewData.map((item, index) => ({
+        ...item,
+        index: index + 1,
+      }))
+
     if (isLoading) {
         return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
     }
@@ -207,8 +209,13 @@ export const Premises: React.FC = () => {
                         columns={columns}
                         dataSource={data}
                         bordered={false}
-                        pagination={false}
-                        title={() => <Text style={{ fontSize: '14pt' }}>Помещения (всего: {premData.length})</Text>}
+                        pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"]}}
+                        title={() => <>
+                            <Text style={{ fontSize: '13pt' }}>
+                                <NewObjectForm />
+                                Помещения (всего: {premData.length})
+                            </Text>
+                        </>}
                         size="small"
                     />
                 </Col>

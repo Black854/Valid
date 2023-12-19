@@ -14,6 +14,7 @@ import Highlighter from 'react-highlight-words';
 import type { InputRef } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
+import { NewObjectForm } from "./CreateNewObjectForm"
 
 const { Text } = Typography;
 
@@ -53,8 +54,7 @@ export const Processes: React.FC = () => {
         foto: e.foto
     }))
 
-    const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
+    const [searchText, setSearchText] = useState('')
     const searchInput = useRef<InputRef>(null);
 
     const handleSearch = (
@@ -62,14 +62,13 @@ export const Processes: React.FC = () => {
         confirm: (param?: FilterConfirmProps) => void,
         dataIndex: DataIndex,
     ) => {
-        confirm();
-        setSearchText(selectedKeys[0]);
-        setSearchedColumn(dataIndex);
+        confirm()
+        setSearchText(selectedKeys[0])
     };
 
     const handleReset = (clearFilters: () => void) => {
-        clearFilters();
-        setSearchText('');
+        clearFilters()
+        setSearchText('')
     };
 
     const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
@@ -128,12 +127,12 @@ export const Processes: React.FC = () => {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: <Text strong style={{ fontSize: '12pt' }}>№</Text>,
+            title: <Text>№</Text>,
             dataIndex: 'index',
             align: 'center'
         },
         {
-            title: <Text strong style={{ fontSize: '12pt' }}>Наименование</Text>,
+            title: <Text>Наименование</Text>,
             dataIndex: 'name',
             render: (text, record) => (
                 <Row>
@@ -165,7 +164,7 @@ export const Processes: React.FC = () => {
             ...getColumnSearchProps('name'),
         },
         {
-            title: <Text strong style={{ fontSize: '12pt' }}>Подразделение</Text>,
+            title: <Text>Подразделение</Text>,
             dataIndex: 'sp2',
             filters: [
                 { text: 'МБЛ', value: 'МБЛ' },
@@ -183,7 +182,7 @@ export const Processes: React.FC = () => {
             align: 'center',
         },
         {
-            title: <Text strong style={{ fontSize: '12pt' }}>Дата (до)</Text>,
+            title: <Text>Дата (до)</Text>,
             dataIndex: 'date',
             render: (date, record) => { return <RenderDateHelper date={date} record={record} /> },
             width: '10%',
@@ -206,8 +205,13 @@ export const Processes: React.FC = () => {
                         columns={columns}
                         dataSource={data}
                         bordered={false}
-                        pagination={false}
-                        title={() => <Text style={{ fontSize: '14pt' }}>Процессы (всего: {procData.length})</Text>}
+                        pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"]}}
+                        title={() => <>
+                            <Text style={{ fontSize: '13pt' }}>
+                                <NewObjectForm />
+                                Процессы (всего: {procData.length})
+                            </Text>
+                        </>}
                         size="small"
                         style={{ marginBottom: '30px' }}
                     />

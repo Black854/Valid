@@ -200,7 +200,7 @@ export const PremCard = () => {
             {
                 rowName: 'Температурный режим',
                 value: <Select
-                    defaultValue={premObject.class}
+                    defaultValue={premObject.mode}
                     onChange={handleUpdateGroup}
                     size="small"
                     style={{ paddingRight: '20px', marginLeft: '-7px' }}

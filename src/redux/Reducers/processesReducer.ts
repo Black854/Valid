@@ -58,14 +58,21 @@ let initialState = {
     procIdArrayAtWorkAtCurrentUser: [] as ProcReestrType[],
 }
 
+export type NewProcObjectType = {
+    spVMP: string,
+    sp: string,
+    name: string,
+    ar: string
+}
+
 type InitialStateType = typeof initialState
 
 export const processesReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case 'proc/PUSH_PROC_DATA':
-            return {...state, data: action.data, isLoading: false}
+            return {...state, data: action.data}
         case 'proc/IS_LOADING':
-            return {...state, isLoading: true}
+            return {...state, isLoading: action.data}
         case 'proc/PUSH_REESTR_DATA':
             return {...state, reestrData: action.data}            
         case 'proc/SET_TECH_INFO':
@@ -84,9 +91,10 @@ export const processesReducer = (state = initialState, action: ActionTypes): Ini
 }
 
 export const getProcesses = (): ThunkType => async (dispatch) => {
-    dispatch (procActions.setIsLoading())
+    dispatch (procActions.setIsLoading(true))
     let data = await processesAPI.getProcesses()
     dispatch (procActions.pushProcessesData(data.items))
+    dispatch (procActions.setIsLoading(false))
 }
 
 export const getReestrData = (id: string): ThunkType => async (dispatch) => {
@@ -201,13 +209,25 @@ export const updateProcWorkData = (recordId: string, changeParam: 'et' | 'season
     await processesAPI.updateProcWorkData(recordId, changeParam, text)
 }
 
+export const createNewObject = (data: NewProcObjectType): ThunkType => async (dispatch) => {
+    dispatch(procActions.setIsLoading(true))
+    const responseData = await processesAPI.createNewObject(data)
+    if (responseData.resultCode === '0') {
+        dispatch(procActions.pushProcessesData(responseData.items))
+    } else {
+        console.log('someError')
+    }
+    dispatch(procActions.setIsLoading(false))
+}
+
+
 type ActionTypes = InferActionsTypes<typeof procActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 const procActions = {
     pushProcessesData: (data: DataType[]) => ({ type: 'proc/PUSH_PROC_DATA', data } as const),
     pushReestrData: (data: ProcReestrType[]) => ({ type: 'proc/PUSH_REESTR_DATA', data } as const),
-    setIsLoading: () => ({ type: 'proc/IS_LOADING' } as const),
+    setIsLoading: (data: boolean) => ({ type: 'proc/IS_LOADING', data } as const),
     setTechnicalInfo: (text: string) => ({ type: 'proc/SET_TECH_INFO', text } as const),
     setPhotosData: (data: PhotosType[]) => ({ type: 'proc/SET_PHOTOS', data } as const),
     setIsReestrDataLoading: (data: boolean) => ({ type: 'proc/SET_IS_REESTR_DATA_LOADING', data } as const),

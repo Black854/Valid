@@ -14,6 +14,7 @@ import Highlighter from 'react-highlight-words';
 import type { InputRef } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
+import { NewObjectForm } from "./CreateNewObjectForm"
 
 const { Text } = Typography;
 
@@ -180,9 +181,11 @@ export const Instruments: React.FC = () => {
         ...item,
         index: index + 1,
     }))
+
     if (isLoading) {
         return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
     }
+
     return (
         <Content style={{ padding: '20px 0', marginBottom: '40px' }}>
             <Row>
@@ -191,8 +194,13 @@ export const Instruments: React.FC = () => {
                         columns={columns}
                         dataSource={data}
                         bordered={false}
-                        pagination={false}
-                        title={() => <Text style={{ fontSize: '14pt' }}>Валидационные инструменты (всего: {instData.length})</Text>}
+                        pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"]}}
+                        title={() => <>
+                            <Text style={{ fontSize: '13pt' }}>
+                              <NewObjectForm />
+                              Валидационные приборы (всего: {instData.length})
+                            </Text>
+                          </>}
                         size="small"
                         style={{ marginBottom: '30px' }}
                     />

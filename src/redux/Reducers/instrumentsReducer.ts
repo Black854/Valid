@@ -25,6 +25,12 @@ type PhotosType = {
     name: string
 }
 
+export type NewInstObjectType = {
+    name: string,
+    name2: string,
+    serial: string
+}
+
 let initialState = {
     data: [] as DataType[],
     isLoading: false,
@@ -37,9 +43,9 @@ type InitialStateType = typeof initialState
 export const instrumentsReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case 'inst/PUSH_INSTRUMENTS_DATA':
-            return {...state, data: action.data, isLoading: false}
+            return {...state, data: action.data}
         case 'inst/IS_LOADING':
-            return {...state, isLoading: true}         
+            return {...state, isLoading: action.data}         
         case 'inst/SET_TECH_INFO':
             return {...state, technicalInfo: action.text}
         case 'inst/SET_PHOTOS':
@@ -52,9 +58,10 @@ export const instrumentsReducer = (state = initialState, action: ActionTypes): I
 }
 
 export const getInstruments = (): ThunkType => async (dispatch) => {
-    dispatch (instActions.setIsLoading())
+    dispatch (instActions.setIsLoading(true))
     let data = await instrumentsAPI.getInstruments()
     dispatch (instActions.pushInstrumentsData(data.items))
+    dispatch (instActions.setIsLoading(false))
 }
 
 export const uploadMainPhoto = (id: string, file: File): ThunkType => async (dispatch) => {
@@ -147,12 +154,23 @@ export const updatePdfDescription = (photoId: string, text: string, id: string):
     dispatch(instActions.setPhotosData(data.photos))
 }
 
+export const createNewObject = (data: NewInstObjectType): ThunkType => async (dispatch) => {
+    dispatch(instActions.setIsLoading(true))
+    const responseData = await instrumentsAPI.createNewObject(data)
+    if (responseData.resultCode === '0') {
+        dispatch(instActions.pushInstrumentsData(responseData.items))
+    } else {
+        console.log('someError')
+    }
+    dispatch(instActions.setIsLoading(false))
+}
+
 type ActionTypes = InferActionsTypes<typeof instActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 const instActions = {
     pushInstrumentsData: (data: DataType[]) => ({ type: 'inst/PUSH_INSTRUMENTS_DATA', data } as const),
-    setIsLoading: () => ({ type: 'inst/IS_LOADING' } as const),
+    setIsLoading: (data: boolean) => ({ type: 'inst/IS_LOADING', data } as const),
     setTechnicalInfo: (text: string) => ({ type: 'inst/SET_TECH_INFO', text } as const),
     setPhotosData: (data: PhotosType[]) => ({ type: 'inst/SET_PHOTOS', data } as const),
     updatePhotosDataWhenPhotoIsDownloading: (data: PhotosType) => ({ type: 'inst/SET_PHOTOS_WHEN_PHOTO_IS_DOWNLOADING', data } as const)

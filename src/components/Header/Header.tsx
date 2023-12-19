@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { Button, Col, Image, Menu, MenuProps, Row, Typography } from 'antd'
+import { Button, Col, Image, Menu, MenuProps, Row, Space, Typography } from 'antd'
 import { Header } from "antd/es/layout/layout"
 import logo from './../../img/logo192.png'
 import { useDispatch, useSelector } from "react-redux"
@@ -68,7 +68,7 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
                 { key: '/equipment', label: <NavLink to='/equipment'>Оборудование</NavLink> },
                 { key: '/systems', label: <Link to='/systems'>Системы</Link> },
                 { key: '/processes', label: <Link to='/processes'>Процессы</Link> },
-                { key: '/instruments', label: <Link to='/instruments'>Инструменты</Link> }]
+                { key: '/instruments', label: <Link to='/instruments'>Приборы</Link> }]
         },
         {
             key: '2', label: `Планы`, children: [
@@ -87,12 +87,12 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
     return isAuth ? <>
         <Header style={{ margin: '0px', padding: '0px' }} >
             <Row>
-                <Col style={{ textAlign: 'center' }} xs={4} sm={3} md={2} lg={2} xl={2} xxl={1}>
+                <Col style={{ textAlign: 'center' }} xs={4} sm={3} md={2} lg={2} xl={1} xxl={1}>
                     <Link to="/work">
                         <Image src={logo} style={{ width: '40px', height: '40px', display: 'inline' }} preview={false} />
                     </Link>
                 </Col>
-                <Col xs={10} sm={15} md={18} lg={19} xl={19} xxl={18}>
+                <Col xs={10} sm={15} md={15} lg={16} xl={18} xxl={18}>
                     {isAuth &&
                         <Menu
                             theme="dark"
@@ -103,11 +103,11 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
                         />
                     }
                 </Col>
-                <Col style={{ textAlign: 'right', paddingRight: '10px' }} xxl={4}>
-                    <Text style={{color: 'gold', fontSize: '12pt'}}>{userName}</Text>
+                <Col style={{ textAlign: 'right', paddingRight: '10px' }} xs={4} sm={3} md={6} lg={5} xl={4} xxl={4}>
+                    <Text style={{ color: 'gold', fontSize: '12pt' }}>{userName}</Text>
                     <Button type="link" icon={<LogoutOutlined />} onClick={handleLogout}>Выход</Button>
                 </Col>
-                <Col style={{ textAlign: 'right', paddingRight: '10px' }} xs={10} sm={6} md={4} lg={3} xl={3} xxl={1}>
+                <Col style={{ textAlign: 'right', paddingRight: '10px' }} xs={10} sm={6} md={1} lg={1} xl={1} xxl={1}>
                     <Button shape="circle" onClick={() => swithTheme(typeTheme === 'dark' ? true : false)} type={typeTheme === 'dark' ? 'primary' : 'link'} icon={<Image width={20} preview={false} src={darkIcon} />} />
                 </Col>
             </Row>

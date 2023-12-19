@@ -14,6 +14,7 @@ import Highlighter from 'react-highlight-words';
 import type { InputRef } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
+import { NewObjectForm } from "./CreateNewObjectForm"
 
 const { Text } = Typography;
 
@@ -54,7 +55,6 @@ export const Systems: React.FC = () => {
     }))
 
     const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef<InputRef>(null);
 
     const handleSearch = (
@@ -63,8 +63,7 @@ export const Systems: React.FC = () => {
         dataIndex: DataIndex,
     ) => {
         confirm();
-        setSearchText(selectedKeys[0]);
-        setSearchedColumn(dataIndex);
+        setSearchText(selectedKeys[0])
     };
 
     const handleReset = (clearFilters: () => void) => {
@@ -206,8 +205,13 @@ export const Systems: React.FC = () => {
                         columns={columns}
                         dataSource={data}
                         bordered={false}
-                        pagination={false}
-                        title={() => <Text style={{ fontSize: '14pt' }}>Компьютеризированные и инженерные системы (всего: {sysData.length})</Text>}
+                        pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"]}}
+                        title={() => <>
+                            <Text style={{ fontSize: '13pt' }}>
+                                <NewObjectForm />
+                                Компьютеризированные и инженерные системы (всего: {sysData.length})
+                            </Text>
+                        </>}
                         size="small"
                         style={{ marginBottom: '30px' }}
                     />

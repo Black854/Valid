@@ -18,6 +18,7 @@ import { getDepartmentsSelector, getEquipGroupsSelector, getIntervals, getVMPDep
 import { getDepartments, getEquipGroups, getVMPDepartments } from "../../redux/Reducers/appReducer";
 import { useForm } from "react-hook-form";
 import { NewObjectForm } from "./CreateNewObjectForm";
+import Title from "antd/es/typography/Title";
 
 const { Text } = Typography;
 
@@ -57,9 +58,8 @@ export const Equipment: React.FC = () => {
     foto: e.foto
   }))
 
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
-  const searchInput = useRef<InputRef>(null);
+  const [searchText, setSearchText] = useState('')
+  const searchInput = useRef<InputRef>(null)
 
   const handleSearch = (
     selectedKeys: string[],
@@ -68,7 +68,6 @@ export const Equipment: React.FC = () => {
   ) => {
     confirm();
     setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
   };
 
   const handleReset = (clearFilters: () => void) => {
@@ -132,12 +131,12 @@ export const Equipment: React.FC = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: <Text strong style={{ fontSize: '12pt' }}>№</Text>,
+      title: <Text>№</Text>,
       dataIndex: 'index',
       align: 'center'
     },
     {
-      title: <Text strong style={{ fontSize: '12pt' }}>Наименование</Text>,
+      title: <Text>Наименование</Text>,
       dataIndex: 'name',
       render: (text, record) => (
         <Row>
@@ -169,7 +168,7 @@ export const Equipment: React.FC = () => {
       ...getColumnSearchProps('name'),
     },
     {
-      title: <Text strong style={{ fontSize: '12pt' }}>Подразделение</Text>,
+      title: <Text>Подразделение</Text>,
       dataIndex: 'sp2',
       filters: [
         { text: 'МБЛ', value: 'МБЛ' },
@@ -187,7 +186,7 @@ export const Equipment: React.FC = () => {
       align: 'center',
     },
     {
-      title: <Text strong style={{ fontSize: '12pt' }}>Учетный номер</Text>,
+      title: <Text>Учетный номер</Text>,
       dataIndex: 'inv',
       render: (inv) => {
         if (inv !== '') {
@@ -201,7 +200,7 @@ export const Equipment: React.FC = () => {
       ...getColumnSearchProps('inv'),
     },
     {
-      title: <Text strong style={{ fontSize: '12pt' }}>Группа</Text>,
+      title: <Text>Группа</Text>,
       dataIndex: 'group',
       filters: [
         { text: 'Термостаты', value: 'Термостаты' },
@@ -217,7 +216,7 @@ export const Equipment: React.FC = () => {
       align: 'center',
     },
     {
-      title: <Text strong style={{ fontSize: '12pt' }}>Дата (до)</Text>,
+      title: <Text>Дата (до)</Text>,
       dataIndex: 'date',
       render: (date, record) => { return <RenderDateHelper date={date} record={record} /> },
       width: '10%',
@@ -241,10 +240,12 @@ export const Equipment: React.FC = () => {
             columns={columns}
             dataSource={data}
             bordered={false}
-            pagination={{ defaultPageSize: 20 }}
+            pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"]}}
             title={() => <>
-              <NewObjectForm />
-              <Text style={{ fontSize: '14pt' }}>Оборудование (всего: {equipData.length})</Text>
+              <Text style={{ fontSize: '13pt' }}>
+                <NewObjectForm />
+                Оборудование (всего: {equipData.length})
+              </Text>
             </>}
             size="small"
           />

@@ -84,6 +84,16 @@ export type CleanGroupLabelsType = {
     groupId: string
 }
 
+export type NewPremObjectType = {
+    spVMP: string,
+    sp: string,
+    name: string,
+    nomer: string,
+    class: string,
+    mode: string,
+    ar: string
+}
+
 let initialState = {
     data: [] as DataType[],
     reestrData: [] as PremReestrType[],
@@ -334,6 +344,17 @@ export const getCurrentPremData = (myPremDataIdArray: Array<string>): ThunkType 
 
 export const updatePremWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string): ThunkType => async (dispatch) => {
     await premisesAPI.updatePremWorkData(recordId, changeParam, text)
+}
+
+export const createNewObject = (data: NewPremObjectType): ThunkType => async (dispatch) => {
+    dispatch(premActions.setIsLoading(true))
+    const responseData = await premisesAPI.createNewObject(data)
+    if (responseData.resultCode === '0') {
+        dispatch(premActions.pushPremisesData(responseData.items))
+    } else {
+        console.log('someError')
+    }
+    dispatch(premActions.setIsLoading(false))
 }
 
 type ActionTypes = InferActionsTypes<typeof premActions>

@@ -58,14 +58,21 @@ let initialState = {
     sysIdArrayAtWorkAtCurrentUser: [] as SysReestrType[],
 }
 
+export type NewSysObjectType = {
+    spVMP: string,
+    sp: string,
+    name: string,
+    ar: string
+}
+
 type InitialStateType = typeof initialState
 
 export const systemsReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case 'sys/PUSH_SYS_DATA':
-            return {...state, data: action.data, isLoading: false}
+            return {...state, data: action.data}
         case 'sys/IS_LOADING':
-            return {...state, isLoading: true}
+            return {...state, isLoading: action.data}
         case 'sys/PUSH_REESTR_DATA':
             return {...state, reestrData: action.data}            
         case 'sys/SET_TECH_INFO':
@@ -84,9 +91,10 @@ export const systemsReducer = (state = initialState, action: ActionTypes): Initi
 }
 
 export const getSystems = (): ThunkType => async (dispatch) => {
-    dispatch (sysActions.setIsLoading())
+    dispatch (sysActions.setIsLoading(true))
     let data = await systemsAPI.getSystems()
     dispatch (sysActions.pushSystemsData(data.items))
+    dispatch (sysActions.setIsLoading(false))
 }
 
 export const getReestrData = (id: string): ThunkType => async (dispatch) => {
@@ -233,13 +241,24 @@ export const updateSysWorkData = (recordId: string, changeParam: 'et' | 'season'
     await systemsAPI.updateSysWorkData(recordId, changeParam, text)
 }
 
+export const createNewObject = (data: NewSysObjectType): ThunkType => async (dispatch) => {
+    dispatch(sysActions.setIsLoading(true))
+    const responseData = await systemsAPI.createNewObject(data)
+    if (responseData.resultCode === '0') {
+        dispatch(sysActions.pushSystemsData(responseData.items))
+    } else {
+        console.log('someError')
+    }
+    dispatch(sysActions.setIsLoading(false))
+}
+
 type ActionTypes = InferActionsTypes<typeof sysActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 const sysActions = {
     pushSystemsData: (data: DataType[]) => ({ type: 'sys/PUSH_SYS_DATA', data } as const),
     pushReestrData: (data: SysReestrType[]) => ({ type: 'sys/PUSH_REESTR_DATA', data } as const),
-    setIsLoading: () => ({ type: 'sys/IS_LOADING' } as const),
+    setIsLoading: (data: boolean) => ({ type: 'sys/IS_LOADING', data } as const),
     setTechnicalInfo: (text: string) => ({ type: 'sys/SET_TECH_INFO', text } as const),
     setPhotosData: (data: PhotosType[]) => ({ type: 'sys/SET_PHOTOS', data } as const),
     setIsReestrDataLoading: (data: boolean) => ({ type: 'sys/SET_IS_REESTR_DATA_LOADING', data } as const),

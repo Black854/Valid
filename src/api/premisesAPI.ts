@@ -1,4 +1,5 @@
 import axios from "axios"
+import { NewPremObjectType } from "../redux/Reducers/premisesReducer" 
 
 const instance = axios.create({
     baseURL: 'http://10.85.10.212/ov/api/prem/',
@@ -226,6 +227,11 @@ export const premisesAPI = {
             text
         }
         return instance.post(`updatePremWorkData.php`, requestData, {}).then (response => {
+            return response.data
+        })
+    },
+    createNewObject(data: NewPremObjectType) {
+        return instance.post(`createNewObject.php`, data, {}).then(response => {
             return response.data
         })
     },
