@@ -1,19 +1,22 @@
-import { Typography, Col, Image, Row, Spin, Table, Card, Button, Space, Input } from "antd";
+import { Typography, Col, Image, Row, Spin, Table, Card, Button, Space, Input, Modal, Form, Select } from "antd";
 import { Content } from "antd/es/layout/layout"
 import { useDispatch, useSelector } from "react-redux";
 import { getEquipData, getIsLoading } from "../../redux/Selectors/equipmentSelectors";
 import { getEquipment } from "../../redux/Reducers/equipmentReducer";
-import { EyeOutlined } from '@ant-design/icons';
+import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { RenderDateHelper } from "../common/renderDateHelper";
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AppDispatch } from "../../redux/store";
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import type { InputRef } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
+import { getDepartmentsSelector, getEquipGroupsSelector, getIntervals, getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors";
+import { getDepartments, getEquipGroups, getVMPDepartments } from "../../redux/Reducers/appReducer";
+import { useForm } from "react-hook-form";
 
 const { Text } = Typography;
 
@@ -225,6 +228,44 @@ export const Equipment: React.FC = () => {
     ...item,
     index: index + 1,
   }))
+
+  useEffect(() => {
+    dispatch(getVMPDepartments())
+    dispatch(getDepartments())
+    dispatch(getEquipGroups('all'))
+  }, [])
+
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      spVMP: null,
+      sp: null,
+      nomer: null,
+      name: null,
+      group: null,
+      manufacturer: null,
+      manufacturdate: null,
+      serial: null,
+      inv: null,
+      ar: null
+    },
+  });
+
+  const [showForm, setShowForm] = useState(false)
+  const VMPDepartmentData = useSelector(getVMPDepartmentsSelector).filter(e => e.isactive !== '1').map(e => ({ label: e.vmpname1, value: e.vmpname1 }))
+  const DepartmentData = useSelector(getDepartmentsSelector).filter(e => e.stat === '1').map(e => ({ label: e.name, value: e.name }))
+  const GroupsData = useSelector(getEquipGroupsSelector).filter(e => e.isactive !== '1').map(e => ({ label: e.name, value: e.name }))
+  const IntervalsData = useSelector(getIntervals).map(e => ({ label: e.label, value: e.value }))
+
+  const handleCancel = () => {
+    setShowForm(false)
+  }
+
+  const onSubmit = (data: any) => {
+    setShowForm(false)
+    console.log(data) // Ваши данные формы
+    // Здесь можно отправить данные на бэкенд или выполнить другую логику
+  }
+
   if (isLoading) {
     return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
   }
@@ -237,7 +278,63 @@ export const Equipment: React.FC = () => {
             dataSource={data}
             bordered={false}
             pagination={{ defaultPageSize: 20 }}
-            title={() => <Text style={{ fontSize: '14pt' }}>Оборудование (всего: {equipData.length})</Text>}
+            title={() => <>
+              <Button type="link" icon={<PlusOutlined />} onClick={() => setShowForm(true)} />
+              <Modal destroyOnClose centered title='Добавление объекта в систему' open={showForm} onCancel={() => handleCancel()} footer={[<Button key="close" onClick={() => handleCancel()} type="primary">Отмена</Button>]} >
+                <Form style={{ marginTop: '30px' }} layout="horizontal" size="small" onFinish={handleSubmit(onSubmit)}>
+                  <Form.Item label='Подразделение (по ВМП)'>
+                    <Select
+                      size="small"
+                      options={VMPDepartmentData}
+                      {...register('spVMP')}
+                    />
+                  </Form.Item>
+                  <Form.Item label='Подразделение (по ответственности)'>
+                    <Select
+                      size="small"
+                      options={DepartmentData}
+                      {...register('sp')}
+                    />
+                  </Form.Item>
+                  <Form.Item label="Номер помещения">
+                    <Input size="small" {...register('nomer')} />
+                  </Form.Item>
+                  <Form.Item label="Наименование">
+                    <Input size="small" {...register('name')} />
+                  </Form.Item>
+                  <Form.Item label='Группа'>
+                    <Select
+                      size="small"
+                      options={GroupsData}
+                      {...register('group')}
+                    />
+                  </Form.Item>
+                  <Form.Item label="Производитель">
+                    <Input size="small" {...register('manufacturer')} />
+                  </Form.Item>
+                  <Form.Item label="Год изготовления">
+                    <Input size="small" {...register('manufacturdate')} />
+                  </Form.Item>
+                  <Form.Item label="Серийный (заводской) номер">
+                    <Input size="small" {...register('serial')} />
+                  </Form.Item>
+                  <Form.Item label="Учетный номер">
+                    <Input size="small" {...register('inv')} />
+                  </Form.Item>
+                  <Form.Item label='Интервал по АР'>
+                    <Select
+                      size="small"
+                      options={IntervalsData}
+                      {...register('ar')}
+                    />
+                  </Form.Item>
+                  <Form.Item>
+                    <Button style={{ marginTop: '15px' }} size="small" type="primary" htmlType="submit">Создать объект</Button>
+                  </Form.Item>
+                </Form>
+              </Modal>
+              <Text style={{ fontSize: '14pt' }}>Оборудование (всего: {equipData.length})</Text>
+            </>}
             size="small"
           />
         </Col>

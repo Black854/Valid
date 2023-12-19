@@ -8,7 +8,7 @@ import video from './../../../../img/video.png'
 import { RcFile } from "antd/es/upload"
 import { AppDispatch } from "../../../../redux/store"
 import { getPhotosSelector } from "../../../../redux/Selectors/instrumentsSelectors";
-import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/Reducers/instrumentsReducer";
+import { deletePhoto, getPhotos, updatePdfDescription, updatePhotosDataWhenPhotoIsDownloading, uploadPhotos } from "../../../../redux/Reducers/instrumentsReducer";
 const {Text, Title} = Typography
 
 type PhotosBlockPropsType = {
@@ -57,6 +57,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
 
             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                 // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
+                dispatch(updatePhotosDataWhenPhotoIsDownloading())
                 dispatch(uploadPhotos(id, e.currentTarget.files[0]))
             } else {
                 // Файл имеет недопустимое расширение
@@ -141,6 +142,25 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                         >
                             <Button size="small" danger icon={<DeleteFilled />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1'}} />
                         </Popconfirm>
+                    </Col>
+        } else if (e.id === '99998') {
+            return  <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{padding: '4px'}}>
+                        {contextHolder}
+                        <Button 
+                            children={  <>
+                                            <LoadingOutlined />
+                                            <Text style={{color: 'inherit', display: 'block'}}>Файл загружается...</Text>
+                                        </>
+                            }
+                            style={{
+                                    minHeight: '100px',
+                                    height: '100%',
+                                    width: '100%',
+                                    cursor: 'pointer',
+                            }}
+                            type="dashed"
+                        />
+                        <input id="uploadPhoto" accept="image/jpeg, image/png, application/pdf, video/mp4" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
                     </Col>
         } else if (e.id === '99999') {
             return  <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{padding: '4px'}}>

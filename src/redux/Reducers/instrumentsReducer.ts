@@ -44,6 +44,8 @@ export const instrumentsReducer = (state = initialState, action: ActionTypes): I
             return {...state, technicalInfo: action.text}
         case 'inst/SET_PHOTOS':
             return {...state, photos: action.data}
+        case 'inst/SET_PHOTOS_WHEN_PHOTO_IS_DOWNLOADING':
+            return {...state, photos: [action.data, ...state.photos]}
         default:
             return state
     }
@@ -120,9 +122,19 @@ export const getPhotos = (id: string): ThunkType => async (dispatch) => {
     dispatch(instActions.setPhotosData(data.photos))
 }
 
-export const uploadPhotos = (id: string, file: any): ThunkType => async (dispatch) => { 
+export const uploadPhotos = (id: string, file: any): ThunkType => async (dispatch) => {
     let data = await instrumentsAPI.uploadPhotos(id, file)
     dispatch(instActions.setPhotosData(data.photos))
+}
+
+export const updatePhotosDataWhenPhotoIsDownloading = (): ThunkType => async (dispatch) => {
+    const uploadingObject = {
+        id: '99998',
+        idfromtable: '',
+        src: '',
+        name: ''
+    }
+    dispatch(instActions.updatePhotosDataWhenPhotoIsDownloading(uploadingObject))
 }
 
 export const deletePhoto = (id: string, photoId: string): ThunkType => async (dispatch) => { 
@@ -142,5 +154,6 @@ const instActions = {
     pushInstrumentsData: (data: DataType[]) => ({ type: 'inst/PUSH_INSTRUMENTS_DATA', data } as const),
     setIsLoading: () => ({ type: 'inst/IS_LOADING' } as const),
     setTechnicalInfo: (text: string) => ({ type: 'inst/SET_TECH_INFO', text } as const),
-    setPhotosData: (data: PhotosType[]) => ({ type: 'inst/SET_PHOTOS', data } as const)
+    setPhotosData: (data: PhotosType[]) => ({ type: 'inst/SET_PHOTOS', data } as const),
+    updatePhotosDataWhenPhotoIsDownloading: (data: PhotosType) => ({ type: 'inst/SET_PHOTOS_WHEN_PHOTO_IS_DOWNLOADING', data } as const)
 }
