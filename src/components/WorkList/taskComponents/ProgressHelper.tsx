@@ -221,7 +221,7 @@ export const ProgressHelper: React.FC<ProgresssHelper> = ({ record, myPremData, 
         } else if (record.objectType === 'processes' && c >= 50) {
             return <>
                 <Space style={{ textAlign: 'left' }}>
-                    <Progress type="dashboard" size={[50, 50]} percent={c} steps={b} style={{ margin: '0px', padding: '0px', float: 'left' }} status={c >= 100 ? 'success' : 'normal'} />
+                    <Progress type="dashboard" size={[50, 50]} percent={c} steps={b} style={{ margin: '0px', padding: '0px', float: 'left' }} status={c >= 100 ? 'success' : 'normal'} success={{ percent: record.objectType === 'processes' ? c >= 50 ? c : 0 : 0 }} />
                     <div style={{ float: 'left', marginLeft: '10px' }}>
                         <Popconfirm
                             title='Подтвердите изменение'

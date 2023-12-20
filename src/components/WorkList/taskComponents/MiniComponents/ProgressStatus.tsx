@@ -174,5 +174,5 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
     }
 
     let c = Math.round((a / b) * 100)
-    return <Progress type="dashboard" size={250} percent={c} status={c === 100 ? 'success' : 'normal'} />
+    return <Progress type="dashboard" size={250} percent={c} status={c === 100 ? 'success' : 'normal'} success={{ percent: record.objectType === 'processes' ? c >= 50 ? c : 0 : 0 }} />
 }
