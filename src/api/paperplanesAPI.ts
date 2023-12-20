@@ -27,4 +27,13 @@ export const paperplanesAPI = {
             return response.data
         })
     },
+    setPaperplanesDescription(id: string, description: string) {
+        const requestData = {
+            id,
+            description
+        }
+        return instance.post(`setPaperplanesDescription.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
 }

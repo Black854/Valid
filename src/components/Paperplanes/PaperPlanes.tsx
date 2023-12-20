@@ -6,7 +6,7 @@ import { AppDispatch } from "../../redux/store"
 import pdf from './../../img/pdfi.png'
 import video from './../../img/video.png'
 import { getPaperplanesSelector } from "../../redux/Selectors/paperplanesSelectors"
-import { createPaperplanes, deletePaperplanes, getPaperplanes } from "../../redux/Reducers/paperplanesReducer"
+import { createPaperplanes, deletePaperplanes, getPaperplanes, setPaperplanesDescription } from "../../redux/Reducers/paperplanesReducer"
 
 const { Text, Title } = Typography
 
@@ -37,8 +37,8 @@ export const PaperPlanes: React.FC = () => {
         dispatch(deletePaperplanes(photoId))
     }
 
-    const setPdfDescription = (photoId: string, text: string) => {
-        // dispatch(updatePdfDescription(photoId, text, id))
+    const setPdfDescription = (id: string, text: string) => {
+        dispatch(setPaperplanesDescription(id, text))
     }
 
     let paperplanesRenderArray = []
@@ -54,7 +54,7 @@ export const PaperPlanes: React.FC = () => {
             const fileExtension = fileName.split('.').pop()
 
             // Список разрешенных расширений
-            const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'mp4']
+            const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf']
 
             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                 // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
@@ -84,7 +84,7 @@ export const PaperPlanes: React.FC = () => {
                 isModalOpen = false
             }
             
-            return <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{ padding: '4px' }}>
+            return <Col key={e.id} xs={24} sm={12} md={8} lg={3} style={{ padding: '4px' }}>
                 <Text editable={{ onChange: (text) => { setPdfDescription(e.id, text) } }} style={{ color: 'black', position: 'absolute', top: '3%', left: '5%', width: '80%', zIndex: '1' }}>{e.planename}</Text>
                 <Image preview={false} src={pdf} height='100%' style={{ objectFit: 'cover', cursor: 'pointer' }} onClick={() => showModal(e.id)} />
                 <Modal title="Просмотр документа" open={isModalOpen} onCancel={() => handleCancel(e.id)} footer={[<Button key="close" onClick={() => handleCancel(e.id)} type="primary">Закрыть</Button>]} >
@@ -95,42 +95,6 @@ export const PaperPlanes: React.FC = () => {
                 <Popconfirm
                     title='Подтвердите удаление'
                     description='Вы уверены, что хотите удалить документ?'
-                    okText='Да'
-                    cancelText='Нет'
-                    onConfirm={() => { handleDeletePhoto(e.id) }}
-                >
-                    <Button size="small" danger icon={<DeleteFilled />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1' }} />
-                </Popconfirm>
-            </Col>
-        } else if (e.urlplane.endsWith('.mp4') || e.urlplane.endsWith('.MP4')) {
-            const handleCancel = (id: string) => {
-                setModalStates(modalStates.filter(elem => elem !== id))
-                if (videoRef.current) {
-                    videoRef.current.pause();
-                }
-            }
-            const showModal = (id: string) => {
-                setModalStates([...modalStates, id])
-            }
-            let isModalOpen: boolean
-            if (modalStates.find(elem => elem === e.id)) {
-                isModalOpen = true
-            } else {
-                isModalOpen = false
-            }
-            return <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{ padding: '4px' }}>
-                <Text editable={{ onChange: (text) => { setPdfDescription(e.id, text) } }} style={{ color: 'black', position: 'absolute', top: '3%', left: '5%', width: '80%', zIndex: '1' }}>{e.planename}</Text>
-                <Image preview={false} src={video} height='100%' style={{ objectFit: 'cover', cursor: 'pointer' }} onClick={() => showModal(e.id)} />
-                <Modal title="Просмотр видеозаписи" open={isModalOpen} onCancel={() => handleCancel(e.id)} footer={[<Button key="close" onClick={() => handleCancel(e.id)} type="primary">Закрыть</Button>]} >
-                    <video controls width="100%" height="600" ref={videoRef}>
-                        <source src={`http://10.85.10.212/ov/${e.urlplane}`} type="video/mp4" />
-                        Ваш браузер не поддерживает отображение видео. Вы можете{" "}
-                        <a href={`http://10.85.10.212/ov/${e.urlplane}`}>скачать его</a>.
-                    </video>
-                </Modal>
-                <Popconfirm
-                    title='Подтвердите удаление'
-                    description='Вы уверены, что хотите удалить видеозапись?'
                     okText='Да'
                     cancelText='Нет'
                     onConfirm={() => { handleDeletePhoto(e.id) }}
