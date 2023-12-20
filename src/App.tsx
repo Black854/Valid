@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from './redux/store'
 import { loginOfCookieData } from './redux/Reducers/authReducer'
 import { Vacations } from './components/Vacations/Vacations'
+import { PaperPlanes } from './components/Paperplanes/PaperPlanes'
 
 export const App: React.FC = () => {
   const location = useLocation()
@@ -71,6 +72,7 @@ export const App: React.FC = () => {
             <Route path="/vmp" element={<VmpPlans />} />
             <Route path="/vmp/:number/:year" element={<VmpPlans />} />
             <Route path="/vacations" element={<Vacations />} />
+            <Route path="/paperplanes" element={<PaperPlanes />} />
             <Route path="*" element={<Result404 />} />
           </Routes>
           <FloatButton.BackTop />

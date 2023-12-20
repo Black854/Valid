@@ -10,6 +10,7 @@ import { instrumentsReducer } from './Reducers/instrumentsReducer';
 import { plansReducer } from './Reducers/plansReducer';
 import { vmpReducer } from './Reducers/vmpReducer';
 import { workReducer } from './Reducers/workReducer';
+import { paperplanesReducer } from './Reducers/paperplanesReducer';
 
 let rootReducer = combineReducers({
   app: appReducer,
@@ -21,7 +22,8 @@ let rootReducer = combineReducers({
   auth: authReducer,
   plans: plansReducer,
   vmp: vmpReducer,
-  work: workReducer
+  work: workReducer,
+  paperplanes: paperplanesReducer,
 })
 
 type RootReducerType = typeof rootReducer
