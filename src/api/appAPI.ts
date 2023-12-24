@@ -61,4 +61,17 @@ export const appAPI = {
             return response.data
         })
     },
+    getPainterData() {
+        return instance.get(`getPainterData.php`).then(response => {
+            return response.data
+        })
+    },
+    setPainterData(data: any) {
+        const requestData = {
+            data
+        }
+        return instance.post(`setPainterData.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
 }

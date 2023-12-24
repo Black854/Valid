@@ -77,7 +77,8 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
                 ...filteredVMPDepartments,
                 { key: '/vacations', label: <Link to='/vacations'>График отпусков</Link> }]
         },
-        { key: '/paperplanes', label: <Link to='/paperplanes'>Планы зданий</Link> }
+        { key: '/paperplanes', label: <Link to='/paperplanes'>Планы зданий</Link> },
+        { key: '/painter', label: <Link to='/painter'>Интерактивная доска</Link> },
     ]
     { !isAuth && location.pathname !== '/login' && navigate('/login') }
     const handleLogout = () => {

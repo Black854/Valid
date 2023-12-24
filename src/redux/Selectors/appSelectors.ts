@@ -36,6 +36,14 @@ export const vacationsIsLoadingSelector = (state: AppStateType) => {
     return (state.app.vacationsIsLoading)
 }
 
+export const getThemeType = (state: AppStateType) => {
+    return (state.app.themeType)
+}
+
+export const getPainterDataSelector = (state: AppStateType) => {
+    return (state.app.painterData)
+}
+
 export const getIntervalsByAr = (state: AppStateType, ar: string | undefined = '0') => {
     const allIntervalsData = getIntervals(state); // Используем существующий селектор для получения всего массива данных
   

@@ -29,6 +29,9 @@ import { AppDispatch } from './redux/store'
 import { loginOfCookieData } from './redux/Reducers/authReducer'
 import { Vacations } from './components/Vacations/Vacations'
 import { PaperPlanes } from './components/Paperplanes/PaperPlanes'
+import { Painter } from './components/Painter/Painter'
+import { setTheme } from './redux/Reducers/appReducer'
+import { getThemeType } from './redux/Selectors/appSelectors'
 
 export const App: React.FC = () => {
   const location = useLocation()
@@ -36,19 +39,19 @@ export const App: React.FC = () => {
   const dispatch: AppDispatch = useDispatch()
   const isAuth = useSelector(getIsAuthSelector)
   !isAuth && dispatch(loginOfCookieData())
-  const [typeTheme, setTheme] = useState('dark') // Изначально устанавливаем темную тему
+  const themeType = useSelector(getThemeType)
   const { theme } = require('antd/lib')
   const handleThemeChange = (checked: boolean) => {
-    checked ? setTheme('light') : setTheme('dark')
+    checked ? dispatch(setTheme('light')) : dispatch(setTheme('dark'))
   }
   
   location.pathname === '/' && navigate('/work')
 
   return (
 
-    <ConfigProvider theme={{ algorithm: typeTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm }} locale={ruRU} >
+    <ConfigProvider theme={{ algorithm: themeType === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm }} locale={ruRU} >
       <Layout style={{ minHeight: '100vh' }}>
-        <Header1 swithTheme={handleThemeChange} typeTheme={typeTheme} />
+        <Header1 swithTheme={handleThemeChange} typeTheme={themeType} />
         <Layout>
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -73,6 +76,7 @@ export const App: React.FC = () => {
             <Route path="/vmp/:number/:year" element={<VmpPlans />} />
             <Route path="/vacations" element={<Vacations />} />
             <Route path="/paperplanes" element={<PaperPlanes />} />
+            <Route path="/painter" element={<Painter />} />
             <Route path="*" element={<Result404 />} />
           </Routes>
           <FloatButton.BackTop />

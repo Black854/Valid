@@ -60,6 +60,7 @@ export type VacationsType = {
 
 const initialState = {
     isInitialized: true,
+    themeType: 'dark' as 'dark' | 'light',
     equipGroups: [] as EquipGroup[],
     departments: [] as DepartmentsType[],
     vmpDepartments: [] as VMPDepartmentsType[],
@@ -83,7 +84,8 @@ const initialState = {
     sopCodeForm: '',
     allValidators: [] as AllValidatorsType[],
     vacationsData: [] as VacationsType[],
-    vacationsIsLoading: false
+    vacationsIsLoading: false,
+    painterData: [],
 }
 
 type InitialStateType = typeof initialState
@@ -105,6 +107,10 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
             return { ...state, vacationsData: action.data, vacationsIsLoading: false }
         case 'app/SET_VACATIONS_IS_LOADING':
             return { ...state, vacationsIsLoading: true }
+        case 'app/SET_THEME':
+            return { ...state, themeType: action.themeType }
+        case 'app/SET_PAINTER_DATA':
+            return {...state, painterData: action.data}
         default:
             return state
     }
@@ -158,6 +164,20 @@ export const deleteVacationsData = (fio: string, month: string): ThunkType => as
     dispatch(appActions.setVacationsData(data.items))
 }
 
+export const setTheme = (themeType: 'dark' | 'light'): ThunkType => async (dispatch) => {
+    dispatch(appActions.setTheme(themeType))
+}
+
+export const getPainterData = (): ThunkType => async (dispatch) => {
+    let data = await appAPI.getPainterData()
+    dispatch(appActions.setPainterData(data.items))
+}
+
+export const setPainterData = (dataArray: any): ThunkType => async (dispatch) => {
+    let data = await appAPI.setPainterData(dataArray)
+    dispatch(appActions.setPainterData(data.items))
+}
+
 type ActionTypes = InferActionsTypes<typeof appActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
@@ -170,4 +190,6 @@ const appActions = {
     setAllValidators: (data: AllValidatorsType[]) => ({ type: 'app/SET_ALL_VALIDATORS', data } as const),
     setVacationsData: (data: VacationsType[]) => ({ type: 'app/SET_VACATIONS_VATA', data } as const),
     setVacationsIsLoading: () => ({ type: 'app/SET_VACATIONS_IS_LOADING' } as const),
+    setTheme: (themeType: 'dark' | 'light') => ({ type: 'app/SET_THEME', themeType } as const),
+    setPainterData: (data: any) => ({ type: 'app/SET_PAINTER_DATA', data } as const),
 }
