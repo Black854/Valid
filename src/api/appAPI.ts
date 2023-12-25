@@ -74,4 +74,9 @@ export const appAPI = {
             return response.data
         })
     },
+    getCodeSettings() {
+        return instance.get(`getCodeSettings.php`).then(response => {
+            return response.data
+        })
+    },
 }

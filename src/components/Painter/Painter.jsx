@@ -28,16 +28,13 @@ export const Painter = () => {
 
   useEffect(() => {
     const timerId = setTimeout(() => {
-      // console.log('таймер сработал')
       if (painterData && painterData.length > 0 && elements.length > 0) {
-        const areEqual = _.isEqual(elements, JSON.parse(painterData));
+        const areEqual = _.isEqual(elements, JSON.parse(painterData))
         if (!areEqual && elements && elements.length > 0) {
-          // console.log('Отправка на сервер сработала')
           dispatch(setPainterData(elements))
         }
       } else {
         if (elements && elements.length > 0) {
-          // console.log('сработало 2')
           dispatch(setPainterData(elements))
         }
       }
@@ -47,9 +44,7 @@ export const Painter = () => {
   }, [elements])
 
   const handleUpdateElements = (e) => {
-    // console.log(e[0]['x'])
-    // console.log(elements[0]['x'])
-    const areEqual = _.isEqual(e, elements);
+    const areEqual = _.isEqual(e, elements)
     if (!areEqual) {
       setElements(e)
       console.log('onChange сработал')
@@ -57,7 +52,7 @@ export const Painter = () => {
   }
 
   return (
-    <div style={{ height: '85vh' }}>
+    <div style={{ height: '90vh' }}>
       <Excalidraw
         initialData={{
           elements,
@@ -70,5 +65,5 @@ export const Painter = () => {
         langCode='ru-RU'
       />
     </div>
-  );
+  )
 }

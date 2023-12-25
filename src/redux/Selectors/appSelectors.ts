@@ -44,6 +44,10 @@ export const getPainterDataSelector = (state: AppStateType) => {
     return (state.app.painterData)
 }
 
+export const getCodeSettingsSelector = (state: AppStateType) => {
+    return (state.app.codeSettingsData)
+}
+
 export const getIntervalsByAr = (state: AppStateType, ar: string | undefined = '0') => {
     const allIntervalsData = getIntervals(state); // Используем существующий селектор для получения всего массива данных
   

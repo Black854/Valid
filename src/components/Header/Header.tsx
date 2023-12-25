@@ -9,8 +9,9 @@ import { getVMPDepartments } from "../../redux/Reducers/appReducer"
 import { AppDispatch } from "../../redux/store"
 import { getAuthUserNameSelector, getIsAuthSelector } from "../../redux/Selectors/authSelectors"
 import { logout } from "../../redux/Reducers/authReducer"
-import { LogoutOutlined } from "@ant-design/icons"
+import { LogoutOutlined, SettingOutlined } from "@ant-design/icons"
 import darkIcon from './../../img/dark.png'
+import lightIcon from './../../img/light.png'
 
 const { Text } = Typography
 
@@ -107,8 +108,9 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
                     <Text style={{ color: 'gold', fontSize: '12pt' }}>{userName}</Text>
                     <Button type="link" icon={<LogoutOutlined />} onClick={handleLogout}>Выход</Button>
                 </Col>
-                <Col style={{ textAlign: 'right', paddingRight: '10px' }} xs={10} sm={6} md={1} lg={1} xl={1} xxl={1}>
-                    <Button shape="circle" onClick={() => swithTheme(typeTheme === 'dark' ? true : false)} type={typeTheme === 'dark' ? 'primary' : 'link'} icon={<Image width={20} preview={false} src={darkIcon} />} />
+                <Col style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', placeItems: 'center'}} xs={10} sm={6} md={1} lg={1} xl={1} xxl={1}>
+                    <Button type={typeTheme === 'dark' ? 'link' : 'link'} shape="circle" icon={<NavLink to='settings' style={{ display: 'inline-block'}}><SettingOutlined style={{fontSize: '18pt'}} /></NavLink>} />
+                    <Button shape="circle" onClick={() => swithTheme(typeTheme === 'dark' ? true : false)} type={typeTheme === 'dark' ? 'link' : 'link'} icon={<Image  preview={false} src={typeTheme === 'dark' ? lightIcon : darkIcon} />} />
                 </Col>
             </Row>
         </Header>

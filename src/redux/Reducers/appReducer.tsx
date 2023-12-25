@@ -2,14 +2,14 @@ import { ThunkAction } from "redux-thunk";
 import { appAPI } from "../../api/appAPI";
 import { AppStateType, InferActionsTypes } from "../store";
 
-type EquipGroup = {
+export type EquipGroupsType = {
     id: string
     name: string,
     name2: string,
     isactive: string
 }
 
-type DepartmentsType = {
+export type DepartmentsType = {
     id: string
     name: string
     name2: string
@@ -18,7 +18,7 @@ type DepartmentsType = {
     stat: string
 }
 
-type VMPDepartmentsType = {
+export type VMPDepartmentsType = {
     id: string
     vmpname1: string
     vmpname2: string
@@ -28,6 +28,12 @@ type VMPDepartmentsType = {
     code2: string
     datevmp: string
     isactive: string
+}
+
+export type CodeSettingsType = {
+    id: string
+    codeform: string
+    formname: string
 }
 
 export type PremModesType = {
@@ -61,7 +67,7 @@ export type VacationsType = {
 const initialState = {
     isInitialized: true,
     themeType: 'dark' as 'dark' | 'light',
-    equipGroups: [] as EquipGroup[],
+    equipGroups: [] as EquipGroupsType[],
     departments: [] as DepartmentsType[],
     vmpDepartments: [] as VMPDepartmentsType[],
     intervals: [
@@ -84,6 +90,7 @@ const initialState = {
     sopCodeForm: '',
     allValidators: [] as AllValidatorsType[],
     vacationsData: [] as VacationsType[],
+    codeSettingsData: [] as CodeSettingsType[],
     vacationsIsLoading: false,
     painterData: [],
 }
@@ -111,6 +118,8 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
             return { ...state, themeType: action.themeType }
         case 'app/SET_PAINTER_DATA':
             return {...state, painterData: action.data}
+        case 'app/SET_CODE_SETTINGS_DATA': 
+            return {...state, codeSettingsData: action.data}
         default:
             return state
     }
@@ -178,11 +187,16 @@ export const setPainterData = (dataArray: any): ThunkType => async (dispatch) =>
     dispatch(appActions.setPainterData(data.items))
 }
 
+export const getCodeSettings = (): ThunkType => async (dispatch) => {
+    let data = await appAPI.getCodeSettings()
+    dispatch(appActions.setCodeSettingsData(data.items))
+}
+
 type ActionTypes = InferActionsTypes<typeof appActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 const appActions = {
-    setEquipGroups: (data: EquipGroup[]) => ({ type: 'app/SET_EQUIP_GROUPS', data } as const),
+    setEquipGroups: (data: EquipGroupsType[]) => ({ type: 'app/SET_EQUIP_GROUPS', data } as const),
     setDepartments: (data: DepartmentsType[]) => ({ type: 'app/SET_DEPARTMENTS', data } as const),
     setVMPDepartments: (data: VMPDepartmentsType[]) => ({ type: 'app/SET_VMP_DEPARTMENTS', data } as const),
     setPremModes: (data: PremModesType[]) => ({ type: 'app/SET_PREM_MODES', data } as const),
@@ -192,4 +206,5 @@ const appActions = {
     setVacationsIsLoading: () => ({ type: 'app/SET_VACATIONS_IS_LOADING' } as const),
     setTheme: (themeType: 'dark' | 'light') => ({ type: 'app/SET_THEME', themeType } as const),
     setPainterData: (data: any) => ({ type: 'app/SET_PAINTER_DATA', data } as const),
+    setCodeSettingsData: (data: CodeSettingsType[]) => ({ type: 'app/SET_CODE_SETTINGS_DATA', data } as const),
 }

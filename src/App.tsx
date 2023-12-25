@@ -32,6 +32,7 @@ import { PaperPlanes } from './components/Paperplanes/PaperPlanes'
 import { Painter } from './components/Painter/Painter'
 import { setTheme } from './redux/Reducers/appReducer'
 import { getThemeType } from './redux/Selectors/appSelectors'
+import { Settings } from './components/Settings/Settings'
 
 export const App: React.FC = () => {
   const location = useLocation()
@@ -44,7 +45,7 @@ export const App: React.FC = () => {
   const handleThemeChange = (checked: boolean) => {
     checked ? dispatch(setTheme('light')) : dispatch(setTheme('dark'))
   }
-  
+
   location.pathname === '/' && navigate('/work')
 
   return (
@@ -77,6 +78,7 @@ export const App: React.FC = () => {
             <Route path="/vacations" element={<Vacations />} />
             <Route path="/paperplanes" element={<PaperPlanes />} />
             <Route path="/painter" element={<Painter />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<Result404 />} />
           </Routes>
           <FloatButton.BackTop />
