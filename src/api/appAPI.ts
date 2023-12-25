@@ -79,4 +79,24 @@ export const appAPI = {
             return response.data
         })
     },
+    setDepartmentsData(id: string, name2?: string, pos?: string, fio?: string, stat?: string) {
+        const requestData = name2 ? { id, name2 } :
+            pos ? { id, pos } :
+                fio ? { id, fio } :
+                    { id, stat }
+        return instance.post(`setDepartmentsData.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    setVMPDepartmentsData(id: string, vmpname1?: string, vmpname2?: string, code?: string, code2?: string, isactive?: string, menuname?: string) {
+        const requestData = vmpname1 ? { id, vmpname1 } :
+            vmpname2 ? { id, vmpname2 } :
+                code ? { id, code } :
+                code2 ? { id, code2 } :
+                menuname ? { id, menuname } :
+                    { id, isactive }
+        return instance.post(`setVMPDepartmentsData.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
 }

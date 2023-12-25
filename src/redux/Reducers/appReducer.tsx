@@ -192,6 +192,16 @@ export const getCodeSettings = (): ThunkType => async (dispatch) => {
     dispatch(appActions.setCodeSettingsData(data.items))
 }
 
+export const setDepartmentsData = (id: string, name2?: string, pos?: string, fio?: string, stat?: string): ThunkType => async (dispatch) => {
+    let data = await appAPI.setDepartmentsData(id, name2, pos, fio, stat)
+    dispatch(appActions.setDepartments(data.items))
+}
+
+export const setVMPDepartmentsData = (id: string, vmpname1?: string, vmpname2?: string, code?: string, code2?: string, isactive?: string, menuname?: string): ThunkType => async (dispatch) => {
+    let data = await appAPI.setVMPDepartmentsData(id, vmpname1, vmpname2, code, code2, isactive, menuname)
+    dispatch(appActions.setVMPDepartments(data.items))
+}
+
 type ActionTypes = InferActionsTypes<typeof appActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 

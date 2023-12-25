@@ -1,6 +1,6 @@
 import { Button, Table, Typography } from "antd"
 import { ColumnsType } from "antd/es/table"
-import { DepartmentsType, getDepartments } from "../../../redux/Reducers/appReducer"
+import { DepartmentsType, getDepartments, setDepartmentsData } from "../../../redux/Reducers/appReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { getDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
 import { useEffect } from "react"
@@ -16,6 +16,22 @@ export const Departments: React.FC = () => {
 
     const departmentsData = useSelector(getDepartmentsSelector)
 
+    const handleChangeName2 = (id: string, text: string) => {
+        dispatch(setDepartmentsData(id, text))
+    }
+
+    const handleChangePos = (id: string, text: string) => {
+        dispatch(setDepartmentsData(id, undefined, text))
+    }
+
+    const handleChangeFio = (id: string, text: string) => {
+        dispatch(setDepartmentsData(id, undefined, undefined, text))
+    }
+
+    const handleChangeIsActive = (id: string, text: string) => {
+        dispatch(setDepartmentsData(id, undefined, undefined, undefined, text))
+    }
+
     const columns: ColumnsType<DepartmentsType> = [
         {
             title: <Text>№</Text>,
@@ -29,22 +45,22 @@ export const Departments: React.FC = () => {
         {
             title: <Text>Наименование штатной единицы</Text>,
             dataIndex: 'name2',
-            render: (sp) => <Text editable>{sp}</Text>,
+            render: (text, record) => <Text editable={{ onChange: (text) => {handleChangeName2(record.id, text)}}}>{text}</Text>,
         },
         {
             title: <Text>Должность сотрудника</Text>,
             dataIndex: 'pos',
-            render: (text) => <Text editable>{text}</Text>,
+            render: (text, record) => <Text editable={{ onChange: (text) => {handleChangePos(record.id, text)}}}>{text}</Text>,
         },
         {
             title: <Text>Ф.И.О. сотрудника</Text>,
             dataIndex: 'fio',
-            render: (text) => <Text editable>{text}</Text>,
+            render: (text, record) => <Text editable={{ onChange: (text) => {handleChangeFio(record.id, text)}}}>{text}</Text>,
         },
         {
             title: <Text>Видимость в системе</Text>,
             dataIndex: 'stat',
-            render: (text) => <Button size="small" type="link">{text === '1' ? <Text type="success">Активен</Text> : <Text type="warning">Не активен</Text>}</Button>,
+            render: (text, record) => <Button onClick={() => {handleChangeIsActive(record.id, text === '1' ? '' : '1')}} size="small" type="link">{text === '1' ? <Text type="success">Активен</Text> : <Text type="warning">Не активен</Text>}</Button>,
             align: 'right',
         },
     ]
