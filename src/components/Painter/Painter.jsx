@@ -4,19 +4,23 @@ import { getPainterDataSelector, getThemeType } from '../../redux/Selectors/appS
 import { useDispatch, useSelector } from 'react-redux'
 import { getPainterData, setPainterData } from '../../redux/Reducers/appReducer'
 import _ from 'lodash'
+import { Spin, Typography } from 'antd'
+import { Loading } from '../common/Loading'
+
+const { Text } = Typography
 
 export const Painter = () => {
   const dispatch = useDispatch()
 
   const themeType = useSelector(getThemeType)
   const painterData = useSelector(getPainterDataSelector)
-  const [elements, setElements] = useState(painterData && painterData.length > 0 ? JSON.parse(painterData) : [])
+  const [elements, setElements] = useState(painterData && painterData.length > 0 ? JSON.parse(painterData) : null)
 
   useEffect(() => {
     dispatch(getPainterData())
 
     return () => {
-      if (elements.length > 0) {
+      if (elements && elements.length > 0) {
         dispatch(setPainterData(elements))
       }
     }
@@ -47,11 +51,10 @@ export const Painter = () => {
     const areEqual = _.isEqual(e, elements)
     if (!areEqual) {
       setElements(e)
-      console.log('onChange сработал')
     }
   }
 
-  return (
+  return elements ? (
     <div style={{ height: '90vh' }}>
       <Excalidraw
         initialData={{
@@ -65,5 +68,5 @@ export const Painter = () => {
         langCode='ru-RU'
       />
     </div>
-  )
+  ) : <Loading />
 }

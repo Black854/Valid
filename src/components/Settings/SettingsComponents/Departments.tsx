@@ -2,7 +2,7 @@ import { Button, Table, Typography } from "antd"
 import { ColumnsType } from "antd/es/table"
 import { DepartmentsType, getDepartments, setDepartmentsData } from "../../../redux/Reducers/appReducer"
 import { useDispatch, useSelector } from "react-redux"
-import { getDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
+import { getDepartmentsIsLoadingSelector, getDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
 import { useEffect } from "react"
 import { AppDispatch } from "../../../redux/store"
 
@@ -15,6 +15,7 @@ export const Departments: React.FC = () => {
     }, [])
 
     const departmentsData = useSelector(getDepartmentsSelector)
+    const departmentsIsLoading = useSelector(getDepartmentsIsLoadingSelector)
 
     const handleChangeName2 = (id: string, text: string) => {
         dispatch(setDepartmentsData(id, text))
@@ -82,6 +83,7 @@ export const Departments: React.FC = () => {
                 </Text>
             </>}
             size="small"
+            loading={departmentsIsLoading}
         />
     </>
 }

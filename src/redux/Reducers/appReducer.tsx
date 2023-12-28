@@ -93,6 +93,11 @@ const initialState = {
     codeSettingsData: [] as CodeSettingsType[],
     vacationsIsLoading: false,
     painterData: [],
+    premModesIsLoading: false,
+    equipGroupsIsLoading: false,
+    departmentsIsLoading: false,
+    VMPDepartmentsIsLoading: false,
+    codeFormsIsLoading: false
 }
 
 type InitialStateType = typeof initialState
@@ -117,32 +122,50 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
         case 'app/SET_THEME':
             return { ...state, themeType: action.themeType }
         case 'app/SET_PAINTER_DATA':
-            return {...state, painterData: action.data}
-        case 'app/SET_CODE_SETTINGS_DATA': 
-            return {...state, codeSettingsData: action.data}
+            return { ...state, painterData: action.data }
+        case 'app/SET_CODE_SETTINGS_DATA':
+            return { ...state, codeSettingsData: action.data }
+        case 'app/SET_PREM_MODES_IS_LOADING':
+            return { ...state, premModesIsLoading: action.status }
+        case 'app/SET_EQUIP_GROUPS_IS_LOADING':
+            return { ...state, equipGroupsIsLoading: action.status }
+        case 'app/SET_CODEFORMS_IS_LOADING':
+            return { ...state, codeFormsIsLoading: action.status }
+        case 'app/SET_DEPARTMENTS_IS_LOADING':
+            return { ...state, departmentsIsLoading: action.status }
+        case 'app/SET_VMP_DEPARTMENTS_IS_LOADING':
+            return { ...state, VMPDepartmentsIsLoading: action.status }
         default:
             return state
     }
 }
 
 export const getEquipGroups = (type: 'active' | 'all'): ThunkType => async (dispatch) => {
+    dispatch(appActions.setEquipGroupsIsLoading(true))
     let data = await appAPI.getEquipGroups(type)
     dispatch(appActions.setEquipGroups(data.groups))
+    dispatch(appActions.setEquipGroupsIsLoading(false))
 }
 
 export const getDepartments = (): ThunkType => async (dispatch) => {
+    dispatch(appActions.setDepartmentsIsLoading(true))
     let data = await appAPI.getDepartments()
     dispatch(appActions.setDepartments(data.items))
+    dispatch(appActions.setDepartmentsIsLoading(false))
 }
 
 export const getPremModes = (): ThunkType => async (dispatch) => {
+    dispatch(appActions.setPremModesIsLoading(true))
     let data = await appAPI.getPremModes()
     dispatch(appActions.setPremModes(data.modes))
+    dispatch(appActions.setPremModesIsLoading(false))
 }
 
 export const getVMPDepartments = (): ThunkType => async (dispatch) => {
+    dispatch(appActions.setVMPDepartmentsIsLoading(true))
     let data = await appAPI.getVMPDepartments()
     dispatch(appActions.setVMPDepartments(data.items))
+    dispatch(appActions.setVMPDepartmentsIsLoading(false))
 }
 
 export const getSopCodeForm = (): ThunkType => async (dispatch) => {
@@ -188,18 +211,45 @@ export const setPainterData = (dataArray: any): ThunkType => async (dispatch) =>
 }
 
 export const getCodeSettings = (): ThunkType => async (dispatch) => {
+    dispatch(appActions.setCodeFormsIsLoading(true))
     let data = await appAPI.getCodeSettings()
     dispatch(appActions.setCodeSettingsData(data.items))
+    dispatch(appActions.setCodeFormsIsLoading(false))
 }
 
 export const setDepartmentsData = (id: string, name2?: string, pos?: string, fio?: string, stat?: string): ThunkType => async (dispatch) => {
+    dispatch(appActions.setDepartmentsIsLoading(true))
     let data = await appAPI.setDepartmentsData(id, name2, pos, fio, stat)
     dispatch(appActions.setDepartments(data.items))
+    dispatch(appActions.setDepartmentsIsLoading(false))
 }
 
 export const setVMPDepartmentsData = (id: string, vmpname1?: string, vmpname2?: string, code?: string, code2?: string, isactive?: string, menuname?: string): ThunkType => async (dispatch) => {
+    dispatch(appActions.setVMPDepartmentsIsLoading(true))
     let data = await appAPI.setVMPDepartmentsData(id, vmpname1, vmpname2, code, code2, isactive, menuname)
     dispatch(appActions.setVMPDepartments(data.items))
+    dispatch(appActions.setVMPDepartmentsIsLoading(false))
+}
+
+export const setCodeFormsData = (id: string, codeform: string): ThunkType => async (dispatch) => {
+    dispatch(appActions.setCodeFormsIsLoading(true))
+    let data = await appAPI.setCodeFormsData(id, codeform)
+    dispatch(appActions.setCodeSettingsData(data.items))
+    dispatch(appActions.setCodeFormsIsLoading(false))
+}
+
+export const setPremModesData = (id: string, type?: string, low?: string, hight?: string, isactive?: string): ThunkType => async (dispatch) => {
+    dispatch(appActions.setPremModesIsLoading(true))
+    let data = await appAPI.setPremModesData(id, type, low, hight, isactive)
+    dispatch(appActions.setPremModes(data.modes))
+    dispatch(appActions.setPremModesIsLoading(false))
+}
+
+export const setEquipGroupsData = (id: string, name?: string, isactive?: string): ThunkType => async (dispatch) => {
+    dispatch(appActions.setEquipGroupsIsLoading(true))
+    let data = await appAPI.setEquipGroupsData(id, name, isactive)
+    dispatch(appActions.setEquipGroups(data.groups))
+    dispatch(appActions.setEquipGroupsIsLoading(false))
 }
 
 type ActionTypes = InferActionsTypes<typeof appActions>
@@ -217,4 +267,9 @@ const appActions = {
     setTheme: (themeType: 'dark' | 'light') => ({ type: 'app/SET_THEME', themeType } as const),
     setPainterData: (data: any) => ({ type: 'app/SET_PAINTER_DATA', data } as const),
     setCodeSettingsData: (data: CodeSettingsType[]) => ({ type: 'app/SET_CODE_SETTINGS_DATA', data } as const),
+    setPremModesIsLoading: (status: boolean) => ({ type: 'app/SET_PREM_MODES_IS_LOADING', status } as const),
+    setEquipGroupsIsLoading: (status: boolean) => ({ type: 'app/SET_EQUIP_GROUPS_IS_LOADING', status } as const),
+    setDepartmentsIsLoading: (status: boolean) => ({ type: 'app/SET_DEPARTMENTS_IS_LOADING', status } as const),
+    setVMPDepartmentsIsLoading: (status: boolean) => ({ type: 'app/SET_VMP_DEPARTMENTS_IS_LOADING', status } as const),
+    setCodeFormsIsLoading: (status: boolean) => ({ type: 'app/SET_CODEFORMS_IS_LOADING', status } as const),
 }

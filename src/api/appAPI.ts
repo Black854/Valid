@@ -92,10 +92,34 @@ export const appAPI = {
         const requestData = vmpname1 ? { id, vmpname1 } :
             vmpname2 ? { id, vmpname2 } :
                 code ? { id, code } :
-                code2 ? { id, code2 } :
-                menuname ? { id, menuname } :
-                    { id, isactive }
+                    code2 ? { id, code2 } :
+                        menuname ? { id, menuname } :
+                            { id, isactive }
         return instance.post(`setVMPDepartmentsData.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    setCodeFormsData(id: string, codeform: string) {
+        const requestData = {
+            id,
+            codeform
+        }
+        return instance.post(`setCodeSettings.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    setPremModesData(id: string, type?: string, low?: string, hight?: string, isactive?: string) {
+        const requestData = type ? { id, type } :
+            low ? { id, low } :
+                hight ? { id, hight } :
+                    { id, isactive }
+        return instance.post(`setPremModes.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    setEquipGroupsData(id: string, name?: string, isactive?: string) {
+        const requestData = name ? { id, name } : { id, isactive }
+        return instance.post(`setEquipGroups.php`, requestData, {}).then(response => {
             return response.data
         })
     },

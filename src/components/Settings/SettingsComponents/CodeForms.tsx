@@ -1,8 +1,8 @@
 import { Table, Typography } from "antd"
 import { ColumnsType } from "antd/es/table"
-import { CodeSettingsType, DepartmentsType, getCodeSettings, getDepartments } from "../../../redux/Reducers/appReducer"
+import { CodeSettingsType, DepartmentsType, getCodeSettings, getDepartments, setCodeFormsData } from "../../../redux/Reducers/appReducer"
 import { useDispatch, useSelector } from "react-redux"
-import { getCodeSettingsSelector } from "../../../redux/Selectors/appSelectors"
+import { getCodeFormsIsLoadingSelector, getCodeSettingsSelector } from "../../../redux/Selectors/appSelectors"
 import { useEffect } from "react"
 import { AppDispatch } from "../../../redux/store"
 
@@ -15,6 +15,7 @@ export const CodeForms: React.FC = () => {
     }, [])
 
     const codeSettingsData = useSelector(getCodeSettingsSelector)
+    const codeFormsIsLoading = useSelector(getCodeFormsIsLoadingSelector)
 
     const columns: ColumnsType<CodeSettingsType> = [
         {
@@ -29,14 +30,18 @@ export const CodeForms: React.FC = () => {
         {
             title: <Text>Кодировка печатной формы</Text>,
             dataIndex: 'codeform',
-            render: (text) => <Text editable>{text}</Text>,
+            render: (text, record) => <Text editable={{ onChange: (text) => {handleUpdateCodeForm(record.id, text)}}}>{text}</Text>,
         },
     ]
 
     const data: CodeSettingsType[] = codeSettingsData.map((item, index) => ({
         ...item,
         index: index + 1,
-      }))
+    }))
+
+    const handleUpdateCodeForm = (id: string, codeform: string) => {
+        dispatch(setCodeFormsData(id, codeform))
+    }
 
     return <>
         <Table
@@ -50,6 +55,7 @@ export const CodeForms: React.FC = () => {
                 </Text>
             </>}
             size="small"
+            loading={codeFormsIsLoading}
         />
     </>
 }

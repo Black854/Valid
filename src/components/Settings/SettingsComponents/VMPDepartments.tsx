@@ -2,7 +2,7 @@ import { Button, Table, Typography } from "antd"
 import { ColumnsType } from "antd/es/table"
 import { VMPDepartmentsType, getVMPDepartments, setVMPDepartmentsData } from "../../../redux/Reducers/appReducer"
 import { useDispatch, useSelector } from "react-redux"
-import { getVMPDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
+import { getVMPDepartmentsIsLoadingSelector, getVMPDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
 import { useEffect } from "react"
 import { AppDispatch } from "../../../redux/store"
 
@@ -15,6 +15,7 @@ export const VMPDepartments: React.FC = () => {
     }, [])
 
     const VMPdepartmentsData = useSelector(getVMPDepartmentsSelector)
+    const VMPdepartmentsIsLoading = useSelector(getVMPDepartmentsIsLoadingSelector)
 
     const handleChangeVmpname1 = (id: string, text: string) => {
         dispatch(setVMPDepartmentsData(id, text))
@@ -98,6 +99,7 @@ export const VMPDepartments: React.FC = () => {
                 </Text>
             </>}
             size="small"
+            loading={VMPdepartmentsIsLoading}
         />
     </>
 }

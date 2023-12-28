@@ -56,3 +56,23 @@ export const getIntervalsByAr = (state: AppStateType, ar: string | undefined = '
   
     return intervalWithAr?.interval; // Возвращаем объект или null, если не найден
 }
+
+export const getPremModesIsLoadingSelector = (state: AppStateType) => {
+    return (state.app.premModesIsLoading)
+}
+
+export const getEquipGroupsIsLoadingSelector = (state: AppStateType) => {
+    return (state.app.equipGroupsIsLoading)
+}
+
+export const getCodeFormsIsLoadingSelector = (state: AppStateType) => {
+    return (state.app.codeFormsIsLoading)
+}
+
+export const getDepartmentsIsLoadingSelector = (state: AppStateType) => {
+    return (state.app.departmentsIsLoading)
+}
+
+export const getVMPDepartmentsIsLoadingSelector = (state: AppStateType) => {
+    return (state.app.VMPDepartmentsIsLoading)
+}
