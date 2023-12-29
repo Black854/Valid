@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getDepartmentsIsLoadingSelector, getDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
 import { useEffect } from "react"
 import { AppDispatch } from "../../../redux/store"
+import { NewDepartmentForm } from "./FormCreators/CreateNewDepartment"
 
 const { Text } = Typography
 
@@ -79,6 +80,7 @@ export const Departments: React.FC = () => {
             pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"] }}
             title={() => <>
                 <Text style={{ fontSize: '13pt' }}>
+                    <NewDepartmentForm />
                     Настройки подразделений
                 </Text>
             </>}

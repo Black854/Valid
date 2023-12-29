@@ -1,6 +1,7 @@
 import { ThunkAction } from "redux-thunk";
 import { appAPI } from "../../api/appAPI";
 import { AppStateType, InferActionsTypes } from "../store";
+import { UseFormSetError } from "react-hook-form";
 
 export type EquipGroupsType = {
     id: string
@@ -250,6 +251,34 @@ export const setEquipGroupsData = (id: string, name?: string, isactive?: string)
     let data = await appAPI.setEquipGroupsData(id, name, isactive)
     dispatch(appActions.setEquipGroups(data.groups))
     dispatch(appActions.setEquipGroupsIsLoading(false))
+}
+
+export const createNewDepartment = (name: string, name2: string, pos: string, fio: string, stat: string, setError: UseFormSetError<DepartmentsType>): ThunkType => async (dispatch) => {
+    dispatch(appActions.setDepartmentsIsLoading(true))
+    let data = await appAPI.createNewDepartment(name, name2, pos, fio, stat)
+    if (data.resultCode === '0') {
+        dispatch(appActions.setDepartments(data.items))
+    } else {
+        setError('name', {
+            type: 'server',
+            message: data.message
+        })
+    }
+    dispatch(appActions.setDepartmentsIsLoading(false))
+}
+
+export const createNewVMPDepartment = (vmpname1: string, vmpname2: string, menuname: string, code: string, code2: string, datevmp: string, isactive: string, setError: UseFormSetError<VMPDepartmentsType>): ThunkType => async (dispatch) => {
+    dispatch(appActions.setDepartmentsIsLoading(true))
+    let data = await appAPI.createNewVMPDepartment(vmpname1, vmpname2, menuname, code, code2, datevmp, isactive)
+    if (data.resultCode === '0') {
+        dispatch(appActions.setVMPDepartments(data.items))
+    } else {
+        setError('vmpname1', {
+            type: 'server',
+            message: data.message
+        })
+    }
+    dispatch(appActions.setDepartmentsIsLoading(false))
 }
 
 type ActionTypes = InferActionsTypes<typeof appActions>

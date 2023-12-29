@@ -31,7 +31,7 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
         VMPDepartments.length === 0 && dispatch(getVMPDepartments())
     }, [])
     const currentYear = new Date().getFullYear()
-    const filteredVMPDepartments = VMPDepartments.filter(e => e.isactive === '').map(e => ({ key: `/vmp/${e.id}`, label: <Link to={`/vmp/${e.id}/${currentYear}`}>{e.menuname}</Link> }))
+    const filteredVMPDepartments = VMPDepartments.filter(e => e.isactive === '0').map(e => ({ key: `/vmp/${e.id}`, label: <Link to={`/vmp/${e.id}/${currentYear}`}>{e.menuname}</Link> }))
     const vmpTables = VMPDepartments.filter(e => e.isactive === '').map(e => "/vmp/" + e.id)
 
     const getPathnameWithoutTrailingSlash = (pathname: string) => {
@@ -56,6 +56,7 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
                 return table
             }
         }
+        
         return pathname
     }
 

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getVMPDepartmentsIsLoadingSelector, getVMPDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
 import { useEffect } from "react"
 import { AppDispatch } from "../../../redux/store"
+import { NewVMPDepartmentForm } from "./FormCreators/CreateNewVMPDepartment"
 
 const { Text } = Typography
 
@@ -77,7 +78,7 @@ export const VMPDepartments: React.FC = () => {
         {
             title: <Text>Действия</Text>,
             dataIndex: 'isactive',
-            render: (text, record) => <Button onClick={() => {handleChangeIsActive(record.id, text === '1' ? '' : '1')}} size="small" type="link">{text === '' ? <Text type="success">Активен</Text> : <Text type="warning">Не активен</Text>}</Button>,
+            render: (text, record) => <Button onClick={() => {handleChangeIsActive(record.id, text === '1' ? '0' : '1')}} size="small" type="link">{text === '0' ? <Text type="success">Активен</Text> : <Text type="warning">Не активен</Text>}</Button>,
             align: 'right',
         },
     ]
@@ -95,6 +96,7 @@ export const VMPDepartments: React.FC = () => {
             pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"] }}
             title={() => <>
                 <Text style={{ fontSize: '13pt' }}>
+                    <NewVMPDepartmentForm />
                     Настройки мастер-планов
                 </Text>
             </>}

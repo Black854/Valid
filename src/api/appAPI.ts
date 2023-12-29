@@ -80,20 +80,20 @@ export const appAPI = {
         })
     },
     setDepartmentsData(id: string, name2?: string, pos?: string, fio?: string, stat?: string) {
-        const requestData = name2 ? { id, name2 } :
-            pos ? { id, pos } :
-                fio ? { id, fio } :
+        const requestData = name2 !== undefined && name2 !== null ? { id, name2 } :
+            pos !== undefined && pos !== null ? { id, pos } :
+                fio !== undefined && fio !== null ? { id, fio } :
                     { id, stat }
         return instance.post(`setDepartmentsData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
     setVMPDepartmentsData(id: string, vmpname1?: string, vmpname2?: string, code?: string, code2?: string, isactive?: string, menuname?: string) {
-        const requestData = vmpname1 ? { id, vmpname1 } :
-            vmpname2 ? { id, vmpname2 } :
-                code ? { id, code } :
-                    code2 ? { id, code2 } :
-                        menuname ? { id, menuname } :
+        const requestData = vmpname1 !== undefined && vmpname1 !== null ? { id, vmpname1 } :
+            vmpname2 !== undefined && vmpname2 !== null ? { id, vmpname2 } :
+                code !== undefined && code !== null ? { id, code } :
+                    code2 !== undefined && code2 !== null ? { id, code2 } :
+                        menuname !== undefined && menuname !== null ? { id, menuname } :
                             { id, isactive }
         return instance.post(`setVMPDepartmentsData.php`, requestData, {}).then(response => {
             return response.data
@@ -109,17 +109,43 @@ export const appAPI = {
         })
     },
     setPremModesData(id: string, type?: string, low?: string, hight?: string, isactive?: string) {
-        const requestData = type ? { id, type } :
-            low ? { id, low } :
-                hight ? { id, hight } :
+        const requestData = type !== undefined && type !== null ? { id, type } :
+            low !== undefined && low !== null ? { id, low } :
+                hight !== undefined && hight !== null ? { id, hight } :
                     { id, isactive }
         return instance.post(`setPremModes.php`, requestData, {}).then(response => {
             return response.data
         })
     },
     setEquipGroupsData(id: string, name?: string, isactive?: string) {
-        const requestData = name ? { id, name } : { id, isactive }
+        const requestData = name !== undefined && name !== null ? { id, name } : { id, isactive }
         return instance.post(`setEquipGroups.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    createNewDepartment(name: string, name2: string, pos: string, fio: string, stat: string) {
+        const requestData = {
+            name,
+            name2,
+            pos,
+            fio,
+            stat
+        }
+        return instance.post(`createNewDepartment.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    createNewVMPDepartment(vmpname1: string, vmpname2: string, menuname: string, code: string, code2: string, datevmp: string, isactive: string) {
+        const requestData = {
+            vmpname1,
+            vmpname2,
+            menuname,
+            code,
+            code2,
+            datevmp,
+            isactive
+        }
+        return instance.post(`createNewVMPDepartment.php`, requestData, {}).then(response => {
             return response.data
         })
     },
