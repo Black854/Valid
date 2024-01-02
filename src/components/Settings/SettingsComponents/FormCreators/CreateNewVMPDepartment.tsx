@@ -17,7 +17,7 @@ export const NewVMPDepartmentForm: React.FC = () => {
     const [showForm, setShowForm] = useState(false)
 
     const isActiveOptions = [
-        {label: 'Активен', value: ''},
+        {label: 'Активен', value: '0'},
         {label: 'Не активен', value: '1'}
     ]
 
@@ -38,11 +38,11 @@ export const NewVMPDepartmentForm: React.FC = () => {
         <Button type="link" icon={<PlusOutlined />} onClick={() => setShowForm(true)} />
         <Modal width={550} destroyOnClose centered title='Добавление мастер-плана в систему' open={showForm} onCancel={() => handleCancel()} footer={[<Button key="close" onClick={() => handleCancel()} type="primary">Отмена</Button>]} >
             <Form style={{ marginTop: '30px' }} layout="horizontal" size="small" onFinish={handleSubmit(submit)}>
-                <CustomController control={control} name='vmpname1' type='text' label='Подразделение мастер-плана' required={true} maxLength={100} />
-                <CustomController control={control} name='vmpname2' type='text' label='Наименование в р.п.' required={true} maxLength={100} />
-                <CustomController control={control} name='menuname' type='text' label='Название в меню' required={true} maxLength={100} />
-                <CustomController control={control} name='code' type='text' label='Кодировка мастер-плана' required={true} maxLength={100} />
-                <CustomController control={control} name='code2' type='text' label='Кодировка формы' required={true} maxLength={100} />
+                <CustomController control={control} name='vmpname1' type='text' label='Подразделение мастер-плана' required={true} maxLength={100} placeholder="например, ЛИП" />
+                <CustomController control={control} name='vmpname2' type='text' label='Наименование в р.п.' required={true} maxLength={100} placeholder="например, цеха ЛИП" />
+                <CustomController control={control} name='menuname' type='text' label='Название в меню' required={true} maxLength={100} placeholder="например, График ВМП ЛИП" />
+                <CustomController control={control} name='code' type='text' label='Кодировка мастер-плана' required={true} maxLength={100}  placeholder="например, ВМП-2-0060-04"/>
+                <CustomController control={control} name='code2' type='text' label='Кодировка формы' required={true} maxLength={100}  placeholder="например, А.6"/>
                 <CustomController control={control} name='isactive' type='select' label='Видимость в системе' required={true} options={isActiveOptions} />
                 <CustomController control={control} name='datevmp' type='date' label='Дата утверждения графика' />
                 <Button style={{ marginTop: '15px' }} size="small" type="primary" htmlType="submit">Создать мастер-план</Button>

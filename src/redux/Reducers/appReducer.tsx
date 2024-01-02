@@ -29,6 +29,7 @@ export type VMPDepartmentsType = {
     code2: string
     datevmp: string
     isactive: string
+    consumers: string[]
 }
 
 export type CodeSettingsType = {
@@ -268,7 +269,7 @@ export const createNewDepartment = (name: string, name2: string, pos: string, fi
 }
 
 export const createNewVMPDepartment = (vmpname1: string, vmpname2: string, menuname: string, code: string, code2: string, datevmp: string, isactive: string, setError: UseFormSetError<VMPDepartmentsType>): ThunkType => async (dispatch) => {
-    dispatch(appActions.setDepartmentsIsLoading(true))
+    dispatch(appActions.setVMPDepartmentsIsLoading(true))
     let data = await appAPI.createNewVMPDepartment(vmpname1, vmpname2, menuname, code, code2, datevmp, isactive)
     if (data.resultCode === '0') {
         dispatch(appActions.setVMPDepartments(data.items))
@@ -278,7 +279,42 @@ export const createNewVMPDepartment = (vmpname1: string, vmpname2: string, menun
             message: data.message
         })
     }
-    dispatch(appActions.setDepartmentsIsLoading(false))
+    dispatch(appActions.setVMPDepartmentsIsLoading(false))
+}
+
+export const createNewEquipGroup = (name: string, isactive: string, setError: UseFormSetError<EquipGroupsType>): ThunkType => async (dispatch) => {
+    dispatch(appActions.setEquipGroupsIsLoading(true))
+    let data = await appAPI.createNewEquipGroup(name, isactive)
+    if (data.resultCode === '0') {
+        dispatch(appActions.setEquipGroups(data.groups))
+    } else {
+        setError('name', {
+            type: 'server',
+            message: data.message
+        })
+    }
+    dispatch(appActions.setEquipGroupsIsLoading(false))
+}
+
+export const createNewPremMode = (type: string, low: string, hight: string, isactive: string, setError: UseFormSetError<PremModesType>): ThunkType => async (dispatch) => {
+    dispatch(appActions.setPremModesIsLoading(true))
+    let data = await appAPI.createNewPremMode(type, low, hight, isactive)
+    if (data.resultCode === '0') {
+        dispatch(appActions.setPremModes(data.modes))
+    } else {
+        setError('low', { message: data.message })
+        setError('hight', { message: data.message })
+    }
+    dispatch(appActions.setPremModesIsLoading(false))
+}
+
+export const setVMPConsumers = (id: string, dataArray: string[]): ThunkType => async (dispatch) => {
+    dispatch(appActions.setVMPDepartmentsIsLoading(true))
+    let data = await appAPI.setVMPConsumers(id, dataArray)
+    if (data.resultCode === '0') {
+        dispatch(appActions.setVMPDepartments(JSON.parse(data.items)))
+    }
+    dispatch(appActions.setVMPDepartmentsIsLoading(false))
 }
 
 type ActionTypes = InferActionsTypes<typeof appActions>

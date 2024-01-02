@@ -60,9 +60,9 @@ export const Departments: React.FC = () => {
             render: (text, record) => <Text editable={{ onChange: (text) => {handleChangeFio(record.id, text)}}}>{text}</Text>,
         },
         {
-            title: <Text>Видимость в системе</Text>,
+            title: <Text>Действия</Text>,
             dataIndex: 'stat',
-            render: (text, record) => <Button onClick={() => {handleChangeIsActive(record.id, text === '1' ? '' : '1')}} size="small" type="link">{text === '1' ? <Text type="success">Активен</Text> : <Text type="warning">Не активен</Text>}</Button>,
+            render: (text, record) => <Button onClick={() => {handleChangeIsActive(record.id, text === '1' ? '' : '1')}} size="small" type="link">{text === '1' ? <Text type="success">Деактивировать</Text> : <Text type="warning">Активировать</Text>}</Button>,
             align: 'right',
         },
     ]

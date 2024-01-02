@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getPremModesIsLoadingSelector, getPremModesSelector } from "../../../redux/Selectors/appSelectors"
 import { useEffect } from "react"
 import { AppDispatch } from "../../../redux/store"
+import { NewPremMode } from "./FormCreators/CreateNewPremMode"
 
 const { Text } = Typography
 
@@ -46,6 +47,12 @@ export const PremModes: React.FC = () => {
             render: (text, record) => <Button size="small" type="default" disabled={premModesWithoutEdit.includes(record.id)} onClick={premModesWithoutEdit.includes(record.id) ? undefined : () => handleChangeType(record.id, text === 't' ? 'h' : 't')}>{text === 't' ? 'Температура' : 'Влажность'}</Button>,
         },
         {
+            title: <Text>Полное значение</Text>,
+            dataIndex: 'hight',
+            render: (text, record) => <Text>{`${record.low} - ${record.hight} ${record.type === 't' ? '°C' : '%'}`}</Text>,
+            align: 'left',
+        },
+        {
             title: <Text>Начальное значение</Text>,
             dataIndex: 'low',
             render: (text, record) => <Text editable={ premModesWithoutEdit.includes(record.id) ? false : { onChange: (text) => {handleChangeLow(record.id, text)}}}>{text}</Text>,
@@ -60,7 +67,7 @@ export const PremModes: React.FC = () => {
         {
             title: <Text>Значение</Text>,
             dataIndex: 'isactive',
-            render: (text, record) => <Button size="small" type="link" disabled={premModesWithoutEdit.includes(record.id)} onClick={ premModesWithoutEdit.includes(record.id) ? undefined : ()=>handleChangeIsActive(record.id, text === '' ? '1' : '')}>{text === '' ? <Text type={premModesWithoutEdit.includes(record.id) ? 'secondary' : 'success'}>Деактивировать</Text> :<Text type={premModesWithoutEdit.includes(record.id) ? 'secondary' : 'warning'}>Активировать</Text>}</Button>,
+            render: (text, record) => <Button size="small" type="link" disabled={premModesWithoutEdit.includes(record.id)} onClick={ premModesWithoutEdit.includes(record.id) ? undefined : ()=>handleChangeIsActive(record.id, text === '0' ? '1' : '0')}>{text === '0' ? <Text type={premModesWithoutEdit.includes(record.id) ? 'secondary' : 'success'}>Деактивировать</Text> :<Text type={premModesWithoutEdit.includes(record.id) ? 'secondary' : 'warning'}>Активировать</Text>}</Button>,
             align: 'right',
         },
     ]
@@ -78,7 +85,8 @@ export const PremModes: React.FC = () => {
             pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"] }}
             title={() => <>
                 <Text style={{ fontSize: '13pt' }}>
-                    Настройки режимов помещений
+                    <NewPremMode />
+                    Настройки режимов температуры/влажности помещений
                 </Text>
             </>}
             size="small"

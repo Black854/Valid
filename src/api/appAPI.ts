@@ -149,4 +149,33 @@ export const appAPI = {
             return response.data
         })
     },
+    createNewEquipGroup(name: string, isactive: string) {
+        const requestData = {
+            name,
+            isactive
+        }
+        return instance.post(`createNewEquipGroup.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    createNewPremMode(type: string, low: string, hight: string, isactive: string) {
+        const requestData = {
+            type,
+            low,
+            hight,
+            isactive
+        }
+        return instance.post(`createNewPremMode.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    setVMPConsumers(id: string, data: string[]) {
+        const requestData = {
+            id,
+            data
+        }
+        return instance.post(`setVMPConsumers.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
 }

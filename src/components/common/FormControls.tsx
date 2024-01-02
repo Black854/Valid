@@ -1,11 +1,13 @@
 import { Controller } from 'react-hook-form'
 import React from 'react'
-import { Input, Form, Checkbox, Select, DatePicker } from 'antd'
+import { Input, Form, Checkbox, Select, DatePicker, Typography } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
+
+const {Text} = Typography
 
 type CustomControllerProps = {
     name: string
-    type: 'text' | 'checkbox' | 'checkbox' | 'password' | 'select' | 'email' | 'date'
+    type: 'text' | 'checkbox' | 'checkboxes' | 'password' | 'select' | 'email' | 'date'
     control: any
     label?: string
     required?: boolean
@@ -16,9 +18,10 @@ type CustomControllerProps = {
     styleProps?: {},
     options?: any
     placeholder?: string
+    checked?: boolean
 }
 
-export const CustomController: React.FC<CustomControllerProps> = ({control, type, name, label, required, maxLength, minLength, pattern, onBlur, styleProps, options, placeholder}) => {
+export const CustomController: React.FC<CustomControllerProps> = ({control, type, name, label, required, maxLength, minLength, pattern, onBlur, styleProps, options, placeholder, checked}) => {
     let rules = {}
     if (required) {
         rules = {
@@ -53,13 +56,16 @@ export const CustomController: React.FC<CustomControllerProps> = ({control, type
             }
         }
     }
-    return(
+    
+    console.log(checked && name + typeof(name))
+    return (
         <Controller
             name={name}
             control={control}
             rules={rules}
             render={({ field, fieldState }) => (
-                type==='checkbox' ? (<Form.Item label={label} required={required}><Checkbox checked={field.value} {...field} /></Form.Item>) : 
+                type==='checkbox' ? (<Form.Item label={label} required={required}><Checkbox defaultChecked={checked} name={field.name} /></Form.Item>) : 
+                type==='checkboxes' ? (<Form.Item required={required} style={{margin: '0px'}}><Checkbox name={field.name} defaultChecked={checked} /><Text style={{marginLeft: '10px'}}>{label}</Text></Form.Item>) : 
                 type==='text' ? (<Form.Item label={label} required={required} validateStatus={fieldState.invalid ? 'warning' : 'success'} help={fieldState.invalid ? fieldState.error?.message : null}> <Input {...field} placeholder={placeholder} /></Form.Item>) :
                 type==='email' ? (<Form.Item label={label} required={required} validateStatus={fieldState.invalid ? 'warning' : 'success'} help={fieldState.invalid ? fieldState.error?.message : null}> <Input {...field} type='email' /></Form.Item>) :
                 type==='password' ? (<Form.Item label={label} required={required} validateStatus={fieldState.invalid ? 'warning' : 'success'} help={fieldState.invalid ? fieldState.error?.message : null}> <Input {...field} type='password' /></Form.Item>) :
