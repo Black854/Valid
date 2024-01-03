@@ -11,7 +11,7 @@ interface VMPConsumers {
     VMPname: string,
     departments: DepartmentsType[],
     VMPId: string
-    consumers: string[]
+    consumers: string
 }
 
 type consumersArray<T> = {
@@ -20,30 +20,44 @@ type consumersArray<T> = {
 
 export const VMPConsumers: React.FC<VMPConsumers> = ({VMPname, departments, consumers, VMPId}) => {
     const dispatch: AppDispatch = useDispatch()
-    const { handleSubmit, control, formState: { errors }, setError, reset, getFieldState } = useForm<DepartmentsType>()
-    const data = departments.map(e => <CustomController key={e.id} checked={consumers?.includes(e.id.toString())} control={control} name={e.id} type='checkboxes' label={`${e.pos} - ${e.fio}`} />)
-    console.log(typeof(consumers))
-    // console.log(typeof(a))
+    const defaultValues = JSON.parse(consumers).reduce((acc: any, currentValue: any) => {
+        acc[currentValue] = true
+        return acc
+    }, {})
+    const { handleSubmit, control, formState: { errors }, setError, reset, getFieldState } = useForm({defaultValues})
+    const data = departments.sort((a, b) => {
+        const nameA = a.fio.toUpperCase()
+        const nameB = b.fio.toUpperCase()
+        if (nameA < nameB) {
+          return -1
+        }
+        if (nameA > nameB) {
+          return 1
+        }
+        return 0
+      }).map(e => <CustomController key={e.id} checked={JSON.parse(consumers).includes(e.id)} control={control} name={e.id} type='checkboxes' label={`${e.fio} - ${e.pos}`} />)
     const [showForm, setShowForm] = useState(false)
-
+    const [formKey, setFormKey] = useState(1)
     const handleCancel = () => {
         setShowForm(false)
         reset()
+        setFormKey(formKey + 1)
     }
 
-    const submit: SubmitHandler<consumersArray<boolean | undefined>> = async (dataArray) => {
+    const submit: SubmitHandler<consumersArray<boolean>> = async (dataArray) => {
         const trueKeys = Object.entries(dataArray).filter(([key, value]) => value === true).map(([key]) => key.toString())
         await dispatch(setVMPConsumers(VMPId, trueKeys))
         if (!getFieldState('name').error) {
             setShowForm(false)
             reset()
+            setFormKey(formKey + 1)
         }
     }
 
     return <>
         <Button size="small" type="link" icon={<OrderedListOutlined />} onClick={() => setShowForm(true)}>Согласователи</Button>
         <Modal width={550} destroyOnClose centered title={`Согласователи графика ВМП ${VMPname}`} open={showForm} onCancel={() => handleCancel()} footer={[<Button key="close" onClick={() => handleCancel()} type="primary">Отмена</Button>]} >
-            <Form style={{ marginTop: '30px' }} layout="horizontal" size="small" onFinish={handleSubmit(submit)}>
+            <Form key={formKey} style={{ marginTop: '30px' }} layout="horizontal" size="small" onFinish={handleSubmit(submit)}>
                 {data}
                 <Button style={{ marginTop: '25px' }} size="small" type="primary" htmlType="submit">Изменить список</Button>
             </Form>

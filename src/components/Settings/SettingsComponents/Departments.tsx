@@ -70,6 +70,7 @@ export const Departments: React.FC = () => {
     const data: DepartmentsType[] = departmentsData.map((item, index) => ({
         ...item,
         index: index + 1,
+        key: item.id
       }))
 
     return <>

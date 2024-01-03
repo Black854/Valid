@@ -37,6 +37,7 @@ export const CodeForms: React.FC = () => {
     const data: CodeSettingsType[] = codeSettingsData.map((item, index) => ({
         ...item,
         index: index + 1,
+        key: item.id
     }))
 
     const handleUpdateCodeForm = (id: string, codeform: string) => {

@@ -1,5 +1,5 @@
 import { Controller } from 'react-hook-form'
-import React from 'react'
+import React, { useState } from 'react'
 import { Input, Form, Checkbox, Select, DatePicker, Typography } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 
@@ -57,15 +57,14 @@ export const CustomController: React.FC<CustomControllerProps> = ({control, type
         }
     }
     
-    console.log(checked && name + typeof(name))
     return (
         <Controller
             name={name}
             control={control}
             rules={rules}
             render={({ field, fieldState }) => (
-                type==='checkbox' ? (<Form.Item label={label} required={required}><Checkbox defaultChecked={checked} name={field.name} /></Form.Item>) : 
-                type==='checkboxes' ? (<Form.Item required={required} style={{margin: '0px'}}><Checkbox name={field.name} defaultChecked={checked} /><Text style={{marginLeft: '10px'}}>{label}</Text></Form.Item>) : 
+                type==='checkbox' ? (<Form.Item label={label} required={required}><Checkbox defaultChecked={checked} name={field.name} ref={field.ref} onChange={field.onChange} /></Form.Item>) : 
+                type==='checkboxes' ? (<Form.Item required={required} style={{margin: '0px'}}><Checkbox defaultChecked={checked} name={field.name} ref={field.ref} onChange={field.onChange} /><Text style={{marginLeft: '10px'}}>{label}</Text></Form.Item>) : 
                 type==='text' ? (<Form.Item label={label} required={required} validateStatus={fieldState.invalid ? 'warning' : 'success'} help={fieldState.invalid ? fieldState.error?.message : null}> <Input {...field} placeholder={placeholder} /></Form.Item>) :
                 type==='email' ? (<Form.Item label={label} required={required} validateStatus={fieldState.invalid ? 'warning' : 'success'} help={fieldState.invalid ? fieldState.error?.message : null}> <Input {...field} type='email' /></Form.Item>) :
                 type==='password' ? (<Form.Item label={label} required={required} validateStatus={fieldState.invalid ? 'warning' : 'success'} help={fieldState.invalid ? fieldState.error?.message : null}> <Input {...field} type='password' /></Form.Item>) :

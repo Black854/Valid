@@ -1,6 +1,6 @@
 import { Button, Table, Typography, message } from "antd"
 import { ColumnsType } from "antd/es/table"
-import { VMPDepartmentsType, getVMPDepartments, setVMPDepartmentsData } from "../../../redux/Reducers/appReducer"
+import { VMPDepartmentsType, getDepartments, getVMPDepartments, setVMPDepartmentsData } from "../../../redux/Reducers/appReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { getDepartmentsSelector, getVMPDepartmentsIsLoadingSelector, getVMPDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
 import { useEffect } from "react"
@@ -23,6 +23,7 @@ export const VMPDepartments: React.FC = () => {
 
     const dispatch: AppDispatch = useDispatch()
     useEffect(() => {
+        dispatch(getDepartments())
         dispatch(getVMPDepartments())
     }, [])
 
@@ -108,6 +109,7 @@ export const VMPDepartments: React.FC = () => {
     const data: VMPDepartmentsType[] = VMPdepartmentsData.map((item, index) => ({
         ...item,
         index: index + 1,
+        key: item.id
     }))
 
     return <>

@@ -29,7 +29,7 @@ export type VMPDepartmentsType = {
     code2: string
     datevmp: string
     isactive: string
-    consumers: string[]
+    consumers: string
 }
 
 export type CodeSettingsType = {
@@ -312,7 +312,7 @@ export const setVMPConsumers = (id: string, dataArray: string[]): ThunkType => a
     dispatch(appActions.setVMPDepartmentsIsLoading(true))
     let data = await appAPI.setVMPConsumers(id, dataArray)
     if (data.resultCode === '0') {
-        dispatch(appActions.setVMPDepartments(JSON.parse(data.items)))
+        dispatch(appActions.setVMPDepartments(data.items))
     }
     dispatch(appActions.setVMPDepartmentsIsLoading(false))
 }

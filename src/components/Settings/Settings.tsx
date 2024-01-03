@@ -46,7 +46,7 @@ export const Settings: React.FC = () => {
             <Col push={1} span={22}>
                 <Title level={3}>Настройки системы</Title>
                 <Tabs
-                    defaultActiveKey="1"
+                    defaultActiveKey="2"
                     items={items}
                     indicatorSize={(origin) => origin - 16}
                     style={{ flex: 1 }}

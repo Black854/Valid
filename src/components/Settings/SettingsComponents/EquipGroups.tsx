@@ -62,6 +62,7 @@ export const EquipGroups: React.FC = () => {
     const data: EquipGroupsType[] = equipGroupsData.map((item, index) => ({
         ...item,
         index: index + 1,
+        key: item.id
     }))
 
     return <>

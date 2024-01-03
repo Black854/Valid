@@ -75,6 +75,7 @@ export const PremModes: React.FC = () => {
     const data: PremModesType[] = premModesData.map((item, index) => ({
         ...item,
         index: index + 1,
+        key: item.id
     }))
 
     return <>
