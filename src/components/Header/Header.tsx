@@ -32,7 +32,7 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
     }, [])
     const currentYear = new Date().getFullYear()
     const filteredVMPDepartments = VMPDepartments.filter(e => e.isactive === '0').map(e => ({ key: `/vmp/${e.id}`, label: <Link to={`/vmp/${e.id}/${currentYear}`}>{e.menuname}</Link> }))
-    const vmpTables = VMPDepartments.filter(e => e.isactive === '').map(e => "/vmp/" + e.id)
+    const vmpTables = VMPDepartments.filter(e => e.isactive === '0').map(e => "/vmp/" + e.id)
 
     const getPathnameWithoutTrailingSlash = (pathname: string) => {
         if (pathname.includes("/equipment")) {
@@ -81,6 +81,7 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
         },
         { key: '/paperplanes', label: <Link to='/paperplanes'>Планы зданий</Link> },
         { key: '/painter', label: <Link to='/painter'>Интерактивная доска</Link> },
+        { key: '/prints', label: <Link to='/prints'>Отчеты</Link> },
     ]
     { !isAuth && location.pathname !== '/login' && navigate('/login') }
     const handleLogout = () => {

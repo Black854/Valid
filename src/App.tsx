@@ -33,6 +33,7 @@ import { Painter } from './components/Painter/Painter'
 import { setTheme } from './redux/Reducers/appReducer'
 import { getThemeType } from './redux/Selectors/appSelectors'
 import { Settings } from './components/Settings/Settings'
+import { Prints } from './components/Prints/Prints'
 
 export const App: React.FC = () => {
   const location = useLocation()
@@ -79,6 +80,7 @@ export const App: React.FC = () => {
             <Route path="/paperplanes" element={<PaperPlanes />} />
             <Route path="/painter" element={<Painter />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/prints" element={<Prints />} />
             <Route path="*" element={<Result404 />} />
           </Routes>
           <FloatButton.BackTop />

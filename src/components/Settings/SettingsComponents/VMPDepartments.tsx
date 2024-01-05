@@ -79,13 +79,13 @@ export const VMPDepartments: React.FC = () => {
             render: (text, record) => <Text editable={{ onChange: (text) => { handleChangeVmpname2(record.id, text) } }}>{text}</Text>,
         },
         {
-            title: <Text>Кодировка мастер-плана</Text>,
+            title: <Text>Кодировка ВМП</Text>,
             dataIndex: 'code',
             render: (text, record) => <Text editable={{ onChange: (text) => { handleChangeCode(record.id, text) } }}>{text}</Text>,
             align: 'right',
         },
         {
-            title: <Text>Кодировка формы</Text>,
+            title: <Text>Кодировка формы графика</Text>,
             dataIndex: 'code2',
             render: (text, record) => <Text editable={{ onChange: (text) => { handleChangeCode2(record.id, text) } }}>{text}</Text>,
             align: 'left',
@@ -122,7 +122,7 @@ export const VMPDepartments: React.FC = () => {
             title={() => <>
                 <Text style={{ fontSize: '13pt' }}>
                     <NewVMPDepartmentForm />
-                    Настройки мастер-планов
+                    Настройки графиков ВМП
                 </Text>
             </>}
             size="small"
