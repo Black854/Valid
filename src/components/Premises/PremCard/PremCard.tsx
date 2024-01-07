@@ -12,7 +12,7 @@ import { CardReestr } from "./CardComponents/CardReestr"
 import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
-import { getIsDescriptionLoading, getIsLoading, getIsReestrDataLoading, getPremById, getPremData, getPremReestrDataSelector } from "../../../redux/Selectors/premisesSelectors"
+import { getIsLoading, getIsReestrDataLoading, getPremById, getPremData, getPremReestrDataSelector } from "../../../redux/Selectors/premisesSelectors"
 import { getPremises, getReestrData, getTechnicalInfo, updateClass, updateDepartment, updateMode, updateNomer, updateVMPDepartment } from "../../../redux/Reducers/premisesReducer"
 import { CleanPremList } from "./CardComponents/CleanPremList"
 import { CleanPremGroups } from "./CardComponents/CleanPremGroups"
@@ -252,9 +252,22 @@ export const PremCard = () => {
                 children: <PhotosBlock id={premObject.id} />,
             },
             {
+                key: '9',
+                label: `Планирование`,
+                children: <CardPlans objectName={premObject.class === 'Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name} objectId={premObject.id} sp={premObject.sp} objectType="premises" />,
+            },
+            {
                 key: '5',
-                label: 'График работ',
-                children: <CardPlans objectName={premObject.class==='Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name} objectId={premObject.id} sp={premObject.sp} objectType="premises" />,
+                label: `График ВМП ${new Date().getFullYear()}`,
+                children: <CardPlans objectName={premObject.class === 'Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name} objectId={premObject.id} sp={premObject.sp} objectType="premises" />,
+            },
+        ]
+
+        const nextYearItems = [
+            {
+                key: '8',
+                label: <Text type="warning">График ВМП {new Date().getFullYear() + 1}</Text>,
+                children: <CardPlans objectName={premObject.class === 'Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name} objectId={premObject.id} sp={premObject.sp} objectType="premises" />,
             },
         ]
 
@@ -281,6 +294,8 @@ export const PremCard = () => {
             }
         ]
 
+        const currentMonth = new Date().getMonth()
+
         return (
             <Row style={{ padding: '10px 0' }} >
                 <Col span={5} push={1} style={{ textAlign: 'center' }} >
@@ -289,7 +304,14 @@ export const PremCard = () => {
                 <Col span={16} push={2} style={{ minHeight: '89vh', display: "flex", flexDirection: 'column' }} >
                     <Tabs
                         defaultActiveKey="1"
-                        items={premObject.class === 'Складские' ? [...items, ...itemsOfSkladPremises] : [...items, ...itemsOfCleanPremises]}
+                        items={premObject.class === 'Складские' ?
+                            currentMonth === 0 ?
+                                [...items, ...nextYearItems, ...itemsOfSkladPremises] :
+                                [...items, ...nextYearItems, ...itemsOfSkladPremises] :
+                            currentMonth === 0 ?
+                                [...items, ...itemsOfCleanPremises] :
+                                [...items, ...itemsOfCleanPremises]
+                        }
                         indicatorSize={(origin) => origin - 16}
                         style={{ flex: 1 }}
                         type="card"

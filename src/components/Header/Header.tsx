@@ -81,7 +81,7 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
         },
         { key: '/paperplanes', label: <Link to='/paperplanes'>Планы зданий</Link> },
         { key: '/painter', label: <Link to='/painter'>Интерактивная доска</Link> },
-        { key: '/prints', label: <Link to='/prints'>Отчеты</Link> },
+        { key: '/prints', label: <Link to='/prints'>Отчеты и аудит</Link> },
     ]
     { !isAuth && location.pathname !== '/login' && navigate('/login') }
     const handleLogout = () => {
