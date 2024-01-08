@@ -16,6 +16,7 @@ import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
 import { EquipLabel } from "./CardComponents/EquipLabel"
 import { CardPlans } from "../../common/CardPlans"
+import { AddToMonthPlan } from "./CardComponents/AddToMonthPlan"
 const { Text } = Typography
 
 export const EquipCard = () => {
@@ -157,7 +158,7 @@ export const EquipCard = () => {
             },
             {
                 rowName: 'Производитель',
-                value: equipObject.manufacturer ? <Text editable={{ onChange: (text) => {updateDataManufacturer(text)}}}>{equipObject.manufacturer}</Text> :
+                value: equipObject.manufacturer ? <Text copyable editable={{ onChange: (text) => {updateDataManufacturer(text)}}}>{equipObject.manufacturer}</Text> :
                 <Text type="warning" editable={{ onChange: (text) => {updateDataManufacturer(text)}, text: ''}}>Не указано</Text>
             },
             {
@@ -167,12 +168,12 @@ export const EquipCard = () => {
             },
             {
                 rowName: 'Серийный номер',
-                value: equipObject.serial ? <Text editable={{ onChange: (text) => {updateDataSerial(text)}}}>{equipObject.serial}</Text> :
+                value: equipObject.serial ? <Text copyable editable={{ onChange: (text) => {updateDataSerial(text)}}}>{equipObject.serial}</Text> :
                 <Text type="warning" editable={{ onChange: (text) => {updateDataSerial(text)}, text: ''}}>Не указано</Text>
             },
             {
                 rowName: 'Учетный номер',
-                value: equipObject.inv ? <Text editable={{ onChange: (text) => {updateDataInv(text)}}}>{equipObject.inv}</Text> :
+                value: equipObject.inv ? <Text copyable editable={{ onChange: (text) => {updateDataInv(text)}}}>{equipObject.inv}</Text> :
                 <Text type="warning" editable={{ onChange: (text) => {updateDataInv(text)}, text: ''}}>Не указано</Text>
             },
             {
@@ -206,6 +207,11 @@ export const EquipCard = () => {
               key: '2',
               label: 'Перечень валидационных работ',
               children: <CardReestr id={equipObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={equipObject.groupp} />,
+            },
+            {
+              key: '8',
+              label: 'Взять в работу',
+              children: <AddToMonthPlan id={equipObject.id} />,
             },
             {
               key: '3',

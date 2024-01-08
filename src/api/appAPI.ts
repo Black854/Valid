@@ -178,4 +178,24 @@ export const appAPI = {
             return response.data
         })
     },
+    getMonthPlanObjectData(id: string, objectType: 'equipment' | 'premises' | 'systems' | 'processes', month: string) {
+        const requestData = {
+            id,
+            objectType,
+            month
+        }
+        return instance.post(`getMonthPlanObjectData.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    createObjectInMonthPlane(id: string, objectType: 'equipment' | 'premises' | 'systems' | 'processes', month: string) {
+        const requestData = {
+            id,
+            objectType,
+            month
+        }
+        return instance.post(`createObjectInMonthPlane.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
 }

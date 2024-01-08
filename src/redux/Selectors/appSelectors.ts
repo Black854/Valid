@@ -76,3 +76,11 @@ export const getDepartmentsIsLoadingSelector = (state: AppStateType) => {
 export const getVMPDepartmentsIsLoadingSelector = (state: AppStateType) => {
     return (state.app.VMPDepartmentsIsLoading)
 }
+
+export const getAddToMonthPlanIsLoading = (state: AppStateType) => {
+    return (state.app.addToMonthPlanIsLoading)
+}
+
+export const getMonthPlanObjectDataSelector = (state: AppStateType) => {
+    return (state.app.monthPlanObjectData)
+}

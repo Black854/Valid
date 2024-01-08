@@ -66,6 +66,14 @@ export type VacationsType = {
     date: string
 }
 
+export type MonthPlanObjectData = {
+    isPlanned: boolean
+    date1: string
+    date2: string
+    fio: string
+    workType: string
+}
+
 const initialState = {
     isInitialized: true,
     themeType: 'dark' as 'dark' | 'light',
@@ -99,7 +107,9 @@ const initialState = {
     equipGroupsIsLoading: false,
     departmentsIsLoading: false,
     VMPDepartmentsIsLoading: false,
-    codeFormsIsLoading: false
+    codeFormsIsLoading: false,
+    addToMonthPlanIsLoading: false,
+    monthPlanObjectData: null as MonthPlanObjectData | null
 }
 
 type InitialStateType = typeof initialState
@@ -137,6 +147,10 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
             return { ...state, departmentsIsLoading: action.status }
         case 'app/SET_VMP_DEPARTMENTS_IS_LOADING':
             return { ...state, VMPDepartmentsIsLoading: action.status }
+        case 'app/SET_ADD_TO_MONTH_PLAN_IS_LOADING':
+            return { ...state, addToMonthPlanIsLoading: action.status }
+        case 'app/SET_MONTH_PLAN_OBJECT_DATA':
+            return { ...state, monthPlanObjectData: action.items }
         default:
             return state
     }
@@ -317,6 +331,48 @@ export const setVMPConsumers = (id: string, dataArray: string[]): ThunkType => a
     dispatch(appActions.setVMPDepartmentsIsLoading(false))
 }
 
+export const getMonthPlanObjectData = (id: string, objectType: 'equipment' | 'premises' | 'systems' | 'processes', month: string): ThunkType => async (dispatch) => {
+    dispatch(appActions.setAddToMonthPlanIsLoading(true))
+    let data = await appAPI.getMonthPlanObjectData(id, objectType, month)
+
+    let dataToState = {
+        isPlanned: false,
+        date1: '',
+        date2: '',
+        fio: '',
+        workType: ''
+    }
+
+    if (data.resultCode === '0') {
+        dataToState = { ...data.items, isPlanned: true }
+    } else {
+        dataToState = { ...data.items, isPlanned: false }
+    }
+    dispatch(appActions.setMonthPlanObjectData(dataToState))
+    dispatch(appActions.setAddToMonthPlanIsLoading(false))
+}
+
+export const createObjectInMonthPlane = (id: string, objectType: 'equipment' | 'premises' | 'systems' | 'processes', month: string): ThunkType => async (dispatch) => {
+    dispatch(appActions.setAddToMonthPlanIsLoading(true))
+    let data = await appAPI.createObjectInMonthPlane(id, objectType, month)
+
+    let dataToState = {
+        isPlanned: false,
+        date1: '',
+        date2: '',
+        fio: '',
+        workType: ''
+    }
+
+    if (data.resultCode === '0') {
+        dataToState = { ...data.items, isPlanned: true }
+    } else {
+        dataToState = { ...data.items, isPlanned: false }
+    }
+    dispatch(appActions.setMonthPlanObjectData(dataToState))
+    dispatch(appActions.setAddToMonthPlanIsLoading(false))
+}
+
 type ActionTypes = InferActionsTypes<typeof appActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
@@ -337,4 +393,6 @@ const appActions = {
     setDepartmentsIsLoading: (status: boolean) => ({ type: 'app/SET_DEPARTMENTS_IS_LOADING', status } as const),
     setVMPDepartmentsIsLoading: (status: boolean) => ({ type: 'app/SET_VMP_DEPARTMENTS_IS_LOADING', status } as const),
     setCodeFormsIsLoading: (status: boolean) => ({ type: 'app/SET_CODEFORMS_IS_LOADING', status } as const),
+    setMonthPlanObjectData: (items: MonthPlanObjectData) => ({ type: 'app/SET_MONTH_PLAN_OBJECT_DATA', items } as const),
+    setAddToMonthPlanIsLoading: (status: boolean) => ({ type: 'app/SET_ADD_TO_MONTH_PLAN_IS_LOADING', status } as const),
 }
