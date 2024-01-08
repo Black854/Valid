@@ -1,25 +1,20 @@
-import { Avatar, Button, Col, Image, Modal, Popconfirm, Row, Typography, message } from "antd"
+import { Button, Col, Row, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { getPhotosSelector } from "../../../../redux/Selectors/equipmentSelectors"
-import { useEffect, useRef, useState } from "react"
-import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/Reducers/equipmentReducer"
-import Link from "antd/es/typography/Link"
-import { DeleteFilled, EyeOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import pdf from './../../../../img/pdfi.png'
-import video from './../../../../img/video.png'
-import { RcFile } from "antd/es/upload"
-import { AppDispatch } from "../../../../redux/store"
-import { getAddToMonthPlanIsLoading, getMonthPlanObjectDataSelector } from "../../../../redux/Selectors/appSelectors"
-import { Loading } from "../../../common/Loading"
-import { createObjectInMonthPlane, getMonthPlanObjectData } from "../../../../redux/Reducers/appReducer"
-import { getMonthNameFromMonthNumber } from "../../../common/getMonthNameFromMonthNumber"
-const { Text, Title } = Typography
+import { useEffect } from "react"
+import { PlusOutlined } from '@ant-design/icons'
+import { AppDispatch } from "../../redux/store"
+import { getAddToMonthPlanIsLoading, getMonthPlanObjectDataSelector } from "../../redux/Selectors/appSelectors"
+import { Loading } from "./Loading"
+import { createObjectInMonthPlane, getMonthPlanObjectData } from "../../redux/Reducers/appReducer"
+import { getMonthNameFromMonthNumber } from "./getMonthNameFromMonthNumber"
+const { Title } = Typography
 
 type PhotosBlockPropsType = {
     id: string
+    objectType: 'equipment' | 'premises'| 'systems'| 'processes'
 }
 
-export const AddToMonthPlan: React.FC<PhotosBlockPropsType> = ({ id }) => {
+export const AddToMonthPlan: React.FC<PhotosBlockPropsType> = ({ id, objectType }) => {
 
     const currentMonth = `${(new Date().getMonth() + 1).toString().length === 1 ? `0${new Date().getMonth() + 1}` : new Date().getMonth() + 1}.${new Date().getFullYear()}`
     const monthNumber = new Date().getMonth()
@@ -29,11 +24,11 @@ export const AddToMonthPlan: React.FC<PhotosBlockPropsType> = ({ id }) => {
     const data = useSelector(getMonthPlanObjectDataSelector)
 
     useEffect(() => {
-        dispatch(getMonthPlanObjectData(id, 'equipment', currentMonth))
+        dispatch(getMonthPlanObjectData(id, objectType, currentMonth))
     }, [])
 
     const handleAddToMonthPlan = () => {
-        dispatch(createObjectInMonthPlane(id, 'equipment', currentMonth))
+        dispatch(createObjectInMonthPlane(id, objectType, currentMonth))
     }
 
     return isLoading ? <Loading /> : (

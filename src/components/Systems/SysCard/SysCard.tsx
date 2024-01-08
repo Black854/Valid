@@ -16,6 +16,7 @@ import { getReestrData, getSystems, updateDepartment, updateVMPDepartment } from
 import { SysDescriptions } from "./CardComponents/SysDescription"
 import { SysLabel } from "./CardComponents/SysLabel"
 import { CardPlans } from "../../common/CardPlans"
+import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 const { Text } = Typography
 
 export const SysCard = () => {
@@ -135,6 +136,11 @@ export const SysCard = () => {
               key: '2',
               label: 'Перечень валидационных работ',
               children: <CardReestr id={sysObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={sysObject.groupp} />,
+            },
+            {
+              key: '8',
+              label: 'Взять в работу',
+              children: <AddToMonthPlan id={sysObject.id} objectType="systems" />,
             },
             {
               key: '3',

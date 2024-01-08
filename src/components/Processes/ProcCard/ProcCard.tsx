@@ -16,6 +16,7 @@ import { getProcesses, getReestrData, updateDepartment, updateVMPDepartment } fr
 import { ProcDescriptions } from "./CardComponents/ProcDescription"
 import { ProcLabel } from "./CardComponents/ProcLabel"
 import { CardPlans } from "../../common/CardPlans"
+import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 const { Text } = Typography
 
 export const ProcCard = () => {
@@ -135,6 +136,11 @@ export const ProcCard = () => {
               key: '2',
               label: 'Перечень валидационных работ',
               children: <CardReestr id={procObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={procObject.groupp} />,
+            },
+            {
+              key: '8',
+              label: 'Взять в работу',
+              children: <AddToMonthPlan id={procObject.id} objectType="processes" />,
             },
             {
               key: '3',

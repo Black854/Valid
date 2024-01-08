@@ -16,7 +16,7 @@ import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
 import { EquipLabel } from "./CardComponents/EquipLabel"
 import { CardPlans } from "../../common/CardPlans"
-import { AddToMonthPlan } from "./CardComponents/AddToMonthPlan"
+import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 const { Text } = Typography
 
 export const EquipCard = () => {
@@ -211,7 +211,7 @@ export const EquipCard = () => {
             {
               key: '8',
               label: 'Взять в работу',
-              children: <AddToMonthPlan id={equipObject.id} />,
+              children: <AddToMonthPlan id={equipObject.id} objectType="equipment" />,
             },
             {
               key: '3',

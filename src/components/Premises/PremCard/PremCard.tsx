@@ -18,6 +18,7 @@ import { CleanPremList } from "./CardComponents/CleanPremList"
 import { CleanPremGroups } from "./CardComponents/CleanPremGroups"
 import { PremLabel } from "./CardComponents/PremLabel"
 import { CardPlans } from "../../common/CardPlans"
+import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 const { Text } = Typography
 
 export const PremCard = () => {
@@ -242,6 +243,11 @@ export const PremCard = () => {
                 children: <CardReestr id={premObject.id} mode={premObject.mode} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={premObject.class} />,
             },
             {
+                key: '9',
+                label: `Взять в работу`,
+                children: <AddToMonthPlan id={premObject.id} objectType="premises" />,
+            },
+            {
                 key: '3',
                 label: 'Техническая информация',
                 children: <TechnicalInfo id={premObject.id} premClass={premObject.class} />,
@@ -250,11 +256,6 @@ export const PremCard = () => {
                 key: '4',
                 label: 'Медиа файлы',
                 children: <PhotosBlock id={premObject.id} />,
-            },
-            {
-                key: '9',
-                label: `Планирование`,
-                children: <CardPlans objectName={premObject.class === 'Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name} objectId={premObject.id} sp={premObject.sp} objectType="premises" />,
             },
             {
                 key: '5',
