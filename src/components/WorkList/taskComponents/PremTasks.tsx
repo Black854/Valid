@@ -206,7 +206,7 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
                     <iframe
                         key={iframeKey}
                         style={{ width: '100%', height: '40vh', marginLeft: '5%' }}
-                        src={`http://10.85.10.212/ov/API/PrintForms/add_b.php?id=${data[0].id}&idfromtable=${data[0].idfromtable}&tp=equip.work&user&stroki=5&typeForm=2`}></iframe>
+                        src={`http://10.85.10.212/ov/API/PrintForms/add_b.php?id=${data[0].id}&idfromtable=${data[0].idfromtable}&tp=prem.work&user&stroki=5&typeForm=2`}></iframe>
                 </Modal>
             </>
         },

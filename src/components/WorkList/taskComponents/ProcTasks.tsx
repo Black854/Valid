@@ -11,14 +11,14 @@ import { ProtocolCode } from './MiniComponents/ProtocolCode'
 
 const { Text } = Typography
 
-type EquipTasks = {
+type ProcTasks = {
     myProcDataIdArray: string[]
     myProcData: ProcReestrType[]
     rec: any
     error: (fileName: string) => void
 }
 
-export const ProcTasks: React.FC<EquipTasks> = ({myProcDataIdArray, myProcData, rec, error}) => {
+export const ProcTasks: React.FC<ProcTasks> = ({myProcDataIdArray, myProcData, rec, error}) => {
     const thisObject = myProcData.find(e => e.idfromtable === rec.id)
    
     let data: any = [{
@@ -140,7 +140,7 @@ export const ProcTasks: React.FC<EquipTasks> = ({myProcDataIdArray, myProcData, 
                     <iframe
                         key={iframeKey}
                         style={{ width: '100%', height: '40vh', marginLeft: '5%' }}
-                        src={`http://10.85.10.212/ov/API/PrintForms/add_b.php?id=${data[0].id}&idfromtable=${data[0].idfromtable}&tp=equip.work&user&stroki=5&typeForm=2`}></iframe>
+                        src={`http://10.85.10.212/ov/API/PrintForms/add_b.php?id=${data[0].id}&idfromtable=${data[0].idfromtable}&tp=proc.work&user&stroki=5&typeForm=2`}></iframe>
                 </Modal>
             </>
         },

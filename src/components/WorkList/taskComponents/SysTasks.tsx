@@ -12,14 +12,14 @@ import { ProgressStatus } from './MiniComponents/ProgressStatus'
 
 const { Text } = Typography
 
-type EquipTasks = {
+type SysTasks = {
     mySysDataIdArray: string[]
     mySysData: SysReestrType[]
     rec: any
     error: (fileName: string) => void
 }
 
-export const SysTasks: React.FC<EquipTasks> = ({ mySysDataIdArray, mySysData, rec, error }) => {
+export const SysTasks: React.FC<SysTasks> = ({ mySysDataIdArray, mySysData, rec, error }) => {
     const thisObject = mySysData.find(e => e.idfromtable === rec.id)
 
     let data: any = [{
@@ -148,7 +148,7 @@ export const SysTasks: React.FC<EquipTasks> = ({ mySysDataIdArray, mySysData, re
                     <iframe
                         key={iframeKey}
                         style={{ width: '100%', height: '40vh', marginLeft: '5%' }}
-                        src={`http://10.85.10.212/ov/API/PrintForms/add_b.php?id=${data[0].id}&idfromtable=${data[0].idfromtable}&tp=equip.work&user&stroki=5&typeForm=2`}></iframe>
+                        src={`http://10.85.10.212/ov/API/PrintForms/add_b.php?id=${data[0].id}&idfromtable=${data[0].idfromtable}&tp=sys.work&user&stroki=5&typeForm=2`}></iframe>
                 </Modal>
             </>
         },
