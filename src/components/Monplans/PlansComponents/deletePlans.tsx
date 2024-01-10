@@ -1,7 +1,7 @@
 import { Button, Popconfirm } from "antd"
 import { DeleteOutlined } from '@ant-design/icons'
 import { useDispatch } from "react-redux"
-import { PlansType } from "../../../redux/Reducers/plansReducer"
+import { PlansType, deletePlans } from "../../../redux/Reducers/plansReducer"
 import { AppDispatch } from "../../../redux/store"
 
 type DeletePlansType = {
@@ -11,7 +11,7 @@ type DeletePlansType = {
 export const DeletePlans: React.FC<DeletePlansType> = ({ record, month }) => {
     const dispatch: AppDispatch = useDispatch()
     const handleDeletePlans = () => {
-        // dispatch(deletePlans(record.id, record.idfromtable, record.tablename, month))
+        dispatch(deletePlans(record.id, record.idfromtable, record.tablename, month))
     }
     return (
         <Popconfirm

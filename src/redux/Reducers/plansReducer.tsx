@@ -71,9 +71,9 @@ export const updateReportStatus = (status: string, objectId: string, tableName: 
     dispatch(plansActions.setPlans(data.items))
 }
 
-export const deletePlans = (status: string, objectId: string, tableName: string, recordId: string, month: string): ThunkType => async (dispatch) => {
-    // let data = await plansAPI.deletePlans(month, objectId)
-    // dispatch(plansActions.setPlans(data.items))
+export const deletePlans = (recordId: string, objectId: string, tableName: string, month: string): ThunkType => async (dispatch) => {
+    let data = await plansAPI.deletePlans(recordId, objectId, tableName, month)
+    dispatch(plansActions.setPlans(data.items))
 }
 
 type ActionTypes = InferActionsTypes<typeof plansActions>

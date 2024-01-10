@@ -54,11 +54,11 @@ export const plansAPI = {
             return response.data
         })
     },
-    deletePlans(objectId: string, tableName: string, recordId: string, month: string) {
+    deletePlans(recordId: string, objectId: string, tableName: string, month: string) {
         const requestData = {
+            recordId,
             objectId,
             tableName,
-            recordId,
             month
         }
         return instance.post(`deletePlans.php`, requestData, {}).then(response => {

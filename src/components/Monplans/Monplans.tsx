@@ -141,7 +141,7 @@ export const Monplans: React.FC = ({ }) => {
       align: 'center',
     },
     {
-      render: (text, record) => <DeletePlans month={month} record={record} />,
+      render: (text, record) => <DeletePlans month={date} record={record} />,
       align: 'center',
     },
   ]

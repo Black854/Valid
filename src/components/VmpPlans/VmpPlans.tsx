@@ -241,12 +241,6 @@ export const VmpPlans: React.FC = () => {
                         render={(codedoc: string, record: dataType) => record.vo ? record.vo !== '' && <><Text type={record.status === 'Выполнено' ? 'success' : undefined}>{codedoc}</Text><Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + record.vo} /></> : <Text type={record.status === 'Выполнено' ? 'success' : undefined}>{codedoc}</Text> }
                     />
                 </Table>
-                {/* <Modal open={modalOpen} centered onCancel={() => setModalOpen(false)} afterOpenChange={() => setModalOpen(false)}>
-                    <iframe width={450} height={700} key={iframeKey} src={`http://10.85.10.212/ov/api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}`}></iframe>
-                </Modal>
-                <Modal open={modalOpen} centered onCancel={() => setModalOpen(false)} afterOpenChange={() => setModalOpen(false)}>
-                    <iframe width={450} height={700} key={iframeKey} src={`http://10.85.10.212/ov/api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}&print`}></iframe>
-                </Modal> */}
 
                 <Modal title="Печать графика ВМП" afterOpenChange={() => handleCancel('VMPPrint')} open={VMPPrintModalIsOpen} onCancel={() => handleCancel('VMPPrint')} footer={[ <Button key="close" onClick={() => handleCancel('VMPPrint')} type="primary">Закрыть</Button> ]} >
                     <iframe key={iframeKey} style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}`}>

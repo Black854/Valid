@@ -70,14 +70,16 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
                 { key: '/equipment', label: <NavLink to='/equipment'>Оборудование</NavLink> },
                 { key: '/systems', label: <Link to='/systems'>Системы</Link> },
                 { key: '/processes', label: <Link to='/processes'>Процессы</Link> },
-                { key: '/instruments', label: <Link to='/instruments'>Приборы</Link> }]
+                { key: '/instruments', label: <Link to='/instruments'>Приборы</Link> }
+            ]
         },
         {
-            key: '2', label: `Планы`, children: [
+            key: '2', label: `Графики работ`, children: [
                 { key: '/monplans', label: <Link to='/monplans'>План на месяц</Link> },
                 { key: '/reports', label: <Link to='/reports'>Отчет за месяц</Link> },
                 ...filteredVMPDepartments,
-                { key: '/vacations', label: <Link to='/vacations'>График отпусков</Link> }]
+                { key: '/vacations', label: <Link to='/vacations'>График отпусков</Link> }
+            ]
         },
         { key: '/paperplanes', label: <Link to='/paperplanes'>Планы зданий</Link> },
         { key: '/painter', label: <Link to='/painter'>Интерактивная доска</Link> },
