@@ -97,7 +97,7 @@ export const getProcesses = (): ThunkType => async (dispatch) => {
     dispatch (procActions.setIsLoading(false))
 }
 
-export const getReestrData = (id: string): ThunkType => async (dispatch) => {
+export const getProcReestrData = (id: string): ThunkType => async (dispatch) => {
     dispatch (procActions.setIsReestrDataLoading(true))
     let data = await processesAPI.getReestrData(id)
     dispatch (procActions.pushReestrData(data.items))

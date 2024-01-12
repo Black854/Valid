@@ -198,4 +198,28 @@ export const appAPI = {
             return response.data
         })
     },
+    addReestrData(id: string, objectType: 'equipment' | 'premises' | 'systems' | 'processes', nvp: string, dvp: string, nvo: string, dvo: string, typeval: string) {
+        const requestData = {
+            id,
+            objectType,
+            nvp,
+            dvp,
+            nvo,
+            dvo,
+            typeval
+        }
+        return instance.post(`addReestrData.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    getUserActions() {
+        return instance.get(`getUserActions.php`).then(response => {
+            return response.data
+        })
+    },
+    getUserAccountsActions() {
+        return instance.get(`getUserAccountsActions.php`).then(response => {
+            return response.data
+        })
+    },
 }

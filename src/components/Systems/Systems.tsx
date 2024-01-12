@@ -15,6 +15,7 @@ import type { InputRef } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { NewObjectForm } from "./CreateNewObjectForm"
+import { defaultPagination } from "../../redux/Reducers/appReducer"
 
 const { Text } = Typography;
 
@@ -205,7 +206,7 @@ export const Systems: React.FC = () => {
                         columns={columns}
                         dataSource={data}
                         bordered={false}
-                        pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"]}}
+                        pagination={defaultPagination}
                         title={() => <>
                             <Text style={{ fontSize: '13pt' }}>
                                 <NewObjectForm />

@@ -81,6 +81,7 @@ export const App: React.FC = () => {
             <Route path="/painter" element={<Painter />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/prints" element={<Prints />} />
+            <Route path="/prints/:report/:page?" element={<Prints />} />
             <Route path="*" element={<Result404 />} />
           </Routes>
           <FloatButton.BackTop />

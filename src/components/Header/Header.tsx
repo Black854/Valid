@@ -49,6 +49,8 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
             return "/monplans"
         } else if (pathname.includes("/reports")) {
             return "/reports"
+        } else if (pathname.includes("/prints")) {
+            return "/prints"
         }
 
         for (const table of vmpTables) {

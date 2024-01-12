@@ -13,7 +13,7 @@ import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
 import { getIsLoading, getIsReestrDataLoading, getPremById, getPremData, getPremReestrDataSelector } from "../../../redux/Selectors/premisesSelectors"
-import { getPremises, getReestrData, getTechnicalInfo, updateClass, updateDepartment, updateMode, updateNomer, updateVMPDepartment } from "../../../redux/Reducers/premisesReducer"
+import { getPremReestrData, getPremises, getTechnicalInfo, updateClass, updateDepartment, updateMode, updateNomer, updateVMPDepartment } from "../../../redux/Reducers/premisesReducer"
 import { CleanPremList } from "./CardComponents/CleanPremList"
 import { CleanPremGroups } from "./CardComponents/CleanPremGroups"
 import { PremLabel } from "./CardComponents/PremLabel"
@@ -57,7 +57,7 @@ export const PremCard = () => {
     }, [])
 
     useEffect(() => {
-        dispatch(getReestrData(id))
+        dispatch(getPremReestrData(id))
     }, [id])
 
     let classesData = [

@@ -6,8 +6,9 @@ import { ColumnsType } from "antd/es/table"
 import { ConvertDate } from "../../../common/convertDate"
 import { FileWordOutlined, DeleteOutlined, UploadOutlined, PlusOutlined } from '@ant-design/icons';
 import { AppDispatch } from "../../../../redux/store"
-import { SubmitHandler, useForm } from "react-hook-form"
+import { FieldValue, FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import { CustomController } from "../../../common/FormControls"
+import { AddReestrData } from "../../../common/AddReestrData"
 const { Text } = Typography
 
 
@@ -224,64 +225,18 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
         columns = columns.concat(pamColumn)
     }
 
-
-
-
-    const { handleSubmit, control, formState: { errors }, setError, reset, getFieldState } = useForm()
-    const [showForm, setShowForm] = useState(false)
-    const [formKey, setFormKey] = useState(1)
-    const handleCancel = () => {
-        setShowForm(false)
-        reset()
-        setFormKey(formKey + 1)
-    }
-
-    type formDataType = {
-        // nvp: string
-        // dvp: string
-        // nvo: string
-        // dvo: string
-    }
-
-    const submit: SubmitHandler<formDataType> = async (dataArray) => {
-        console.log(dataArray)
-        // const trueKeys = Object.entries(dataArray).filter(([key, value]) => value === true).map(([key]) => key.toString())
-        // await dispatch(setVMPConsumers(VMPId, trueKeys))
-        // if (!getFieldState('name').error) {
-        //     setShowForm(false)
-        //     reset()
-        //     setFormKey(formKey + 1)
-        // }
-    }
-
-
-
-
-
-
-    return (
-        <>
-            {contextHolder}
-            <Button type="primary" size="small" style={{ marginBottom: '10px' }} icon={<PlusOutlined />} onClick={() => setShowForm(true)}>Добавить данные</Button>
-            <Modal width={550} destroyOnClose centered title='Добавление данных о валидационных работах' open={showForm} onCancel={() => handleCancel()} footer={[<Button key="close" onClick={() => handleCancel()} type="primary">Отмена</Button>]} >
-                <Form key={formKey} style={{ marginTop: '30px' }} layout="horizontal" size="small" onFinish={handleSubmit(submit)}>
-                    <CustomController key='nvp' control={control} name='nvp' type='text' label='Код протокола' required={true} maxLength={100} />
-                    <CustomController key='dvp' control={control} name='dvp' type='date' label='Дата утверждения протокола' required={true} />
-                    <CustomController key='nvo' control={control} name='nvo' type='text' label='Код отчета' required={true} maxLength={100} />
-                    <CustomController key='dvo' control={control} name='dvo' type='date' label='Дата утверждения отчета' required={true} />
-                    <Button style={{ marginTop: '25px' }} size="small" type="primary" htmlType="submit">Добавить</Button>
-                </Form>
-            </Modal>
-            <Table
-                columns={columns}
-                dataSource={reestrDataWithoutEmptyRows}
-                bordered
-                pagination={false} // Скрыть пагинацию, если есть
-                style={{ marginBottom: '60px' }}
-                rowKey='id'
-                loading={isReestrDataLoading}
-                size="small"
-            />
-        </>
-    )
+    return  <>
+        {contextHolder}
+        <AddReestrData id={id} objectType='equipment' />
+        <Table
+            columns={columns}
+            dataSource={reestrDataWithoutEmptyRows}
+            bordered
+            pagination={false}
+            style={{ marginBottom: '60px' }}
+            rowKey='id'
+            loading={isReestrDataLoading}
+            size="small"
+        />
+    </>
 }

@@ -2,6 +2,11 @@ import { ThunkAction } from "redux-thunk";
 import { appAPI } from "../../api/appAPI";
 import { AppStateType, InferActionsTypes } from "../store";
 import { UseFormSetError } from "react-hook-form";
+import { getEquipReestrData } from "./equipmentReducer";
+import { getPremReestrData } from "./premisesReducer";
+import { getProcReestrData } from "./processesReducer";
+import { getSysReestrData } from "./systemsReducer";
+import { TablePaginationConfig } from "antd";
 
 export type EquipGroupsType = {
     id: string
@@ -74,6 +79,17 @@ export type MonthPlanObjectData = {
     workType: string
 }
 
+export type UserActionsType = {
+    id: string
+    fio: string
+    date: string
+    type: string
+    changes: string
+    ip: string
+}
+
+export const defaultPagination = { defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"] } as TablePaginationConfig
+
 const initialState = {
     isInitialized: true,
     themeType: 'dark' as 'dark' | 'light',
@@ -109,7 +125,9 @@ const initialState = {
     VMPDepartmentsIsLoading: false,
     codeFormsIsLoading: false,
     addToMonthPlanIsLoading: false,
-    monthPlanObjectData: null as MonthPlanObjectData | null
+    monthPlanObjectData: null as MonthPlanObjectData | null,
+    userActions: null as UserActionsType[] | null,
+    userAccountsActions: null as UserActionsType[] | null
 }
 
 type InitialStateType = typeof initialState
@@ -151,6 +169,10 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
             return { ...state, addToMonthPlanIsLoading: action.status }
         case 'app/SET_MONTH_PLAN_OBJECT_DATA':
             return { ...state, monthPlanObjectData: action.items }
+        case 'app/SET_USER_ACTIONS':
+            return {...state, userActions: action.items}
+        case 'app/SET_USER_ACCOUNTS_ACTIONS':
+            return {...state, userAccountsActions: action.items}
         default:
             return state
     }
@@ -373,6 +395,37 @@ export const createObjectInMonthPlane = (id: string, objectType: 'equipment' | '
     dispatch(appActions.setAddToMonthPlanIsLoading(false))
 }
 
+export const addReestrData = (id: string, objectType: 'equipment' | 'premises' | 'systems' | 'processes', nvp: string, dvp: string, nvo: string, dvo: string, typeval: string): ThunkType => async (dispatch) => {
+    let data = await appAPI.addReestrData(id, objectType, nvp, dvp, nvo, dvo, typeval)
+
+    if (data.resultCode === '0') {
+        switch(objectType) {
+            case 'equipment':
+                return dispatch(getEquipReestrData(id))
+            case 'premises':
+                return dispatch(getPremReestrData(id))
+            case 'processes':
+                return dispatch(getProcReestrData(id))
+            case 'systems':
+                return dispatch(getSysReestrData(id))
+            default:
+                return null
+        }
+    } else {
+
+    }
+}
+
+export const getUserActions = (): ThunkType => async (dispatch) => {
+    const data = await appAPI.getUserActions()
+    dispatch(appActions.setUserActions(data.items))
+}
+
+export const getUserAccountsActions = (): ThunkType => async (dispatch) => {
+    const data = await appAPI.getUserAccountsActions()
+    dispatch(appActions.setUserAccountsActions(data.items))
+}
+
 type ActionTypes = InferActionsTypes<typeof appActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
@@ -395,4 +448,6 @@ const appActions = {
     setCodeFormsIsLoading: (status: boolean) => ({ type: 'app/SET_CODEFORMS_IS_LOADING', status } as const),
     setMonthPlanObjectData: (items: MonthPlanObjectData) => ({ type: 'app/SET_MONTH_PLAN_OBJECT_DATA', items } as const),
     setAddToMonthPlanIsLoading: (status: boolean) => ({ type: 'app/SET_ADD_TO_MONTH_PLAN_IS_LOADING', status } as const),
+    setUserActions: (items: UserActionsType[]) => ({ type: 'app/SET_USER_ACTIONS', items } as const),
+    setUserAccountsActions: (items: UserActionsType[]) => ({ type: 'app/SET_USER_ACCOUNTS_ACTIONS', items } as const),
 }

@@ -152,7 +152,7 @@ export const getPremises = (): ThunkType => async (dispatch) => {
     dispatch (premActions.setIsLoading(false))
 }
 
-export const getReestrData = (id: string): ThunkType => async (dispatch) => {
+export const getPremReestrData = (id: string): ThunkType => async (dispatch) => {
     dispatch (premActions.setIsReestrDataLoading(true))
     let data = await premisesAPI.getReestrData(id)
     dispatch (premActions.pushReestrData(data.items))

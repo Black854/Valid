@@ -84,3 +84,11 @@ export const getAddToMonthPlanIsLoading = (state: AppStateType) => {
 export const getMonthPlanObjectDataSelector = (state: AppStateType) => {
     return (state.app.monthPlanObjectData)
 }
+
+export const getUserActionsSelector = (state: AppStateType) => {
+    return (state.app.userActions)
+}
+
+export const getUserAccountsActionsSelector = (state: AppStateType) => {
+    return (state.app.userAccountsActions)
+}

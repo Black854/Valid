@@ -15,7 +15,7 @@ import type { InputRef } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { getDepartmentsSelector, getEquipGroupsSelector, getIntervals, getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors";
-import { getDepartments, getEquipGroups, getVMPDepartments } from "../../redux/Reducers/appReducer";
+import { defaultPagination, getDepartments, getEquipGroups, getVMPDepartments } from "../../redux/Reducers/appReducer";
 import { useForm } from "react-hook-form";
 import { NewObjectForm } from "./CreateNewObjectForm";
 import Title from "antd/es/typography/Title";
@@ -240,7 +240,7 @@ export const Equipment: React.FC = () => {
             columns={columns}
             dataSource={data}
             bordered={false}
-            pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"]}}
+            pagination={defaultPagination}
             title={() => <>
               <Text style={{ fontSize: '13pt' }}>
                 <NewObjectForm />

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { AppDispatch, AppStateType } from "../../../redux/store"
 import { ArHelper } from "../../common/arHelper"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { getDepartmentsSelector, getVMPDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
 import { getDepartments, getVMPDepartments } from "../../../redux/Reducers/appReducer"
 import { TitleImage } from "./CardComponents/TitleImage"
@@ -12,7 +12,7 @@ import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
 import { getIsLoading, getIsReestrDataLoading, getProcById, getProcData, getProcReestrDataSelector } from "../../../redux/Selectors/processesSelectors"
-import { getProcesses, getReestrData, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/processesReducer"
+import { getProcReestrData, getProcesses, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/processesReducer"
 import { ProcDescriptions } from "./CardComponents/ProcDescription"
 import { ProcLabel } from "./CardComponents/ProcLabel"
 import { CardPlans } from "../../common/CardPlans"
@@ -47,7 +47,7 @@ export const ProcCard = () => {
         }
     }, [dispatch, procData, departments, VMPDepartments])
     useEffect (() => {
-        dispatch(getReestrData(id))
+        dispatch(getProcReestrData(id))
     }, [id])
 
     let filteredDepartments = departments.filter(e => e.stat === '1')

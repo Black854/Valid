@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { getEquipById, getEquipData, getEquipReestrDataSelector, getIsLoading, getIsReestrDataLoading } from "../../../redux/Selectors/equipmentSelectors"
 import { AppDispatch, AppStateType } from "../../../redux/store"
-import { getEquipment, getReestrData, updateDepartment, updateGroup, updateInv, updateManufacturDate, updateManufacturer, updateNomer, updateSerial, updateVMPDepartment } from "../../../redux/Reducers/equipmentReducer"
+import { getEquipReestrData, getEquipment, updateDepartment, updateGroup, updateInv, updateManufacturDate, updateManufacturer, updateNomer, updateSerial, updateVMPDepartment } from "../../../redux/Reducers/equipmentReducer"
 import { ArHelper } from "../../common/arHelper"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { getDepartmentsSelector, getEquipGroupsSelector, getVMPDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
 import { getDepartments, getEquipGroups, getVMPDepartments } from "../../../redux/Reducers/appReducer"
 import { TitleImage } from "./CardComponents/TitleImage"
@@ -50,7 +50,7 @@ export const EquipCard = () => {
         }
     }, [dispatch, equipData, equipGroups, departments, VMPDepartments])
     useEffect (() => {
-        dispatch(getReestrData(id))
+        dispatch(getEquipReestrData(id))
     }, [id])
     let filteredEquipGroups = equipGroups.filter(e => e.isactive !== '1');
     let groupsData = filteredEquipGroups.map((e: any) => ({ value: e.name, label: e.name }))

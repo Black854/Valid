@@ -97,7 +97,7 @@ export const getSystems = (): ThunkType => async (dispatch) => {
     dispatch (sysActions.setIsLoading(false))
 }
 
-export const getReestrData = (id: string): ThunkType => async (dispatch) => {
+export const getSysReestrData = (id: string): ThunkType => async (dispatch) => {
     dispatch (sysActions.setIsReestrDataLoading(true))
     let data = await systemsAPI.getReestrData(id)
     dispatch (sysActions.pushReestrData(data.items))

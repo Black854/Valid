@@ -3,16 +3,16 @@ import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { AppDispatch, AppStateType } from "../../../redux/store"
 import { ArHelper } from "../../common/arHelper"
-import React, { useEffect } from "react"
-import { getDepartmentsSelector, getEquipGroupsSelector, getVMPDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
-import { getDepartments, getEquipGroups, getVMPDepartments } from "../../../redux/Reducers/appReducer"
+import { useEffect } from "react"
+import { getDepartmentsSelector, getVMPDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
+import { getDepartments, getVMPDepartments } from "../../../redux/Reducers/appReducer"
 import { TitleImage } from "./CardComponents/TitleImage"
 import { CardReestr } from "./CardComponents/CardReestr"
 import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
 import { getIsLoading, getIsReestrDataLoading, getSysById, getSysData, getSysReestrDataSelector } from "../../../redux/Selectors/systemsSelectors"
-import { getReestrData, getSystems, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/systemsReducer"
+import { getSysReestrData, getSystems, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/systemsReducer"
 import { SysDescriptions } from "./CardComponents/SysDescription"
 import { SysLabel } from "./CardComponents/SysLabel"
 import { CardPlans } from "../../common/CardPlans"
@@ -47,7 +47,7 @@ export const SysCard = () => {
         }
     }, [dispatch, sysData, departments, VMPDepartments])
     useEffect (() => {
-        dispatch(getReestrData(id))
+        dispatch(getSysReestrData(id))
     }, [id])
 
     let filteredDepartments = departments.filter(e => e.stat === '1')

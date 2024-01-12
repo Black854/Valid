@@ -99,7 +99,7 @@ export const getEquipment = (): ThunkType => async (dispatch) => {
     dispatch(equipActions.setIsLoading(false))
 }
 
-export const getReestrData = (id: string): ThunkType => async (dispatch) => {
+export const getEquipReestrData = (id: string): ThunkType => async (dispatch) => {
     dispatch(equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.getReestrData(id)
     dispatch(equipActions.pushReestrData(data.items))
