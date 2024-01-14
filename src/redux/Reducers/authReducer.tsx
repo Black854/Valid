@@ -9,6 +9,7 @@ type AuthResponseDataType = {
     position: string
     sp: string
     access: string
+    token: string
 }
 
 const initialState = {
@@ -18,7 +19,7 @@ const initialState = {
     access: '',
     position: '',
     sp: '',
-    apiKey: '',
+    token: '',
     responseMessage: null as string | null
 }
 
@@ -34,6 +35,7 @@ export const authReducer = (state = initialState, action: ActionTypes): InitialS
                 access: action.data.access,
                 position: action.data.position,
                 sp: action.data.sp,
+                token: action.data.token,
                 responseMessage: null
             }
         case 'auth/DELETE_AUTH_USER':
@@ -45,6 +47,7 @@ export const authReducer = (state = initialState, action: ActionTypes): InitialS
                 access: '',
                 position: '',
                 sp: '',
+                token: '',
                 responseMessage: null
             }
         case 'auth/SET_RESPONSE_MESSAGE':
@@ -65,6 +68,7 @@ export const login = (userName: string, password: string, remember: boolean | un
         setCookie('access', data.userData.access, 7)
         setCookie('position', data.userData.position, 7)
         setCookie('sp', data.userData.sp, 7)
+        setCookie('token', data.userData.token, 7)
     } else {
         dispatch(authActions.setResponseMessage(data.messages['0']))
     }
@@ -77,6 +81,7 @@ export const logout = (): ThunkType => async (dispatch) => {
     deleteCookie('access')
     deleteCookie('position')
     deleteCookie('sp')
+    deleteCookie('token')
 }
 
 export const loginOfCookieData = (): ThunkType => async (dispatch) => {
@@ -86,14 +91,16 @@ export const loginOfCookieData = (): ThunkType => async (dispatch) => {
     const access = getCookie('access')
     const position = getCookie('position')
     const sp = getCookie('sp')
+    const token = getCookie('token')
 
-    if (login && fio && access && position && sp) {
+    if (login && fio && access && position && sp && token) {
         const data = {
             login,
             fio,
             position,
             sp,
             access,
+            token
         }
         dispatch(authActions.setUserData(data))
     }

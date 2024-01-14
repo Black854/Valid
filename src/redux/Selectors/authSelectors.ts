@@ -4,10 +4,6 @@ export const getAuthUserNameSelector = (state: AppStateType) => {
     return (state.auth.userName)
 }
 
-export const getApiKeySelector = (state: AppStateType) => {
-    return (state.auth.apiKey)
-}
-
 export const getLoginSelector = (state: AppStateType) => {
     return (state.auth.login)
 }
@@ -30,4 +26,8 @@ export const getAuthResponseMessage = (state: AppStateType) => {
 
 export const getIsAuthSelector = (state: AppStateType) => {
     return (state.auth.isAuth)
+}
+
+export const getTokenSelector = (state: AppStateType) => {
+    return (state.auth.token)
 }
