@@ -2,6 +2,7 @@ import { ThunkAction } from "redux-thunk"
 import { equipmentAPI } from "../../api/equipmentAPI"
 import { AppStateType, InferActionsTypes } from "../store"
 import { VMPDataTypeForPlansComponent } from "./vmpReducer"
+import { logout } from "./authReducer"
 
 export type DataType = {
     id: string
@@ -102,6 +103,8 @@ export const getEquipment = (): ThunkType => async (dispatch) => {
         dispatch(equipActions.pushEquipmentData(data.items))
     } else if (data.resultCode === 1) {
         dispatch(equipActions.setEquipErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
     }
     dispatch(equipActions.setIsLoading(false))
 }

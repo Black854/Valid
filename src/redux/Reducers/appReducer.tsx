@@ -91,7 +91,7 @@ export type UserActionsType = {
 export const defaultPagination = { defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"] } as TablePaginationConfig
 
 const initialState = {
-    isInitialized: true,
+    isInitialized: false,
     themeType: 'dark' as 'dark' | 'light',
     equipGroups: [] as EquipGroupsType[],
     departments: [] as DepartmentsType[],
@@ -170,9 +170,11 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
         case 'app/SET_MONTH_PLAN_OBJECT_DATA':
             return { ...state, monthPlanObjectData: action.items }
         case 'app/SET_USER_ACTIONS':
-            return {...state, userActions: action.items}
+            return { ...state, userActions: action.items }
         case 'app/SET_USER_ACCOUNTS_ACTIONS':
-            return {...state, userAccountsActions: action.items}
+            return { ...state, userAccountsActions: action.items }
+        case 'app/SET_IS_INITIALIZED_APP_STATUS':
+            return { ...state, isInitialized: action.status }
         default:
             return state
     }
@@ -399,7 +401,7 @@ export const addReestrData = (id: string, objectType: 'equipment' | 'premises' |
     let data = await appAPI.addReestrData(id, objectType, nvp, dvp, nvo, dvo, typeval)
 
     if (data.resultCode === '0') {
-        switch(objectType) {
+        switch (objectType) {
             case 'equipment':
                 return dispatch(getEquipReestrData(id))
             case 'premises':
@@ -426,6 +428,10 @@ export const getUserAccountsActions = (): ThunkType => async (dispatch) => {
     dispatch(appActions.setUserAccountsActions(data.items))
 }
 
+export const setIsInitializedAppStatus = (status: boolean): ThunkType => async (dispatch) => {
+    dispatch(appActions.setIsInitializedAppStatus(status))
+}
+
 type ActionTypes = InferActionsTypes<typeof appActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
@@ -450,4 +456,5 @@ const appActions = {
     setAddToMonthPlanIsLoading: (status: boolean) => ({ type: 'app/SET_ADD_TO_MONTH_PLAN_IS_LOADING', status } as const),
     setUserActions: (items: UserActionsType[]) => ({ type: 'app/SET_USER_ACTIONS', items } as const),
     setUserAccountsActions: (items: UserActionsType[]) => ({ type: 'app/SET_USER_ACCOUNTS_ACTIONS', items } as const),
+    setIsInitializedAppStatus: (status: boolean) => ({ type: 'app/SET_IS_INITIALIZED_APP_STATUS', status } as const),
 }

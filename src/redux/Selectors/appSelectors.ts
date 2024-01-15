@@ -1,5 +1,9 @@
 import { AppStateType } from "../store"
 
+export const getInitializeAppStatus = (state: AppStateType) => {
+    return (state.app.isInitialized)
+}
+
 export const getEquipGroupsSelector = (state: AppStateType) => {
     return (state.app.equipGroups)
 }

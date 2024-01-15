@@ -23,17 +23,21 @@ import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/p
 import { ProcTasks } from "./taskComponents/ProcTasks"
 import { SysTasks } from "./taskComponents/SysTasks"
 import { getAuthUserNameSelector } from "../../redux/Selectors/authSelectors"
+import { getInitializeAppStatus } from "../../redux/Selectors/appSelectors"
 
 const { Text } = Typography
 
 export const WorkList: React.FC = () => {
+    const initializeAppStatus = useSelector(getInitializeAppStatus)
     useEffect(() => {
-        dispatch(getPremises())
-        dispatch(getEquipment())
-        dispatch(getSystems())
-        dispatch(getProcesses())
-        dispatch(getAllValidators())
-    }, [])
+        if (initializeAppStatus) {
+            dispatch(getPremises())
+            dispatch(getEquipment())
+            dispatch(getSystems())
+            dispatch(getProcesses())
+            dispatch(getAllValidators())
+        }
+    }, [initializeAppStatus])
 
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
@@ -122,11 +126,13 @@ export const WorkList: React.FC = () => {
     const myProcData = useSelector(getCurrentProcDataSelector)
 
     useEffect(() => {
-        dispatch(getCurrentPremData(myPremDataIdArray))
-        dispatch(getCurrentEquipData(myEquipDataIdArray))
-        dispatch(getCurrentSysData(mySysDataIdArray))
-        dispatch(getCurrentProcData(myProcDataIdArray))
-    }, [premData, equipData, sysData, procData])
+        if (initializeAppStatus) {
+            dispatch(getCurrentPremData(myPremDataIdArray))
+            dispatch(getCurrentEquipData(myEquipDataIdArray))
+            dispatch(getCurrentSysData(mySysDataIdArray))
+            dispatch(getCurrentProcData(myProcDataIdArray))
+        }
+    }, [premData, equipData, sysData, procData, initializeAppStatus])
 
     type DataType = typeof premNewData[0]
     const data: DataType[] = [...premNewData, ...equipNewData, ...sysNewData, ...procNewData]
@@ -163,7 +169,7 @@ export const WorkList: React.FC = () => {
             sorter: (a, b) => a.name.localeCompare(b.name),
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Прогресс</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Прогресс</Text>,
             render: (text, record, index) => {
                 return <ProgressHelper type="work" key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} mySysData={mySysData} myProcData={myProcData} />
             },
@@ -196,7 +202,7 @@ export const WorkList: React.FC = () => {
             align: 'center'
         },
     ]
-    return (isLoading) ? <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} /> :
+    return isLoading ? <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} /> :
         <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
             {contextHolder}
             <Row>
