@@ -65,6 +65,7 @@ let initialState = {
     isDescriptionLoading: false,
     sopCodeForm: '',
     equipIdArrayAtWorkAtCurrentUser: [] as EquipReestrType[],
+    errorMessage: null as string | null
 }
 
 type InitialStateType = typeof initialState
@@ -87,6 +88,8 @@ export const equipmentReducer = (state = initialState, action: ActionTypes): Ini
             return { ...state, isDescriptionLoading: action.data }
         case 'equip/SET_IS_REESTR_DATA_LOADING':
             return { ...state, isReestrDataLoading: action.data }
+        case 'equip/SET_EQUIP_ERROR_MESSAGE':
+            return {...state, errorMessage: action.text}
         default:
             return state
     }
@@ -95,7 +98,11 @@ export const equipmentReducer = (state = initialState, action: ActionTypes): Ini
 export const getEquipment = (): ThunkType => async (dispatch) => {
     dispatch(equipActions.setIsLoading(true))
     let data = await equipmentAPI.getEquipment()
-    dispatch(equipActions.pushEquipmentData(data.items))
+    if (data.resultCode === 0) {
+        dispatch(equipActions.pushEquipmentData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(equipActions.setEquipErrorMessage(data.messages[0]))
+    }
     dispatch(equipActions.setIsLoading(false))
 }
 
@@ -276,4 +283,5 @@ const equipActions = {
     setIsReestrDataLoading: (data: boolean) => ({ type: 'equip/SET_IS_REESTR_DATA_LOADING', data } as const),
     setEquipIdArrayAtWorkAtCurrentUser: (data: any) => ({ type: 'equip/SET_EQUIP_ID_ARRAY_AT_WORK_AT_CURRENT_USER', data } as const),
     setIsDescriptionLoading: (data: boolean) => ({ type: 'equip/SET_IS_DESCRIPTION_LOADING', data } as const),
+    setEquipErrorMessage: (text: string) => ({ type: 'equip/SET_EQUIP_ERROR_MESSAGE', text } as const),
 }

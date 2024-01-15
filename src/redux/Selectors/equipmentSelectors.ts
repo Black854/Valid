@@ -40,3 +40,7 @@ export const getCurrentEquipDataSelector = (state: AppStateType) => {
 export const getIsDescriptionLoading = (state: AppStateType) => {
     return (state.equipment.isDescriptionLoading)
 }
+
+export const getEquipErrorMessage = (state: AppStateType) => {
+    return (state.equipment.errorMessage)
+}

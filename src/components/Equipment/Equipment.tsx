@@ -1,26 +1,23 @@
-import { Typography, Col, Image, Row, Spin, Table, Card, Button, Space, Input, Modal, Form, Select } from "antd";
+import { Typography, Col, Image, Row, Spin, Table, Button, Space, Input } from "antd"
 import { Content } from "antd/es/layout/layout"
-import { useDispatch, useSelector } from "react-redux";
-import { getEquipData, getIsLoading } from "../../redux/Selectors/equipmentSelectors";
-import { getEquipment } from "../../redux/Reducers/equipmentReducer";
-import { EyeOutlined, PlusOutlined } from '@ant-design/icons';
-import { RenderDateHelper } from "../common/renderDateHelper";
+import { useDispatch, useSelector } from "react-redux"
+import { getEquipData, getEquipErrorMessage, getIsLoading } from "../../redux/Selectors/equipmentSelectors"
+import { getEquipment } from "../../redux/Reducers/equipmentReducer"
+import { EyeOutlined } from '@ant-design/icons'
+import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
-import { NavLink } from "react-router-dom";
-import React, { useEffect, useRef, useState } from "react";
-import { AppDispatch } from "../../redux/store";
-import { SearchOutlined } from '@ant-design/icons';
-import Highlighter from 'react-highlight-words';
-import type { InputRef } from 'antd';
-import type { ColumnType, ColumnsType } from 'antd/es/table';
-import type { FilterConfirmProps } from 'antd/es/table/interface';
-import { getDepartmentsSelector, getEquipGroupsSelector, getIntervals, getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors";
-import { defaultPagination, getDepartments, getEquipGroups, getVMPDepartments } from "../../redux/Reducers/appReducer";
-import { useForm } from "react-hook-form";
-import { NewObjectForm } from "./CreateNewObjectForm";
-import Title from "antd/es/typography/Title";
+import { NavLink } from "react-router-dom"
+import React, { useRef, useState } from "react"
+import { AppDispatch } from "../../redux/store"
+import { SearchOutlined } from '@ant-design/icons'
+import Highlighter from 'react-highlight-words'
+import type { InputRef } from 'antd'
+import type { ColumnType, ColumnsType } from 'antd/es/table'
+import type { FilterConfirmProps } from 'antd/es/table/interface'
+import { defaultPagination } from "../../redux/Reducers/appReducer"
+import { NewObjectForm } from "./CreateNewObjectForm"
 
-const { Text } = Typography;
+const { Text } = Typography
 
 interface DataType {
   id: string,
@@ -34,17 +31,19 @@ interface DataType {
   foto: string
 }
 
-type DataIndex = keyof DataType;
+type DataIndex = keyof DataType
 
 export const Equipment: React.FC = () => {
   const dispatch: AppDispatch = useDispatch()
 
   const equipData = useSelector(getEquipData)
   const isLoading = useSelector(getIsLoading)
+  const errorMessage = useSelector(getEquipErrorMessage)
 
-  if (equipData.length === 0 && isLoading === false) {
+  if (equipData.length === 0 && isLoading === false && !errorMessage) {
     dispatch(getEquipment())
   }
+
   const equipNewData = equipData.map(e => ({
     id: e.id,
     key: e.id,
@@ -66,14 +65,14 @@ export const Equipment: React.FC = () => {
     confirm: (param?: FilterConfirmProps) => void,
     dataIndex: DataIndex,
   ) => {
-    confirm();
-    setSearchText(selectedKeys[0]);
-  };
+    confirm()
+    setSearchText(selectedKeys[0])
+  }
 
   const handleReset = (clearFilters: () => void) => {
-    clearFilters();
-    setSearchText('');
-  };
+    clearFilters()
+    setSearchText('')
+  }
 
   const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
@@ -106,7 +105,7 @@ export const Equipment: React.FC = () => {
           <Button
             size="small"
             onClick={() => {
-              close();
+              close()
             }}
           >
             Закрыть
@@ -124,7 +123,7 @@ export const Equipment: React.FC = () => {
         .includes((value as string).toLowerCase()),
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
+        setTimeout(() => searchInput.current?.select(), 100)
       }
     }
   })
@@ -231,26 +230,29 @@ export const Equipment: React.FC = () => {
 
   if (isLoading) {
     return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
+  } else if (errorMessage) {
+    return <Text type="warning" style={{ fontSize: '12pt', display: 'inline-block', margin: '20px auto' }}>{errorMessage}</Text>
+  } else {
+    return <>
+      <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
+        <Row>
+          <Col push={1} xs={4} sm={22} md={22} lg={22} xl={22} xxl={22} >
+            <Table
+              columns={columns}
+              dataSource={data}
+              bordered={false}
+              pagination={defaultPagination}
+              title={() => <>
+                <Text style={{ fontSize: '13pt' }}>
+                  <NewObjectForm />
+                  Оборудование (всего: {equipData.length})
+                </Text>
+              </>}
+              size="small"
+            />
+          </Col>
+        </Row>
+      </Content>
+    </>
   }
-  return (
-    <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
-      <Row>
-        <Col push={1} xs={4} sm={22} md={22} lg={22} xl={22} xxl={22} >
-          <Table
-            columns={columns}
-            dataSource={data}
-            bordered={false}
-            pagination={defaultPagination}
-            title={() => <>
-              <Text style={{ fontSize: '13pt' }}>
-                <NewObjectForm />
-                Оборудование (всего: {equipData.length})
-              </Text>
-            </>}
-            size="small"
-          />
-        </Col>
-      </Row>
-    </Content>
-  )
 }
