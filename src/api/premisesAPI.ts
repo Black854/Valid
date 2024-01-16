@@ -1,35 +1,26 @@
-import axios from "axios"
-import { NewPremObjectType } from "../redux/Reducers/premisesReducer" 
-import { getCookie } from "../components/common/cookie"
-
-const token = getCookie('token')
-
-const instance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/prem/',
-    withCredentials: true,
-    headers: {"Authorization" : `Bearer ${token}`}
-})
+import { NewPremObjectType } from "../redux/Reducers/premisesReducer"
+import { premInstance } from "./instance"
 
 export const premisesAPI = {
     getPremises () {
-        return instance.get(`getPremList.php`).then (response => {
+        return premInstance.get(`getPremList.php`).then (response => {
             return response.data
         })
     },
     getReestrData (id: string) {
-        return instance.get(`getReestrData.php?id=${id}&prem`).then (response => {
+        return premInstance.get(`getReestrData.php?id=${id}&prem`).then (response => {
             return response.data
         })
     },
     uploadMainPhoto (id: string, file: any) {
         let formData = new FormData()
         formData.append("image", file)
-        return instance.post(`uploadMainPhoto.php?id=${id}&table=premises`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
+        return premInstance.post(`uploadMainPhoto.php?id=${id}&table=premises`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
             return response.data
         })
     },
     deleteMainPhoto (id: string) {
-        return instance.get(`deleteMainPhoto.php?id=${id}&table=premises`).then (response => {
+        return premInstance.get(`deleteMainPhoto.php?id=${id}&table=premises`).then (response => {
             return response.data
         })
     },
@@ -53,12 +44,12 @@ export const premisesAPI = {
         interval !== undefined && data.append("interval", interval)
         mode !== undefined && data.append("mode", mode)
         
-        return instance.post(`updateDescription.php`, data, {}).then (response => {
+        return premInstance.post(`updateDescription.php`, data, {}).then (response => {
             return response.data
         })
     },
     getTechnicalInfo (id: string) {
-        return instance.get(`getTechnicalInfo.php?id=${id}`).then (response => {
+        return premInstance.get(`getTechnicalInfo.php?id=${id}`).then (response => {
             return response.data
         })
     },
@@ -67,28 +58,28 @@ export const premisesAPI = {
         data.append("id", id)
         data.append("techType", techType)
         data.append("text", text)
-        return instance.post(`updateTechnicalInfo.php`, data).then (response => {
+        return premInstance.post(`updateTechnicalInfo.php`, data).then (response => {
             return response.data
         })
     },
     getPhotos (id: string) {
         let data = new FormData()
         data.append("id", id)
-        return instance.post(`getPhotos.php`, data).then (response => {
+        return premInstance.post(`getPhotos.php`, data).then (response => {
             return response.data
         })
     },
     getCleanPremList (id: string) {
         let data = new FormData()
         data.append("id", id)
-        return instance.post(`getCleanPremList.php`, data).then (response => {
+        return premInstance.post(`getCleanPremList.php`, data).then (response => {
             return response.data
         })
     },
     getCleanGroupLabels (premId: string) {
         let data = new FormData()
         data.append("premId", premId)
-        return instance.post(`getCleanGroupLabels.php`, data).then (response => {
+        return premInstance.post(`getCleanGroupLabels.php`, data).then (response => {
             return response.data
         })
     },
@@ -97,7 +88,7 @@ export const premisesAPI = {
         formData.append("id", id)
         formData.append("image", file)
         formData.append("table", "premises")
-        return instance.post(`uploadPhotos.php`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
+        return premInstance.post(`uploadPhotos.php`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
             return response.data
         })
     },
@@ -105,7 +96,7 @@ export const premisesAPI = {
         let formData = new FormData()
         formData.append("id", id)
         formData.append("photoId", photoId)
-        return instance.post(`deletePhoto.php`, formData, {}).then (response => {
+        return premInstance.post(`deletePhoto.php`, formData, {}).then (response => {
             return response.data
         })
     },
@@ -114,7 +105,7 @@ export const premisesAPI = {
         data.append("photoId", photoId)
         data.append("text", text)
         data.append("id", id)
-        return instance.post(`updatePdfDescription.php`, data, {}).then (response => {
+        return premInstance.post(`updatePdfDescription.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -124,7 +115,7 @@ export const premisesAPI = {
         data.append("premId", premId)
         data.append("date", date)
         data.append("dateType", dateType)
-        return instance.post(`updateReestrDate.php`, data, {}).then (response => {
+        return premInstance.post(`updateReestrDate.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -134,7 +125,7 @@ export const premisesAPI = {
         data.append("recordId", recordId)
         data.append("text", text)
         data.append("dataType", dataType)
-        return instance.post(`updateReestrDocsCode.php`, data, {}).then (response => {
+        return premInstance.post(`updateReestrDocsCode.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -144,7 +135,7 @@ export const premisesAPI = {
         data.append("recordId", recordId)
         data.append("dataType", dataType)
         data.append("text", text)
-        return instance.post(`updateCleanPremItemData.php`, data, {}).then (response => {
+        return premInstance.post(`updateCleanPremItemData.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -154,7 +145,7 @@ export const premisesAPI = {
         data.append("recordId", recordId)
         data.append("dataType", dataType)
         data.append("file", file)
-        return instance.post(`uploadDocument.php`, data, { headers: {'Content-Type': 'multipart/form-data'} }).then (response => {
+        return premInstance.post(`uploadDocument.php`, data, { headers: {'Content-Type': 'multipart/form-data'} }).then (response => {
             return response.data
         })
     },
@@ -164,7 +155,7 @@ export const premisesAPI = {
         data.append("recordId", recordId)
         data.append("dataType", dataType)
         data.append("url", url)
-        return instance.post(`deleteDocument.php`, data, {}).then (response => {
+        return premInstance.post(`deleteDocument.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -174,7 +165,7 @@ export const premisesAPI = {
         data.append("nomer", nomer)
         data.append("sp", sp)
         data.append("name", name)
-        return instance.post(`createCleanPrem.php`, data, {}).then (response => {
+        return premInstance.post(`createCleanPrem.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -182,7 +173,7 @@ export const premisesAPI = {
         let data = new FormData()
         data.append("cleanTab", cleanTab)
         data.append("id", id)
-        return instance.post(`deleteCleanPrem.php`, data, {}).then (response => {
+        return premInstance.post(`deleteCleanPrem.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -190,7 +181,7 @@ export const premisesAPI = {
         let data = new FormData()
         data.append("cleanTab", cleanTab)
         data.append("groupId", groupId)
-        return instance.post(`deleteCleanPremGroup.php`, data, {}).then (response => {
+        return premInstance.post(`deleteCleanPremGroup.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -200,7 +191,7 @@ export const premisesAPI = {
             dataItems,
             count
         }
-        return instance.post(`createCleanPremGroup.php`, requestData, {}).then (response => {
+        return premInstance.post(`createCleanPremGroup.php`, requestData, {}).then (response => {
             return response.data
         })
     },
@@ -211,7 +202,7 @@ export const premisesAPI = {
             count,
             groupId
         }
-        return instance.post(`editCleanPremGroup.php`, requestData, {}).then (response => {
+        return premInstance.post(`editCleanPremGroup.php`, requestData, {}).then (response => {
             return response.data
         })
     },
@@ -219,7 +210,7 @@ export const premisesAPI = {
         const requestData = {
             myPremDataIdArray
         }
-        return instance.post(`getCurrentPremData.php`, requestData, {}).then (response => {
+        return premInstance.post(`getCurrentPremData.php`, requestData, {}).then (response => {
             return response.data
         })
     },
@@ -229,12 +220,12 @@ export const premisesAPI = {
             changeParam,
             text
         }
-        return instance.post(`updatePremWorkData.php`, requestData, {}).then (response => {
+        return premInstance.post(`updatePremWorkData.php`, requestData, {}).then (response => {
             return response.data
         })
     },
     createNewObject(data: NewPremObjectType) {
-        return instance.post(`createNewObject.php`, data, {}).then(response => {
+        return premInstance.post(`createNewObject.php`, data, {}).then(response => {
             return response.data
         })
     },

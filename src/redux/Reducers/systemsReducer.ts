@@ -2,6 +2,7 @@ import { ThunkAction } from "redux-thunk"
 import { systemsAPI } from "../../api/systemsAPI"
 import { AppStateType, InferActionsTypes } from "../store"
 import { VMPDataTypeForPlansComponent } from "./vmpReducer"
+import { logout } from "./authReducer"
 
 export type DataType = {
     id: string
@@ -93,7 +94,13 @@ export const systemsReducer = (state = initialState, action: ActionTypes): Initi
 export const getSystems = (): ThunkType => async (dispatch) => {
     dispatch (sysActions.setIsLoading(true))
     let data = await systemsAPI.getSystems()
-    dispatch (sysActions.pushSystemsData(data.items))
+    if (data.resultCode === 0) {
+        dispatch (sysActions.pushSystemsData(data.items))
+    } else if (data.resultCode === 1) {
+        // dispatch(equipActions.setEquipErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch (sysActions.setIsLoading(false))
 }
 

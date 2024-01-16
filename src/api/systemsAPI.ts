@@ -1,35 +1,26 @@
-import axios from "axios"
-import { NewSysObjectType } from "../redux/Reducers/systemsReducer" 
-import { getCookie } from "../components/common/cookie"
-
-const token = getCookie('token')
-
-const instance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/sys/',
-    withCredentials: true,
-    headers: {"Authorization" : `Bearer ${token}`}
-})
+import { NewSysObjectType } from "../redux/Reducers/systemsReducer"
+import { sysInstance } from "./instance"
 
 export const systemsAPI = {
     getSystems () {
-        return instance.get(`getSysList.php`).then (response => {
+        return sysInstance.get(`getSysList.php`).then (response => {
             return response.data
         })
     },
     getReestrData (id: string) {
-        return instance.get(`getReestrData.php?id=${id}&sys`).then (response => {
+        return sysInstance.get(`getReestrData.php?id=${id}&sys`).then (response => {
             return response.data
         })
     },
     uploadMainPhoto (id: string, file: any) {
         let formData = new FormData()
         formData.append("image", file)
-        return instance.post(`uploadMainPhoto.php?id=${id}&table=systems`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
+        return sysInstance.post(`uploadMainPhoto.php?id=${id}&table=systems`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
             return response.data
         })
     },
     deleteMainPhoto (id: string) {
-        return instance.get(`deleteMainPhoto.php?id=${id}&table=systems`).then (response => {
+        return sysInstance.get(`deleteMainPhoto.php?id=${id}&table=systems`).then (response => {
             return response.data
         })
     },
@@ -59,12 +50,12 @@ export const systemsAPI = {
         VMPDepartment !== undefined && data.append("VMPDepartment", VMPDepartment)
         interval !== undefined && data.append("interval", interval)
         
-        return instance.post(`updateDescription.php`, data, {}).then (response => {
+        return sysInstance.post(`updateDescription.php`, data, {}).then (response => {
             return response.data
         })
     },
     getTechnicalInfo (id: string) {
-        return instance.get(`getTechnicalInfo.php?id=${id}`).then (response => {
+        return sysInstance.get(`getTechnicalInfo.php?id=${id}`).then (response => {
             return response.data
         })
     },
@@ -72,14 +63,14 @@ export const systemsAPI = {
         let data = new FormData()
         data.append("id", id)
         data.append("text", text)
-        return instance.post(`updateTechnicalInfo.php`, data).then (response => {
+        return sysInstance.post(`updateTechnicalInfo.php`, data).then (response => {
             return response.data
         })
     },
     getPhotos (id: string) {
         let data = new FormData()
         data.append("id", id)
-        return instance.post(`getPhotos.php`, data).then (response => {
+        return sysInstance.post(`getPhotos.php`, data).then (response => {
             return response.data
         })
     },
@@ -88,7 +79,7 @@ export const systemsAPI = {
         formData.append("id", id)
         formData.append("image", file)
         formData.append("table", "systems")
-        return instance.post(`uploadPhotos.php`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
+        return sysInstance.post(`uploadPhotos.php`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
             return response.data
         })
     },
@@ -96,7 +87,7 @@ export const systemsAPI = {
         let formData = new FormData()
         formData.append("id", id)
         formData.append("photoId", photoId)
-        return instance.post(`deletePhoto.php`, formData, {}).then (response => {
+        return sysInstance.post(`deletePhoto.php`, formData, {}).then (response => {
             return response.data
         })
     },
@@ -105,7 +96,7 @@ export const systemsAPI = {
         data.append("photoId", photoId)
         data.append("text", text)
         data.append("id", id)
-        return instance.post(`updatePdfDescription.php`, data, {}).then (response => {
+        return sysInstance.post(`updatePdfDescription.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -115,7 +106,7 @@ export const systemsAPI = {
         data.append("sysId", sysId)
         data.append("date", date)
         data.append("dateType", dateType)
-        return instance.post(`updateReestrDate.php`, data, {}).then (response => {
+        return sysInstance.post(`updateReestrDate.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -125,7 +116,7 @@ export const systemsAPI = {
         data.append("recordId", recordId)
         data.append("text", text)
         data.append("dataType", dataType)
-        return instance.post(`updateReestrDocsCode.php`, data, {}).then (response => {
+        return sysInstance.post(`updateReestrDocsCode.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -135,7 +126,7 @@ export const systemsAPI = {
         data.append("recordId", recordId)
         data.append("dataType", dataType)
         data.append("file", file)
-        return instance.post(`uploadDocument.php`, data, { headers: {'Content-Type': 'multipart/form-data'} }).then (response => {
+        return sysInstance.post(`uploadDocument.php`, data, { headers: {'Content-Type': 'multipart/form-data'} }).then (response => {
             return response.data
         })
     },
@@ -145,7 +136,7 @@ export const systemsAPI = {
         data.append("recordId", recordId)
         data.append("dataType", dataType)
         data.append("url", url)
-        return instance.post(`deleteDocument.php`, data, {}).then (response => {
+        return sysInstance.post(`deleteDocument.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -153,7 +144,7 @@ export const systemsAPI = {
         const requestData = {
             mySysDataIdArray
         }
-        return instance.post(`getCurrentSysData.php`, requestData, {}).then (response => {
+        return sysInstance.post(`getCurrentSysData.php`, requestData, {}).then (response => {
             return response.data
         })
     },
@@ -163,12 +154,12 @@ export const systemsAPI = {
             changeParam,
             text
         }
-        return instance.post(`updateSysWorkData.php`, requestData, {}).then (response => {
+        return sysInstance.post(`updateSysWorkData.php`, requestData, {}).then (response => {
             return response.data
         })
     },
     createNewObject(data: NewSysObjectType) {
-        return instance.post(`createNewObject.php`, data, {}).then(response => {
+        return sysInstance.post(`createNewObject.php`, data, {}).then(response => {
             return response.data
         })
     },

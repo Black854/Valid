@@ -63,16 +63,6 @@ export const login = (userName: string, password: string, remember: boolean | un
 
     const data = await authAPI.login(userName, password, rememberMe)
     if (data.resultCode === 0) {
-        // dispatch(authActions.setUserData(data.userData))
-        // setCookie('login', data.userData.login, 7)
-        // setCookie('userName', data.userData.fio, 7)
-        // setCookie('access', data.userData.access, 7)
-        // setCookie('position', data.userData.position, 7)
-        // setCookie('sp', data.userData.sp, 7)
-        // setCookie('token', data.userData.token, 7)
-        // dispatch(setIsInitializedAppStatus(true))
-
-
         Promise.all([
             setCookie('login', data.userData.login, 7),
             setCookie('userName', data.userData.fio, 7),
@@ -81,14 +71,9 @@ export const login = (userName: string, password: string, remember: boolean | un
             setCookie('sp', data.userData.sp, 7),
             setCookie('token', data.userData.token, 7),
         ]).then(() => {
-            // const token = getCookie('token')
-            // console.log(token)
             dispatch(authActions.setUserData(data.userData))
             dispatch(setIsInitializedAppStatus(true))
         })
-
-
-
     } else {
         dispatch(authActions.setResponseMessage(data.messages['0']))
     }

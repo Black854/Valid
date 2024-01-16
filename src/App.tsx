@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Layout, ConfigProvider, FloatButton } from 'antd'
-import { Route, Routes, useLocation, Navigate, useNavigate } from 'react-router-dom'
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import './App.css'
 import { Header1 } from './components/Header/Header'
 import { EquipCard } from './components/Equipment/EquipCard/EquipCard'

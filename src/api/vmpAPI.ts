@@ -1,17 +1,8 @@
-import axios from "axios"
-import { getCookie } from "../components/common/cookie"
-
-const token = getCookie('token')
-
-const instance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/vmp/',
-    withCredentials: true,
-    headers: {"Authorization" : `Bearer ${token}`}
-})
+import { vmpInstance } from "./instance"
 
 export const vmpAPI = {
     getVMPData(tablename: string, year: string) {
-        return instance.get(`getVMPData.php?tablename=${tablename}&year=${year}`).then(response => {
+        return vmpInstance.get(`getVMPData.php?tablename=${tablename}&year=${year}`).then(response => {
             return response.data
         })
     },
@@ -21,7 +12,7 @@ export const vmpAPI = {
             sp,
             objectType
         }
-        return instance.post(`getObjectVMPPlansData.php`, requestData, {}).then(response => {
+        return vmpInstance.post(`getObjectVMPPlansData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -32,7 +23,7 @@ export const vmpAPI = {
             recordId,
             sp
         }
-        return instance.post(`updateVMPPlansData.php`, requestData, {}).then(response => {
+        return vmpInstance.post(`updateVMPPlansData.php`, requestData, {}).then(response => {
             return response.data ?
                 vmpAPI.getObjectVMPPlansData(objectId, sp, objectType).then(response => {
                     return response
@@ -48,7 +39,7 @@ export const vmpAPI = {
             typeval,
             objectType
         }
-        return instance.post(`createVMPPlansData.php`, requestData, {}).then(response => {
+        return vmpInstance.post(`createVMPPlansData.php`, requestData, {}).then(response => {
             return response.data ?
                 vmpAPI.getObjectVMPPlansData(objectId, sp, objectType).then(response => {
                     return response

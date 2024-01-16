@@ -44,3 +44,7 @@ export const getIsDescriptionLoading = (state: AppStateType) => {
 export const getEquipErrorMessage = (state: AppStateType) => {
     return (state.equipment.errorMessage)
 }
+
+export const getEquipCreateNewObjectErrorMessage = (state: AppStateType) => {
+    return (state.equipment.createNewObjectErrorMessage)
+}

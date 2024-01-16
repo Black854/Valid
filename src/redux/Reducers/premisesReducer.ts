@@ -2,6 +2,7 @@ import { ThunkAction } from "redux-thunk"
 import { premisesAPI } from "../../api/premisesAPI"
 import { AppStateType, InferActionsTypes } from "../store"
 import { VMPDataTypeForPlansComponent } from "./vmpReducer"
+import { logout } from "./authReducer"
 
 export type DataType = {
     mode: string
@@ -148,7 +149,13 @@ export const premisesReducer = (state = initialState, action: ActionTypes): Init
 export const getPremises = (): ThunkType => async (dispatch) => {
     dispatch (premActions.setIsLoading(true))
     let data = await premisesAPI.getPremises()
-    dispatch (premActions.pushPremisesData(data.items))
+    if (data.resultCode === 0) {
+        dispatch (premActions.pushPremisesData(data.items))
+    } else if (data.resultCode === 1) {
+        // dispatch(equipActions.setEquipErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch (premActions.setIsLoading(false))
 }
 

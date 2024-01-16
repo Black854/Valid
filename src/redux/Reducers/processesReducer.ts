@@ -2,6 +2,7 @@ import { ThunkAction } from "redux-thunk"
 import { AppStateType, InferActionsTypes } from "../store"
 import { processesAPI } from "../../api/processesAPI"
 import { VMPDataTypeForPlansComponent } from "./vmpReducer"
+import { logout } from "./authReducer"
 
 export type DataType = {
     id: string
@@ -93,7 +94,13 @@ export const processesReducer = (state = initialState, action: ActionTypes): Ini
 export const getProcesses = (): ThunkType => async (dispatch) => {
     dispatch (procActions.setIsLoading(true))
     let data = await processesAPI.getProcesses()
-    dispatch (procActions.pushProcessesData(data.items))
+    if (data.resultCode === 0) {
+        dispatch (procActions.pushProcessesData(data.items))
+    } else if (data.resultCode === 1) {
+        // dispatch(procActions.setEquipErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch (procActions.setIsLoading(false))
 }
 

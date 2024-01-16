@@ -1,30 +1,21 @@
-import axios from "axios"
 import { NewInstObjectType } from "../redux/Reducers/instrumentsReducer"
-import { getCookie } from "../components/common/cookie"
-
-const token = getCookie('token')
-
-const instance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/inst/',
-    withCredentials: true,
-    headers: {"Authorization" : `Bearer ${token}`}
-})
+import { instInstance } from "./instance"
 
 export const instrumentsAPI = {
     getInstruments() {
-        return instance.get(`getInstList.php`).then(response => {
+        return instInstance.get(`getInstList.php`).then(response => {
             return response.data
         })
     },
     uploadMainPhoto(id: string, file: any) {
         let formData = new FormData()
         formData.append("image", file)
-        return instance.post(`uploadMainPhoto.php?id=${id}&table=instruments`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
+        return instInstance.post(`uploadMainPhoto.php?id=${id}&table=instruments`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
             return response.data
         })
     },
     deleteMainPhoto(id: string) {
-        return instance.get(`deleteMainPhoto.php?id=${id}&table=instruments`).then(response => {
+        return instInstance.get(`deleteMainPhoto.php?id=${id}&table=instruments`).then(response => {
             return response.data
         })
     },
@@ -53,12 +44,12 @@ export const instrumentsAPI = {
         manufacturer !== undefined && data.append("manufacturer", manufacturer)
         manufacturDate !== undefined && data.append("manufacturdate", manufacturDate)
 
-        return instance.post(`updateDescription.php`, data, {}).then(response => {
+        return instInstance.post(`updateDescription.php`, data, {}).then(response => {
             return response.data
         })
     },
     getTechnicalInfo(id: string) {
-        return instance.get(`getTechnicalInfo.php?id=${id}`).then(response => {
+        return instInstance.get(`getTechnicalInfo.php?id=${id}`).then(response => {
             return response.data
         })
     },
@@ -66,14 +57,14 @@ export const instrumentsAPI = {
         let data = new FormData()
         data.append("id", id)
         data.append("text", text)
-        return instance.post(`updateTechnicalInfo.php`, data).then(response => {
+        return instInstance.post(`updateTechnicalInfo.php`, data).then(response => {
             return response.data
         })
     },
     getPhotos(id: string) {
         let data = new FormData()
         data.append("id", id)
-        return instance.post(`getPhotos.php`, data).then(response => {
+        return instInstance.post(`getPhotos.php`, data).then(response => {
             return response.data
         })
     },
@@ -82,7 +73,7 @@ export const instrumentsAPI = {
         formData.append("id", id)
         formData.append("image", file)
         formData.append("table", "instruments")
-        return instance.post(`uploadPhotos.php`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
+        return instInstance.post(`uploadPhotos.php`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
             return response.data
         })
     },
@@ -90,7 +81,7 @@ export const instrumentsAPI = {
         let formData = new FormData()
         formData.append("id", id)
         formData.append("photoId", photoId)
-        return instance.post(`deletePhoto.php`, formData, {}).then(response => {
+        return instInstance.post(`deletePhoto.php`, formData, {}).then(response => {
             return response.data
         })
     },
@@ -99,12 +90,12 @@ export const instrumentsAPI = {
         data.append("photoId", photoId)
         data.append("text", text)
         data.append("id", id)
-        return instance.post(`updatePdfDescription.php`, data, {}).then(response => {
+        return instInstance.post(`updatePdfDescription.php`, data, {}).then(response => {
             return response.data
         })
     },
     createNewObject(data: NewInstObjectType) {
-        return instance.post(`createNewObject.php`, data, {}).then(response => {
+        return instInstance.post(`createNewObject.php`, data, {}).then(response => {
             return response.data
         })
     },

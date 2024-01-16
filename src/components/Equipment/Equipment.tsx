@@ -1,7 +1,7 @@
 import { Typography, Col, Image, Row, Spin, Table, Button, Space, Input } from "antd"
 import { Content } from "antd/es/layout/layout"
 import { useDispatch, useSelector } from "react-redux"
-import { getEquipData, getEquipErrorMessage, getIsLoading } from "../../redux/Selectors/equipmentSelectors"
+import { getEquipCreateNewObjectErrorMessage, getEquipData, getEquipErrorMessage, getIsLoading } from "../../redux/Selectors/equipmentSelectors"
 import { getEquipment } from "../../redux/Reducers/equipmentReducer"
 import { EyeOutlined } from '@ant-design/icons'
 import { RenderDateHelper } from "../common/renderDateHelper"
@@ -39,6 +39,7 @@ export const Equipment: React.FC = () => {
   const equipData = useSelector(getEquipData)
   const isLoading = useSelector(getIsLoading)
   const errorMessage = useSelector(getEquipErrorMessage)
+  const equipCreateNewObjectErrorMessage = useSelector(getEquipCreateNewObjectErrorMessage) // решить как отображать ошибки чтобы потом их сбрасывать
 
   if (equipData.length === 0 && isLoading === false && !errorMessage) {
     dispatch(getEquipment())

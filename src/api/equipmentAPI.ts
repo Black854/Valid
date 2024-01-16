@@ -1,5 +1,5 @@
 import { NewEquipObjectType } from "../redux/Reducers/equipmentReducer"
-import { equipInstance } from "./middleware"
+import { equipInstance } from "./instance"
 
 export const equipmentAPI = {
     getEquipment() {

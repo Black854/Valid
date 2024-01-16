@@ -1,42 +1,38 @@
-import axios from "axios"
-
-const instance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/common/'
-})
+import { appInstance } from "./instance"
 
 export const appAPI = {
     getEquipGroups(type: 'active' | 'all') {
-        return instance.get(`getEquipGroups.php?type=${type}`).then(response => {
+        return appInstance.get(`getEquipGroups.php?type=${type}`).then(response => {
             return response.data
         })
     },
     getPremModes() {
-        return instance.get(`getPremModes.php`).then(response => {
+        return appInstance.get(`getPremModes.php`).then(response => {
             return response.data
         })
     },
     getDepartments() {
-        return instance.get(`getDepartments.php`).then(response => {
+        return appInstance.get(`getDepartments.php`).then(response => {
             return response.data
         })
     },
     getVMPDepartments() {
-        return instance.get(`getVMPDepartments.php`).then(response => {
+        return appInstance.get(`getVMPDepartments.php`).then(response => {
             return response.data
         })
     },
     getSopCodeForm() {
-        return instance.get(`getSopCodeForm.php`).then(response => {
+        return appInstance.get(`getSopCodeForm.php`).then(response => {
             return response.data
         })
     },
     getAllValidators() {
-        return instance.get(`getAllValidators.php`).then(response => {
+        return appInstance.get(`getAllValidators.php`).then(response => {
             return response.data
         })
     },
     getVacationsData() {
-        return instance.get(`getVacationsData.php`).then(response => {
+        return appInstance.get(`getVacationsData.php`).then(response => {
             return response.data
         })
     },
@@ -46,7 +42,7 @@ export const appAPI = {
             dates,
             month
         }
-        return instance.post(`setVacationsData.php`, requestData, {}).then(response => {
+        return appInstance.post(`setVacationsData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -55,12 +51,12 @@ export const appAPI = {
             fio,
             month
         }
-        return instance.post(`deleteVacationsData.php`, requestData, {}).then(response => {
+        return appInstance.post(`deleteVacationsData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
     getPainterData() {
-        return instance.get(`getPainterData.php`).then(response => {
+        return appInstance.get(`getPainterData.php`).then(response => {
             return response.data
         })
     },
@@ -68,12 +64,12 @@ export const appAPI = {
         const requestData = {
             data
         }
-        return instance.post(`setPainterData.php`, requestData, {}).then(response => {
+        return appInstance.post(`setPainterData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
     getCodeSettings() {
-        return instance.get(`getCodeSettings.php`).then(response => {
+        return appInstance.get(`getCodeSettings.php`).then(response => {
             return response.data
         })
     },
@@ -82,7 +78,7 @@ export const appAPI = {
             pos !== undefined && pos !== null ? { id, pos } :
                 fio !== undefined && fio !== null ? { id, fio } :
                     { id, stat }
-        return instance.post(`setDepartmentsData.php`, requestData, {}).then(response => {
+        return appInstance.post(`setDepartmentsData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -93,7 +89,7 @@ export const appAPI = {
                     code2 !== undefined && code2 !== null ? { id, code2 } :
                         menuname !== undefined && menuname !== null ? { id, menuname } :
                             { id, isactive }
-        return instance.post(`setVMPDepartmentsData.php`, requestData, {}).then(response => {
+        return appInstance.post(`setVMPDepartmentsData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -102,7 +98,7 @@ export const appAPI = {
             id,
             codeform
         }
-        return instance.post(`setCodeSettings.php`, requestData, {}).then(response => {
+        return appInstance.post(`setCodeSettings.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -111,13 +107,13 @@ export const appAPI = {
             low !== undefined && low !== null ? { id, low } :
                 hight !== undefined && hight !== null ? { id, hight } :
                     { id, isactive }
-        return instance.post(`setPremModes.php`, requestData, {}).then(response => {
+        return appInstance.post(`setPremModes.php`, requestData, {}).then(response => {
             return response.data
         })
     },
     setEquipGroupsData(id: string, name?: string, isactive?: string) {
         const requestData = name !== undefined && name !== null ? { id, name } : { id, isactive }
-        return instance.post(`setEquipGroups.php`, requestData, {}).then(response => {
+        return appInstance.post(`setEquipGroups.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -129,7 +125,7 @@ export const appAPI = {
             fio,
             stat
         }
-        return instance.post(`createNewDepartment.php`, requestData, {}).then(response => {
+        return appInstance.post(`createNewDepartment.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -143,7 +139,7 @@ export const appAPI = {
             datevmp,
             isactive
         }
-        return instance.post(`createNewVMPDepartment.php`, requestData, {}).then(response => {
+        return appInstance.post(`createNewVMPDepartment.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -152,7 +148,7 @@ export const appAPI = {
             name,
             isactive
         }
-        return instance.post(`createNewEquipGroup.php`, requestData, {}).then(response => {
+        return appInstance.post(`createNewEquipGroup.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -163,7 +159,7 @@ export const appAPI = {
             hight,
             isactive
         }
-        return instance.post(`createNewPremMode.php`, requestData, {}).then(response => {
+        return appInstance.post(`createNewPremMode.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -172,7 +168,7 @@ export const appAPI = {
             id,
             data
         }
-        return instance.post(`setVMPConsumers.php`, requestData, {}).then(response => {
+        return appInstance.post(`setVMPConsumers.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -182,7 +178,7 @@ export const appAPI = {
             objectType,
             month
         }
-        return instance.post(`getMonthPlanObjectData.php`, requestData, {}).then(response => {
+        return appInstance.post(`getMonthPlanObjectData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -192,7 +188,7 @@ export const appAPI = {
             objectType,
             month
         }
-        return instance.post(`createObjectInMonthPlane.php`, requestData, {}).then(response => {
+        return appInstance.post(`createObjectInMonthPlane.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -206,17 +202,17 @@ export const appAPI = {
             dvo,
             typeval
         }
-        return instance.post(`addReestrData.php`, requestData, {}).then(response => {
+        return appInstance.post(`addReestrData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
     getUserActions() {
-        return instance.get(`getUserActions.php`).then(response => {
+        return appInstance.get(`getUserActions.php`).then(response => {
             return response.data
         })
     },
     getUserAccountsActions() {
-        return instance.get(`getUserAccountsActions.php`).then(response => {
+        return appInstance.get(`getUserAccountsActions.php`).then(response => {
             return response.data
         })
     },

@@ -66,7 +66,8 @@ let initialState = {
     isDescriptionLoading: false,
     sopCodeForm: '',
     equipIdArrayAtWorkAtCurrentUser: [] as EquipReestrType[],
-    errorMessage: null as string | null
+    errorMessage: null as string | null,
+    createNewObjectErrorMessage: null as string | null
 }
 
 type InitialStateType = typeof initialState
@@ -90,7 +91,9 @@ export const equipmentReducer = (state = initialState, action: ActionTypes): Ini
         case 'equip/SET_IS_REESTR_DATA_LOADING':
             return { ...state, isReestrDataLoading: action.data }
         case 'equip/SET_EQUIP_ERROR_MESSAGE':
-            return {...state, errorMessage: action.text}
+            return { ...state, errorMessage: action.text }
+        case 'equip/SET_CREATE_NEW_OBJECT_ERROR_MESSAGE':
+            return { ...state, createNewObjectErrorMessage: action.text }
         default:
             return state
     }
@@ -266,10 +269,12 @@ export const updateEquipWorkData = (recordId: string, changeParam: 'et' | 'seaso
 export const createNewObject = (data: NewEquipObjectType): ThunkType => async (dispatch) => {
     dispatch(equipActions.setIsLoading(true))
     const responseData = await equipmentAPI.createNewObject(data)
-    if (responseData.resultCode === '0') {
+    if (responseData.resultCode === 0) {
         dispatch(equipActions.pushEquipmentData(responseData.items))
-    } else {
-        console.log('someError')
+    } else if (responseData.resultCode === 1) {
+        dispatch(equipActions.setCreateNewObjectErrorMessage(responseData.messages[0]))
+    } else if (responseData.resultCode === 2) {
+        dispatch(logout())
     }
     dispatch(equipActions.setIsLoading(false))
 }
@@ -287,4 +292,5 @@ const equipActions = {
     setEquipIdArrayAtWorkAtCurrentUser: (data: any) => ({ type: 'equip/SET_EQUIP_ID_ARRAY_AT_WORK_AT_CURRENT_USER', data } as const),
     setIsDescriptionLoading: (data: boolean) => ({ type: 'equip/SET_IS_DESCRIPTION_LOADING', data } as const),
     setEquipErrorMessage: (text: string) => ({ type: 'equip/SET_EQUIP_ERROR_MESSAGE', text } as const),
+    setCreateNewObjectErrorMessage: (text: string) => ({ type: 'equip/SET_CREATE_NEW_OBJECT_ERROR_MESSAGE', text } as const),
 }

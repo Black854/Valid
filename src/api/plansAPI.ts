@@ -1,22 +1,13 @@
-import axios from "axios"
-import { getCookie } from "../components/common/cookie"
-
-const token = getCookie('token')
-
-const instance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/plans/',
-    withCredentials: true,
-    headers: {"Authorization" : `Bearer ${token}`}
-})
+import { plansInstance } from "./instance"
 
 export const plansAPI = {
     getMonthList() {
-        return instance.get(`getMonthList.php`).then(response => {
+        return plansInstance.get(`getMonthList.php`).then(response => {
             return response.data
         })
     },
     getPlans(month: string) {
-        return instance.get(`getPlans.php?month=${month}`).then(response => {
+        return plansInstance.get(`getPlans.php?month=${month}`).then(response => {
             return response.data
         })
     },
@@ -28,7 +19,7 @@ export const plansAPI = {
             recordId,
             month
         }
-        return instance.post(`updatePlansFio.php`, requestData, {}).then(response => {
+        return plansInstance.post(`updatePlansFio.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -40,7 +31,7 @@ export const plansAPI = {
             recordId,
             month
         }
-        return instance.post(`updatePlansDoc.php`, requestData, {}).then(response => {
+        return plansInstance.post(`updatePlansDoc.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -53,7 +44,7 @@ export const plansAPI = {
             recordId,
             month
         }
-        return instance.post(`updatePlansDates.php`, requestData, {}).then(response => {
+        return plansInstance.post(`updatePlansDates.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -64,7 +55,7 @@ export const plansAPI = {
             tableName,
             month
         }
-        return instance.post(`deletePlans.php`, requestData, {}).then(response => {
+        return plansInstance.post(`deletePlans.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -76,7 +67,7 @@ export const plansAPI = {
             recordId,
             month
         }
-        return instance.post(`updateReportStatus.php`, requestData, {}).then(response => {
+        return plansInstance.post(`updateReportStatus.php`, requestData, {}).then(response => {
             return response.data
         })
     },

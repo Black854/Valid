@@ -1,35 +1,26 @@
-import axios from "axios"
 import { NewProcObjectType } from "../redux/Reducers/processesReducer" 
-import { getCookie } from "../components/common/cookie"
-
-const token = getCookie('token')
-
-const instance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/proc/',
-    withCredentials: true,
-    headers: {"Authorization" : `Bearer ${token}`}
-})
+import { procInstance } from "./instance"
 
 export const processesAPI = {
     getProcesses () {
-        return instance.get(`getProcList.php`).then (response => {
+        return procInstance.get(`getProcList.php`).then (response => {
             return response.data
         })
     },
     getReestrData (id: string) {
-        return instance.get(`getReestrData.php?id=${id}&proc`).then (response => {
+        return procInstance.get(`getReestrData.php?id=${id}&proc`).then (response => {
             return response.data
         })
     },
     uploadMainPhoto (id: string, file: any) {
         let formData = new FormData()
         formData.append("image", file)
-        return instance.post(`uploadMainPhoto.php?id=${id}&table=processes`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
+        return procInstance.post(`uploadMainPhoto.php?id=${id}&table=processes`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
             return response.data
         })
     },
     deleteMainPhoto (id: string) {
-        return instance.get(`deleteMainPhoto.php?id=${id}&table=processes`).then (response => {
+        return procInstance.get(`deleteMainPhoto.php?id=${id}&table=processes`).then (response => {
             return response.data
         })
     },
@@ -59,12 +50,12 @@ export const processesAPI = {
         VMPDepartment !== undefined && data.append("VMPDepartment", VMPDepartment)
         interval !== undefined && data.append("interval", interval)
         
-        return instance.post(`updateDescription.php`, data, {}).then (response => {
+        return procInstance.post(`updateDescription.php`, data, {}).then (response => {
             return response.data
         })
     },
     getTechnicalInfo (id: string) {
-        return instance.get(`getTechnicalInfo.php?id=${id}`).then (response => {
+        return procInstance.get(`getTechnicalInfo.php?id=${id}`).then (response => {
             return response.data
         })
     },
@@ -72,14 +63,14 @@ export const processesAPI = {
         let data = new FormData()
         data.append("id", id)
         data.append("text", text)
-        return instance.post(`updateTechnicalInfo.php`, data).then (response => {
+        return procInstance.post(`updateTechnicalInfo.php`, data).then (response => {
             return response.data
         })
     },
     getPhotos (id: string) {
         let data = new FormData()
         data.append("id", id)
-        return instance.post(`getPhotos.php`, data).then (response => {
+        return procInstance.post(`getPhotos.php`, data).then (response => {
             return response.data
         })
     },
@@ -88,7 +79,7 @@ export const processesAPI = {
         formData.append("id", id)
         formData.append("image", file)
         formData.append("table", "processes")
-        return instance.post(`uploadPhotos.php`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
+        return procInstance.post(`uploadPhotos.php`, formData, { headers: {'Content-Type': 'multipart/form-data'}}).then (response => {
             return response.data
         })
     },
@@ -96,7 +87,7 @@ export const processesAPI = {
         let formData = new FormData()
         formData.append("id", id)
         formData.append("photoId", photoId)
-        return instance.post(`deletePhoto.php`, formData, {}).then (response => {
+        return procInstance.post(`deletePhoto.php`, formData, {}).then (response => {
             return response.data
         })
     },
@@ -105,7 +96,7 @@ export const processesAPI = {
         data.append("photoId", photoId)
         data.append("text", text)
         data.append("id", id)
-        return instance.post(`updatePdfDescription.php`, data, {}).then (response => {
+        return procInstance.post(`updatePdfDescription.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -115,7 +106,7 @@ export const processesAPI = {
         data.append("procId", procId)
         data.append("date", date)
         data.append("dateType", dateType)
-        return instance.post(`updateReestrDate.php`, data, {}).then (response => {
+        return procInstance.post(`updateReestrDate.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -125,7 +116,7 @@ export const processesAPI = {
         data.append("recordId", recordId)
         data.append("text", text)
         data.append("dataType", dataType)
-        return instance.post(`updateReestrDocsCode.php`, data, {}).then (response => {
+        return procInstance.post(`updateReestrDocsCode.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -135,7 +126,7 @@ export const processesAPI = {
         data.append("recordId", recordId)
         data.append("dataType", dataType)
         data.append("file", file)
-        return instance.post(`uploadDocument.php`, data, { headers: {'Content-Type': 'multipart/form-data'} }).then (response => {
+        return procInstance.post(`uploadDocument.php`, data, { headers: {'Content-Type': 'multipart/form-data'} }).then (response => {
             return response.data
         })
     },
@@ -145,7 +136,7 @@ export const processesAPI = {
         data.append("recordId", recordId)
         data.append("dataType", dataType)
         data.append("url", url)
-        return instance.post(`deleteDocument.php`, data, {}).then (response => {
+        return procInstance.post(`deleteDocument.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -153,7 +144,7 @@ export const processesAPI = {
         const requestData = {
             myProcDataIdArray
         }
-        return instance.post(`getCurrentProcData.php`, requestData, {}).then (response => {
+        return procInstance.post(`getCurrentProcData.php`, requestData, {}).then (response => {
             return response.data
         })
     },
@@ -163,12 +154,12 @@ export const processesAPI = {
             changeParam,
             text
         }
-        return instance.post(`updateProcWorkData.php`, requestData, {}).then (response => {
+        return procInstance.post(`updateProcWorkData.php`, requestData, {}).then (response => {
             return response.data
         })
     },
     createNewObject(data: NewProcObjectType) {
-        return instance.post(`createNewObject.php`, data, {}).then(response => {
+        return procInstance.post(`createNewObject.php`, data, {}).then(response => {
             return response.data
         })
     },
