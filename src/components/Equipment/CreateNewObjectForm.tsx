@@ -1,15 +1,14 @@
-import { Button, Form, Input, Modal, Select } from "antd";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getDepartmentsSelector, getEquipGroupsSelector, getIntervals, getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors";
-import { getDepartments, getEquipGroups, getVMPDepartments } from "../../redux/Reducers/appReducer";
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
-import { PlusOutlined } from "@ant-design/icons";
-import { AppDispatch } from "../../redux/store";
-import { CustomController } from "../common/FormControls";
-import { NewEquipObjectType, createNewObject } from "../../redux/Reducers/equipmentReducer";
-
-
+import { Button, Form, Modal, message } from "antd"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { getDepartmentsSelector, getEquipGroupsSelector, getIntervals, getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
+import { getDepartments, getEquipGroups, getVMPDepartments } from "../../redux/Reducers/appReducer"
+import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form"
+import { PlusOutlined } from "@ant-design/icons"
+import { AppDispatch } from "../../redux/store"
+import { CustomController } from "../common/FormControls"
+import { NewEquipObjectType, createNewObject, equipActions } from "../../redux/Reducers/equipmentReducer"
+import { getEquipCreateNewObjectErrorMessage } from "../../redux/Selectors/equipmentSelectors"
 
 export const NewObjectForm: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
@@ -27,6 +26,21 @@ export const NewObjectForm: React.FC = () => {
     const DepartmentData = useSelector(getDepartmentsSelector).filter(e => e.stat === '1').map(e => ({ label: e.name, value: e.name }))
     const GroupsData = useSelector(getEquipGroupsSelector).filter(e => e.isactive !== '1').map(e => ({ label: e.name, value: e.name }))
     const IntervalsData = useSelector(getIntervals).map(e => ({ label: e.label, value: e.value }))
+    
+    const equipCreateNewObjectErrorMessage = useSelector(getEquipCreateNewObjectErrorMessage)
+
+    const [messageApi, contextHolder] = message.useMessage()
+
+    useEffect(() => {
+        if (equipCreateNewObjectErrorMessage) {
+            dispatch(equipActions.setCreateNewObjectErrorMessage(null))
+            messageApi.open({
+                type: 'error',
+                content: equipCreateNewObjectErrorMessage,
+                duration: 7
+            })
+        }
+    }, [equipCreateNewObjectErrorMessage])
 
     const handleCancel = () => {
         setShowForm(false)
@@ -46,6 +60,7 @@ export const NewObjectForm: React.FC = () => {
     }
 
     return <>
+        {contextHolder}
         <Button type="link" icon={<PlusOutlined />} onClick={() => setShowForm(true)} />
         <Modal width={550} destroyOnClose centered title='Добавление объекта в систему' open={showForm} onCancel={() => handleCancel()} footer={[<Button key="close" onClick={() => handleCancel()} type="primary">Отмена</Button>]} >
             <Form style={{ marginTop: '30px' }} layout="horizontal" size="small" onFinish={handleSubmit(submit, error)}>

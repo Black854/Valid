@@ -282,7 +282,7 @@ export const createNewObject = (data: NewEquipObjectType): ThunkType => async (d
 type ActionTypes = InferActionsTypes<typeof equipActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
-const equipActions = {
+export const equipActions = {
     pushEquipmentData: (data: DataType[]) => ({ type: 'equip/PUSH_EQ_DATA', data } as const),
     pushReestrData: (data: EquipReestrType[]) => ({ type: 'equip/PUSH_REESTR_DATA', data } as const),
     setIsLoading: (data: boolean) => ({ type: 'equip/IS_LOADING', data } as const),
@@ -291,6 +291,6 @@ const equipActions = {
     setIsReestrDataLoading: (data: boolean) => ({ type: 'equip/SET_IS_REESTR_DATA_LOADING', data } as const),
     setEquipIdArrayAtWorkAtCurrentUser: (data: any) => ({ type: 'equip/SET_EQUIP_ID_ARRAY_AT_WORK_AT_CURRENT_USER', data } as const),
     setIsDescriptionLoading: (data: boolean) => ({ type: 'equip/SET_IS_DESCRIPTION_LOADING', data } as const),
-    setEquipErrorMessage: (text: string) => ({ type: 'equip/SET_EQUIP_ERROR_MESSAGE', text } as const),
-    setCreateNewObjectErrorMessage: (text: string) => ({ type: 'equip/SET_CREATE_NEW_OBJECT_ERROR_MESSAGE', text } as const),
+    setEquipErrorMessage: (text: string | null) => ({ type: 'equip/SET_EQUIP_ERROR_MESSAGE', text } as const),
+    setCreateNewObjectErrorMessage: (text: string | null) => ({ type: 'equip/SET_CREATE_NEW_OBJECT_ERROR_MESSAGE', text } as const),
 }

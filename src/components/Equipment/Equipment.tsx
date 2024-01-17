@@ -39,7 +39,6 @@ export const Equipment: React.FC = () => {
   const equipData = useSelector(getEquipData)
   const isLoading = useSelector(getIsLoading)
   const errorMessage = useSelector(getEquipErrorMessage)
-  const equipCreateNewObjectErrorMessage = useSelector(getEquipCreateNewObjectErrorMessage) // решить как отображать ошибки чтобы потом их сбрасывать
 
   if (equipData.length === 0 && isLoading === false && !errorMessage) {
     dispatch(getEquipment())
