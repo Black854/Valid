@@ -48,3 +48,7 @@ export const getEquipErrorMessage = (state: AppStateType) => {
 export const getEquipCreateNewObjectErrorMessage = (state: AppStateType) => {
     return (state.equipment.createNewObjectErrorMessage)
 }
+
+export const getEquipCardError = (state: AppStateType) => {
+    return (state.equipment.equipCardError)
+}

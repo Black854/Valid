@@ -40,3 +40,15 @@ export const getIsDescriptionLoading = (state: AppStateType) => {
 export const getCurrentSysDataSelector = (state: AppStateType) => {
     return (state.systems.sysIdArrayAtWorkAtCurrentUser)
 }
+
+export const getSysErrorMessage = (state: AppStateType) => {
+    return (state.systems.errorMessage)
+}
+
+export const getSysCreateNewObjectErrorMessage = (state: AppStateType) => {
+    return (state.systems.createNewObjectErrorMessage)
+}
+
+export const getSysCardError = (state: AppStateType) => {
+    return (state.systems.sysCardError)
+}

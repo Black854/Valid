@@ -1,9 +1,9 @@
-import { Col, Row, Select, Spin, Tabs, TabsProps, Typography } from "antd"
+import { Col, Row, Select, Spin, Tabs, TabsProps, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
-import { getEquipById, getEquipData, getEquipReestrDataSelector, getIsLoading, getIsReestrDataLoading } from "../../../redux/Selectors/equipmentSelectors"
+import { getEquipById, getEquipCardError, getEquipData, getEquipReestrDataSelector, getIsLoading, getIsReestrDataLoading } from "../../../redux/Selectors/equipmentSelectors"
 import { AppDispatch, AppStateType } from "../../../redux/store"
-import { getEquipReestrData, getEquipment, updateDepartment, updateGroup, updateInv, updateManufacturDate, updateManufacturer, updateNomer, updateSerial, updateVMPDepartment } from "../../../redux/Reducers/equipmentReducer"
+import { equipActions, getEquipReestrData, getEquipment, updateDepartment, updateGroup, updateInv, updateManufacturDate, updateManufacturer, updateNomer, updateSerial, updateVMPDepartment } from "../../../redux/Reducers/equipmentReducer"
 import { ArHelper } from "../../common/arHelper"
 import { useEffect } from "react"
 import { getDepartmentsSelector, getEquipGroupsSelector, getVMPDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
@@ -52,6 +52,22 @@ export const EquipCard = () => {
     useEffect (() => {
         dispatch(getEquipReestrData(id))
     }, [id])
+
+    const equipCardError = useSelector(getEquipCardError)
+
+    const [messageApi, contextHolder] = message.useMessage()
+
+    useEffect(() => {
+        if (equipCardError) {
+            messageApi.open({
+                type: 'error',
+                content: equipCardError,
+                duration: 7
+            })
+            dispatch(equipActions.setEquipCardError(null))
+        }
+    }, [equipCardError])
+
     let filteredEquipGroups = equipGroups.filter(e => e.isactive !== '1');
     let groupsData = filteredEquipGroups.map((e: any) => ({ value: e.name, label: e.name }))
 
@@ -238,6 +254,7 @@ export const EquipCard = () => {
 
         return (
             <>
+            {contextHolder}
             <Row style={{padding: '10px 0'}} >
                 <Col span={5} push={1} style={{textAlign: 'center'}} >
                     <TitleImage equipObject={equipObject} id={id} />

@@ -1,4 +1,4 @@
-import { Col, Row, Select, Spin, Tabs, TabsProps, Typography } from "antd"
+import { Col, Row, Select, Spin, Tabs, TabsProps, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { AppDispatch, AppStateType } from "../../../redux/store"
@@ -11,8 +11,8 @@ import { CardReestr } from "./CardComponents/CardReestr"
 import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
-import { getIsLoading, getIsReestrDataLoading, getSysById, getSysData, getSysReestrDataSelector } from "../../../redux/Selectors/systemsSelectors"
-import { getSysReestrData, getSystems, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/systemsReducer"
+import { getIsLoading, getIsReestrDataLoading, getSysById, getSysCardError, getSysData, getSysReestrDataSelector } from "../../../redux/Selectors/systemsSelectors"
+import { getSysReestrData, getSystems, sysActions, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/systemsReducer"
 import { SysDescriptions } from "./CardComponents/SysDescription"
 import { SysLabel } from "./CardComponents/SysLabel"
 import { CardPlans } from "../../common/CardPlans"
@@ -49,6 +49,21 @@ export const SysCard = () => {
     useEffect (() => {
         dispatch(getSysReestrData(id))
     }, [id])
+
+    const sysCardError = useSelector(getSysCardError)
+
+    const [messageApi, contextHolder] = message.useMessage()
+
+    useEffect(() => {
+        if (sysCardError) {
+            messageApi.open({
+                type: 'error',
+                content: sysCardError,
+                duration: 7
+            })
+            dispatch(sysActions.setSysCardError(null))
+        }
+    }, [sysCardError])
 
     let filteredDepartments = departments.filter(e => e.stat === '1')
     let departmentData = filteredDepartments.map((e: any) => ({ value: e.name, label: e.name }))
@@ -167,6 +182,7 @@ export const SysCard = () => {
 
         return (
             <>
+            {contextHolder}
             <Row style={{padding: '10px 0'}} >
                 <Col span={5} push={1} style={{textAlign: 'center'}} >
                     <TitleImage sysObject={sysObject} id={id} />

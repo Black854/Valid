@@ -1,4 +1,4 @@
-import { Typography, Col, Image, Row, Spin, Table, Button, Space, Input } from "antd"
+import { Typography, Col, Image, Row, Spin, Table, Button, Space, Input, message } from "antd"
 import { Content } from "antd/es/layout/layout"
 import { useDispatch, useSelector } from "react-redux"
 import { getEquipCreateNewObjectErrorMessage, getEquipData, getEquipErrorMessage, getIsLoading } from "../../redux/Selectors/equipmentSelectors"
@@ -7,7 +7,7 @@ import { EyeOutlined } from '@ant-design/icons'
 import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { AppDispatch } from "../../redux/store"
 import { SearchOutlined } from '@ant-design/icons'
 import Highlighter from 'react-highlight-words'
@@ -38,7 +38,20 @@ export const Equipment: React.FC = () => {
 
   const equipData = useSelector(getEquipData)
   const isLoading = useSelector(getIsLoading)
+
   const errorMessage = useSelector(getEquipErrorMessage)
+
+  const [messageApi, contextHolder] = message.useMessage()
+
+  useEffect(() => {
+    if (errorMessage) {
+      messageApi.open({
+        type: 'error',
+        content: errorMessage,
+        duration: 7
+      })
+    }
+  }, [errorMessage])
 
   if (equipData.length === 0 && isLoading === false && !errorMessage) {
     dispatch(getEquipment())
@@ -230,10 +243,9 @@ export const Equipment: React.FC = () => {
 
   if (isLoading) {
     return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
-  } else if (errorMessage) {
-    return <Text type="warning" style={{ fontSize: '12pt', display: 'inline-block', margin: '20px auto' }}>{errorMessage}</Text>
   } else {
     return <>
+      {contextHolder}
       <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
         <Row>
           <Col push={1} xs={4} sm={22} md={22} lg={22} xl={22} xxl={22} >

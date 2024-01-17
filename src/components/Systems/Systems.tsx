@@ -1,13 +1,13 @@
-import { Typography, Col, Image, Row, Spin, Table, Input, Space, Button } from "antd"
+import { Typography, Col, Image, Row, Spin, Table, Input, Space, Button, message } from "antd"
 import { Content } from "antd/es/layout/layout"
 import { useDispatch, useSelector } from "react-redux"
 import { EyeOutlined } from '@ant-design/icons'
 import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { AppDispatch } from "../../redux/store"
-import { getIsLoading, getSysData } from "../../redux/Selectors/systemsSelectors"
+import { getIsLoading, getSysData, getSysErrorMessage } from "../../redux/Selectors/systemsSelectors"
 import { getSystems } from "../../redux/Reducers/systemsReducer"
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
@@ -39,7 +39,21 @@ export const Systems: React.FC = () => {
     const sysData = useSelector(getSysData)
     const isLoading = useSelector(getIsLoading)
 
-    if (sysData.length === 0 && isLoading === false) {
+    const errorMessage = useSelector(getSysErrorMessage)
+
+    const [messageApi, contextHolder] = message.useMessage()
+
+    useEffect(() => {
+        if (errorMessage) {
+            messageApi.open({
+                type: 'error',
+                content: errorMessage,
+                duration: 7
+            })
+        }
+    }, [errorMessage])
+
+    if (sysData.length === 0 && isLoading === false && !errorMessage) {
         dispatch(getSystems())
     }
     const sysNewData = sysData.map(e => ({
@@ -198,7 +212,8 @@ export const Systems: React.FC = () => {
     if (isLoading) {
         return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
     }
-    return (
+    return <>
+        {contextHolder}
         <Content style={{ padding: '20px 0', marginBottom: '40px' }}>
             <Row>
                 <Col span={22} push={1}>
@@ -219,5 +234,5 @@ export const Systems: React.FC = () => {
                 </Col>
             </Row>
         </Content>
-    )
+    </>
 }
