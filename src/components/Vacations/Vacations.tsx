@@ -67,6 +67,8 @@ export const Vacations: React.FC = () => {
         month12: vacationsData.find(data => data.fio === e.fio && data.month == `12.${currentYear}`)?.date,
     }))
 
+    const year = new Date().getFullYear().toString()
+
     return (
         <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
             <Row>
@@ -93,7 +95,7 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month1'
                                 key="1"
                                 align="center"
-                                render={(text, record: DataType) => <CellRenderHelper text={text} month={0} fio={record.fio} year={'2023'} />}
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={0} fio={record.fio} year={year} />}
                                 width='7.5%'
                             />
                             <Column
@@ -101,7 +103,7 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month2'
                                 key="2"
                                 align="center"
-                                render={(text, record: DataType) => <CellRenderHelper text={text} month={1} fio={record.fio} year={'2023'} />}
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={1} fio={record.fio} year={year} />}
                                 width='7.5%'
                             />
                             <Column
@@ -109,7 +111,7 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month3'
                                 key="3"
                                 align="center"
-                                render={(text, record: DataType) => <CellRenderHelper text={text} month={2} fio={record.fio} year={'2023'} />}
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={2} fio={record.fio} year={year} />}
                                 width='7.5%'
                             />
                             <Column
@@ -117,7 +119,7 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month4'
                                 key="4"
                                 align="center"
-                                render={(text, record: DataType) => <CellRenderHelper text={text} month={3} fio={record.fio} year={'2023'} />}
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={3} fio={record.fio} year={year} />}
                                 width='7.5%'
                             />
                             <Column
@@ -125,7 +127,7 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month5'
                                 key="5"
                                 align="center"
-                                render={(text, record: DataType) => <CellRenderHelper text={text} month={4} fio={record.fio} year={'2023'} />}
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={4} fio={record.fio} year={year} />}
                                 width='7.5%'
                             />
                             <Column
@@ -133,7 +135,7 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month6'
                                 key="6"
                                 align="center"
-                                render={(text, record: DataType) => <CellRenderHelper text={text} month={5} fio={record.fio} year={'2023'} />}
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={5} fio={record.fio} year={year} />}
                                 width='7.5%'
                             />
                             <Column
@@ -141,7 +143,7 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month7'
                                 key="7"
                                 align="center"
-                                render={(text, record: DataType) => <CellRenderHelper text={text} month={6} fio={record.fio} year={'2023'} />}
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={6} fio={record.fio} year={year} />}
                                 width='7.5%'
                             />
                             <Column
@@ -149,7 +151,7 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month8'
                                 key="8"
                                 align="center"
-                                render={(text, record: DataType) => <CellRenderHelper text={text} month={7} fio={record.fio} year={'2023'} />}
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={7} fio={record.fio} year={year} />}
                                 width='7.5%'
                             />
                             <Column
@@ -157,7 +159,7 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month9'
                                 key="9"
                                 align="center"
-                                render={(text, record: DataType) => <CellRenderHelper text={text} month={8} fio={record.fio} year={'2023'} />}
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={8} fio={record.fio} year={year} />}
                                 width='7.5%'
                             />
                             <Column
@@ -165,7 +167,7 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month10'
                                 key="10"
                                 align="center"
-                                render={(text, record: DataType) => <CellRenderHelper text={text} month={9} fio={record.fio} year={'2023'} />}
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={9} fio={record.fio} year={year} />}
                                 width='7.5%'
                             />
                             <Column
@@ -173,7 +175,7 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month11'
                                 key="11"
                                 align="center"
-                                render={(text, record: DataType) => <CellRenderHelper text={text} month={10} fio={record.fio} year={'2023'} />}
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={10} fio={record.fio} year={year} />}
                                 width='7.5%'
                             />
                             <Column
@@ -181,7 +183,7 @@ export const Vacations: React.FC = () => {
                                 dataIndex='month12'
                                 key="12"
                                 align="center"
-                                render={(text, record: DataType) => <CellRenderHelper text={text} month={11} fio={record.fio} year={'2023'} />}
+                                render={(text, record: DataType) => <CellRenderHelper text={text} month={11} fio={record.fio} year={year} />}
                                 width='7.5%'
                             />
                         </ColumnGroup>
