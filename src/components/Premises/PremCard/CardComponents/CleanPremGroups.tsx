@@ -112,7 +112,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                                                     </Col>
                                                 </Row>,
             align: 'center',
-            width: '10%'
+            width: '20%'
         }
     ]
 
@@ -198,7 +198,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     return (
         <Row>
             <Col span={14}>           
-                <Button icon={<PlusOutlined />} style={{position: 'absolute', top: '10px', zIndex: '1'}} onClick={() => setShowModal(true)}>Добавить этикетку</Button>
+                <Button icon={<PlusOutlined />} style={cleanGroupLabelsWithIndex.length > 0 ? {position: 'absolute', top: '10px', zIndex: '1'} : {marginBottom: '10px'}} onClick={() => setShowModal(true)}>Добавить этикетку</Button>
                 <Table
                     columns={columns}
                     dataSource={cleanGroupLabelsWithIndex}

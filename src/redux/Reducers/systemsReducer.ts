@@ -89,11 +89,11 @@ export const systemsReducer = (state = initialState, action: ActionTypes): Initi
             return { ...state, sysIdArrayAtWorkAtCurrentUser: action.data }
         case 'sys/SET_IS_DESCRIPTION_LOADING':
             return { ...state, isDescriptionLoading: action.data }
-        case 'equip/SET_EQUIP_ERROR_MESSAGE':
+        case 'sys/SET_SYS_ERROR_MESSAGE':
             return { ...state, errorMessage: action.text }
-        case 'equip/SET_CREATE_NEW_SYS_ERROR_MESSAGE':
+        case 'sys/SET_CREATE_NEW_SYS_ERROR_MESSAGE':
             return { ...state, createNewObjectErrorMessage: action.text }
-        case 'equip/SET_EQUIP_CARD_ERROR':
+        case 'sys/SET_SYS_CARD_ERROR':
             return { ...state, sysCardError: action.text }
         default:
             return state
@@ -426,7 +426,7 @@ export const sysActions = {
     setIsReestrDataLoading: (data: boolean) => ({ type: 'sys/SET_IS_REESTR_DATA_LOADING', data } as const),
     setSysIdArrayAtWorkAtCurrentUser: (data: any) => ({ type: 'sys/SET_SYS_ID_ARRAY_AT_WORK_AT_CURRENT_USER', data } as const),
     setIsDescriptionLoading: (data: boolean) => ({ type: 'sys/SET_IS_DESCRIPTION_LOADING', data } as const),
-    setSysErrorMessage: (text: string | null) => ({ type: 'equip/SET_EQUIP_ERROR_MESSAGE', text } as const),
-    setCreateNewObjectErrorMessage: (text: string | null) => ({ type: 'equip/SET_CREATE_NEW_SYS_ERROR_MESSAGE', text } as const),
-    setSysCardError: (text: string | null) => ({ type: 'equip/SET_EQUIP_CARD_ERROR', text } as const),
+    setSysErrorMessage: (text: string | null) => ({ type: 'sys/SET_SYS_ERROR_MESSAGE', text } as const),
+    setCreateNewObjectErrorMessage: (text: string | null) => ({ type: 'sys/SET_CREATE_NEW_SYS_ERROR_MESSAGE', text } as const),
+    setSysCardError: (text: string | null) => ({ type: 'sys/SET_SYS_CARD_ERROR', text } as const),
 }

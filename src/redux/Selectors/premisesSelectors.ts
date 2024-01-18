@@ -60,3 +60,15 @@ export const getIsDescriptionLoading = (state: AppStateType) => {
 export const getCurrentPremDataSelector = (state: AppStateType) => {
     return (state.premises.premIdArrayAtWorkAtCurrentUser)
 }
+
+export const getPremErrorMessage = (state: AppStateType) => {
+    return (state.premises.errorMessage)
+}
+
+export const getPremCreateNewObjectErrorMessage = (state: AppStateType) => {
+    return (state.premises.createNewObjectErrorMessage)
+}
+
+export const getPremCardError = (state: AppStateType) => {
+    return (state.premises.premCardError)
+}

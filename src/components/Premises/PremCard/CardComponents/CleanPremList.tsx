@@ -191,7 +191,7 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
     return (
         <>
             {contextHolder}
-            <Button icon={<PlusOutlined />} style={{ position: 'absolute', top: '10px', zIndex: '1' }} onClick={handleAddPrem}>Добавить помещение</Button>
+            <Button icon={<PlusOutlined />} style={cleanPremListWithIndex.length > 0 ? { position: 'absolute', top: '10px', zIndex: '1' } : {marginBottom: '10px'}} onClick={handleAddPrem}>Добавить помещение</Button>
             <Table
                 columns={columns}
                 dataSource={cleanPremListWithIndex}

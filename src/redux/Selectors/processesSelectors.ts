@@ -40,3 +40,15 @@ export const getIsDescriptionLoading = (state: AppStateType) => {
 export const getCurrentProcDataSelector = (state: AppStateType) => {
     return (state.processes.procIdArrayAtWorkAtCurrentUser)
 }
+
+export const getProcErrorMessage = (state: AppStateType) => {
+    return (state.processes.errorMessage)
+}
+
+export const getProcCreateNewObjectErrorMessage = (state: AppStateType) => {
+    return (state.processes.createNewObjectErrorMessage)
+}
+
+export const getProcCardError = (state: AppStateType) => {
+    return (state.processes.procCardError)
+}

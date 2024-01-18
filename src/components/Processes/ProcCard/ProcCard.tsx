@@ -1,4 +1,4 @@
-import { Col, Row, Select, Spin, Tabs, TabsProps, Typography } from "antd"
+import { Col, Row, Select, Spin, Tabs, TabsProps, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { AppDispatch, AppStateType } from "../../../redux/store"
@@ -11,8 +11,8 @@ import { CardReestr } from "./CardComponents/CardReestr"
 import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
-import { getIsLoading, getIsReestrDataLoading, getProcById, getProcData, getProcReestrDataSelector } from "../../../redux/Selectors/processesSelectors"
-import { getProcReestrData, getProcesses, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/processesReducer"
+import { getIsLoading, getIsReestrDataLoading, getProcById, getProcCardError, getProcData, getProcReestrDataSelector } from "../../../redux/Selectors/processesSelectors"
+import { getProcReestrData, getProcesses, procActions, updateDepartment, updateVMPDepartment } from "../../../redux/Reducers/processesReducer"
 import { ProcDescriptions } from "./CardComponents/ProcDescription"
 import { ProcLabel } from "./CardComponents/ProcLabel"
 import { CardPlans } from "../../common/CardPlans"
@@ -49,6 +49,21 @@ export const ProcCard = () => {
     useEffect (() => {
         dispatch(getProcReestrData(id))
     }, [id])
+
+    const procCardError = useSelector(getProcCardError)
+
+    const [messageApi, contextHolder] = message.useMessage()
+
+    useEffect(() => {
+        if (procCardError) {
+            messageApi.open({
+                type: 'error',
+                content: procCardError,
+                duration: 7
+            })
+            dispatch(procActions.setProcCardError(null))
+        }
+    }, [procCardError])
 
     let filteredDepartments = departments.filter(e => e.stat === '1')
     let departmentData = filteredDepartments.map((e: any) => ({ value: e.name, label: e.name }))
@@ -167,6 +182,7 @@ export const ProcCard = () => {
 
         return (
             <>
+            {contextHolder}
             <Row style={{padding: '10px 0'}} >
                 <Col span={5} push={1} style={{textAlign: 'center'}} >
                     <TitleImage procObject={procObject} id={id} />

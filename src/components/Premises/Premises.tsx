@@ -1,12 +1,12 @@
-import { Typography, Col, Image, Row, Spin, Table, Input, Space, Button } from "antd"
+import { Typography, Col, Image, Row, Spin, Table, Input, Space, Button, message } from "antd"
 import { Content } from "antd/es/layout/layout"
 import { useDispatch, useSelector } from "react-redux"
-import { getPremData, getIsLoading } from "../../redux/Selectors/premisesSelectors"
+import { getPremData, getIsLoading, getPremErrorMessage } from "../../redux/Selectors/premisesSelectors"
 import { EyeOutlined } from '@ant-design/icons'
 import { RenderDateHelper } from "../common/renderDateHelper"
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { AppDispatch } from "../../redux/store"
 import { getPremises } from "../../redux/Reducers/premisesReducer"
 import { SearchOutlined } from '@ant-design/icons';
@@ -25,7 +25,21 @@ export const Premises: React.FC = () => {
     const premData = useSelector(getPremData)
     const isLoading = useSelector(getIsLoading)
 
-    if (premData.length === 0 && isLoading === false) {
+    const errorMessage = useSelector(getPremErrorMessage)
+
+    const [messageApi, contextHolder] = message.useMessage()
+
+    useEffect(() => {
+        if (errorMessage) {
+            messageApi.open({
+                type: 'error',
+                content: errorMessage,
+                duration: 7
+            })
+        }
+    }, [errorMessage])
+
+    if (premData.length === 0 && isLoading === false && !errorMessage) {
         dispatch(getPremises())
     }
     const premNewData = premData.map(e => ({
@@ -202,7 +216,8 @@ export const Premises: React.FC = () => {
     if (isLoading) {
         return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
     }
-    return (
+    return <>
+        {contextHolder}
         <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
             <Row>
                 <Col span={22} push={1}>
@@ -222,5 +237,5 @@ export const Premises: React.FC = () => {
                 </Col>
             </Row>
         </Content>
-    )
+    </>
 }

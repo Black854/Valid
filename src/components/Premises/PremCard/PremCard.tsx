@@ -1,4 +1,4 @@
-import { Col, Row, Select, Spin, Tabs, TabsProps, Typography } from "antd"
+import { Col, Row, Select, Spin, Tabs, TabsProps, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { AppDispatch, AppStateType } from "../../../redux/store"
@@ -12,8 +12,8 @@ import { CardReestr } from "./CardComponents/CardReestr"
 import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { CurrentStatus } from "../../common/CurrentStatus"
-import { getIsLoading, getIsReestrDataLoading, getPremById, getPremData, getPremReestrDataSelector } from "../../../redux/Selectors/premisesSelectors"
-import { getPremReestrData, getPremises, getTechnicalInfo, updateClass, updateDepartment, updateMode, updateNomer, updateVMPDepartment } from "../../../redux/Reducers/premisesReducer"
+import { getIsLoading, getIsReestrDataLoading, getPremById, getPremCardError, getPremData, getPremReestrDataSelector } from "../../../redux/Selectors/premisesSelectors"
+import { getPremReestrData, getPremises, getTechnicalInfo, premActions, updateClass, updateDepartment, updateMode, updateNomer, updateVMPDepartment } from "../../../redux/Reducers/premisesReducer"
 import { CleanPremList } from "./CardComponents/CleanPremList"
 import { CleanPremGroups } from "./CardComponents/CleanPremGroups"
 import { PremLabel } from "./CardComponents/PremLabel"
@@ -59,6 +59,21 @@ export const PremCard = () => {
     useEffect(() => {
         dispatch(getPremReestrData(id))
     }, [id])
+
+    const premCardError = useSelector(getPremCardError)
+
+    const [messageApi, contextHolder] = message.useMessage()
+
+    useEffect(() => {
+        if (premCardError) {
+            messageApi.open({
+                type: 'error',
+                content: premCardError,
+                duration: 7
+            })
+            dispatch(premActions.setPremCardError(null))
+        }
+    }, [premCardError])
 
     let classesData = [
         { id: '1', value: 'Контролируемые' },
@@ -297,7 +312,8 @@ export const PremCard = () => {
 
         const currentMonth = new Date().getMonth()
 
-        return (
+        return <>
+            {contextHolder}
             <Row style={{ padding: '10px 0' }} >
                 <Col span={5} push={1} style={{ textAlign: 'center' }} >
                     <TitleImage premObject={premObject} id={id} />
@@ -319,11 +335,9 @@ export const PremCard = () => {
                     />
                 </Col>
             </Row>
-        )
+        </>
     } else {
-        return (
-            <Text type="danger" style={{ fontSize: '12pt', textAlign: 'center', padding: '20px' }}>Внимание! Запрошенный Вами объект не существует!</Text>
-        )
+        return <Text type="danger" style={{ fontSize: '12pt', textAlign: 'center', padding: '20px' }}>Внимание! Запрошенный Вами объект не существует!</Text>
     }
 
 }
