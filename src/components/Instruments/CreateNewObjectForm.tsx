@@ -1,15 +1,12 @@
-import { Button, Form, Input, Modal, Select } from "antd"
+import { Button, Form, Modal, message } from "antd"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { getDepartmentsSelector, getEquipGroupsSelector, getIntervals, getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
-import { getDepartments, getEquipGroups, getVMPDepartments } from "../../redux/Reducers/appReducer"
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form"
 import { PlusOutlined } from "@ant-design/icons"
 import { AppDispatch } from "../../redux/store"
 import { CustomController } from "../common/FormControls"
-import { NewInstObjectType, createNewObject } from "../../redux/Reducers/instrumentsReducer"
-
-
+import { NewInstObjectType, createNewObject, instActions } from "../../redux/Reducers/instrumentsReducer"
+import { getInstCreateNewObjectErrorMessage } from "../../redux/Selectors/instrumentsSelectors"
 
 export const NewObjectForm: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
@@ -17,6 +14,21 @@ export const NewObjectForm: React.FC = () => {
     const { handleSubmit, control, formState: { errors }, reset, getValues } = useForm<NewInstObjectType>()
 
     const [showForm, setShowForm] = useState(false)
+
+    const instCreateNewObjectErrorMessage = useSelector(getInstCreateNewObjectErrorMessage)
+
+    const [messageApi, contextHolder] = message.useMessage()
+
+    useEffect(() => {
+        if (instCreateNewObjectErrorMessage) {
+            dispatch(instActions.setCreateNewObjectErrorMessage(null))
+            messageApi.open({
+                type: 'error',
+                content: instCreateNewObjectErrorMessage,
+                duration: 7
+            })
+        }
+    }, [instCreateNewObjectErrorMessage])
 
     const handleCancel = () => {
         setShowForm(false)
@@ -36,6 +48,7 @@ export const NewObjectForm: React.FC = () => {
     }
 
     return <>
+        {contextHolder}
         <Button type="link" icon={<PlusOutlined />} onClick={() => setShowForm(true)} />
         <Modal width={550} destroyOnClose centered title='Добавление валидационного прибора в систему' open={showForm} onCancel={() => handleCancel()} footer={[<Button key="close" onClick={() => handleCancel()} type="primary">Отмена</Button>]} >
             <Form style={{ marginTop: '30px' }} layout="horizontal" size="small" onFinish={handleSubmit(submit, error)}>

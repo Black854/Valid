@@ -1,4 +1,4 @@
-import { Col, DatePicker, Row, Select, Spin, Tabs, TabsProps, Typography } from "antd"
+import { Col, Row, Spin, Tabs, TabsProps, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { AppDispatch, AppStateType } from "../../../redux/store"
@@ -7,10 +7,8 @@ import { TitleImage } from "./CardComponents/TitleImage"
 import { TechnicalInfo } from "./CardComponents/TechnicalInfo"
 import { PhotosBlock } from "./CardComponents/PhotosBlock"
 import { InstDescriptions } from "./CardComponents/InstDescription"
-import { getInstById, getInstData, getIsLoading } from "../../../redux/Selectors/instrumentsSelectors"
-import { getInstruments, updateManufacturDate, updateManufacturer, updateName2, updateSerial } from "../../../redux/Reducers/instrumentsReducer"
-import { RenderDateHelperInstruments } from "../../common/RenderDateHelperInstruments"
-import { format } from "date-fns"
+import { getInstById, getInstCardError, getInstData, getIsLoading } from "../../../redux/Selectors/instrumentsSelectors"
+import { getInstruments, instActions, updateManufacturDate, updateManufacturer, updateName2, updateSerial } from "../../../redux/Reducers/instrumentsReducer"
 import { ConvertDateInst } from "../../common/convertDateInst"
 const { Text } = Typography
 
@@ -27,6 +25,21 @@ export const InstCard = () => {
     const instData = useSelector(getInstData)
     const isLoading = useSelector(getIsLoading)
     const instObject = useSelector((state: AppStateType) => getInstById(state, id))
+
+    const procCardError = useSelector(getInstCardError)
+
+    const [messageApi, contextHolder] = message.useMessage()
+
+    useEffect(() => {
+        if (procCardError) {
+            messageApi.open({
+                type: 'error',
+                content: procCardError,
+                duration: 7
+            })
+            dispatch(instActions.setInstCardError(null))
+        }
+    }, [procCardError])
 
     useEffect(() => {
         if (instData.length === 0) {
@@ -49,8 +62,6 @@ export const InstCard = () => {
     const handleUpdateSerial = (text: string) => {
         dispatch(updateSerial(id, text))
     }
-    
-
     
     if (isLoading) {
         return  <Spin size="large" style={{width: '60px', height: '60px', margin: '30px auto 10px auto'}} />
@@ -121,6 +132,7 @@ export const InstCard = () => {
 
         return (
             <>
+            {contextHolder}
             <Row style={{padding: '10px 0'}} >
                 <Col span={5} push={1} style={{textAlign: 'center'}} >
                     <TitleImage instObject={instObject} id={id} />

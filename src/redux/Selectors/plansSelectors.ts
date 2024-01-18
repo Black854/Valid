@@ -7,3 +7,7 @@ export const getMonthListSelector = (state: AppStateType) => {
 export const getPlansSelector = (state: AppStateType) => {
     return (state.plans.plans)
 }
+
+export const getPlansError = (state: AppStateType) => {
+    return (state.plans.errorMessage)
+}

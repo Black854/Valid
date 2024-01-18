@@ -1,13 +1,13 @@
-import { Typography, Col, Image, Row, Spin, Table, Input, Space, Button } from "antd"
+import { Typography, Col, Image, Row, Spin, Table, Input, Space, Button, message } from "antd"
 import { Content } from "antd/es/layout/layout"
 import { useDispatch, useSelector } from "react-redux"
 import { EyeOutlined } from '@ant-design/icons'
 import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { AppDispatch } from "../../redux/store"
 import { getInstruments } from "../../redux/Reducers/instrumentsReducer"
-import { getInstData, getIsLoading } from "../../redux/Selectors/instrumentsSelectors"
+import { getInstData, getInstErrorMessage, getIsLoading } from "../../redux/Selectors/instrumentsSelectors"
 import { RenderDateHelperInstruments } from "../common/RenderDateHelperInstruments"
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
@@ -37,7 +37,21 @@ export const Instruments: React.FC = () => {
     const instData = useSelector(getInstData)
     const isLoading = useSelector(getIsLoading)
 
-    if (instData.length === 0 && isLoading === false) {
+    const errorMessage = useSelector(getInstErrorMessage)
+
+    const [messageApi, contextHolder] = message.useMessage()
+
+    useEffect(() => {
+        if (errorMessage) {
+            messageApi.open({
+                type: 'error',
+                content: errorMessage,
+                duration: 7
+            })
+        }
+    }, [errorMessage])
+
+    if (instData.length === 0 && isLoading === false && !errorMessage) {
         dispatch(getInstruments())
     }
     const instNewData = instData.map(e => ({
@@ -186,7 +200,8 @@ export const Instruments: React.FC = () => {
         return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
     }
 
-    return (
+    return <>
+        {contextHolder}
         <Content style={{ padding: '20px 0', marginBottom: '40px' }}>
             <Row>
                 <Col span={22} push={1}>
@@ -207,5 +222,5 @@ export const Instruments: React.FC = () => {
                 </Col>
             </Row>
         </Content>
-    )
+    </>
 }

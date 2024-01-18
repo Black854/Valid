@@ -1,11 +1,11 @@
-import { Col, Image, Menu, MenuProps, Modal, Row, Table, Typography } from "antd"
+import { Col, Image, Menu, MenuProps, Modal, Row, Table, Typography, message } from "antd"
 import { PrinterOutlined, EyeOutlined, CalendarOutlined } from '@ant-design/icons'
 import { NavLink, useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../redux/store"
 import { useEffect, useState } from "react"
-import { PlansType, getMonthList, getPlans, MonthListItem } from "../../redux/Reducers/plansReducer"
-import { getMonthListSelector, getPlansSelector } from "../../redux/Selectors/plansSelectors"
+import { PlansType, getMonthList, getPlans, MonthListItem, plansActions } from "../../redux/Reducers/plansReducer"
+import { getMonthListSelector, getPlansError, getPlansSelector } from "../../redux/Selectors/plansSelectors"
 import { ColumnsType } from "antd/es/table"
 import empty from './../../img/empty.png'
 import { getAllValidatorsSelector } from "../../redux/Selectors/appSelectors"
@@ -47,6 +47,21 @@ export const Monplans: React.FC = ({ }) => {
     dispatch(getMonthList())
     dispatch(getPlans(date))
   }, [params.year, params.month])
+
+  const errorMessage = useSelector(getPlansError)
+
+  const [messageApi, contextHolder] = message.useMessage()
+
+  useEffect(() => {
+    if (errorMessage) {
+      messageApi.open({
+          type: 'error',
+          content: errorMessage,
+          duration: 7
+      })
+      dispatch(plansActions.setPlansErrorMessage(null))
+    }
+  }, [errorMessage])
 
   useEffect(() => {
     dispatch(getAllValidators())
@@ -210,7 +225,8 @@ export const Monplans: React.FC = ({ }) => {
       { type: 'divider' }
     ]
 
-    return (
+    return <>
+      {contextHolder}
       <Row style={{ marginTop: '10px', marginBottom: '80px' }}>
         <Col span={4}>
           <Menu
@@ -264,7 +280,7 @@ export const Monplans: React.FC = ({ }) => {
           </Modal>
         </Col>
       </Row>
-    )
+    </>
   } else {
     return <>Здесь пусто, потому что мы не нашли никаких планов. Наверное, вы используете свежеустановленную программу</>
   }

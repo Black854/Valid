@@ -24,3 +24,15 @@ export const getInstById = (state: AppStateType, id: string | undefined ='0') =>
   
     return instWithId // Возвращаем объект или null, если не найден
 }
+
+export const getInstErrorMessage = (state: AppStateType) => {
+    return (state.instruments.errorMessage)
+}
+
+export const getInstCreateNewObjectErrorMessage = (state: AppStateType) => {
+    return (state.instruments.createNewObjectErrorMessage)
+}
+
+export const getInstCardError = (state: AppStateType) => {
+    return (state.instruments.instCardError)
+}
