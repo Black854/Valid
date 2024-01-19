@@ -66,7 +66,7 @@ export const AddToMonthPlan: React.FC<PhotosBlockPropsType> = ({ id, objectType 
                                 <Title level={5} type='success'> - добавление разрешено</Title>
                             </Col>
                         </Row>
-                        <Button type="primary" icon={<PlusOutlined />} onClick={handleAddToMonthPlan}>Добавить объект в план на {getMonthNameFromMonthNumber(monthNumber)}</Button>
+                        <Button type="primary" size="small" icon={<PlusOutlined />} onClick={handleAddToMonthPlan}>Добавить объект в план на {getMonthNameFromMonthNumber(monthNumber)}</Button>
                     </>
                 }
             </Col>

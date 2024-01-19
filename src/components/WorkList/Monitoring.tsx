@@ -23,6 +23,7 @@ import { getCurrentSysDataSelector, getSysData } from "../../redux/Selectors/sys
 import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/processesSelectors"
 import { ProcTasks } from "./taskComponents/ProcTasks"
 import { SysTasks } from "./taskComponents/SysTasks"
+import { getWorkError } from "../../redux/Selectors/workSelectors"
 
 const { Text } = Typography
 
@@ -37,6 +38,18 @@ export const Monitoring: React.FC = () => {
 
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
+
+    const workError = useSelector(getWorkError)
+
+    useEffect(() => {
+        if (workError) {
+            messageApi.open({
+                type: 'error',
+                content: workError,
+            })
+        }
+    }, [workError])
+
     const error = (fileName: string) => {
         messageApi.open({
             type: 'error',
@@ -210,7 +223,7 @@ export const Monitoring: React.FC = () => {
             align: 'center'
         },
     ]
-    return (isLoading) ? <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} /> :
+    return isLoading ? <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} /> :
         <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
             {contextHolder}
             <Row>

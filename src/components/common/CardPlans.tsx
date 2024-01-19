@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { AppDispatch } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
 import { createVMPPlansData, getObjectVMPPlansData } from "../../redux/Reducers/vmpReducer"
 import { getObjectVMPPlansDataSelector } from "../../redux/Selectors/vmpSelectors"
-import { SaveOutlined } from '@ant-design/icons'
-import { Button, Card, Col, InputNumber, Row, Table, Typography } from "antd"
+import { Button, Card, Col, Row, Table, Typography } from "antd"
 import { CardPlansHelper } from "./CardPlansHelper"
+import { PlusOutlined } from "@ant-design/icons"
 
 const { Text } = Typography
 
@@ -178,7 +178,7 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType, o
                         pagination={false}
                         size="small"
                     />
-                    {data1.length === 0 && <Button type="default" onClick={() => handleCreateObjectPlansData('1')} style={{ marginTop: '20px' }}>Добавить данные</Button>}
+                    {data1.length === 0 && <Button type="primary" size="small" onClick={() => handleCreateObjectPlansData('1')} style={{ marginTop: '20px' }} icon={<PlusOutlined />}>Добавить данные</Button>}
                 </Col>
                 <Col span={11} push={2}>
                     <Table
@@ -189,7 +189,7 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType, o
                         pagination={false}
                         size="small"
                     />
-                    {data2.length === 0 && <Button type="default" onClick={() => handleCreateObjectPlansData('3')} style={{ marginTop: '20px' }}>Добавить данные</Button>}
+                    {data2.length === 0 && <Button type="primary" size="small" onClick={() => handleCreateObjectPlansData('3')} style={{ marginTop: '20px' }} icon={<PlusOutlined />}>Добавить данные</Button>}
                 </Col>
             </Row>
         </Card>

@@ -24,11 +24,7 @@ export const vmpAPI = {
             sp
         }
         return vmpInstance.post(`updateVMPPlansData.php`, requestData, {}).then(response => {
-            return response.data ?
-                vmpAPI.getObjectVMPPlansData(objectId, sp, objectType).then(response => {
-                    return response
-                })
-            : null
+            return response.data
         })
     },
     createVMPPlansData(objectName: string, objectId: string, sp: string, typeval: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes') {
@@ -40,11 +36,7 @@ export const vmpAPI = {
             objectType
         }
         return vmpInstance.post(`createVMPPlansData.php`, requestData, {}).then(response => {
-            return response.data ?
-                vmpAPI.getObjectVMPPlansData(objectId, sp, objectType).then(response => {
-                    return response
-                })
-            : null
+            return response.data
         })
     },
 }

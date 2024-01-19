@@ -64,7 +64,7 @@ export const EquipCard = () => {
                 content: equipCardError,
                 duration: 7
             })
-            dispatch(equipActions.setEquipCardError(null))
+            // dispatch(equipActions.setEquipCardError(null))
         }
     }, [equipCardError])
 

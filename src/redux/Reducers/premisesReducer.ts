@@ -549,6 +549,10 @@ export const createNewObject = (data: NewPremObjectType): ThunkType => async (di
     dispatch(premActions.setIsLoading(false))
 }
 
+export const setPremCardError = (text: string | null): ThunkType => async (dispatch) => {
+    dispatch(premActions.setPremCardError(text))
+}
+
 type ActionTypes = InferActionsTypes<typeof premActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 

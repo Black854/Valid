@@ -180,13 +180,10 @@ export const ProgressHelper: React.FC<ProgresssHelper> = ({ record, myPremData, 
     const dispatch: AppDispatch = useDispatch()
 
     const handleCancelTask = (objectId: string, objectType: "equipment" | "premises" | "systems" | "processes") => {
-        console.log(objectId)
         dispatch(setCancelTask(objectId, objectType))
     }
 
     const handleSuccessTask = (objectId: string, objectType: "equipment" | "premises" | "systems" | "processes") => {
-        console.log(objectId)
-        console.log(objectType)
         dispatch(setSuccessTask(objectId, objectType))
     }
 

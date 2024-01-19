@@ -7,3 +7,7 @@ export const getVMPDataSelector = (state: AppStateType) => {
 export const getObjectVMPPlansDataSelector = (state: AppStateType) => {
     return (state.vmp.objectVMPPlansData)
 }
+
+export const getVMPErrorMessage = (state: AppStateType) => {
+    return (state.vmp.errorMessage)
+}

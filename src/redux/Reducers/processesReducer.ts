@@ -346,6 +346,10 @@ export const createNewObject = (data: NewProcObjectType): ThunkType => async (di
     dispatch(procActions.setIsLoading(false))
 }
 
+export const setProcCardError = (text: string | null): ThunkType => async (dispatch) => {
+    dispatch(procActions.setProcCardError(text))
+}
+
 
 type ActionTypes = InferActionsTypes<typeof procActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>

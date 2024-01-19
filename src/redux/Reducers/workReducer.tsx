@@ -5,14 +5,17 @@ import { workAPI } from "../../api/workAPI"
 import { getEquipment } from "./equipmentReducer"
 import { getSystems } from "./systemsReducer"
 import { getProcesses } from "./processesReducer"
+import { logout } from "./authReducer"
 
 const initialState = {
-
+    errorMessage: null as string | null
 }
 
 type InitialStateType = typeof initialState
 export const workReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
+        case 'work/SET_WORK_ERROR_MESSAGE':
+            return { ...state, errorMessage: action.text }
         default:
             return state
     }
@@ -20,27 +23,35 @@ export const workReducer = (state = initialState, action: ActionTypes): InitialS
 
 export const setSuccessTask = (objectId: string, objectType: 'equipment' | 'premises' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
     let data = await workAPI.setSuccessTask(objectId, objectType)
-    if (data.resultCode === '0') {
+    if (data.resultCode === 0) {
         if (objectType === 'equipment') { dispatch(getEquipment()) }
         else if (objectType === 'premises') { dispatch(getPremises()) }
         else if (objectType === 'systems') { dispatch(getSystems()) }
         else if (objectType === 'processes') { dispatch(getProcesses()) }
+    } else if (data.resultCode === 1) {
+        dispatch(workActions.setWorkErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
     }
 }
 
 export const setCancelTask = (objectId: string, objectType: 'equipment' | 'premises' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
     let data = await workAPI.setCancelTask(objectId, objectType)
-    if (data.resultCode === '0') {
+    if (data.resultCode === 0) {
         if (objectType === 'equipment') { dispatch(getEquipment()) }
         else if (objectType === 'premises') { dispatch(getPremises()) }
         else if (objectType === 'systems') { dispatch(getSystems()) }
         else if (objectType === 'processes') { dispatch(getProcesses()) }
+    } else if (data.resultCode === 1) {
+        dispatch(workActions.setWorkErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
     }
 }
 
-type ActionTypes = InferActionsTypes<typeof appActions>
+type ActionTypes = InferActionsTypes<typeof workActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
-const appActions = {
-    // setEquipGroups: ( data: EquipGroup[] ) => ({type: 'app/SET_EQUIP_GROUPS', data} as const),
+const workActions = {
+    setWorkErrorMessage: (text: string | null) => ({ type: 'work/SET_WORK_ERROR_MESSAGE', text } as const),
 }

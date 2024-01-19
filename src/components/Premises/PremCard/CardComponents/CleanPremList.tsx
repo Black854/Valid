@@ -188,20 +188,18 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
         }
     ]
 
-    return (
-        <>
-            {contextHolder}
-            <Button icon={<PlusOutlined />} style={cleanPremListWithIndex.length > 0 ? { position: 'absolute', top: '10px', zIndex: '1' } : {marginBottom: '10px'}} onClick={handleAddPrem}>Добавить помещение</Button>
-            <Table
-                columns={columns}
-                dataSource={cleanPremListWithIndex}
-                bordered
-                pagination={{ position: ["topRight"], defaultPageSize: 10 }}
-                rowKey='id'
-                style={{ marginBottom: '60px' }}
-                loading={isCleanPremDataLoading}
-                size="small"
-            />
-        </>
-    )
+    return <>
+        {contextHolder}
+        <Button size="small" type="primary" icon={<PlusOutlined />} style={cleanPremListWithIndex.length > 0 ? { position: 'absolute', top: '10px', zIndex: '1' } : { marginBottom: '10px' }} onClick={handleAddPrem}>Добавить помещение</Button>
+        <Table
+            columns={columns}
+            dataSource={cleanPremListWithIndex}
+            bordered
+            pagination={{ position: ["topRight"], defaultPageSize: 10 }}
+            rowKey='id'
+            style={{ marginBottom: '60px' }}
+            loading={isCleanPremDataLoading}
+            size="small"
+        />
+    </>
 }

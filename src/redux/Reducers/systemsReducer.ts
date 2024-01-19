@@ -414,6 +414,10 @@ export const createNewObject = (data: NewSysObjectType): ThunkType => async (dis
     dispatch(sysActions.setIsLoading(false))
 }
 
+export const setSysCardError = (text: string | null): ThunkType => async (dispatch) => {
+    dispatch(sysActions.setSysCardError(text))
+}
+
 type ActionTypes = InferActionsTypes<typeof sysActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 

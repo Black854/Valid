@@ -1,6 +1,11 @@
 import { ThunkAction } from "redux-thunk"
 import { AppStateType, InferActionsTypes } from "../store"
 import { vmpAPI } from "../../api/vmpAPI"
+import { logout } from "./authReducer"
+import { setEquipCardError } from "./equipmentReducer"
+import { setPremCardError } from "./premisesReducer"
+import { setSysCardError } from "./systemsReducer"
+import { setProcCardError } from "./processesReducer"
 
 export type VMPDataType = {
     id: string
@@ -47,7 +52,8 @@ export type VMPDataTypeForPlansComponent = {
 
 const initialState = {
     VMPData: [] as VMPDataType[],
-    objectVMPPlansData: [] as VMPDataType[]
+    objectVMPPlansData: [] as VMPDataType[],
+    errorMessage: null as string | null,
 }
 
 type InitialStateType = typeof initialState
@@ -57,6 +63,8 @@ export const vmpReducer = (state = initialState, action: ActionTypes): InitialSt
             return { ...state, VMPData: action.data }
         case 'vmp/SET_OBJECT_VMP_PLANS_DATA':
             return { ...state, objectVMPPlansData: action.data }
+        case 'prem/SET_VMP_ERROR_MESSAGE':
+            return {...state, errorMessage: action.text}
         default:
             return state
     }
@@ -64,28 +72,77 @@ export const vmpReducer = (state = initialState, action: ActionTypes): InitialSt
 
 export const getVMPData = (tablename: string, year: string): ThunkType => async (dispatch) => {
     let data = await vmpAPI.getVMPData(tablename, year)
-    dispatch(vmpActions.setVMPData(data.items))
+    if (data.resultCode === 0) {
+        dispatch(vmpActions.setVMPData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(vmpActions.setVMPErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const getObjectVMPPlansData = (objectId: string, sp: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
     let data = await vmpAPI.getObjectVMPPlansData(objectId, sp, objectType)
-    dispatch(vmpActions.setObjectVMPPlansData(data.items))
+    if (data.resultCode === 0) {
+        dispatch(vmpActions.setObjectVMPPlansData(data.items))
+    } else if (data.resultCode === 1) {
+        if (objectType === 'equipment') {
+            dispatch(setEquipCardError(data.messages[0]))
+        } else if (objectType === 'premises') {
+            dispatch(setPremCardError(data.messages[0]))
+        } else if (objectType === 'systems') {
+            dispatch(setSysCardError(data.messages[0]))
+        } else if (objectType === 'processes') {
+            dispatch(setProcCardError(data.messages[0]))
+        }
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const updateVMPPlansData = (daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
     let data = await vmpAPI.updateVMPPlansData(daysCount, month, recordId, sp, objectId, objectType)
-    dispatch(vmpActions.setObjectVMPPlansData(data.items))
+    if (data.resultCode === 0) {
+        dispatch(getObjectVMPPlansData(objectId, sp, objectType))
+    } else if (data.resultCode === 1) {
+        if (objectType === 'equipment') {
+            dispatch(setEquipCardError(data.messages[0]))
+        } else if (objectType === 'premises') {
+            dispatch(setPremCardError(data.messages[0]))
+        } else if (objectType === 'systems') {
+            dispatch(setSysCardError(data.messages[0]))
+        } else if (objectType === 'processes') {
+            dispatch(setProcCardError(data.messages[0]))
+        } 
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const createVMPPlansData = (objectName: string, objectId: string, sp: string, typeval: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
     let data = await vmpAPI.createVMPPlansData(objectName, objectId, sp, typeval, objectType)
-    dispatch(vmpActions.setObjectVMPPlansData(data.items))
+    if (data.resultCode === 0) {
+        dispatch(getObjectVMPPlansData(objectId, sp, objectType))
+    } else if (data.resultCode === 1) {
+        if (objectType === 'equipment') {
+            dispatch(setEquipCardError(data.messages[0]))
+        } else if (objectType === 'premises') {
+            dispatch(setPremCardError(data.messages[0]))
+        } else if (objectType === 'systems') {
+            dispatch(setSysCardError(data.messages[0]))
+        } else if (objectType === 'processes') {
+            dispatch(setProcCardError(data.messages[0]))
+        }        
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 type ActionTypes = InferActionsTypes<typeof vmpActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
-const vmpActions = {
+export const vmpActions = {
     setVMPData: (data: VMPDataType[]) => ({ type: 'vmp/SET_VMP_DATA', data } as const),
     setObjectVMPPlansData: (data: VMPDataType[]) => ({ type: 'vmp/SET_OBJECT_VMP_PLANS_DATA', data } as const),
+    setVMPErrorMessage: (text: string | null) => ({ type: 'prem/SET_VMP_ERROR_MESSAGE', text } as const),
 }

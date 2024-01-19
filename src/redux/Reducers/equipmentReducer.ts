@@ -426,6 +426,10 @@ export const createNewObject = (data: NewEquipObjectType): ThunkType => async (d
     dispatch(equipActions.setIsLoading(false))
 }
 
+export const setEquipCardError = (text: string | null): ThunkType => async (dispatch) => {
+    dispatch(equipActions.setEquipCardError(text))
+}
+
 type ActionTypes = InferActionsTypes<typeof equipActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
