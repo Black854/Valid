@@ -110,6 +110,7 @@ export const getEquipment = (): ThunkType => async (dispatch) => {
     } else if (data.resultCode === 1) {
         dispatch(equipActions.setEquipErrorMessage(data.messages[0]))
     } else if (data.resultCode === 2) {
+        console.log('logout')
         dispatch(logout())
     }
     dispatch(equipActions.setIsLoading(false))

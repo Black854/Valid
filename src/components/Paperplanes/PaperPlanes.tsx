@@ -42,8 +42,8 @@ export const PaperPlanes: React.FC = () => {
     }
 
     let paperplanesRenderArray = []
-    paperplanesRenderArray.unshift(...paperplanes);
-    paperplanesRenderArray.unshift(addObjectToPaperplanes);
+    paperplanes && paperplanesRenderArray.unshift(...paperplanes)
+    paperplanesRenderArray.unshift(addObjectToPaperplanes)
 
     let fileInputRef: any = null
 

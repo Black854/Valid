@@ -7,6 +7,7 @@ import { getPremReestrData } from "./premisesReducer";
 import { getProcReestrData } from "./processesReducer";
 import { getSysReestrData } from "./systemsReducer";
 import { TablePaginationConfig } from "antd";
+import { logout } from "./authReducer";
 
 export type EquipGroupsType = {
     id: string
@@ -127,7 +128,8 @@ const initialState = {
     addToMonthPlanIsLoading: false,
     monthPlanObjectData: null as MonthPlanObjectData | null,
     userActions: null as UserActionsType[] | null,
-    userAccountsActions: null as UserActionsType[] | null
+    userAccountsActions: null as UserActionsType[] | null,
+    errorMessage: null as string | null,
 }
 
 type InitialStateType = typeof initialState
@@ -175,6 +177,8 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
             return { ...state, userAccountsActions: action.items }
         case 'app/SET_IS_INITIALIZED_APP_STATUS':
             return { ...state, isInitialized: action.status }
+        case 'app/SET_ERROR_MESSAGE':
+            return { ...state, errorMessage: action.text }
         default:
             return state
     }
@@ -183,57 +187,111 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
 export const getEquipGroups = (type: 'active' | 'all'): ThunkType => async (dispatch) => {
     dispatch(appActions.setEquipGroupsIsLoading(true))
     let data = await appAPI.getEquipGroups(type)
-    dispatch(appActions.setEquipGroups(data.groups))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setEquipGroups(data.groups))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch(appActions.setEquipGroupsIsLoading(false))
 }
 
 export const getDepartments = (): ThunkType => async (dispatch) => {
     dispatch(appActions.setDepartmentsIsLoading(true))
     let data = await appAPI.getDepartments()
-    dispatch(appActions.setDepartments(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setDepartments(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch(appActions.setDepartmentsIsLoading(false))
 }
 
 export const getPremModes = (): ThunkType => async (dispatch) => {
     dispatch(appActions.setPremModesIsLoading(true))
     let data = await appAPI.getPremModes()
-    dispatch(appActions.setPremModes(data.modes))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setPremModes(data.modes))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch(appActions.setPremModesIsLoading(false))
 }
 
 export const getVMPDepartments = (): ThunkType => async (dispatch) => {
     dispatch(appActions.setVMPDepartmentsIsLoading(true))
     let data = await appAPI.getVMPDepartments()
-    dispatch(appActions.setVMPDepartments(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setVMPDepartments(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch(appActions.setVMPDepartmentsIsLoading(false))
 }
 
 export const getSopCodeForm = (): ThunkType => async (dispatch) => {
     let data = await appAPI.getSopCodeForm()
-    dispatch(appActions.setSopCodeForm(data.code))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setSopCodeForm(data.code))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const getAllValidators = (): ThunkType => async (dispatch) => {
     let data = await appAPI.getAllValidators()
-    dispatch(appActions.setAllValidators(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setAllValidators(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const getVacationsData = (): ThunkType => async (dispatch) => {
     dispatch(appActions.setVacationsIsLoading())
     let data = await appAPI.getVacationsData()
-    dispatch(appActions.setVacationsData(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setVacationsData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const setVacationsData = (fio: string, dates: string, month: string): ThunkType => async (dispatch) => {
     dispatch(appActions.setVacationsIsLoading())
     let data = await appAPI.setVacationsData(fio, dates, month)
-    dispatch(appActions.setVacationsData(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setVacationsData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const deleteVacationsData = (fio: string, month: string): ThunkType => async (dispatch) => {
     dispatch(appActions.setVacationsIsLoading())
     let data = await appAPI.deleteVacationsData(fio, month)
-    dispatch(appActions.setVacationsData(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setVacationsData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const setTheme = (themeType: 'dark' | 'light'): ThunkType => async (dispatch) => {
@@ -242,66 +300,117 @@ export const setTheme = (themeType: 'dark' | 'light'): ThunkType => async (dispa
 
 export const getPainterData = (): ThunkType => async (dispatch) => {
     let data = await appAPI.getPainterData()
-    dispatch(appActions.setPainterData(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setPainterData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const setPainterData = (dataArray: any): ThunkType => async (dispatch) => {
     let data = await appAPI.setPainterData(dataArray)
-    dispatch(appActions.setPainterData(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setPainterData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const getCodeSettings = (): ThunkType => async (dispatch) => {
     dispatch(appActions.setCodeFormsIsLoading(true))
     let data = await appAPI.getCodeSettings()
-    dispatch(appActions.setCodeSettingsData(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setCodeSettingsData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch(appActions.setCodeFormsIsLoading(false))
 }
 
 export const setDepartmentsData = (id: string, name2?: string, pos?: string, fio?: string, stat?: string): ThunkType => async (dispatch) => {
     dispatch(appActions.setDepartmentsIsLoading(true))
     let data = await appAPI.setDepartmentsData(id, name2, pos, fio, stat)
-    dispatch(appActions.setDepartments(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setDepartments(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch(appActions.setDepartmentsIsLoading(false))
 }
 
 export const setVMPDepartmentsData = (id: string, vmpname1?: string, vmpname2?: string, code?: string, code2?: string, isactive?: string, menuname?: string): ThunkType => async (dispatch) => {
     dispatch(appActions.setVMPDepartmentsIsLoading(true))
     let data = await appAPI.setVMPDepartmentsData(id, vmpname1, vmpname2, code, code2, isactive, menuname)
-    dispatch(appActions.setVMPDepartments(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setVMPDepartments(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch(appActions.setVMPDepartmentsIsLoading(false))
 }
 
 export const setCodeFormsData = (id: string, codeform: string): ThunkType => async (dispatch) => {
     dispatch(appActions.setCodeFormsIsLoading(true))
     let data = await appAPI.setCodeFormsData(id, codeform)
-    dispatch(appActions.setCodeSettingsData(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setCodeSettingsData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch(appActions.setCodeFormsIsLoading(false))
 }
 
 export const setPremModesData = (id: string, type?: string, low?: string, hight?: string, isactive?: string): ThunkType => async (dispatch) => {
     dispatch(appActions.setPremModesIsLoading(true))
     let data = await appAPI.setPremModesData(id, type, low, hight, isactive)
-    dispatch(appActions.setPremModes(data.modes))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setPremModes(data.modes))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch(appActions.setPremModesIsLoading(false))
 }
 
 export const setEquipGroupsData = (id: string, name?: string, isactive?: string): ThunkType => async (dispatch) => {
     dispatch(appActions.setEquipGroupsIsLoading(true))
     let data = await appAPI.setEquipGroupsData(id, name, isactive)
-    dispatch(appActions.setEquipGroups(data.groups))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setEquipGroups(data.groups))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
     dispatch(appActions.setEquipGroupsIsLoading(false))
 }
 
 export const createNewDepartment = (name: string, name2: string, pos: string, fio: string, stat: string, setError: UseFormSetError<DepartmentsType>): ThunkType => async (dispatch) => {
     dispatch(appActions.setDepartmentsIsLoading(true))
     let data = await appAPI.createNewDepartment(name, name2, pos, fio, stat)
-    if (data.resultCode === '0') {
+    if (data.resultCode === 0) {
         dispatch(appActions.setDepartments(data.items))
-    } else {
+    } else if (data.resultCode === 1) {
         setError('name', {
             type: 'server',
             message: data.message
         })
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
     }
     dispatch(appActions.setDepartmentsIsLoading(false))
 }
@@ -309,13 +418,16 @@ export const createNewDepartment = (name: string, name2: string, pos: string, fi
 export const createNewVMPDepartment = (vmpname1: string, vmpname2: string, menuname: string, code: string, code2: string, datevmp: string, isactive: string, setError: UseFormSetError<VMPDepartmentsType>): ThunkType => async (dispatch) => {
     dispatch(appActions.setVMPDepartmentsIsLoading(true))
     let data = await appAPI.createNewVMPDepartment(vmpname1, vmpname2, menuname, code, code2, datevmp, isactive)
-    if (data.resultCode === '0') {
+    if (data.resultCode === 0) {
         dispatch(appActions.setVMPDepartments(data.items))
-    } else {
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
         setError('vmpname1', {
             type: 'server',
             message: data.message
         })
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
     }
     dispatch(appActions.setVMPDepartmentsIsLoading(false))
 }
@@ -323,13 +435,16 @@ export const createNewVMPDepartment = (vmpname1: string, vmpname2: string, menun
 export const createNewEquipGroup = (name: string, isactive: string, setError: UseFormSetError<EquipGroupsType>): ThunkType => async (dispatch) => {
     dispatch(appActions.setEquipGroupsIsLoading(true))
     let data = await appAPI.createNewEquipGroup(name, isactive)
-    if (data.resultCode === '0') {
+    if (data.resultCode === 0) {
         dispatch(appActions.setEquipGroups(data.groups))
-    } else {
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
         setError('name', {
             type: 'server',
             message: data.message
         })
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
     }
     dispatch(appActions.setEquipGroupsIsLoading(false))
 }
@@ -337,11 +452,14 @@ export const createNewEquipGroup = (name: string, isactive: string, setError: Us
 export const createNewPremMode = (type: string, low: string, hight: string, isactive: string, setError: UseFormSetError<PremModesType>): ThunkType => async (dispatch) => {
     dispatch(appActions.setPremModesIsLoading(true))
     let data = await appAPI.createNewPremMode(type, low, hight, isactive)
-    if (data.resultCode === '0') {
+    if (data.resultCode === 0) {
         dispatch(appActions.setPremModes(data.modes))
-    } else {
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
         setError('low', { message: data.message })
         setError('hight', { message: data.message })
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
     }
     dispatch(appActions.setPremModesIsLoading(false))
 }
@@ -349,8 +467,12 @@ export const createNewPremMode = (type: string, low: string, hight: string, isac
 export const setVMPConsumers = (id: string, dataArray: string[]): ThunkType => async (dispatch) => {
     dispatch(appActions.setVMPDepartmentsIsLoading(true))
     let data = await appAPI.setVMPConsumers(id, dataArray)
-    if (data.resultCode === '0') {
+    if (data.resultCode === 0) {
         dispatch(appActions.setVMPDepartments(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
     }
     dispatch(appActions.setVMPDepartmentsIsLoading(false))
 }
@@ -367,12 +489,20 @@ export const getMonthPlanObjectData = (id: string, objectType: 'equipment' | 'pr
         workType: ''
     }
 
-    if (data.resultCode === '0') {
-        dataToState = { ...data.items, isPlanned: true }
-    } else {
-        dataToState = { ...data.items, isPlanned: false }
+    if (data.resultCode === 0) {
+        if (data.items.date1 !== '' && data.items.fio !== '' && data.items.workType !== '') {
+            dataToState = { ...data.items, isPlanned: true }
+            dispatch(appActions.setMonthPlanObjectData(dataToState))
+        } else {
+            console.log(1)
+            dataToState = { ...data.items, isPlanned: false }
+            dispatch(appActions.setMonthPlanObjectData(dataToState))
+        }
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
     }
-    dispatch(appActions.setMonthPlanObjectData(dataToState))
     dispatch(appActions.setAddToMonthPlanIsLoading(false))
 }
 
@@ -388,19 +518,22 @@ export const createObjectInMonthPlane = (id: string, objectType: 'equipment' | '
         workType: ''
     }
 
-    if (data.resultCode === '0') {
+    if (data.resultCode === 0) {
         dataToState = { ...data.items, isPlanned: true }
-    } else {
+        dispatch(appActions.setMonthPlanObjectData(dataToState))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
         dataToState = { ...data.items, isPlanned: false }
+        dispatch(appActions.setMonthPlanObjectData(dataToState))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
     }
-    dispatch(appActions.setMonthPlanObjectData(dataToState))
     dispatch(appActions.setAddToMonthPlanIsLoading(false))
 }
 
 export const addReestrData = (id: string, objectType: 'equipment' | 'premises' | 'systems' | 'processes', nvp: string, dvp: string, nvo: string, dvo: string, typeval: string): ThunkType => async (dispatch) => {
     let data = await appAPI.addReestrData(id, objectType, nvp, dvp, nvo, dvo, typeval)
-
-    if (data.resultCode === '0') {
+    if (data.resultCode === 0) {
         switch (objectType) {
             case 'equipment':
                 return dispatch(getEquipReestrData(id))
@@ -413,29 +546,47 @@ export const addReestrData = (id: string, objectType: 'equipment' | 'premises' |
             default:
                 return null
         }
-    } else {
-
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
     }
 }
 
 export const getUserActions = (): ThunkType => async (dispatch) => {
     const data = await appAPI.getUserActions()
-    dispatch(appActions.setUserActions(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setUserActions(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const getUserAccountsActions = (): ThunkType => async (dispatch) => {
     const data = await appAPI.getUserAccountsActions()
-    dispatch(appActions.setUserAccountsActions(data.items))
+    if (data.resultCode === 0) {
+        dispatch(appActions.setUserAccountsActions(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const setIsInitializedAppStatus = (status: boolean): ThunkType => async (dispatch) => {
     dispatch(appActions.setIsInitializedAppStatus(status))
 }
 
+export const setErrorMessage = (text: string | null): ThunkType => async (dispatch) => {
+    dispatch(appActions.setErrorMessage(text))
+}
+
 type ActionTypes = InferActionsTypes<typeof appActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
-const appActions = {
+export const appActions = {
     setEquipGroups: (data: EquipGroupsType[]) => ({ type: 'app/SET_EQUIP_GROUPS', data } as const),
     setDepartments: (data: DepartmentsType[]) => ({ type: 'app/SET_DEPARTMENTS', data } as const),
     setVMPDepartments: (data: VMPDepartmentsType[]) => ({ type: 'app/SET_VMP_DEPARTMENTS', data } as const),
@@ -457,4 +608,5 @@ const appActions = {
     setUserActions: (items: UserActionsType[]) => ({ type: 'app/SET_USER_ACTIONS', items } as const),
     setUserAccountsActions: (items: UserActionsType[]) => ({ type: 'app/SET_USER_ACCOUNTS_ACTIONS', items } as const),
     setIsInitializedAppStatus: (status: boolean) => ({ type: 'app/SET_IS_INITIALIZED_APP_STATUS', status } as const),
+    setErrorMessage: (text: string | null) => ({ type: 'app/SET_ERROR_MESSAGE', text } as const),
 }

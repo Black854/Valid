@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { JSXElementConstructor, ReactElement, useEffect } from 'react'
 import { Layout, ConfigProvider, FloatButton, message } from 'antd'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import './App.css'
@@ -30,27 +30,20 @@ import { loginOfCookieData } from './redux/Reducers/authReducer'
 import { Vacations } from './components/Vacations/Vacations'
 import { PaperPlanes } from './components/Paperplanes/PaperPlanes'
 import { Painter } from './components/Painter/Painter'
-import { setTheme } from './redux/Reducers/appReducer'
-import { getThemeType } from './redux/Selectors/appSelectors'
 import { Settings } from './components/Settings/Settings'
 import { Prints } from './components/Prints/Prints'
 
-export const App: React.FC = () => {
-  const location = useLocation()
-  const navigate = useNavigate()
-  const dispatch: AppDispatch = useDispatch()
-  const isAuth = useSelector(getIsAuthSelector)
-  !isAuth && dispatch(loginOfCookieData())
-  const themeType = useSelector(getThemeType)
-  const { theme } = require('antd/lib')
-  const handleThemeChange = (checked: boolean) => {
-    checked ? dispatch(setTheme('light')) : dispatch(setTheme('dark'))
-  }
+type AppPropsType = {
+  handleThemeChange: (checked: boolean) => void
+  themeType: string
+  theme: any
+  contextHolder: ReactElement<any, string | JSXElementConstructor<any>>
+}
 
-  location.pathname === '/' && navigate('/work')
+export const App: React.FC<AppPropsType> = ({handleThemeChange, themeType, theme, contextHolder}) => {
 
-  return (
-
+  return <>
+    {contextHolder}
     <ConfigProvider theme={{ algorithm: themeType === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm }} locale={ruRU} >
       <Layout style={{ minHeight: '100vh' }}>
         <Header1 swithTheme={handleThemeChange} typeTheme={themeType} />
@@ -89,5 +82,5 @@ export const App: React.FC = () => {
         <CustomFooter />
       </Layout>
     </ConfigProvider>
-  )
+  </>
 }

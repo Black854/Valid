@@ -96,3 +96,7 @@ export const getUserActionsSelector = (state: AppStateType) => {
 export const getUserAccountsActionsSelector = (state: AppStateType) => {
     return (state.app.userAccountsActions)
 }
+
+export const getAppErrorMessage = (state: AppStateType) => {
+    return (state.app.errorMessage)
+}
