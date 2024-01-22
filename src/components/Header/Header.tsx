@@ -22,14 +22,13 @@ type HeaderPropsType = {
 
 export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) => {
     const location = useLocation()
-    const navigate = useNavigate()
     const dispatch: AppDispatch = useDispatch()
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
     const isAuth = useSelector(getIsAuthSelector)
     const userName = useSelector(getAuthUserNameSelector)
     useEffect(() => {
-        VMPDepartments.length === 0 && dispatch(getVMPDepartments())
-    }, [])
+        isAuth && VMPDepartments.length === 0 && dispatch(getVMPDepartments())
+    }, [isAuth])
     const currentYear = new Date().getFullYear()
     const filteredVMPDepartments = VMPDepartments.filter(e => e.isactive === '0').map(e => ({ key: `/vmp/${e.id}`, label: <Link to={`/vmp/${e.id}/${currentYear}`}>{e.menuname}</Link> }))
     const vmpTables = VMPDepartments.filter(e => e.isactive === '0').map(e => "/vmp/" + e.id)
@@ -87,7 +86,6 @@ export const Header1: React.FC<HeaderPropsType> = ({ swithTheme, typeTheme }) =>
         { key: '/painter', label: <Link to='/painter'>Интерактивная доска</Link> },
         { key: '/prints', label: <Link to='/prints'>Отчеты и аудит</Link> },
     ]
-    { !isAuth && location.pathname !== '/login' && navigate('/login') }
     const handleLogout = () => {
         dispatch(logout())
     }

@@ -8,13 +8,11 @@ import { login } from '../../redux/Reducers/authReducer'
 import { getAuthResponseMessage, getIsAuthSelector } from '../../redux/Selectors/authSelectors'
 import { useNavigate } from 'react-router-dom'
 import authImage from '../../img/authImage.jpg'
-import { getInitializeAppStatus } from '../../redux/Selectors/appSelectors'
 
 const { Text } = Typography
 
 export const Login: React.FC = () => {
     const isAuth = useSelector(getIsAuthSelector)
-    const initializeAppStatus = useSelector(getInitializeAppStatus)
     const authResponseMessage = useSelector(getAuthResponseMessage)
     const navigate = useNavigate()
     useEffect(() => {
@@ -51,7 +49,7 @@ export const Login: React.FC = () => {
         )
     }
 
-    return (!isAuth && !initializeAppStatus) ? <>
+    return <>
         <Space style={{ display: 'grid', placeItems: 'center', height: '100vh', backgroundImage: `url(${authImage})`, backgroundPosition: 'center' }} >
             <div>
                 <Text type='warning' style={{fontSize: '22pt'}}>V</Text>
@@ -96,5 +94,5 @@ export const Login: React.FC = () => {
                 </Card>
             </div>
         </Space >
-    </> : <> {navigate('/')} </>
+    </>
 }

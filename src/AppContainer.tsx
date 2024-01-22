@@ -7,7 +7,6 @@ import { getAppErrorMessage, getInitializeAppStatus, getThemeType } from "./redu
 import { appActions, setTheme } from "./redux/Reducers/appReducer"
 import { useEffect } from "react"
 import { App } from "./App"
-import { Login } from "./components/Login/Login"
 import { message } from "antd"
 
 export const AppContainer: React.FC = () => {
@@ -41,8 +40,8 @@ export const AppContainer: React.FC = () => {
     }, [errorMessage])
 
     useEffect(() => {
-        (isAuth && initializeAppStatus) ? (location.pathname === '/' || location.pathname === '/login') && navigate('/work') : navigate('/login')
+        !isAuth && !initializeAppStatus ? navigate('/login') : (location.pathname === '/') && navigate('/work')
     }, [isAuth, location.pathname])
 
-    return (isAuth && initializeAppStatus) ? <App contextHolder={contextHolder} theme={theme} themeType={themeType} handleThemeChange={handleThemeChange} /> : <Login />
+    return <App contextHolder={contextHolder} theme={theme} themeType={themeType} handleThemeChange={handleThemeChange} />
 }

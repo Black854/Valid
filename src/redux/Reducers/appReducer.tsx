@@ -92,7 +92,7 @@ export type UserActionsType = {
 export const defaultPagination = { defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"] } as TablePaginationConfig
 
 const initialState = {
-    isInitialized: false,
+    isInitialized: true,
     themeType: 'dark' as 'dark' | 'light',
     equipGroups: [] as EquipGroupsType[],
     departments: [] as DepartmentsType[],

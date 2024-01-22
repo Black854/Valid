@@ -22,22 +22,47 @@ import { getCurrentSysDataSelector, getSysData } from "../../redux/Selectors/sys
 import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/processesSelectors"
 import { ProcTasks } from "./taskComponents/ProcTasks"
 import { SysTasks } from "./taskComponents/SysTasks"
-import { getAuthUserNameSelector } from "../../redux/Selectors/authSelectors"
-import { getInitializeAppStatus } from "../../redux/Selectors/appSelectors"
+import { getAuthUserNameSelector, getIsAuthSelector } from "../../redux/Selectors/authSelectors"
 
 const { Text } = Typography
 
 export const WorkList: React.FC = () => {
-    const initializeAppStatus = useSelector(getInitializeAppStatus)
+    const isAuth = useSelector(getIsAuthSelector)
     useEffect(() => {
-        if (initializeAppStatus) {
+        if (isAuth) {
             dispatch(getPremises())
             dispatch(getEquipment())
             dispatch(getSystems())
             dispatch(getProcesses())
             dispatch(getAllValidators())
         }
-    }, [initializeAppStatus])
+    }, [isAuth])
+
+    const premData = useSelector(getPremData)
+    const equipData = useSelector(getEquipData)
+    const sysData = useSelector(getSysData)
+    const procData = useSelector(getProcData)
+    const isLoading = useSelector(getIsLoading)
+    const AuthUserName = useSelector(getAuthUserNameSelector)
+    
+    useEffect(() => {
+        isAuth &&  dispatch(getCurrentPremData(myPremDataIdArray))
+    }, [premData, isAuth])
+
+    
+    useEffect(() => {
+        isAuth && dispatch(getCurrentEquipData(myEquipDataIdArray))
+    }, [equipData, isAuth])
+
+    
+    useEffect(() => {
+        isAuth &&  dispatch(getCurrentSysData(mySysDataIdArray))
+    }, [sysData,isAuth])
+
+    
+    useEffect(() => {
+        isAuth && dispatch(getCurrentProcData(myProcDataIdArray))
+    }, [procData, isAuth])
 
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
@@ -47,13 +72,6 @@ export const WorkList: React.FC = () => {
             content: `Расширение файла ${fileName} не соответствует разрешенным`,
         })
     }
-
-    const premData = useSelector(getPremData)
-    const equipData = useSelector(getEquipData)
-    const sysData = useSelector(getSysData)
-    const procData = useSelector(getProcData)
-    const isLoading = useSelector(getIsLoading)
-    const AuthUserName = useSelector(getAuthUserNameSelector)
 
     const premNewData = premData.map(e => ({
         objectType: 'premises' as 'equipment' | 'premises' | 'systems' | 'processes',
@@ -124,15 +142,6 @@ export const WorkList: React.FC = () => {
     const myEquipData = useSelector(getCurrentEquipDataSelector)
     const mySysData = useSelector(getCurrentSysDataSelector)
     const myProcData = useSelector(getCurrentProcDataSelector)
-
-    useEffect(() => {
-        if (initializeAppStatus) {
-            dispatch(getCurrentPremData(myPremDataIdArray))
-            dispatch(getCurrentEquipData(myEquipDataIdArray))
-            dispatch(getCurrentSysData(mySysDataIdArray))
-            dispatch(getCurrentProcData(myProcDataIdArray))
-        }
-    }, [premData, equipData, sysData, procData, initializeAppStatus])
 
     type DataType = typeof premNewData[0]
     const data: DataType[] = [...premNewData, ...equipNewData, ...sysNewData, ...procNewData]

@@ -72,21 +72,26 @@ export const login = (userName: string, password: string, remember: boolean | un
             setCookie('token', data.userData.token, 7),
         ]).then(() => {
             dispatch(authActions.setUserData(data.userData))
-            dispatch(setIsInitializedAppStatus(true))
+            dispatch(setIsInitializedAppStatus(false))
         })
     } else {
         dispatch(authActions.setResponseMessage(data.messages['0']))
+        dispatch(setIsInitializedAppStatus(false))
     }
 }
 
 export const logout = (): ThunkType => async (dispatch) => {
-    dispatch(authActions.deleteUserData())
-    deleteCookie('login')
-    deleteCookie('userName')
-    deleteCookie('access')
-    deleteCookie('position')
-    deleteCookie('sp')
-    deleteCookie('token')
+    Promise.all([
+        deleteCookie('login'),
+        deleteCookie('userName'),
+        deleteCookie('access'),
+        deleteCookie('position'),
+        deleteCookie('sp'),
+        deleteCookie('token')
+    ]).then(() => {
+        dispatch(authActions.deleteUserData())
+        dispatch(setIsInitializedAppStatus(false))
+    })
     dispatch(setIsInitializedAppStatus(false))
 }
 
@@ -109,7 +114,7 @@ export const loginOfCookieData = (): ThunkType => async (dispatch) => {
             token
         }
         dispatch(authActions.setUserData(data))
-        dispatch(setIsInitializedAppStatus(true))
+        dispatch(setIsInitializedAppStatus(false))
     }
 }
 
