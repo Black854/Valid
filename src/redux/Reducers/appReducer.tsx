@@ -583,6 +583,10 @@ export const setErrorMessage = (text: string | null): ThunkType => async (dispat
     dispatch(appActions.setErrorMessage(text))
 }
 
+export const uploadCodeForm = (file: any): ThunkType => async (dispatch) => {
+    await appAPI.uploadCodeForm(file)
+}
+
 type ActionTypes = InferActionsTypes<typeof appActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 

@@ -216,4 +216,11 @@ export const appAPI = {
             return response.data
         })
     },
+    uploadCodeForm(file: any) {
+        let data = new FormData()
+        data.append("fileform", file)
+        return appInstance.post(`uploadCodeForm.php`, data, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
+            return response.data
+        })
+    },
 }
