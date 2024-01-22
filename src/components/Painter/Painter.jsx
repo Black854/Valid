@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Excalidraw } from '@excalidraw/excalidraw'
 import { getPainterDataSelector, getThemeType } from '../../redux/Selectors/appSelectors'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPainterData, setPainterData } from '../../redux/Reducers/appReducer'
 import _ from 'lodash'
-import { Spin, Typography } from 'antd'
 import { Loading } from '../common/Loading'
 
-const { Text } = Typography
-
-export const Painter = () => {
+const Painter = () => {
   const dispatch = useDispatch()
 
   const themeType = useSelector(getThemeType)
@@ -70,3 +67,5 @@ export const Painter = () => {
     </div>
   ) : <Loading />
 }
+
+export default Painter

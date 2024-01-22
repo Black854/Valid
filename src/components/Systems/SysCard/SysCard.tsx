@@ -19,7 +19,7 @@ import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 const { Text } = Typography
 
-export const SysCard = () => {
+const SysCard: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
     const params = useParams()
     let id: string
@@ -205,3 +205,5 @@ export const SysCard = () => {
         )
     }
 }
+
+export default SysCard

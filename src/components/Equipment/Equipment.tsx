@@ -33,7 +33,7 @@ interface DataType {
 
 type DataIndex = keyof DataType
 
-export const Equipment: React.FC = () => {
+const Equipment: React.FC = () => {
   const dispatch: AppDispatch = useDispatch()
 
   const equipData = useSelector(getEquipData)
@@ -241,30 +241,29 @@ export const Equipment: React.FC = () => {
     index: index + 1,
   }))
 
-  if (isLoading) {
-    return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
-  } else {
-    return <>
-      {contextHolder}
-      <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
-        <Row>
-          <Col push={1} xs={4} sm={22} md={22} lg={22} xl={22} xxl={22} >
-            <Table
-              columns={columns}
-              dataSource={data}
-              bordered={false}
-              pagination={defaultPagination}
-              title={() => <>
-                <Text style={{ fontSize: '13pt' }}>
-                  <NewObjectForm />
-                  Оборудование (всего: {equipData.length})
-                </Text>
-              </>}
-              size="small"
-            />
-          </Col>
-        </Row>
-      </Content>
-    </>
-  }
+  return <>
+    {contextHolder}
+    <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
+      <Row>
+        <Col push={1} xs={4} sm={22} md={22} lg={22} xl={22} xxl={22} >
+          <Table
+            columns={columns}
+            dataSource={data}
+            bordered={false}
+            pagination={defaultPagination}
+            title={() => <>
+              <Text style={{ fontSize: '13pt' }}>
+                <NewObjectForm />
+                Оборудование (всего: {equipData.length})
+              </Text>
+            </>}
+            size="small"
+            loading={isLoading}
+          />
+        </Col>
+      </Row>
+    </Content>
+  </>
 }
+
+export default Equipment

@@ -19,7 +19,7 @@ import { defaultPagination } from "../../redux/Reducers/appReducer"
 
 const { Text } = Typography
 
-export const Premises: React.FC = () => {
+const Premises: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
 
     const premData = useSelector(getPremData)
@@ -211,11 +211,8 @@ export const Premises: React.FC = () => {
     const data: DataType[] = premNewData.map((item, index) => ({
         ...item,
         index: index + 1,
-      }))
+    }))
 
-    if (isLoading) {
-        return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
-    }
     return <>
         {contextHolder}
         <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
@@ -233,9 +230,12 @@ export const Premises: React.FC = () => {
                             </Text>
                         </>}
                         size="small"
+                        loading={isLoading}
                     />
                 </Col>
             </Row>
         </Content>
     </>
 }
+
+export default Premises

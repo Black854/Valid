@@ -8,7 +8,7 @@ import { ObjectsWithoutAvatars } from "./ObjectsWithoutAvatar"
 
 const { Text, Title } = Typography
 
-export const Prints: React.FC = () => {
+const Prints: React.FC = () => {
     const navigate = useNavigate()
     const params = useParams()
 
@@ -48,3 +48,5 @@ export const Prints: React.FC = () => {
         </Col>
     </Row>
 }
+
+export default Prints

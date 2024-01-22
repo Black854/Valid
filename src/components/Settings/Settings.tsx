@@ -1,18 +1,14 @@
-import { useDispatch } from "react-redux"
 import { Col, Row, Tabs, TabsProps, Typography } from "antd"
-import { AppDispatch } from "../../redux/store"
 import { Departments } from "./SettingsComponents/Departments"
 import { VMPDepartments } from "./SettingsComponents/VMPDepartments"
 import { CodeForms } from "./SettingsComponents/CodeForms"
 import { EquipGroups } from "./SettingsComponents/EquipGroups"
 import { PremModes } from "./SettingsComponents/PremModes"
 
-const { Text, Title } = Typography
+const { Title } = Typography
 
 
-export const Settings: React.FC = () => {
-    const dispatch: AppDispatch = useDispatch()
-
+const Settings: React.FC = () => {
     const items: TabsProps['items'] = [
         {
             key: '1',
@@ -57,3 +53,5 @@ export const Settings: React.FC = () => {
         </Row>
     </>
 }
+
+export default Settings

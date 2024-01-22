@@ -1,6 +1,6 @@
 import { Table, Typography } from "antd"
 import { ColumnsType } from "antd/es/table"
-import { CodeSettingsType, DepartmentsType, getCodeSettings, getDepartments, setCodeFormsData } from "../../../redux/Reducers/appReducer"
+import { CodeSettingsType, getCodeSettings, setCodeFormsData } from "../../../redux/Reducers/appReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { getCodeFormsIsLoadingSelector, getCodeSettingsSelector } from "../../../redux/Selectors/appSelectors"
 import { useEffect } from "react"

@@ -33,7 +33,7 @@ interface DataType {
 
 type DataIndex = keyof DataType;
 
-export const Processes: React.FC = () => {
+const Processes: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
 
     const procData = useSelector(getProcData)
@@ -56,7 +56,7 @@ export const Processes: React.FC = () => {
     if (procData.length === 0 && isLoading === false && !errorMessage) {
         dispatch(getProcesses())
     }
-    
+
     const procNewData = procData.map(e => ({
         id: e.id,
         key: e.id,
@@ -210,9 +210,7 @@ export const Processes: React.FC = () => {
         ...item,
         index: index + 1,
     }))
-    if (isLoading) {
-        return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
-    }
+
     return <>
         {contextHolder}
         <Content style={{ padding: '20px 0', marginBottom: '40px' }}>
@@ -231,9 +229,12 @@ export const Processes: React.FC = () => {
                         </>}
                         size="small"
                         style={{ marginBottom: '30px' }}
+                        loading={isLoading}
                     />
                 </Col>
             </Row>
         </Content>
     </>
 }
+
+export default Processes

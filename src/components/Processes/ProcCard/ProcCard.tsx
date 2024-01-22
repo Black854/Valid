@@ -19,7 +19,7 @@ import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 const { Text } = Typography
 
-export const ProcCard = () => {
+const ProcCard: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
     const params = useParams()
     let id: string
@@ -206,3 +206,5 @@ export const ProcCard = () => {
     }
     
 }
+
+export default ProcCard

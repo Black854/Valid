@@ -1,19 +1,18 @@
 import { Button, Col, Menu, MenuProps, Modal, Row, Table, Typography, message } from "antd"
-import { PrinterOutlined, EyeOutlined, CalendarOutlined, FileWordOutlined } from '@ant-design/icons'
+import { PrinterOutlined, CalendarOutlined, FileWordOutlined } from '@ant-design/icons'
 import { NavLink, useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
 import { useEffect, useState } from "react"
 import { AppDispatch } from "../../redux/store"
-import { VMPDataType, getVMPData } from "../../redux/Reducers/vmpReducer"
-import { ColumnsType } from "antd/es/table"
+import { getVMPData } from "../../redux/Reducers/vmpReducer"
 import ColumnGroup from "antd/es/table/ColumnGroup"
 import Column from "antd/es/table/Column"
 import { getVMPDataSelector } from "../../redux/Selectors/vmpSelectors"
 import { plansDataBuilder } from "./plansDataBuilder"
-const { Text, Link } = Typography
+const { Text } = Typography
 
-export const VmpPlans: React.FC = () => {
+const VmpPlans: React.FC = () => {
 
     type MenuItem = Required<MenuProps>['items'][number]
     const [messageApi, contextHolder] = message.useMessage()
@@ -258,3 +257,5 @@ export const VmpPlans: React.FC = () => {
         </Row>
     )
 }
+
+export default VmpPlans

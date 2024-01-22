@@ -1,4 +1,4 @@
-import { Typography, Table, Row, Col, DatePicker, Button, Calendar, theme, CalendarProps, Modal, Input } from "antd"
+import { Typography, Table, Row, Col } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { getAllValidatorsSelector, getVacationsDataSelector, vacationsIsLoadingSelector } from "../../redux/Selectors/appSelectors"
 import { Content } from "antd/es/layout/layout"
@@ -27,7 +27,7 @@ type DataType = {
     month12: string
 }
 
-export const Vacations: React.FC = () => {
+const Vacations: React.FC = () => {
     const AllValidators = useSelector(getAllValidatorsSelector)
     const vacationsData = useSelector(getVacationsDataSelector)
     const vacationsIsLoading = useSelector(vacationsIsLoadingSelector)
@@ -193,3 +193,5 @@ export const Vacations: React.FC = () => {
         </Content>
     )
 }
+
+export default Vacations

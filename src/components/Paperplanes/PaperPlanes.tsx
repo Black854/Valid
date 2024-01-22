@@ -4,15 +4,13 @@ import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../redux/store"
 import pdf from './../../img/pdfi.png'
-import video from './../../img/video.png'
 import { getPaperplanesSelector } from "../../redux/Selectors/paperplanesSelectors"
 import { createPaperplanes, deletePaperplanes, getPaperplanes, setPaperplanesDescription } from "../../redux/Reducers/paperplanesReducer"
 
 const { Text, Title } = Typography
 
-export const PaperPlanes: React.FC = () => {
+const PaperPlanes: React.FC = () => {
     const [modalStates, setModalStates] = useState(Array<string>)
-    const videoRef = useRef<HTMLVideoElement | null>(null)
     const [messageApi, contextHolder] = message.useMessage()
 
     const error = (fileName: string) => {
@@ -153,3 +151,5 @@ export const PaperPlanes: React.FC = () => {
         </Row>
     </>
 }
+
+export default PaperPlanes

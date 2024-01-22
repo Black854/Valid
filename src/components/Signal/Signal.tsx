@@ -23,7 +23,7 @@ import { PlansComponent } from "./PlansComponent"
 
 const { Text } = Typography
 
-export const Signal: React.FC = () => {
+const Signal: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
     useEffect(() => {
         dispatch(getPremises())
@@ -301,13 +301,13 @@ export const Signal: React.FC = () => {
             align: 'center'
         },
         {
-            title: <Text strong style={{ fontSize: '12pt',textAlign: 'center', display: 'block' }}>Информация</Text>,
+            title: <Text strong style={{ fontSize: '12pt', textAlign: 'center', display: 'block' }}>Информация</Text>,
             dataIndex: 'type1',
             render: (type1, record) => { return <PlansComponent record={record} myEquipData={myEquipData} myPremData={myPremData} myProcData={myProcData} mySysData={mySysData} /> },
             width: '13%',
         },
     ]
-    return (isLoading) ? <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} /> :
+    return <>
         <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
             {contextHolder}
             <Row>
@@ -319,8 +319,12 @@ export const Signal: React.FC = () => {
                         pagination={false}
                         title={() => <Text style={{ fontSize: '14pt' }}>Сигнальный лист (всего: {data.length})</Text>}
                         size="small"
+                        loading={isLoading}
                     />
                 </Col>
             </Row>
         </Content>
+    </>
 }
+
+export default Signal

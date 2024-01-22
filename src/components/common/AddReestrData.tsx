@@ -58,7 +58,7 @@ export const AddReestrData: React.FC<PropsType> = ({id, objectType }) => {
                 <CustomController key='dvp' control={control} name='dvp' type='date' label='Дата утверждения протокола' />
                 <CustomController key='nvo' control={control} name='nvo' type='text' label='Код отчета' required={true} maxLength={100} />
                 <CustomController key='dvo' control={control} name='dvo' type='date' label='Дата утверждения отчета' required={true} />
-                <CustomController key='typeval' control={control} name='typeval' type='select' label='Дата утверждения отчета' required={true} options={options} />
+                <CustomController key='typeval' control={control} name='typeval' type='select' label='Тип проводимых работ' required={true} options={options} />
                 <Button style={{ marginTop: '25px' }} size="small" type="primary" htmlType="submit">Добавить</Button>
             </Form>
         </Modal>

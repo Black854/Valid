@@ -19,7 +19,7 @@ import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 const { Text } = Typography
 
-export const EquipCard = () => {
+const EquipCard: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
     const params = useParams()
     let id: string
@@ -276,5 +276,6 @@ export const EquipCard = () => {
             <Text type="danger" style={{fontSize: '12pt', textAlign: 'center', padding: '20px'}}>Внимание! Запрошенный Вами объект не существует!</Text>
         )
     }
-    
 }
+
+export default EquipCard

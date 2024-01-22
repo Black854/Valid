@@ -8,7 +8,6 @@ import { PlansType, getMonthList, getPlans, MonthListItem, updateReportStatus, p
 import { getMonthListSelector, getPlansError, getPlansSelector } from "../../redux/Selectors/plansSelectors"
 import { ColumnsType } from "antd/es/table"
 import empty from './../../img/empty.png'
-import { getAllValidatorsSelector } from "../../redux/Selectors/appSelectors"
 import { getAllValidators } from "../../redux/Reducers/appReducer"
 import 'dayjs/locale/ru'
 
@@ -16,11 +15,9 @@ const { Text } = Typography
 
 type MenuItem = Required<MenuProps>['items'][number]
 
-export const Reports: React.FC = ({ }) => {
+const Reports: React.FC = ({ }) => {
   const dispatch: AppDispatch = useDispatch()
   const monthList = useSelector(getMonthListSelector)
-  const allValidators = useSelector(getAllValidatorsSelector)
-  const emptyFioObject = [{ value: '', label: <Text type="warning">Не указано</Text> }]
   const [modalOpen, setModalOpen] = useState(false)
   const [iframeKey, setIframeKey] = useState(0)
   const params = useParams()
@@ -300,3 +297,5 @@ export const Reports: React.FC = ({ }) => {
     return <>Здесь пусто, потому что мы не нашли никаких отчётов. Наверное, вы используете свежеустановленную программу</>
   }
 }
+
+export default Reports

@@ -20,7 +20,7 @@ const { Text } = Typography
 
 type MenuItem = Required<MenuProps>['items'][number]
 
-export const Monplans: React.FC = ({ }) => {
+const Monplans: React.FC = ({ }) => {
   const dispatch: AppDispatch = useDispatch()
   const monthList = useSelector(getMonthListSelector)
   const allValidators = useSelector(getAllValidatorsSelector)
@@ -285,3 +285,5 @@ export const Monplans: React.FC = ({ }) => {
     return <>Здесь пусто, потому что мы не нашли никаких планов. Наверное, вы используете свежеустановленную программу</>
   }
 }
+
+export default Monplans

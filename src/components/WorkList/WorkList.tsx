@@ -44,22 +44,22 @@ export const WorkList: React.FC = () => {
     const procData = useSelector(getProcData)
     const isLoading = useSelector(getIsLoading)
     const AuthUserName = useSelector(getAuthUserNameSelector)
-    
+
     useEffect(() => {
-        isAuth &&  dispatch(getCurrentPremData(myPremDataIdArray))
+        isAuth && dispatch(getCurrentPremData(myPremDataIdArray))
     }, [premData, isAuth])
 
-    
+
     useEffect(() => {
         isAuth && dispatch(getCurrentEquipData(myEquipDataIdArray))
     }, [equipData, isAuth])
 
-    
-    useEffect(() => {
-        isAuth &&  dispatch(getCurrentSysData(mySysDataIdArray))
-    }, [sysData,isAuth])
 
-    
+    useEffect(() => {
+        isAuth && dispatch(getCurrentSysData(mySysDataIdArray))
+    }, [sysData, isAuth])
+
+
     useEffect(() => {
         isAuth && dispatch(getCurrentProcData(myProcDataIdArray))
     }, [procData, isAuth])
@@ -211,7 +211,7 @@ export const WorkList: React.FC = () => {
             align: 'center'
         },
     ]
-    return isLoading ? <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} /> :
+    return <>
         <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
             {contextHolder}
             <Row>
@@ -232,8 +232,10 @@ export const WorkList: React.FC = () => {
                         pagination={false}
                         title={() => <Text style={{ fontSize: '14pt' }}>Мои задачи (всего: {data.length})</Text>}
                         size="small"
+                        loading={isLoading}
                     />
                 </Col>
             </Row>
         </Content>
+    </>
 }

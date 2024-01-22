@@ -27,7 +27,7 @@ import { getWorkError } from "../../redux/Selectors/workSelectors"
 
 const { Text } = Typography
 
-export const Monitoring: React.FC = () => {
+const Monitoring: React.FC = () => {
     useEffect(() => {
         dispatch(getPremises())
         dispatch(getEquipment())
@@ -249,3 +249,5 @@ export const Monitoring: React.FC = () => {
             </Row>
         </Content>
 }
+
+export default Monitoring

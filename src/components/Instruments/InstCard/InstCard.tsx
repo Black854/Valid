@@ -12,7 +12,7 @@ import { getInstruments, instActions, updateManufacturDate, updateManufacturer, 
 import { ConvertDateInst } from "../../common/convertDateInst"
 const { Text } = Typography
 
-export const InstCard = () => {
+const InstCard: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
     const params = useParams()
     let id: string
@@ -154,5 +154,6 @@ export const InstCard = () => {
             <Text type="danger" style={{fontSize: '12pt', textAlign: 'center', padding: '20px'}}>Внимание! Валидационных приборов с данным идентификатором не существует!</Text>
         )
     }
-    
 }
+
+export default InstCard
