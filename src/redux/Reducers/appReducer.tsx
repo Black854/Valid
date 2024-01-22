@@ -130,6 +130,8 @@ const initialState = {
     userActions: null as UserActionsType[] | null,
     userAccountsActions: null as UserActionsType[] | null,
     errorMessage: null as string | null,
+    successMessage: null as string | null,
+    loadingMessage: null as string | null,
 }
 
 type InitialStateType = typeof initialState
@@ -179,6 +181,10 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
             return { ...state, isInitialized: action.status }
         case 'app/SET_ERROR_MESSAGE':
             return { ...state, errorMessage: action.text }
+        case 'app/SET_SUCCESS_MESSAGE':
+            return { ...state, successMessage: action.text }
+        case 'app/SET_LOADING_MESSAGE':
+            return { ...state, loadingMessage: action.text }
         default:
             return state
     }
@@ -584,7 +590,18 @@ export const setErrorMessage = (text: string | null): ThunkType => async (dispat
 }
 
 export const uploadCodeForm = (file: any): ThunkType => async (dispatch) => {
-    await appAPI.uploadCodeForm(file)
+    dispatch(appActions.setLoadingMessage('Файл загружается...'))
+    const data = await appAPI.uploadCodeForm(file)
+    if (data.resultCode === 0) {
+        dispatch(appActions.setLoadingMessage(null))
+        dispatch(appActions.setSuccessMessage('Операция завершена успешно!'))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setLoadingMessage(null))
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(appActions.setLoadingMessage(null))
+        dispatch(logout())
+    }
 }
 
 type ActionTypes = InferActionsTypes<typeof appActions>
@@ -613,4 +630,6 @@ export const appActions = {
     setUserAccountsActions: (items: UserActionsType[]) => ({ type: 'app/SET_USER_ACCOUNTS_ACTIONS', items } as const),
     setIsInitializedAppStatus: (status: boolean) => ({ type: 'app/SET_IS_INITIALIZED_APP_STATUS', status } as const),
     setErrorMessage: (text: string | null) => ({ type: 'app/SET_ERROR_MESSAGE', text } as const),
+    setSuccessMessage: (text: string | null) => ({ type: 'app/SET_SUCCESS_MESSAGE', text } as const),
+    setLoadingMessage: (text: string | null) => ({ type: 'app/SET_LOADING_MESSAGE', text } as const),
 }

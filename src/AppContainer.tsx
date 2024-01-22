@@ -3,7 +3,7 @@ import { AppDispatch } from "./redux/store"
 import { useDispatch, useSelector } from "react-redux"
 import { getIsAuthSelector } from "./redux/Selectors/authSelectors"
 import { loginOfCookieData } from "./redux/Reducers/authReducer"
-import { getAppErrorMessage, getInitializeAppStatus, getThemeType } from "./redux/Selectors/appSelectors"
+import { getAppErrorMessage, getAppLoadingMessage, getAppSuccessMessage, getInitializeAppStatus, getThemeType } from "./redux/Selectors/appSelectors"
 import { appActions, setTheme } from "./redux/Reducers/appReducer"
 import { useEffect } from "react"
 import { App } from "./App"
@@ -25,6 +25,8 @@ export const AppContainer: React.FC = () => {
     }
 
     const errorMessage = useSelector(getAppErrorMessage)
+    const successMessage = useSelector(getAppSuccessMessage)
+    const loadingMessage = useSelector(getAppLoadingMessage)
 
     const [messageApi, contextHolder] = message.useMessage()
 
@@ -36,8 +38,20 @@ export const AppContainer: React.FC = () => {
                 duration: 7
             })
             dispatch(appActions.setErrorMessage(null))
+        }  else if (loadingMessage) {
+            messageApi.open({
+                type: 'loading',
+                content: loadingMessage
+            })
+        } else if (successMessage) {
+            messageApi.open({
+                type: 'success',
+                content: successMessage,
+                duration: 7
+            })
+            dispatch(appActions.setSuccessMessage(null))
         }
-    }, [errorMessage])
+    }, [errorMessage, successMessage, loadingMessage])
 
     useEffect(() => {
         !isAuth && !initializeAppStatus ? navigate('/login') : (location.pathname === '/') && navigate('/work')
