@@ -48,7 +48,8 @@ const EquipCard: React.FC = () => {
         } else if (VMPDepartments.length === 0) {
           dispatch(getVMPDepartments())
         }
-    }, [dispatch, equipData, equipGroups, departments, VMPDepartments])
+    }, [equipData, equipGroups, departments, VMPDepartments])
+
     useEffect (() => {
         dispatch(getEquipReestrData(id))
     }, [id])
@@ -64,7 +65,7 @@ const EquipCard: React.FC = () => {
                 content: equipCardError,
                 duration: 7
             })
-            // dispatch(equipActions.setEquipCardError(null))
+            dispatch(equipActions.setEquipCardError(null))
         }
     }, [equipCardError])
 

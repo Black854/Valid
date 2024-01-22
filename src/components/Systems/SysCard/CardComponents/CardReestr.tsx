@@ -1,11 +1,11 @@
 import { Button, Popconfirm, Table, Typography, message } from "antd"
 import { useDispatch } from "react-redux"
-import React from "react"
+import React, { useEffect } from "react"
 import { ColumnsType } from "antd/es/table"
 import { ConvertDate } from "../../../common/convertDate"
 import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
 import { AppDispatch } from "../../../../redux/store"
-import { deleteSysDocument, updateReestrDocsCodeSys, uploadSysDocument } from "../../../../redux/Reducers/systemsReducer"
+import { deleteSysDocument, getSysReestrData, updateReestrDocsCodeSys, uploadSysDocument } from "../../../../redux/Reducers/systemsReducer"
 import { AddReestrData } from "../../../common/AddReestrData"
 const { Text } = Typography
 
@@ -34,6 +34,11 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
     const reestrDataWithoutEmptyRows = reestrData.filter(e => e.dvo !== '')
 
     const dispatch: AppDispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getSysReestrData(id))
+    }, [id])
+
     const [messageApi, contextHolder] = message.useMessage()
     const error = (fileName: string) => {
         messageApi.open({
