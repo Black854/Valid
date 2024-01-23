@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
 import { useEffect, useState } from "react"
 import { AppDispatch } from "../../redux/store"
-import { getVMPData } from "../../redux/Reducers/vmpReducer"
+import { getVMPData, vmpActions } from "../../redux/Reducers/vmpReducer"
 import ColumnGroup from "antd/es/table/ColumnGroup"
 import Column from "antd/es/table/Column"
-import { getVMPDataSelector } from "../../redux/Selectors/vmpSelectors"
+import { getVMPDataSelector, getVMPErrorMessage } from "../../redux/Selectors/vmpSelectors"
 import { plansDataBuilder } from "./plansDataBuilder"
 const { Text } = Typography
 
@@ -16,6 +16,20 @@ const VmpPlans: React.FC = () => {
 
     type MenuItem = Required<MenuProps>['items'][number]
     const [messageApi, contextHolder] = message.useMessage()
+
+    const errorMessage = useSelector(getVMPErrorMessage)
+
+    useEffect(() => {
+        if (errorMessage) {
+            messageApi.open({
+                type: 'error',
+                content: errorMessage,
+                duration: 7
+            })
+            dispatch(vmpActions.setVMPErrorMessage(null))
+        }
+    }, [errorMessage])
+
     const params = useParams()
     const navigate = useNavigate()
     const dispatch: AppDispatch = useDispatch()
@@ -98,10 +112,10 @@ const VmpPlans: React.FC = () => {
         }
     }
 
-    return (
+    return <>
+        {contextHolder}
         <Row style={{ marginTop: '10px' }}>
             <Col span={4}>
-                {contextHolder}
                 <Menu
                     mode="inline"
                     onClick={({ key }) => handleMenuClick(key)}
@@ -255,7 +269,7 @@ const VmpPlans: React.FC = () => {
                 </Modal>
             </Col>
         </Row>
-    )
+    </>
 }
 
 export default VmpPlans
