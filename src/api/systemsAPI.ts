@@ -148,7 +148,7 @@ export const systemsAPI = {
             return response.data
         })
     },
-    updateSysWorkData (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string) {
+    updateSysWorkData (recordId: string, changeParam: 'et' | 'season' | 'pam2' | 'isCardUpdated', text: string) {
         const requestData = {
             recordId,
             changeParam,

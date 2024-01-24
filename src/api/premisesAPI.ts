@@ -214,7 +214,7 @@ export const premisesAPI = {
             return response.data
         })
     },
-    updatePremWorkData (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string) {
+    updatePremWorkData (recordId: string, changeParam: 'et' | 'season' | 'pam2' | 'isCardUpdated', text: string) {
         const requestData = {
             recordId,
             changeParam,

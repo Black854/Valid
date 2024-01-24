@@ -411,7 +411,7 @@ export const getCurrentEquipData = (myEquipDataIdArray: Array<string>): ThunkTyp
     }
 }
 
-export const updateEquipWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string): ThunkType => async (dispatch) => {
+export const updateEquipWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2' | 'isCardUpdated', text: string): ThunkType => async (dispatch) => {
     await equipmentAPI.updateEquipWorkData(recordId, changeParam, text)
 }
 

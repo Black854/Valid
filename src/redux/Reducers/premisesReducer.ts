@@ -533,7 +533,7 @@ export const getCurrentPremData = (myPremDataIdArray: Array<string>): ThunkType 
     }
 }
 
-export const updatePremWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string): ThunkType => async (dispatch) => {
+export const updatePremWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2' | 'isCardUpdated', text: string): ThunkType => async (dispatch) => {
     await premisesAPI.updatePremWorkData(recordId, changeParam, text)
 }
 

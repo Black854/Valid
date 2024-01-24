@@ -398,7 +398,7 @@ export const getCurrentSysData = (mySysDataIdArray: Array<string>): ThunkType =>
     }
 }
 
-export const updateSysWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string): ThunkType => async (dispatch) => {
+export const updateSysWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2' | 'isCardUpdated', text: string): ThunkType => async (dispatch) => {
     await systemsAPI.updateSysWorkData(recordId, changeParam, text)
 }
 

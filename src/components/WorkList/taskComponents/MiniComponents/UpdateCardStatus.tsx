@@ -22,16 +22,16 @@ export const UpdateCardStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray
 
     const handleLabelSwitch = async (pol: string) => {
         if (objectType === 'equipment') {
-            await dispatch(updateEquipWorkData(data.id, 'pam2', pol)) //isCardUpdated
+            await dispatch(updateEquipWorkData(data.id, 'isCardUpdated', pol)) //isCardUpdated
             await dispatch(getCurrentEquipData(myEquipDataIdArray))
         } else if (objectType === 'premises') {
-            await dispatch(updatePremWorkData(data.id, 'pam2', pol))
+            await dispatch(updatePremWorkData(data.id, 'isCardUpdated', pol))
             await dispatch(getCurrentPremData(myPremDataIdArray))
         } else if (objectType === 'systems') {
-            await dispatch(updateSysWorkData(data.id, 'pam2', pol))
+            await dispatch(updateSysWorkData(data.id, 'isCardUpdated', pol))
             await dispatch(getCurrentSysData(mySysDataIdArray))
         } else if (objectType === 'processes') {
-            await dispatch(updateProcWorkData(data.id, 'pam2', pol))
+            await dispatch(updateProcWorkData(data.id, 'isCardUpdated', pol))
             await dispatch(getCurrentProcData(myProcDataIdArray))
         }
     }

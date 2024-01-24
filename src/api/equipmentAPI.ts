@@ -148,7 +148,7 @@ export const equipmentAPI = {
             return response.data
         })
     },
-    updateEquipWorkData(recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string) {
+    updateEquipWorkData(recordId: string, changeParam: 'et' | 'season' | 'pam2' | 'isCardUpdated', text: string) {
         const requestData = {
             recordId,
             changeParam,

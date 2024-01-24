@@ -266,7 +266,7 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
                         thisObject?.typeval === '1' ?
                             (rec.class === 'Чистые' || rec.class === 'Контролируемые') ? [...protoData, ...reportData, ...updateCardData, ...labelData] :
                                 rec.class === 'Складские' && (rec.mode === '2 - 8 ºC' || rec.mode === 'минус 30 - 35 ºC') ? [...protoData, ...reportData, ...seasonData, ...PamUploaderData, ...PamData, ...updateCardData, ...labelData] :
-                                    [...protoData, ...reportData, ...seasonData, ...labelData] :
+                                    [...protoData, ...reportData, ...seasonData, ...updateCardData, ...labelData] :
                             thisObject?.typeval === '3' ?
                                 (rec.class === 'Чистые' || rec.class === 'Контролируемые') ? [...reportData, ...labelData] :
                                     rec.class === 'Складские' && (rec.mode === '2 - 8 ºC' || rec.mode === 'минус 30 - 35 ºC') ? [...reportData, ...labelData] :

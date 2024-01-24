@@ -148,7 +148,7 @@ export const processesAPI = {
             return response.data
         })
     },
-    updateProcWorkData (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string) { // по идее можно убрать
+    updateProcWorkData (recordId: string, changeParam: 'et' | 'season' | 'pam2' | 'isCardUpdated', text: string) { // по идее можно убрать
         const requestData = {
             recordId,
             changeParam,

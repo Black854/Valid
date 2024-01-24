@@ -330,7 +330,7 @@ export const getCurrentProcData = (myProcDataIdArray: Array<string>): ThunkType 
     }
 }
 
-export const updateProcWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2', text: string): ThunkType => async (dispatch) => {
+export const updateProcWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2' | 'isCardUpdated', text: string): ThunkType => async (dispatch) => {
     await processesAPI.updateProcWorkData(recordId, changeParam, text)
 }
 
