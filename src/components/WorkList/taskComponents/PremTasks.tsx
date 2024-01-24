@@ -15,6 +15,7 @@ import { PamStatus } from "./MiniComponents/PamStatus"
 import { useState } from "react"
 import { ProgressStatus } from "./MiniComponents/ProgressStatus"
 import { SeasonSwitcher } from "./MiniComponents/SeasonSwitcher"
+import { UpdateCardStatus } from "./MiniComponents/UpdateCardStatus"
 const { Text } = Typography
 
 type PremTasks = {
@@ -146,6 +147,13 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
         }
     ]
 
+    const updateCardData = [
+        {
+            rowName: 'Карточка актуализирована',
+            value: <UpdateCardStatus data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' />
+        }
+    ]
+
     const AddsColumns = [
         {
             dataIndex: 'rowName',
@@ -256,8 +264,8 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
                     columns={columns}
                     dataSource={
                         thisObject?.typeval === '1' ?
-                            (rec.class === 'Чистые' || rec.class === 'Контролируемые') ? [...protoData, ...reportData, ...labelData] :
-                                rec.class === 'Складские' && (rec.mode === '2 - 8 ºC' || rec.mode === 'минус 30 - 35 ºC') ? [...protoData, ...reportData, ...seasonData, ...PamUploaderData, ...PamData, ...labelData] :
+                            (rec.class === 'Чистые' || rec.class === 'Контролируемые') ? [...protoData, ...reportData, ...updateCardData, ...labelData] :
+                                rec.class === 'Складские' && (rec.mode === '2 - 8 ºC' || rec.mode === 'минус 30 - 35 ºC') ? [...protoData, ...reportData, ...seasonData, ...PamUploaderData, ...PamData, ...updateCardData, ...labelData] :
                                     [...protoData, ...reportData, ...seasonData, ...labelData] :
                             thisObject?.typeval === '3' ?
                                 (rec.class === 'Чистые' || rec.class === 'Контролируемые') ? [...reportData, ...labelData] :

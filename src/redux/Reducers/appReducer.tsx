@@ -496,12 +496,10 @@ export const getMonthPlanObjectData = (id: string, objectType: 'equipment' | 'pr
     }
 
     if (data.resultCode === 0) {
-        if (data.items.date1 !== '' && data.items.fio !== '' && data.items.workType !== '') {
+        if (data.items) {
             dataToState = { ...data.items, isPlanned: true }
             dispatch(appActions.setMonthPlanObjectData(dataToState))
         } else {
-            console.log(1)
-            dataToState = { ...data.items, isPlanned: false }
             dispatch(appActions.setMonthPlanObjectData(dataToState))
         }
     } else if (data.resultCode === 1) {

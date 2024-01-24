@@ -11,6 +11,7 @@ import { PamStatus } from './MiniComponents/PamStatus'
 import { ReportUpload } from './MiniComponents/ReportUpload'
 import { ProgressStatus } from './MiniComponents/ProgressStatus'
 import { useState } from 'react'
+import { UpdateCardStatus } from './MiniComponents/UpdateCardStatus'
 
 const { Text } = Typography
 
@@ -101,6 +102,13 @@ export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipDa
         {
             rowName: 'Статус памятки',
             value: <PamStatus data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' />
+        }
+    ]
+
+    const updateCardData = [
+        {
+            rowName: 'Карточка актуализирована',
+            value: <UpdateCardStatus data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' />
         }
     ]
 
@@ -214,9 +222,9 @@ export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipDa
                     columns={columns}
                     dataSource={
                         thisObject?.typeval === '1' ?
-                            rec.class === 'Термостаты' ? [...protoData, ...reportData, ...PamUploaderData, ...PamData, ...labelData] :
-                                rec.class === 'Термоконтейнеры' ? [...protoData, ...reportData, ...PamData] :
-                                    [...protoData, ...reportData, ...labelData] :
+                            rec.class === 'Термостаты' ? [...protoData, ...reportData, ...PamUploaderData, ...PamData,  ...updateCardData, ...labelData] :
+                                rec.class === 'Термоконтейнеры' ? [...protoData, ...reportData, ...PamData, ...updateCardData] :
+                                    [...protoData, ...reportData,  ...updateCardData, ...labelData] :
                             thisObject?.typeval === '3' ?
                                 rec.class === 'Термоконтейнеры' ? [...reportData] :
                                     [...reportData, ...labelData] :

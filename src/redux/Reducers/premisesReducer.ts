@@ -38,6 +38,7 @@ export type PremReestrType = {
     period: string
     season: string
     typeval: string
+    isCardUpdated: string
     vo: string
     vp: string
     type1?: VMPDataTypeForPlansComponent

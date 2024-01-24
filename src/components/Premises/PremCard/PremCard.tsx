@@ -1,4 +1,4 @@
-import { Col, Row, Select, Spin, Tabs, TabsProps, Typography, message } from "antd"
+import { Col, Row, Select, Spin, Tabs, TabsProps, Tooltip, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { AppDispatch, AppStateType } from "../../../redux/store"
@@ -152,6 +152,7 @@ const PremCard = () => {
                     dropdownStyle={{ width: 'auto' }}
                     bordered={false}
                     options={classesData}
+                    disabled
                 />
             },
             {
@@ -203,15 +204,17 @@ const PremCard = () => {
             },
             {
                 rowName: 'Группа',
-                value: <Select
-                    defaultValue={premObject.class}
-                    onChange={handleUpdateGroup}
-                    size="small"
-                    style={{ paddingRight: '20px', marginLeft: '-7px' }}
-                    dropdownStyle={{ width: 'auto' }}
-                    bordered={false}
-                    options={classesData}
-                />
+                value: <>
+                    <Select
+                        defaultValue={premObject.class}
+                        onChange={handleUpdateGroup}
+                        size="small"
+                        style={{ paddingRight: '20px', marginLeft: '-7px' }}
+                        dropdownStyle={{ width: 'auto' }}
+                        bordered={false}
+                        options={classesData.filter(e => e.value !== 'Складские')}
+                    />
+                </>
             },
             {
                 rowName: 'Температурный режим',

@@ -9,6 +9,7 @@ import { ReportCode } from './MiniComponents/ReportCode'
 import { LabelStatus } from './MiniComponents/LabelStatus'
 import { useState } from 'react'
 import { ProgressStatus } from './MiniComponents/ProgressStatus'
+import { UpdateCardStatus } from './MiniComponents/UpdateCardStatus'
 
 const { Text } = Typography
 
@@ -86,6 +87,13 @@ export const SysTasks: React.FC<SysTasks> = ({ mySysDataIdArray, mySysData, rec,
             rowName: 'Статус этикетки',
             value: <LabelStatus data={data[0]} mySysDataIdArray={mySysDataIdArray} objectType='systems' />
         },
+    ]
+
+    const updateCardData = [
+        {
+            rowName: 'Карточка актуализирована',
+            value: <UpdateCardStatus data={data[0]} mySysDataIdArray={mySysDataIdArray} objectType='systems' />
+        }
     ]
 
     const AddsColumns = [
@@ -197,7 +205,7 @@ export const SysTasks: React.FC<SysTasks> = ({ mySysDataIdArray, mySysData, rec,
                 <Table
                     columns={columns}
                     dataSource={
-                        thisObject?.typeval === '1' ? [...protoData, ...reportData, ...labelData] :
+                        thisObject?.typeval === '1' ? [...protoData, ...reportData, ...updateCardData, ...labelData] :
                         thisObject?.typeval === '3' ? [...reportData, ...labelData] :
                         []
                     }

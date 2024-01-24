@@ -76,7 +76,7 @@ export const NewObjectForm: React.FC = () => {
                 <CustomController control={control} name='nomer' type='text' label='Номер помещения' maxLength={100} />
                 <CustomController control={control} name='spVMP' type='select' label='Подразделение (по ВМП)' required={true} options={VMPDepartmentData} />
                 <CustomController control={control} name='sp' type='select' label='Подразделение (по ответственности)' required={true} options={DepartmentData} />
-                <CustomController control={control} name='class' type='select' label='Класс помещения' required={true} options={classesData} />
+                <CustomController control={control} name='class' type='select' label='Группа помещений' required={true} options={classesData} />
                 <CustomController control={control} name='mode' type='select' label='Температурный режим' required={true} options={PremModesData} />
                 <CustomController control={control} name='ar' type='select' label='Интервал оценки/реквалификации' required={true} options={IntervalsData} />
                 <Button style={{ marginTop: '15px' }} size="small" type="primary" htmlType="submit">Создать объект</Button>

@@ -42,6 +42,7 @@ export type ProcReestrType = {
     period: string
     season: string
     typeval: string
+    isCardUpdated: string
     vo: string
     vp: string
     type1?: VMPDataTypeForPlansComponent
@@ -350,7 +351,6 @@ export const setProcCardError = (text: string | null): ThunkType => async (dispa
     dispatch(procActions.setProcCardError(text))
 }
 
-
 type ActionTypes = InferActionsTypes<typeof procActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
@@ -365,5 +365,5 @@ export const procActions = {
     setIsDescriptionLoading: (data: any) => ({ type: 'proc/SET_IS_DESCRIPTION_LOADING', data } as const),
     setProcErrorMessage: (text: string | null) => ({ type: 'proc/SET_PROC_ERROR_MESSAGE', text } as const),
     setCreateNewObjectErrorMessage: (text: string | null) => ({ type: 'proc/SET_CREATE_NEW_PROC_ERROR_MESSAGE', text } as const),
-    setProcCardError: (text: string | null) => ({ type: 'proc/SET_PROC_CARD_ERROR', text } as const),
+    setProcCardError: (text: string | null) => ({ type: 'proc/SET_PROC_CARD_ERROR', text } as const)
 }

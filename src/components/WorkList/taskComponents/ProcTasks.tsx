@@ -8,6 +8,7 @@ import { ProtocolUpload } from './MiniComponents/ProtocolUpload'
 import { ReportUpload } from './MiniComponents/ReportUpload'
 import { ReportCode } from './MiniComponents/ReportCode'
 import { ProtocolCode } from './MiniComponents/ProtocolCode'
+import { UpdateCardStatus } from './MiniComponents/UpdateCardStatus'
 
 const { Text } = Typography
 
@@ -78,6 +79,13 @@ export const ProcTasks: React.FC<ProcTasks> = ({myProcDataIdArray, myProcData, r
             rowName: 'Дата утверждения отчета',
             value: <DatePickerForWork date={data[0].dvo} objectId={data[0].id} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myProcDataIdArray} />
         },
+    ]
+
+    const updateCardData = [
+        {
+            rowName: 'Карточка актуализирована',
+            value: <UpdateCardStatus data={data[0]} myProcDataIdArray={myProcDataIdArray} objectType='processes' />
+        }
     ]
 
     const AddsColumns = [
@@ -160,23 +168,23 @@ export const ProcTasks: React.FC<ProcTasks> = ({myProcDataIdArray, myProcData, r
         {
             rowName: <Text style={{ fontSize: '12pt' }}>Титульный лист (для диска)</Text>,
             value: <>
-            <Space.Compact style={{ width: '100%' }}>
-                <Input placeholder="Буквы через запятую" value={AddsChars} onChange={(e) => { setAddsChars(e.currentTarget.value) }} allowClear onPressEnter={() => { data[0].nvp !== '' && AddsChars !== '' && setTitlesCDListModalOpen(true) }} />
-                <Button onClick={() => { setTitlesCDListModalOpen(true) }} disabled={data[0].nvp === '' || AddsChars === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
-                <Modal afterOpenChange={() => handleCancel('TitlesCDList')} title="Титульные листы приложений на диске" open={TitlesCDListModalOpen} onCancel={() => handleCancel('TitlesCDList')} footer={[<Button key="close" onClick={() => handleCancel('TitlesCDList')} type="primary">Закрыть</Button>]} >
-                    <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`http://10.85.10.212/ov/API/PrintForms/add_cde.php?nvp=${data[0].nvp}&chars=${AddsChars}`}></iframe>
-                </Modal>
-            </Space.Compact>
-        </>
+                <Space.Compact style={{ width: '100%' }}>
+                    <Input placeholder="Буквы через запятую" value={AddsChars} onChange={(e) => { setAddsChars(e.currentTarget.value) }} allowClear onPressEnter={() => { data[0].nvp !== '' && AddsChars !== '' && setTitlesCDListModalOpen(true) }} />
+                    <Button onClick={() => { setTitlesCDListModalOpen(true) }} disabled={data[0].nvp === '' || AddsChars === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
+                    <Modal afterOpenChange={() => handleCancel('TitlesCDList')} title="Титульные листы приложений на диске" open={TitlesCDListModalOpen} onCancel={() => handleCancel('TitlesCDList')} footer={[<Button key="close" onClick={() => handleCancel('TitlesCDList')} type="primary">Закрыть</Button>]} >
+                        <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`http://10.85.10.212/ov/API/PrintForms/add_cde.php?nvp=${data[0].nvp}&chars=${AddsChars}`}></iframe>
+                    </Modal>
+                </Space.Compact>
+            </>
         },
         {
             rowName: <Text style={{ fontSize: '12pt' }}>Конверт для диска</Text>,
             value: <>
-            <Button onClick={() => { setCDConvertModalOpen(true) }} style={{ borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
-            <Modal title="Конверт для диска" open={CDConvertModalOpen} onCancel={() => handleCancel('CDConvert')} footer={[<Button key="close" onClick={() => handleCancel('CDConvert')} type="primary">Закрыть</Button>]} >
-                <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`http://10.85.10.212/ov/API/PrintForms/CD.pdf`}></iframe>
-            </Modal>
-        </>,
+                <Button onClick={() => { setCDConvertModalOpen(true) }} style={{ borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
+                <Modal title="Конверт для диска" open={CDConvertModalOpen} onCancel={() => handleCancel('CDConvert')} footer={[<Button key="close" onClick={() => handleCancel('CDConvert')} type="primary">Закрыть</Button>]} >
+                    <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`http://10.85.10.212/ov/API/PrintForms/CD.pdf`}></iframe>
+                </Modal>
+            </>,
         },
     ]
 
@@ -189,7 +197,7 @@ export const ProcTasks: React.FC<ProcTasks> = ({myProcDataIdArray, myProcData, r
                 <Table
                     columns={columns}
                     dataSource={
-                        thisObject?.typeval === '1' ? [...protoData, ...reportData] :
+                        thisObject?.typeval === '1' ? [...protoData, ...reportData, ...updateCardData] :
                         thisObject?.typeval === '3' ? reportData :
                         []
                     }
