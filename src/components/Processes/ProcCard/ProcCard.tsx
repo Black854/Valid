@@ -108,6 +108,7 @@ const ProcCard: React.FC = () => {
                             size="small"
                             bordered={false}
                             options={VMPDepartmentData}
+                            disabled={access > 3}
                         />
             },
             {
@@ -120,6 +121,7 @@ const ProcCard: React.FC = () => {
                             size="small"
                             bordered={false}
                             options={departmentData}
+                            disabled={access > 3}
                         />
             },
             {

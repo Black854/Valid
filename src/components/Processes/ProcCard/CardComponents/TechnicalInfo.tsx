@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../../redux/store"
 import { getTechInfo } from "../../../../redux/Selectors/processesSelectors"
 import { getTechnicalInfo, updateTechnicalInfo } from "../../../../redux/Reducers/processesReducer"
+import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
 
 const {Text} = Typography
 type TechnicalInfoPropsType = {
@@ -13,6 +14,7 @@ type TechnicalInfoPropsType = {
 export const TechnicalInfo: React.FC<TechnicalInfoPropsType> = ({ id }) => {
     const dispatch: AppDispatch= useDispatch()
     const techInfo = useSelector(getTechInfo)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
     useEffect (() => {
         dispatch(getTechnicalInfo(id))
     }, [])
@@ -30,8 +32,8 @@ export const TechnicalInfo: React.FC<TechnicalInfoPropsType> = ({ id }) => {
     const columns = [
         {
           dataIndex: 'value',
-          render: (value: string) => value != '' ? <Text editable={{onChange: (text: string) => updateTechInfo(text)}} style={{fontSize: '12pt'}}>{value}</Text> :
-                                                    <Text type='warning' editable={{onChange: (text: string) => updateTechInfo(text), text: ''}} style={{fontSize: '12pt'}} >Нет данных</Text>,
+          render: (value: string) => value != '' ? <Text editable={ access > 3 ? false : {onChange: (text: string) => updateTechInfo(text)}} style={{fontSize: '12pt'}}>{value}</Text> :
+                                                    <Text type='warning' editable={ access > 3 ? false : {onChange: (text: string) => updateTechInfo(text), text: ''}} style={{fontSize: '12pt'}} >Нет данных</Text>,
         }
     ]
 

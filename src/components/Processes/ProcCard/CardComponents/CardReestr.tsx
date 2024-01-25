@@ -59,7 +59,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                         dispatch(deleteProcDocument(id, record.id, 'vp', record.vp))
                     }
                     return <>
-                        <Text style={{ width: '90%' }} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>
+                        <Text style={{ width: '90%' }} editable={access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>
                             {nvp}
                         </Text>
                         <Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={'http://10.85.10.212/ov/' + record.vp} />
@@ -70,7 +70,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                             cancelText='Нет'
                             onConfirm={handleDeleteDocument}
                         >
-                            <Button danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
+                            <Button disabled={access > 2} danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
                         </Popconfirm>
                     </>
                 } else if (record.nvp !== '') {
@@ -93,9 +93,9 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                             }
                         }
                     }
-                    return <><Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>{nvp}</Text>
+                    return <><Text editable={access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>{nvp}</Text>
                         <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{ display: 'none' }} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
-                        <Button icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
+                        <Button disabled={access > 2} icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
                 } else {
                     return <Text>{nvp}</Text>
                 }
@@ -117,7 +117,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                         dispatch(deleteProcDocument(id, record.id, 'vo', record.vo))
                     }
                     return <>
-                        <Text style={{ width: '95%' }} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
+                        <Text style={{ width: '95%' }} editable={access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
                         <Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={'http://10.85.10.212/ov/' + record.vo} />
                         <Popconfirm
                             title='Подтвердите удаление'
@@ -126,7 +126,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                             cancelText='Нет'
                             onConfirm={handleDeleteDocument}
                         >
-                            <Button danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
+                            <Button disabled={access > 2} danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
                         </Popconfirm>
                     </>
                 } else if (record.nvo !== '') {
@@ -150,9 +150,9 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                         }
                     }
                     return <>
-                        <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
+                        <Text editable={access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
                         <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{ display: 'none' }} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
-                        <Button icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
+                        <Button disabled={access > 2} icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
                 } else {
                     return <Text>{nvo}</Text>
                 }
@@ -173,60 +173,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
             width: '11%',
             align: 'center'
         },
-    ];
-
-    const pamColumn: ColumnsType<reestrDataItemType> = [{
-        title: <Text strong style={{ fontSize: '12pt' }}>Памятка</Text>,
-        dataIndex: 'pam',
-        render: (pam, record) => {
-            if (pam) {
-                const handleDeleteDocument = () => {
-                    dispatch(deleteProcDocument(id, record.id, 'pam', pam))
-                }
-                return <>
-                    <Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={'http://10.85.10.212/ov/' + pam}>Просмотр</Button>
-                    <Popconfirm
-                        title='Подтвердите удаление'
-                        description='Вы уверены, что хотите удалить документ?'
-                        okText='Да'
-                        cancelText='Нет'
-                        onConfirm={handleDeleteDocument}
-                    >
-                        <Button danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="text" />
-                    </Popconfirm>
-                </>
-            } else {
-                let uploadDocumentRef: any = null
-                const onSelectDocument = (e: any) => {
-                    if (e.currentTarget.files.length > 0) {
-                        const fileName = e.currentTarget.files[0].name
-                        // Получите расширение файла, разделенное точкой
-                        const fileExtension = fileName.split('.').pop()
-
-                        // Список разрешенных расширений
-                        const allowedExtensions = ['doc', 'docx']
-
-                        if (allowedExtensions.includes(fileExtension.toLowerCase())) {
-                            // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
-                            dispatch(uploadProcDocument(id, record.id, 'pam', e.currentTarget.files[0]))
-                        } else {
-                            // Файл имеет недопустимое расширение
-                            error(fileName)
-                        }
-                    }
-                }
-                return <>
-                    <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{ display: 'none' }} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
-                    <Button icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /><Text type="secondary">Загрузить</Text></>
-            }
-        },
-        width: '12%',
-        align: 'center'
-    }]
-
-    if (group === 'Термостаты' || group === 'Термоконтейнеры') {
-        columns = columns.concat(pamColumn)
-    }
+    ]
 
     return <>
         {contextHolder}
