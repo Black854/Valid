@@ -1,4 +1,4 @@
-import { Col, Row, Select, Spin, Tabs, TabsProps, Tooltip, Typography, message } from "antd"
+import { Col, Row, Select, Spin, Tabs, TabsProps, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { AppDispatch, AppStateType } from "../../../redux/store"
@@ -125,6 +125,7 @@ const PremCard = () => {
                     size="small"
                     bordered={false}
                     options={VMPDepartmentData}
+                    disabled={access > 3}
                 />
             },
             {
@@ -137,12 +138,13 @@ const PremCard = () => {
                     size="small"
                     bordered={false}
                     options={departmentData}
+                    disabled={access > 3}
                 />
             },
             {
                 rowName: 'Номер помещения',
                 value: premObject.nomer ? <Text editable={{ onChange: (text) => { updateDataNomer(text) }, text: premObject.nomer }}>Помещение {premObject.nomer}</Text> :
-                    <Text type="warning" editable={{ onChange: (text) => { updateDataNomer(text) }, text: '' }}>Не указано</Text>
+                    <Text type="warning" editable={ access > 3 ? false : { onChange: (text) => { updateDataNomer(text) }, text: '' }}>Не указано</Text>
             },
             {
                 rowName: 'Группа',
@@ -167,6 +169,7 @@ const PremCard = () => {
                     dropdownStyle={{ width: 'auto' }}
                     bordered={false}
                     options={filteredPremModes}
+                    disabled={access > 3}
                 />
             },
             {
@@ -190,6 +193,7 @@ const PremCard = () => {
                     size="small"
                     bordered={false}
                     options={VMPDepartmentData}
+                    disabled={access > 3}
                 />
             },
             {
@@ -202,6 +206,7 @@ const PremCard = () => {
                     size="small"
                     bordered={false}
                     options={departmentData}
+                    disabled={access > 3}
                 />
             },
             {
@@ -215,6 +220,7 @@ const PremCard = () => {
                         dropdownStyle={{ width: 'auto' }}
                         bordered={false}
                         options={classesData.filter(e => e.value !== 'Складские')}
+                        disabled={access > 3}
                     />
                 </>
             },
@@ -228,6 +234,7 @@ const PremCard = () => {
                     dropdownStyle={{ width: 'auto' }}
                     bordered={false}
                     options={filteredPremModes}
+                    disabled={access > 3}
                 />
             },
             {

@@ -7,6 +7,7 @@ import { createCleanPrem, deleteCleanPrem, getCleanPremList, updateCleanPremItem
 import { getDepartmentsSelector } from "../../../../redux/Selectors/appSelectors"
 import { ColumnsType } from "antd/es/table"
 import { PlusOutlined, DeleteOutlined, SaveOutlined } from '@ant-design/icons'
+import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
 const { Text } = Typography
 
 type TechnicalInfoPropsType = {
@@ -45,6 +46,7 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
     const dispatch: AppDispatch = useDispatch()
     const cleanPremList = useSelector(getCleanPremListSelector)
     const cleanTab = useSelector(getCleanTabSelector)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
     let cleanPremListWithIndex = cleanPremList.map((item, index) => ({
         ...item,
         index: index + 1,
@@ -136,7 +138,7 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
         {
             title: <Text strong style={{ fontSize: '12pt' }}>Номер помещения</Text>,
             dataIndex: 'nomer',
-            render: (nomer, record) => record.index !== 0 ? <Text editable={{ onChange: (text: string) => { handleUpdateCleanPrem(record.id, text, 'nomer') }, text: nomer }} >{`№ ${nomer}`}</Text> :
+            render: (nomer, record) => record.index !== 0 ? <Text editable={ access > 2 ? false : { onChange: (text: string) => { handleUpdateCleanPrem(record.id, text, 'nomer') }, text: nomer }} >{`№ ${nomer}`}</Text> :
                 <Input onChange={handleInputChange} type="number" name="nomer" placeholder="Введите номер" />
         },
         {
@@ -151,18 +153,20 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
                 style={{ paddingRight: '20px', marginLeft: '-7px' }}
                 bordered={false}
                 options={departmentData}
+                disabled={access > 2}
             /> :
                 <Select
                     defaultValue='Не выбрано'
                     options={departmentData}
                     dropdownStyle={{ minWidth: '120px' }}
                     onChange={handleDepartmentChange}
+                    disabled={access > 2}
                 />
         },
         {
             title: <Text strong style={{ fontSize: '12pt' }}>Наименование</Text>,
             dataIndex: 'name',
-            render: (name, record) => record.index !== 0 ? <Text editable={{ onChange: (text: string) => { handleUpdateCleanPrem(record.id, text, 'name') }, text: name }} >{name}</Text> :
+            render: (name, record) => record.index !== 0 ? <Text editable={ access > 2 ? false : { onChange: (text: string) => { handleUpdateCleanPrem(record.id, text, 'name') }, text: name }} >{name}</Text> :
                 <Input name="name" placeholder="Введите наименование" onChange={handleInputChange} />
         },
         {
@@ -178,7 +182,7 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
                             cancelText='Нет'
                             onConfirm={() => handleDeleteCleanPrem(record.id)}
                         >
-                            <Button style={{ display: 'block', marginTop: '5px' }} size="small" danger type="link" icon={<DeleteOutlined />}>Удалить</Button>
+                            <Button disabled={access > 2} style={{ display: 'block', marginTop: '5px' }} size="small" danger type="link" icon={<DeleteOutlined />}>Удалить</Button>
                         </Popconfirm>
                     }
 
@@ -190,7 +194,7 @@ export const CleanPremList: React.FC<TechnicalInfoPropsType> = ({ id }) => {
 
     return <>
         {contextHolder}
-        <Button size="small" type="primary" icon={<PlusOutlined />} style={cleanPremListWithIndex.length > 0 ? { position: 'absolute', top: '10px', zIndex: '1' } : { marginBottom: '10px' }} onClick={handleAddPrem}>Добавить помещение</Button>
+        <Button disabled={access > 2} size="small" type="primary" icon={<PlusOutlined />} style={cleanPremListWithIndex.length > 0 ? { position: 'absolute', top: '10px', zIndex: '1' } : { marginBottom: '10px' }} onClick={handleAddPrem}>Добавить помещение</Button>
         <Table
             columns={columns}
             dataSource={cleanPremListWithIndex}

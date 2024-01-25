@@ -7,6 +7,7 @@ import { getAddToMonthPlanIsLoading, getMonthPlanObjectDataSelector } from "../.
 import { Loading } from "./Loading"
 import { createObjectInMonthPlane, getMonthPlanObjectData } from "../../redux/Reducers/appReducer"
 import { getMonthNameFromMonthNumber } from "./getMonthNameFromMonthNumber"
+import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 const { Title } = Typography
 
 type PhotosBlockPropsType = {
@@ -22,6 +23,7 @@ export const AddToMonthPlan: React.FC<PhotosBlockPropsType> = ({ id, objectType 
     const dispatch: AppDispatch = useDispatch()
     const isLoading = useSelector(getAddToMonthPlanIsLoading)
     const data = useSelector(getMonthPlanObjectDataSelector)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
 
     useEffect(() => {
         dispatch(getMonthPlanObjectData(id, objectType, currentMonth))
@@ -66,7 +68,7 @@ export const AddToMonthPlan: React.FC<PhotosBlockPropsType> = ({ id, objectType 
                                 <Title level={5} type='success'> - добавление разрешено</Title>
                             </Col>
                         </Row>
-                        <Button type="primary" size="small" icon={<PlusOutlined />} onClick={handleAddToMonthPlan}>Добавить объект в план на {getMonthNameFromMonthNumber(monthNumber)}</Button>
+                        <Button disabled={access > 1} type="primary" size="small" icon={<PlusOutlined />} onClick={handleAddToMonthPlan}>Добавить объект в план на {getMonthNameFromMonthNumber(monthNumber)}</Button>
                     </>
                 }
             </Col>

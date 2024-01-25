@@ -11,6 +11,7 @@ import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector } from "..
 import { PrinterOutlined } from '@ant-design/icons'
 import { getSopCodeForm } from "../../../../redux/Reducers/appReducer"
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
 const {Text, Title} = Typography
 
 type CleanPremGroupsPropsType = {
@@ -42,6 +43,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     const sopCodeForm = useSelector(getSopCodeFormSelector)
     const cleanGroupLabels = useSelector(getCleanGroupLabelsSelector)
     const cleanPremList = useSelector(getCleanPremListSelector)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
     const cleanGroupLabelsWithIndex = cleanGroupLabels.map((item, index) => ({
         ...item,
         index: index + 1,
@@ -79,6 +81,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                                                             size="small"
                                                             type="link"
                                                             icon={<EditOutlined />}
+                                                            disabled={access > 2}
                                                             onClick={() => {
                                                                 setShowModalLabelEdit(true)
                                                                 setCount(record.count)
@@ -105,6 +108,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                                                                 danger
                                                                 type="link"
                                                                 icon={<DeleteOutlined />}
+                                                                disabled={access > 2}
                                                                 >
                                                                 Удалить
                                                             </Button>
@@ -198,7 +202,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     return (
         <Row>
             <Col span={14}>           
-                <Button size="small" type="primary" icon={<PlusOutlined />} style={cleanGroupLabelsWithIndex.length > 0 ? {position: 'absolute', top: '10px', zIndex: '1'} : {marginBottom: '10px'}} onClick={() => setShowModal(true)}>Добавить этикетку</Button>
+                <Button disabled={access > 2} size="small" type="primary" icon={<PlusOutlined />} style={cleanGroupLabelsWithIndex.length > 0 ? {position: 'absolute', top: '10px', zIndex: '1'} : {marginBottom: '10px'}} onClick={() => setShowModal(true)}>Добавить этикетку</Button>
                 <Table
                     columns={columns}
                     dataSource={cleanGroupLabelsWithIndex}

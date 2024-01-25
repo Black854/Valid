@@ -1,27 +1,28 @@
 import { Button, Image, Popconfirm, Typography, message } from "antd"
-import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
+import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import empty from './../../../../img/empty.png'
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { EyeOutlined} from '@ant-design/icons';
-import { AppDispatch } from "../../../../redux/store";
-import { DataType, deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/premisesReducer";
-import Title from "antd/es/typography/Title";
-const {Text} = Typography
+import { useDispatch, useSelector } from "react-redux"
+import { EyeOutlined } from '@ant-design/icons'
+import { AppDispatch } from "../../../../redux/store"
+import { DataType, deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/premisesReducer"
+import Title from "antd/es/typography/Title"
+import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
+const { Text } = Typography
 
 type TitleImagePropsType = {
     premObject: DataType
     id: string
 }
 
-export const TitleImage: React.FC<TitleImagePropsType> = ({premObject, id}) => {
+export const TitleImage: React.FC<TitleImagePropsType> = ({ premObject, id }) => {
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
-    
+    const access = parseInt(useSelector(getUserDataAccessSelector))
+
     const error = (fileName: string) => {
         messageApi.open({
-          type: 'error',
-          content: `Расширение файла ${fileName} не соответствует разрешенным`,
+            type: 'error',
+            content: `Расширение файла ${fileName} не соответствует разрешенным`,
         })
     }
     const onSelectPhoto = (e: any) => {
@@ -55,11 +56,11 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({premObject, id}) => {
     return (
         <>
             {contextHolder}
-            <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
-                <Title editable={{text: premObject.name, onChange: (text: string) => handleUpdateName(text)}} style={{marginBottom: '20px'}} level={4}>{ premObject.class==='Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name }</Title>
+            <div style={{ width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px' }}>
+                <Title editable={ access > 3 ? false : { text: premObject.name, onChange: (text: string) => handleUpdateName(text) }} style={{ marginBottom: '20px' }} level={4}>{premObject.class === 'Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name}</Title>
                 <Image
                     src={premObject.foto ? "http://10.85.10.212/ov/" + premObject.foto : empty}
-                    preview = { premObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }
+                    preview={premObject.foto ? { mask: <><EyeOutlined style={{ fontSize: '12pt' }} /><Text style={{ color: 'white', marginLeft: '10px' }}>Просмотр</Text></> } : false}
                     style={{
                         maxWidth: '100%',
                         maxHeight: '45vh',
@@ -69,22 +70,22 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({premObject, id}) => {
                     rootClassName="titleImage"
                 />
             </div>
-            { !premObject.foto && <>
-                <input id="uploadPhoto" accept="image/jpeg, image/png" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
-                <Button htmlType="submit" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
-                </>
+            {!premObject.foto && <>
+                <input id="uploadPhoto" accept="image/jpeg, image/png" type="file" style={{ display: 'none' }} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
+                <Button disabled={access > 3} htmlType="submit" icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
+            </>
             }
-            { premObject.foto && id && <>
-                    <Popconfirm
-                        title='Подтвердите удаление'
-                        description='Вы уверены, что хотите удалить фотографию?'
-                        okText='Да'
-                        cancelText='Нет'
-                        onConfirm={handleDeleteFoto}
-                    >
-                        <Button icon={<DeleteOutlined style={{fontSize: '12pt'}} />} danger>Удалить фото</Button>
-                    </Popconfirm>
-                </>  }
+            {premObject.foto && id && <>
+                <Popconfirm
+                    title='Подтвердите удаление'
+                    description='Вы уверены, что хотите удалить фотографию?'
+                    okText='Да'
+                    cancelText='Нет'
+                    onConfirm={handleDeleteFoto}
+                >
+                    <Button disabled={access > 3} icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} danger>Удалить фото</Button>
+                </Popconfirm>
+            </>}
         </>
     )
 }

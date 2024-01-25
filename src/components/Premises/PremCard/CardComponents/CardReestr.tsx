@@ -50,7 +50,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                         dispatch(deletePremDocument(id, record.id, 'vp', record.vp))
                     }
                     return <>
-                        <Text style={{ width: '90%' }} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>
+                        <Text style={{ width: '90%' }} editable={ access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>
                             {nvp}
                         </Text>
                         <Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={'http://10.85.10.212/ov/' + record.vp} />
@@ -61,7 +61,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                             cancelText='Нет'
                             onConfirm={handleDeleteDocument}
                         >
-                            <Button danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
+                            <Button disabled={access > 2} danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
                         </Popconfirm>
                     </>
                 } else if (record.nvp !== '') {
@@ -84,9 +84,9 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                             }
                         }
                     }
-                    return <><Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>{nvp}</Text>
+                    return <><Text editable={ access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>{nvp}</Text>
                         <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{ display: 'none' }} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
-                        <Button icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
+                        <Button disabled={access > 2} icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
                 } else {
                     return <Text>{nvp}</Text>
                 }
@@ -108,7 +108,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                         dispatch(deletePremDocument(id, record.id, 'vo', record.vo))
                     }
                     return <>
-                        <Text style={{ width: '95%' }} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
+                        <Text style={{ width: '95%' }} editable={ access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
                         <Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={'http://10.85.10.212/ov/' + record.vo} />
                         <Popconfirm
                             title='Подтвердите удаление'
@@ -117,7 +117,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                             cancelText='Нет'
                             onConfirm={handleDeleteDocument}
                         >
-                            <Button danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
+                            <Button disabled={access > 2} danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
                         </Popconfirm>
                     </>
                 } else if (record.nvo !== '') {
@@ -141,9 +141,9 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                         }
                     }
                     return <>
-                        <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
+                        <Text editable={ access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
                         <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{ display: 'none' }} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
-                        <Button icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
+                        <Button disabled={access > 2} icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
                 } else {
                     return <Text>{nvo}</Text>
                 }
@@ -183,7 +183,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                         cancelText='Нет'
                         onConfirm={handleDeleteDocument}
                     >
-                        <Button danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="text" >Удалить</Button>
+                        <Button disabled={access > 2} danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="text" >Удалить</Button>
                     </Popconfirm>
                 </>
             } else {
@@ -208,7 +208,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                 }
                 return <>
                     <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{ display: 'none' }} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
-                    <Button icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /><Text type="secondary">Загрузить</Text></>
+                    <Button disabled={access > 2} icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /><Text type="secondary">Загрузить</Text></>
             }
         },
         width: '12%',

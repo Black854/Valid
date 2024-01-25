@@ -7,6 +7,7 @@ import video from './../../../../img/video.png'
 import { AppDispatch } from "../../../../redux/store"
 import { getPhotosSelector } from "../../../../redux/Selectors/premisesSelectors";
 import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/Reducers/premisesReducer";
+import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors";
 const { Text } = Typography
 
 type PhotosBlockPropsType = {
@@ -27,6 +28,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
 
     const dispatch: AppDispatch = useDispatch()
     const photos = useSelector(getPhotosSelector)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
     const addObjectToPhotos = {
         id: '99999',
         idfromtable: '',
@@ -87,7 +89,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                 isModalOpen = false
             }
             return <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{ padding: '4px' }}>
-                <Text editable={{ onChange: (text) => { setPdfDescription(e.id, text) } }} style={{ color: 'black', position: 'absolute', top: '3%', left: '5%', width: '80%', zIndex: '1' }}>{e.name}</Text>
+                <Text editable={ access > 3 ? false : { onChange: (text) => { setPdfDescription(e.id, text) } }} style={{ color: 'black', position: 'absolute', top: '3%', left: '5%', width: '80%', zIndex: '1' }}>{e.name}</Text>
                 <Image preview={false} src={pdf} height='100%' style={{ objectFit: 'cover', cursor: 'pointer' }} onClick={() => showModal(e.id)} />
                 <Modal title="Просмотр документа" open={isModalOpen} onCancel={() => handleCancel(e.id)} footer={[<Button key="close" onClick={() => handleCancel(e.id)} type="primary">Закрыть</Button>]} >
                     <object data={'http://10.85.10.212/ov/' + e.src} type="application/pdf" width="100%" height="600px">
@@ -101,7 +103,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                     cancelText='Нет'
                     onConfirm={() => { handleDeletePhoto(id, e.id) }}
                 >
-                    <Button size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
+                    <Button disabled={access > 3} size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
                 </Popconfirm>
             </Col>
         } else if (e.src.endsWith('.mp4') || e.src.endsWith('.MP4')) {
@@ -121,7 +123,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                 isModalOpen = false
             }
             return <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{ padding: '4px' }}>
-                <Text editable={{ onChange: (text) => { setPdfDescription(e.id, text) } }} style={{ color: 'black', position: 'absolute', top: '3%', left: '5%', width: '80%', zIndex: '1' }}>{e.name}</Text>
+                <Text editable={ access > 3 ? false : { onChange: (text) => { setPdfDescription(e.id, text) } }} style={{ color: 'black', position: 'absolute', top: '3%', left: '5%', width: '80%', zIndex: '1' }}>{e.name}</Text>
                 <Image preview={false} src={video} height='100%' style={{ objectFit: 'cover', cursor: 'pointer' }} onClick={() => showModal(e.id)} />
                 <Modal title="Просмотр видеозаписи" open={isModalOpen} onCancel={() => handleCancel(e.id)} footer={[<Button key="close" onClick={() => handleCancel(e.id)} type="primary">Закрыть</Button>]} >
                     <video controls width="100%" height="600" ref={videoRef}>
@@ -137,7 +139,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                     cancelText='Нет'
                     onConfirm={() => { handleDeletePhoto(id, e.id) }}
                 >
-                    <Button size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
+                    <Button disabled={access > 3} size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
                 </Popconfirm>
             </Col>
         } else if (e.id === '99999') {
@@ -157,6 +159,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                     }}
                     type="dashed"
                     onClick={() => fileInputRef.click()}
+                    disabled={access > 3}
                 />
                 <input id="uploadPhoto" accept="image/jpeg, image/png, application/pdf, video/mp4" type="file" style={{ display: 'none' }} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
             </Col>
@@ -175,7 +178,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                     cancelText='Нет'
                     onConfirm={() => { handleDeletePhoto(id, e.id) }}
                 >
-                    <Button size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
+                    <Button disabled={access > 3} size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
                 </Popconfirm>
             </Col>
         }
