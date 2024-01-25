@@ -1,7 +1,7 @@
 import { Button, Col, Image, Modal, Popconfirm, Row, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
-import { DeleteFilled, EyeOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EyeOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import pdf from './../../../../img/pdfi.png'
 import video from './../../../../img/video.png'
 import { AppDispatch } from "../../../../redux/store"
@@ -102,7 +102,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                     cancelText='Нет'
                     onConfirm={() => { handleDeletePhoto(id, e.id) }}
                 >
-                    <Button size="small" danger icon={<DeleteFilled />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1' }} />
+                    <Button size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
                 </Popconfirm>
             </Col>
         } else if (e.src.endsWith('.mp4') || e.src.endsWith('.MP4')) {
@@ -138,7 +138,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                     cancelText='Нет'
                     onConfirm={() => { handleDeletePhoto(id, e.id) }}
                 >
-                    <Button size="small" danger icon={<DeleteFilled />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1' }} />
+                    <Button size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
                 </Popconfirm>
             </Col>
         } else if (e.id === '99998') {
@@ -195,7 +195,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                     cancelText='Нет'
                     onConfirm={() => { handleDeletePhoto(id, e.id) }}
                 >
-                    <Button size="small" danger icon={<DeleteFilled />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1' }} />
+                    <Button size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
                 </Popconfirm>
             </Col>
         }

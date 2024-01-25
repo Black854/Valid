@@ -19,6 +19,7 @@ import { CleanPremGroups } from "./CardComponents/CleanPremGroups"
 import { PremLabel } from "./CardComponents/PremLabel"
 import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
+import { getUserDataAccessSelector } from "../../../redux/Selectors/authSelectors"
 const { Text } = Typography
 
 const PremCard = () => {
@@ -39,6 +40,7 @@ const PremCard = () => {
     const isReestrDataLoading = useSelector(getIsReestrDataLoading)
     const reestrData = useSelector(getPremReestrDataSelector)
     const premModes = useSelector(getPremModesSelector)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
 
     useEffect(() => {
         if (premData.length === 0) {
@@ -169,7 +171,7 @@ const PremCard = () => {
             },
             {
                 rowName: 'Интервал оценки/реквалификации',
-                value: <ArHelper ar={premObject.ar} id={premObject.id} table='premises' />
+                value: <ArHelper ar={premObject.ar} id={premObject.id} table='premises' access={access} />
             },
             {
                 rowName: 'Валидационный статус',
@@ -230,7 +232,7 @@ const PremCard = () => {
             },
             {
                 rowName: 'Интервал оценки/реквалификации',
-                value: <ArHelper ar={premObject.ar} id={premObject.id} table='premises' />
+                value: <ArHelper ar={premObject.ar} id={premObject.id} table='premises' access={access} />
             },
             {
                 rowName: 'Валидационный статус',

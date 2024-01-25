@@ -8,9 +8,10 @@ const { Text } = Typography
 type PropsType = {
     data: any,
     myPremDataIdArray: any
+    access: number
 }
 
-export const SeasonSwitcher: React.FC<PropsType> = ({ data, myPremDataIdArray }) => {
+export const SeasonSwitcher: React.FC<PropsType> = ({ data, myPremDataIdArray, access }) => {
     const dispatch: AppDispatch = useDispatch()
 
     const handleLabelSwitch = async (pol: string) => {
@@ -19,18 +20,18 @@ export const SeasonSwitcher: React.FC<PropsType> = ({ data, myPremDataIdArray })
     }
 
     return data.season === '0' ?
-        <Button onClick={() => handleLabelSwitch('1')} type="default">
+        <Button disabled={access > 4} onClick={() => handleLabelSwitch('1')} type="default">
             <Text type="warning">Не указан</Text>
         </Button> :
         data.season === '1' ?
-            <Button onClick={() => handleLabelSwitch('2')} type="default">
+            <Button disabled={access > 4} onClick={() => handleLabelSwitch('2')} type="default">
                 <Text type="success">Вне сезонов</Text>
             </Button> :
             data.season === '2' ?
-                <Button onClick={() => handleLabelSwitch('3')} type="default">
+                <Button disabled={access > 4} onClick={() => handleLabelSwitch('3')} type="default">
                     <Text type="success">Зима</Text>
                 </Button> :
-                <Button onClick={() => handleLabelSwitch('0')} type="default">
+                <Button disabled={access > 4} onClick={() => handleLabelSwitch('0')} type="default">
                     <Text type="success">Лето</Text>
                 </Button>
 }

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../../redux/store"
 import { PrinterOutlined } from '@ant-design/icons'
 import { Typography, Table, TableColumnsType, Button, Modal, Space, Input, Row, Col } from "antd"
-import { DatePickerForWork } from "../../common/DatePickerForWork"
+import { DatePickerForWork } from "./MiniComponents/DatePickerForWork"
 import { ProtocolUpload } from "./MiniComponents/ProtocolUpload"
 import { ProtocolCode } from "./MiniComponents/ProtocolCode"
 import { ReportUpload } from "./MiniComponents/ReportUpload"
@@ -23,9 +23,10 @@ type PremTasks = {
     myPremData: PremReestrType[]
     rec: any
     error: (fileName: string) => void
+    access: number
 }
 
-export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremDataIdArray }) => {
+export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremDataIdArray, access }) => {
     const dispatch: AppDispatch = useDispatch()
 
     const thisObject = myPremData.find(e => e.idfromtable === rec.id)
@@ -92,65 +93,65 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
     const protoData = [
         {
             rowName: 'Статус загрузки протокола',
-            value: <ProtocolUpload data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} error={error} objectType='premises' />
+            value: <ProtocolUpload data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} error={error} objectType='premises' access={access} />
         },
         {
             rowName: 'Код протокола',
-            value: <ProtocolCode data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} objectType='premises' />
+            value: <ProtocolCode data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
         },
         {
             rowName: 'Дата утверждения протокола',
-            value: <DatePickerForWork date={data[0].dvp} objectId={data.id} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myPremDataIdArray} />
+            value: <DatePickerForWork date={data[0].dvp} objectId={data.id} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myPremDataIdArray} access={access} />
         },
     ]
 
     const reportData = [
         {
             rowName: 'Статус загрузки отчета',
-            value: <ReportUpload data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} error={error} objectType='premises' />
+            value: <ReportUpload data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} error={error} objectType='premises' access={access} />
         },
         {
             rowName: 'Код отчета',
-            value: <ReportCode data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} objectType='premises' />
+            value: <ReportCode data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
         },
         {
             rowName: 'Дата утверждения отчета',
-            value: <DatePickerForWork date={data[0].dvo} objectId={data[0].id} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myPremDataIdArray} />
+            value: <DatePickerForWork date={data[0].dvo} objectId={data[0].id} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myPremDataIdArray} access={access} />
         },
     ]
 
     const labelData = [
         {
             rowName: 'Статус этикетки',
-            value: <LabelStatus data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' />
+            value: <LabelStatus data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
         },
     ]
 
     const PamUploaderData = [
         {
             rowName: 'Статус загрузки памятки',
-            value: <PamUpload data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} error={error} objectType='premises' />
+            value: <PamUpload data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} error={error} objectType='premises' access={access} />
         }
     ]
 
     const PamData = [
         {
             rowName: 'Статус памятки',
-            value: <PamStatus data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' />
+            value: <PamStatus data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
         }
     ]
 
     const seasonData = [
         {
             rowName: 'Сезонность',
-            value: <SeasonSwitcher data={data[0]} myPremDataIdArray={myPremDataIdArray} />
+            value: <SeasonSwitcher data={data[0]} myPremDataIdArray={myPremDataIdArray} access={access} />
         }
     ]
 
     const updateCardData = [
         {
             rowName: 'Карточка актуализирована',
-            value: <UpdateCardStatus data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' />
+            value: <UpdateCardStatus data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
         }
     ]
 

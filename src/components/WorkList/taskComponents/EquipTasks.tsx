@@ -1,7 +1,7 @@
 import { PrinterOutlined } from '@ant-design/icons'
 import { Typography, Table, Button, Col, Row, Modal, Input, Space } from "antd"
 import { EquipReestrType } from '../../../redux/Reducers/equipmentReducer'
-import { DatePickerForWork } from '../../common/DatePickerForWork'
+import { DatePickerForWork } from './MiniComponents/DatePickerForWork'
 import { ProtocolUpload } from './MiniComponents/ProtocolUpload'
 import { ProtocolCode } from './MiniComponents/ProtocolCode'
 import { ReportCode } from './MiniComponents/ReportCode'
@@ -20,9 +20,10 @@ type EquipTasks = {
     myEquipData: EquipReestrType[]
     rec: any
     error: (fileName: string) => void
+    access: number
 }
 
-export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipData, rec, error }) => {
+export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipData, rec, error, access }) => {
     const thisObject = myEquipData.find(e => e.idfromtable === rec.id)
 
     let data: any = [{
@@ -57,58 +58,58 @@ export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipDa
     const protoData = [
         {
             rowName: 'Статус загрузки протокола',
-            value: <ProtocolUpload data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} error={error} objectType='equipment' />
+            value: <ProtocolUpload data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} error={error} objectType='equipment' access={access} />
         },
         {
             rowName: 'Код протокола',
-            value: <ProtocolCode data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' />
+            value: <ProtocolCode data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' access={access} />
         },
         {
             rowName: 'Дата утверждения протокола',
-            value: <DatePickerForWork date={data[0].dvp} objectId={data.id} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myEquipDataIdArray} />
+            value: <DatePickerForWork date={data[0].dvp} objectId={data.id} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myEquipDataIdArray} access={access} />
         },
     ]
 
     const reportData = [
         {
             rowName: 'Статус загрузки отчета',
-            value: <ReportUpload data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} error={error} objectType='equipment' />
+            value: <ReportUpload data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} error={error} objectType='equipment' access={access} />
         },
         {
             rowName: 'Код отчета',
-            value: <ReportCode data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' />
+            value: <ReportCode data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' access={access} />
         },
         {
             rowName: 'Дата утверждения отчета',
-            value: <DatePickerForWork date={data[0].dvo} objectId={data[0].id} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myEquipDataIdArray} />
+            value: <DatePickerForWork date={data[0].dvo} objectId={data[0].id} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myEquipDataIdArray} access={access} />
         },
     ]
 
     const labelData = [
         {
             rowName: 'Статус этикетки',
-            value: <LabelStatus data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' />
+            value: <LabelStatus data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' access={access} />
         },
     ]
 
     const PamUploaderData = [
         {
             rowName: 'Статус загрузки памятки',
-            value: <PamUpload data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} error={error} objectType='equipment' />
+            value: <PamUpload data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} error={error} objectType='equipment' access={access} />
         }
     ]
 
     const PamData = [
         {
             rowName: 'Статус памятки',
-            value: <PamStatus data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' />
+            value: <PamStatus data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' access={access} />
         }
     ]
 
     const updateCardData = [
         {
             rowName: 'Карточка актуализирована',
-            value: <UpdateCardStatus data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' />
+            value: <UpdateCardStatus data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' access={access} />
         }
     ]
 

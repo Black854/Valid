@@ -1,12 +1,13 @@
 import { Button, Popconfirm, Table, Typography, message } from "antd"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { deleteEquipDocument, getEquipReestrData, updateReestrDocsCodeEquip, uploadEquipDocument } from "../../../../redux/Reducers/equipmentReducer"
 import React, { useEffect } from "react"
 import { ColumnsType } from "antd/es/table"
 import { ConvertDate } from "../../../common/convertDate"
-import { FileWordOutlined, DeleteOutlined, UploadOutlined, PlusOutlined } from '@ant-design/icons';
+import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
 import { AppDispatch } from "../../../../redux/store"
 import { AddReestrData } from "../../../common/AddReestrData"
+import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
 const { Text } = Typography
 
 
@@ -32,6 +33,7 @@ type CardReestrPropsType = {
 
 export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoading, reestrData, group }) => {
     const reestrDataWithoutEmptyRows = reestrData.filter(e => e.dvo !== '')
+    const access = parseInt(useSelector(getUserDataAccessSelector))
 
     const dispatch: AppDispatch = useDispatch()
     
@@ -59,7 +61,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                         dispatch(deleteEquipDocument(id, record.id, 'vp', record.vp))
                     }
                     return <>
-                        <Text style={{ width: '90%' }} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>
+                        <Text style={{ width: '90%' }} editable={access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>
                             {nvp}
                         </Text>
                         <Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={'http://10.85.10.212/ov/' + record.vp} />
@@ -70,7 +72,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                             cancelText='Нет'
                             onConfirm={handleDeleteDocument}
                         >
-                            <Button danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
+                            <Button disabled={access > 2} danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
                         </Popconfirm>
                     </>
                 } else if (record.nvp !== '') {
@@ -93,7 +95,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                             }
                         }
                     }
-                    return <><Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>{nvp}</Text>
+                    return <><Text editable={access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>{nvp}</Text>
                         <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{ display: 'none' }} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
                         <Button icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
                 } else {
@@ -104,7 +106,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
         {
             title: <Text strong style={{ fontSize: '12pt' }}>Дата</Text>,
             dataIndex: 'dvp',
-            render: (dvp, record) => { return <ConvertDate date={dvp} objectId={id} dateType='dvp' id={record.id} key={record.id} group="equipment" /> },
+            render: (dvp, record) => { return <ConvertDate date={dvp} objectId={id} dateType='dvp' id={record.id} key={record.id} group="equipment" access={access} /> },
             width: '11%',
             align: 'center',
         },
@@ -117,7 +119,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                         dispatch(deleteEquipDocument(id, record.id, 'vo', record.vo))
                     }
                     return <>
-                        <Text style={{ width: '95%' }} editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
+                        <Text style={{ width: '95%' }} editable={access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
                         <Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={'http://10.85.10.212/ov/' + record.vo} />
                         <Popconfirm
                             title='Подтвердите удаление'
@@ -126,7 +128,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                             cancelText='Нет'
                             onConfirm={handleDeleteDocument}
                         >
-                            <Button danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
+                            <Button disabled={access > 2} danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
                         </Popconfirm>
                     </>
                 } else if (record.nvo !== '') {
@@ -150,7 +152,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                         }
                     }
                     return <>
-                        <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
+                        <Text editable={access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
                         <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{ display: 'none' }} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
                         <Button icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} /></>
                 } else {
@@ -167,13 +169,13 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                 const dateB: any = new Date(b.dvo);
                 return dateA - dateB;
             },
-            render: (dvo, record) => { return <ConvertDate date={dvo} objectId={id} dateType='dvo' id={record.id} key={record.id} group="equipment" /> },
+            render: (dvo, record) => { return <ConvertDate date={dvo} objectId={id} dateType='dvo' id={record.id} key={record.id} group="equipment" access={access} /> },
             sortDirections: ['ascend', 'descend'],
             defaultSortOrder: 'descend',
             width: '11%',
             align: 'center'
         },
-    ];
+    ]
 
     const pamColumn: ColumnsType<reestrDataItemType> = [{
         title: <Text strong style={{ fontSize: '12pt' }}>Памятка</Text>,
@@ -192,7 +194,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                         cancelText='Нет'
                         onConfirm={handleDeleteDocument}
                     >
-                        <Button danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="text" >Удалить</Button>
+                        <Button disabled={access > 2} danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="text" >Удалить</Button>
                     </Popconfirm>
                 </>
             } else {

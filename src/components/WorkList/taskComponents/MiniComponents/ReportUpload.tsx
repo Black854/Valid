@@ -18,9 +18,10 @@ type PropsType = {
     myProcDataIdArray?: any,
     objectType: 'equipment' | 'premises' | 'systems' | 'processes'
     error: (fileName: string) => void
+    access: number
 }
 
-export const ReportUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, error }) => {
+export const ReportUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, error, access }) => {
     const dispatch: AppDispatch = useDispatch()
 
     if (data.vo !== '') {
@@ -51,7 +52,7 @@ export const ReportUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArra
                 cancelText='Нет'
                 onConfirm={handleDeleteDocument}
             >
-                <Button size="small" danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
+                <Button disabled={access > 4} size="small" danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
             </Popconfirm>
         </>
     } else {
@@ -89,7 +90,7 @@ export const ReportUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArra
         return <>
             <Text type="warning">Не загружен</Text>
             <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{ display: 'none' }} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
-            <Button size="small" icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} />
+            <Button disabled={access > 4} size="small" icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} />
         </>
     }
 }

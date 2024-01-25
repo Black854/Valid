@@ -11,9 +11,10 @@ type ArHelperPropsType = {
     ar: string
     id: string
     table: 'equipment' | 'premises' | 'systems' | 'processes'
+    access: number
 }
 
-export const ArHelper: React.FC<ArHelperPropsType> = ({ar, id, table}) => {
+export const ArHelper: React.FC<ArHelperPropsType> = ({ar, id, table, access}) => {
     const data = useSelector(getIntervals)
     const dispatch: AppDispatch = useDispatch()
     const handleUpdateInterval = (interval: string) => {
@@ -37,6 +38,7 @@ export const ArHelper: React.FC<ArHelperPropsType> = ({ar, id, table}) => {
             size="small"
             bordered={false}
             options={data}
+            disabled ={access > 2}
         />
     )
 }

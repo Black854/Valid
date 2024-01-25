@@ -17,6 +17,7 @@ import { SysDescriptions } from "./CardComponents/SysDescription"
 import { SysLabel } from "./CardComponents/SysLabel"
 import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
+import { getUserDataAccessSelector } from "../../../redux/Selectors/authSelectors"
 const { Text } = Typography
 
 const SysCard: React.FC = () => {
@@ -36,6 +37,7 @@ const SysCard: React.FC = () => {
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
     const isReestrDataLoading = useSelector(getIsReestrDataLoading)
     const reestrData = useSelector(getSysReestrDataSelector)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
 
     useEffect(() => {
         if (sysData.length === 0) {
@@ -122,7 +124,7 @@ const SysCard: React.FC = () => {
             },
             {
                 rowName: 'Интервал оценки/реквалификации',
-                value: <ArHelper ar={sysObject.ar} id={sysObject.id} table='systems' /> 
+                value: <ArHelper ar={sysObject.ar} id={sysObject.id} table='systems' access={access} /> 
             },
             {
                 rowName: 'Валидационный статус',

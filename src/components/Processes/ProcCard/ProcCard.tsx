@@ -17,6 +17,7 @@ import { ProcDescriptions } from "./CardComponents/ProcDescription"
 import { ProcLabel } from "./CardComponents/ProcLabel"
 import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
+import { getUserDataAccessSelector } from "../../../redux/Selectors/authSelectors"
 const { Text } = Typography
 
 const ProcCard: React.FC = () => {
@@ -36,6 +37,7 @@ const ProcCard: React.FC = () => {
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
     const isReestrDataLoading = useSelector(getIsReestrDataLoading)
     const reestrData = useSelector(getProcReestrDataSelector)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
 
     useEffect(() => {
         if (procData.length === 0) {
@@ -122,7 +124,7 @@ const ProcCard: React.FC = () => {
             },
             {
                 rowName: 'Интервал оценки/реквалификации',
-                value: <ArHelper ar={procObject.ar} id={procObject.id} table='processes' /> 
+                value: <ArHelper ar={procObject.ar} id={procObject.id} table='processes' access={access} /> 
             },
             {
                 rowName: 'Валидационный статус',

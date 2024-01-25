@@ -1,6 +1,6 @@
 import { PrinterOutlined } from '@ant-design/icons'
 import { Typography, Table, Button, Col, Row, Modal, Space, Input } from "antd"
-import { DatePickerForWork } from '../../common/DatePickerForWork'
+import { DatePickerForWork } from './MiniComponents/DatePickerForWork'
 import { SysReestrType } from '../../../redux/Reducers/systemsReducer'
 import { ProtocolUpload } from './MiniComponents/ProtocolUpload'
 import { ProtocolCode } from './MiniComponents/ProtocolCode'
@@ -18,9 +18,10 @@ type SysTasks = {
     mySysData: SysReestrType[]
     rec: any
     error: (fileName: string) => void
+    access: number
 }
 
-export const SysTasks: React.FC<SysTasks> = ({ mySysDataIdArray, mySysData, rec, error }) => {
+export const SysTasks: React.FC<SysTasks> = ({ mySysDataIdArray, mySysData, rec, error, access }) => {
     const thisObject = mySysData.find(e => e.idfromtable === rec.id)
 
     let data: any = [{
@@ -55,44 +56,44 @@ export const SysTasks: React.FC<SysTasks> = ({ mySysDataIdArray, mySysData, rec,
     const protoData = [
         {
             rowName: 'Статус загрузки протокола',
-            value: <ProtocolUpload data={data[0]} rec={rec} mySysDataIdArray={mySysDataIdArray} error={error} objectType='systems' />
+            value: <ProtocolUpload data={data[0]} rec={rec} mySysDataIdArray={mySysDataIdArray} error={error} objectType='systems' access={access} />
         },
         {
             rowName: 'Код протокола',
-            value: <ProtocolCode data={data[0]} rec={rec} mySysDataIdArray={mySysDataIdArray} objectType='systems' />
+            value: <ProtocolCode data={data[0]} rec={rec} mySysDataIdArray={mySysDataIdArray} objectType='systems' access={access} />
         },
         {
             rowName: 'Дата утверждения протокола',
-            value: <DatePickerForWork date={data[0].dvp} objectId={data.id} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={mySysDataIdArray} />
+            value: <DatePickerForWork date={data[0].dvp} objectId={data.id} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={mySysDataIdArray} access={access} />
         },
     ]
 
     const reportData = [
         {
             rowName: 'Статус загрузки отчета',
-            value: <ReportUpload data={data[0]} rec={rec} mySysDataIdArray={mySysDataIdArray} error={error} objectType='systems' />
+            value: <ReportUpload data={data[0]} rec={rec} mySysDataIdArray={mySysDataIdArray} error={error} objectType='systems' access={access} />
         },
         {
             rowName: 'Код отчета',
-            value: <ReportCode data={data[0]} rec={rec} mySysDataIdArray={mySysDataIdArray} objectType='systems' />
+            value: <ReportCode data={data[0]} rec={rec} mySysDataIdArray={mySysDataIdArray} objectType='systems' access={access} />
         },
         {
             rowName: 'Дата утверждения отчета',
-            value: <DatePickerForWork date={data[0].dvo} objectId={data[0].id} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={mySysDataIdArray} />
+            value: <DatePickerForWork date={data[0].dvo} objectId={data[0].id} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={mySysDataIdArray} access={access} />
         },
     ]
 
     const labelData = [
         {
             rowName: 'Статус этикетки',
-            value: <LabelStatus data={data[0]} mySysDataIdArray={mySysDataIdArray} objectType='systems' />
+            value: <LabelStatus data={data[0]} mySysDataIdArray={mySysDataIdArray} objectType='systems' access={access} />
         },
     ]
 
     const updateCardData = [
         {
             rowName: 'Карточка актуализирована',
-            value: <UpdateCardStatus data={data[0]} mySysDataIdArray={mySysDataIdArray} objectType='systems' />
+            value: <UpdateCardStatus data={data[0]} mySysDataIdArray={mySysDataIdArray} objectType='systems' access={access} />
         }
     ]
 
@@ -206,8 +207,8 @@ export const SysTasks: React.FC<SysTasks> = ({ mySysDataIdArray, mySysData, rec,
                     columns={columns}
                     dataSource={
                         thisObject?.typeval === '1' ? [...protoData, ...reportData, ...updateCardData, ...labelData] :
-                        thisObject?.typeval === '3' ? [...reportData, ...labelData] :
-                        []
+                            thisObject?.typeval === '3' ? [...reportData, ...labelData] :
+                                []
                     }
                     bordered
                     pagination={false}

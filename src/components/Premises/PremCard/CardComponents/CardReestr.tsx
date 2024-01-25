@@ -1,5 +1,5 @@
 import { Button, Popconfirm, Table, Typography, message } from "antd"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import React, { useEffect } from "react"
 import { ColumnsType } from "antd/es/table"
 import { ConvertDate } from "../../../common/convertDate"
@@ -7,6 +7,7 @@ import { FileWordOutlined, DeleteOutlined, UploadOutlined } from '@ant-design/ic
 import { AppDispatch } from "../../../../redux/store"
 import { PremReestrType, deletePremDocument, getPremReestrData, updateReestrDocsCodePrem, uploadPremDocument } from "../../../../redux/Reducers/premisesReducer"
 import { AddReestrData } from "../../../common/AddReestrData"
+import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
 const { Text } = Typography
 
 type DataType = Array<PremReestrType>
@@ -21,6 +22,7 @@ type CardReestrPropsType = {
 
 export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoading, reestrData, group, mode }) => {
     const reestrDataWithoutEmptyRows = reestrData.filter(e => e.dvo !== '')
+    const access = parseInt(useSelector(getUserDataAccessSelector))
 
     const dispatch: AppDispatch = useDispatch()
 
@@ -93,7 +95,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
         {
             title: <Text strong style={{ fontSize: '12pt' }}>Дата</Text>,
             dataIndex: 'dvp',
-            render: (dvp, record) => { return <ConvertDate date={dvp} objectId={id} dateType='dvp' id={record.id} key={record.id} group="premises" /> },
+            render: (dvp, record) => { return <ConvertDate date={dvp} objectId={id} dateType='dvp' id={record.id} key={record.id} group="premises" access={access} /> },
             width: '11%',
             align: 'center',
         },
@@ -156,7 +158,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                 const dateB: any = new Date(b.dvo);
                 return dateA - dateB;
             },
-            render: (dvo, record) => { return <ConvertDate date={dvo} objectId={id} dateType='dvo' id={record.id} key={record.id} group="premises" /> },
+            render: (dvo, record) => { return <ConvertDate date={dvo} objectId={id} dateType='dvo' id={record.id} key={record.id} group="premises" access={access} /> },
             sortDirections: ['ascend', 'descend'],
             defaultSortOrder: 'descend',
             width: '11%',

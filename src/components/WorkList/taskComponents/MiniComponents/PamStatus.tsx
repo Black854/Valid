@@ -15,9 +15,10 @@ type PropsType = {
     mySysDataIdArray?: any,
     myProcDataIdArray?: any,
     objectType: 'equipment' | 'premises' | 'systems' | 'processes'
+    access: number
 }
 
-export const PamStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType }) => {
+export const PamStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access }) => {
     const dispatch: AppDispatch = useDispatch()
 
     const handleLabelSwitch = async (pol: string) => {
@@ -36,10 +37,10 @@ export const PamStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myPre
         }
     }
     return data.pam2 === '' ?
-        <Button onClick={() => handleLabelSwitch('1')} type="default" size="small">
+        <Button disabled={access > 4} onClick={() => handleLabelSwitch('1')} type="default" size="small">
             <Text type="warning">Не приклеена</Text>
         </Button> :
-        <Button onClick={() => handleLabelSwitch('')} type="default" size="small">
+        <Button disabled={access > 4} onClick={() => handleLabelSwitch('')} type="default" size="small">
             <Text type="success">Приклеена</Text>
         </Button>
 }

@@ -17,6 +17,7 @@ import { CurrentStatus } from "../../common/CurrentStatus"
 import { EquipLabel } from "./CardComponents/EquipLabel"
 import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
+import { getUserDataAccessSelector } from "../../../redux/Selectors/authSelectors"
 const { Text } = Typography
 
 const EquipCard: React.FC = () => {
@@ -28,7 +29,7 @@ const EquipCard: React.FC = () => {
     } else {
         id = params.id
     }
-    
+
     const equipData = useSelector(getEquipData)
     const isLoading = useSelector(getIsLoading)
     const equipObject = useSelector((state: AppStateType) => getEquipById(state, id))
@@ -37,20 +38,21 @@ const EquipCard: React.FC = () => {
     const VMPDepartments = useSelector(getVMPDepartmentsSelector)
     const isReestrDataLoading = useSelector(getIsReestrDataLoading)
     const reestrData = useSelector(getEquipReestrDataSelector)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
 
     useEffect(() => {
         if (equipData.length === 0) {
-          dispatch(getEquipment())
+            dispatch(getEquipment())
         } else if (equipGroups.length === 0) {
-          dispatch(getEquipGroups('active'))
+            dispatch(getEquipGroups('active'))
         } else if (departments.length === 0) {
-          dispatch(getDepartments())
+            dispatch(getDepartments())
         } else if (VMPDepartments.length === 0) {
-          dispatch(getVMPDepartments())
+            dispatch(getVMPDepartments())
         }
     }, [equipData, equipGroups, departments, VMPDepartments])
 
-    useEffect (() => {
+    useEffect(() => {
         dispatch(getEquipReestrData(id))
     }, [id])
 
@@ -77,9 +79,9 @@ const EquipCard: React.FC = () => {
 
     let filteredVMPDepartments = VMPDepartments.filter(e => e.isactive !== '1')
     let VMPDepartmentData = filteredVMPDepartments.map((e: any) => ({ value: e.vmpname1, label: e.vmpname1 }))
-    
+
     if (isLoading) {
-        return  <Spin size="large" style={{width: '60px', height: '60px', margin: '30px auto 10px auto'}} />
+        return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
     } else if (equipObject) {
         interface DataType {
             ar: string
@@ -98,7 +100,7 @@ const EquipCard: React.FC = () => {
             sp2: string
             serial: string
         }
-        
+
         const updateDataNomer = (nomer: string) => {
             dispatch(updateNomer(equipObject.id, nomer))
         }
@@ -135,110 +137,113 @@ const EquipCard: React.FC = () => {
             {
                 rowName: 'Подразделение (по ВМП)',
                 value: <Select
-                            style={{paddingRight: '20px', marginLeft: '-7px'}}
-                            dropdownStyle={{width: 'auto'}}
-                            defaultValue={equipObject.sp}
-                            onChange={handleUpdateVMPDepartment}
-                            size="small"
-                            bordered={false}
-                            options={VMPDepartmentData}
-                        />
+                    style={{ paddingRight: '20px', marginLeft: '-7px' }}
+                    dropdownStyle={{ width: 'auto' }}
+                    defaultValue={equipObject.sp}
+                    onChange={handleUpdateVMPDepartment}
+                    size="small"
+                    bordered={false}
+                    options={VMPDepartmentData}
+                    disabled={access > 3}
+                />
             },
             {
                 rowName: 'Подразделение (по ответственности)',
                 value: <Select
-                            style={{paddingRight: '20px', marginLeft: '-7px'}}
-                            dropdownStyle={{width: '120px'}}
-                            defaultValue={equipObject.sp2}
-                            onChange={handleUpdateDepartment}
-                            size="small"
-                            bordered={false}
-                            options={departmentData}
-                        />
+                    style={{ paddingRight: '20px', marginLeft: '-7px' }}
+                    dropdownStyle={{ width: '120px' }}
+                    defaultValue={equipObject.sp2}
+                    onChange={handleUpdateDepartment}
+                    size="small"
+                    bordered={false}
+                    options={departmentData}
+                    disabled={access > 3}
+                />
             },
             {
                 rowName: 'Местонахождение',
-                value:  equipObject.nomer ? <Text editable={{ onChange: (text) => {updateDataNomer(text)}, text: equipObject.nomer}}>Помещение № { equipObject.nomer}</Text>:
-                                            <Text type="warning" editable={{ onChange: (text) => {updateDataNomer(text)}, text: ''}}>Не указано</Text>
+                value: equipObject.nomer ? <Text editable={access > 3 ? false : { onChange: (text) => { updateDataNomer(text) }, text: equipObject.nomer }}>Помещение № {equipObject.nomer}</Text> :
+                    <Text type="warning" editable={{ onChange: (text) => { updateDataNomer(text) }, text: '' }}>Не указано</Text>
             },
             {
                 rowName: 'Группа',
                 value: <Select
-                            defaultValue={equipObject.groupp}
-                            onChange={handleUpdateGroup}
-                            size="small"
-                            style={{paddingRight: '20px', marginLeft: '-7px'}}
-                            dropdownStyle={{width: 'auto'}}
-                            bordered={false}
-                            options={groupsData}
-                        />
+                    defaultValue={equipObject.groupp}
+                    onChange={handleUpdateGroup}
+                    size="small"
+                    style={{ paddingRight: '20px', marginLeft: '-7px' }}
+                    dropdownStyle={{ width: 'auto' }}
+                    bordered={false}
+                    options={groupsData}
+                    disabled={access > 3}
+                />
             },
             {
                 rowName: 'Производитель',
-                value: equipObject.manufacturer ? <Text copyable editable={{ onChange: (text) => {updateDataManufacturer(text)}}}>{equipObject.manufacturer}</Text> :
-                <Text type="warning" editable={{ onChange: (text) => {updateDataManufacturer(text)}, text: ''}}>Не указано</Text>
+                value: equipObject.manufacturer ? <Text copyable editable={access > 3 ? false : { onChange: (text) => { updateDataManufacturer(text) } }}>{equipObject.manufacturer}</Text> :
+                    <Text type="warning" editable={access > 3 ? false : { onChange: (text) => { updateDataManufacturer(text) }, text: '' }}>Не указано</Text>
             },
             {
                 rowName: 'Год изготовления',
-                value: equipObject.manufacturdate ? <Text editable={{ onChange: (text) => {updateDataManufacturdate(text)}}}>{equipObject.manufacturdate}</Text> :
-                <Text type="warning" editable={{ onChange: (text) => {updateDataManufacturdate(text)}, text: ''}}>Не указано</Text>
+                value: equipObject.manufacturdate ? <Text editable={access > 3 ? false : { onChange: (text) => { updateDataManufacturdate(text) } }}>{equipObject.manufacturdate}</Text> :
+                    <Text type="warning" editable={access > 3 ? false : { onChange: (text) => { updateDataManufacturdate(text) }, text: '' }}>Не указано</Text>
             },
             {
                 rowName: 'Серийный номер',
-                value: equipObject.serial ? <Text copyable editable={{ onChange: (text) => {updateDataSerial(text)}}}>{equipObject.serial}</Text> :
-                <Text type="warning" editable={{ onChange: (text) => {updateDataSerial(text)}, text: ''}}>Не указано</Text>
+                value: equipObject.serial ? <Text copyable editable={access > 3 ? false : { onChange: (text) => { updateDataSerial(text) } }}>{equipObject.serial}</Text> :
+                    <Text type="warning" editable={access > 3 ? false : { onChange: (text) => { updateDataSerial(text) }, text: '' }}>Не указано</Text>
             },
             {
                 rowName: 'Учетный номер',
-                value: equipObject.inv ? <Text copyable editable={{ onChange: (text) => {updateDataInv(text)}}}>{equipObject.inv}</Text> :
-                <Text type="warning" editable={{ onChange: (text) => {updateDataInv(text)}, text: ''}}>Не указано</Text>
+                value: equipObject.inv ? <Text copyable editable={access > 3 ? false : { onChange: (text) => { updateDataInv(text) } }}>{equipObject.inv}</Text> :
+                    <Text type="warning" editable={access > 3 ? false : { onChange: (text) => { updateDataInv(text) }, text: '' }}>Не указано</Text>
             },
             {
                 rowName: 'Интервал оценки/реквалификации',
-                value: <ArHelper ar={equipObject.ar} id={equipObject.id} table='equipment' /> 
+                value: <ArHelper ar={equipObject.ar} id={equipObject.id} table='equipment' access={access} />
             },
             {
                 rowName: 'Валидационный статус',
-                value: <CurrentStatus ar={equipObject.ar} fio={equipObject.fio} table='equipment' /> 
+                value: <CurrentStatus ar={equipObject.ar} fio={equipObject.fio} table='equipment' />
             }
         ]
-        
+
         const columns = [
             {
-              dataIndex: 'rowName',
-              render: (rowName: string) => <Text style={{fontSize: '12pt'}} >{rowName}</Text>,
+                dataIndex: 'rowName',
+                render: (rowName: string) => <Text style={{ fontSize: '12pt' }} >{rowName}</Text>,
             },
             {
-              dataIndex: 'value',
-              width: '60%'
+                dataIndex: 'value',
+                width: '60%'
             },
         ]
 
         const items: TabsProps['items'] = [
             {
-              key: '1',
-              label: 'Описание',
-              children: <EquipDescriptions columns={columns} data={data} />,
+                key: '1',
+                label: 'Описание',
+                children: <EquipDescriptions columns={columns} data={data} />,
             },
             {
-              key: '2',
-              label: 'Перечень валидационных работ',
-              children: <CardReestr id={equipObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={equipObject.groupp} />,
+                key: '2',
+                label: 'Перечень валидационных работ',
+                children: <CardReestr id={equipObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={equipObject.groupp} />,
             },
             {
-              key: '8',
-              label: 'Взять в работу',
-              children: <AddToMonthPlan id={equipObject.id} objectType="equipment" />,
+                key: '8',
+                label: 'Взять в работу',
+                children: <AddToMonthPlan id={equipObject.id} objectType="equipment" />,
             },
             {
-              key: '3',
-              label: 'Техническая информация',
-              children: <TechnicalInfo id={equipObject.id} />,
+                key: '3',
+                label: 'Техническая информация',
+                children: <TechnicalInfo id={equipObject.id} access={access} />,
             },
             {
-              key: '4',
-              label: 'Медиа файлы',
-              children: <PhotosBlock id={equipObject.id} />,
+                key: '4',
+                label: 'Медиа файлы',
+                children: <PhotosBlock id={equipObject.id} />,
             },
             {
                 key: '5',
@@ -246,35 +251,35 @@ const EquipCard: React.FC = () => {
                 children: <CardPlans objectName={equipObject.name} objectId={equipObject.id} sp={equipObject.sp} objectType="equipment" />,
             },
             {
-              key: '6',
-              label: 'Статусная этикетка',
-              children: <EquipLabel equipObject={equipObject} reestrData={reestrData} />,
-              disabled: equipObject.ar === '0' || equipObject.ar === '12' || equipObject.ar === '15' || equipObject.date === null ? true : false
+                key: '6',
+                label: 'Статусная этикетка',
+                children: <EquipLabel equipObject={equipObject} reestrData={reestrData} />,
+                disabled: equipObject.ar === '0' || equipObject.ar === '12' || equipObject.ar === '15' || equipObject.date === null ? true : false
             },
-          ]
+        ]
 
         return (
             <>
-            {contextHolder}
-            <Row style={{padding: '10px 0'}} >
-                <Col span={5} push={1} style={{textAlign: 'center'}} >
-                    <TitleImage equipObject={equipObject} id={id} />
-                </Col>
-                <Col span={16} push={2} style={{minHeight: '89vh', display: "flex", flexDirection: 'column'}} >
-                    <Tabs
-                        defaultActiveKey="1"
-                        items={items}
-                        indicatorSize={(origin) => origin - 16}
-                        style={{flex: 1}}
-                        type="card"
-                    />
-                </Col>
-            </Row>
+                {contextHolder}
+                <Row style={{ padding: '10px 0' }} >
+                    <Col span={5} push={1} style={{ textAlign: 'center' }} >
+                        <TitleImage equipObject={equipObject} id={id} />
+                    </Col>
+                    <Col span={16} push={2} style={{ minHeight: '89vh', display: "flex", flexDirection: 'column' }} >
+                        <Tabs
+                            defaultActiveKey="1"
+                            items={items}
+                            indicatorSize={(origin) => origin - 16}
+                            style={{ flex: 1 }}
+                            type="card"
+                        />
+                    </Col>
+                </Row>
             </>
         )
     } else {
         return (
-            <Text type="danger" style={{fontSize: '12pt', textAlign: 'center', padding: '20px'}}>Внимание! Запрошенный Вами объект не существует!</Text>
+            <Text type="danger" style={{ fontSize: '12pt', textAlign: 'center', padding: '20px' }}>Внимание! Запрошенный Вами объект не существует!</Text>
         )
     }
 }

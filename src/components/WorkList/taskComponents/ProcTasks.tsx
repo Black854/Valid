@@ -1,7 +1,7 @@
 import { PrinterOutlined } from '@ant-design/icons'
 import { Typography, Table, Button, Row, Col, Modal, Input, Space } from "antd"
-import { DatePickerForWork } from '../../common/DatePickerForWork'
-import { ProcReestrType} from '../../../redux/Reducers/processesReducer'
+import { DatePickerForWork } from './MiniComponents/DatePickerForWork'
+import { ProcReestrType } from '../../../redux/Reducers/processesReducer'
 import { ProgressStatus } from './MiniComponents/ProgressStatus'
 import { useState } from 'react'
 import { ProtocolUpload } from './MiniComponents/ProtocolUpload'
@@ -17,11 +17,12 @@ type ProcTasks = {
     myProcData: ProcReestrType[]
     rec: any
     error: (fileName: string) => void
+    access: number
 }
 
-export const ProcTasks: React.FC<ProcTasks> = ({myProcDataIdArray, myProcData, rec, error}) => {
+export const ProcTasks: React.FC<ProcTasks> = ({ myProcDataIdArray, myProcData, rec, error, access }) => {
     const thisObject = myProcData.find(e => e.idfromtable === rec.id)
-   
+
     let data: any = [{
         key: '1',
         progress: '',
@@ -54,37 +55,37 @@ export const ProcTasks: React.FC<ProcTasks> = ({myProcDataIdArray, myProcData, r
     const protoData = [
         {
             rowName: 'Статус загрузки протокола',
-            value: <ProtocolUpload data={data[0]} rec={rec} myProcDataIdArray={myProcDataIdArray} error={error} objectType='processes' />
+            value: <ProtocolUpload data={data[0]} rec={rec} myProcDataIdArray={myProcDataIdArray} error={error} objectType='processes' access={access} />
         },
         {
             rowName: 'Код протокола',
-            value: <ProtocolCode data={data[0]} rec={rec} myProcDataIdArray={myProcDataIdArray} objectType='processes' />
+            value: <ProtocolCode data={data[0]} rec={rec} myProcDataIdArray={myProcDataIdArray} objectType='processes' access={access} />
         },
         {
             rowName: 'Дата утверждения протокола',
-            value: <DatePickerForWork date={data[0].dvp} objectId={data.id} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myProcDataIdArray} />
+            value: <DatePickerForWork date={data[0].dvp} objectId={data.id} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myProcDataIdArray} access={access} />
         },
     ]
 
     const reportData = [
         {
             rowName: 'Статус загрузки отчета',
-            value: <ReportUpload data={data[0]} rec={rec} myProcDataIdArray={myProcDataIdArray} error={error} objectType='processes' />
+            value: <ReportUpload data={data[0]} rec={rec} myProcDataIdArray={myProcDataIdArray} error={error} objectType='processes' access={access} />
         },
         {
             rowName: 'Код отчета',
-            value: <ReportCode data={data[0]} rec={rec} myProcDataIdArray={myProcDataIdArray} objectType='processes' />
+            value: <ReportCode data={data[0]} rec={rec} myProcDataIdArray={myProcDataIdArray} objectType='processes' access={access} />
         },
         {
             rowName: 'Дата утверждения отчета',
-            value: <DatePickerForWork date={data[0].dvo} objectId={data[0].id} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myProcDataIdArray} />
+            value: <DatePickerForWork date={data[0].dvo} objectId={data[0].id} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myProcDataIdArray} access={access} />
         },
     ]
 
     const updateCardData = [
         {
             rowName: 'Карточка актуализирована',
-            value: <UpdateCardStatus data={data[0]} myProcDataIdArray={myProcDataIdArray} objectType='processes' />
+            value: <UpdateCardStatus data={data[0]} myProcDataIdArray={myProcDataIdArray} objectType='processes' access={access} />
         }
     ]
 
@@ -198,8 +199,8 @@ export const ProcTasks: React.FC<ProcTasks> = ({myProcDataIdArray, myProcData, r
                     columns={columns}
                     dataSource={
                         thisObject?.typeval === '1' ? [...protoData, ...reportData, ...updateCardData] :
-                        thisObject?.typeval === '3' ? reportData :
-                        []
+                            thisObject?.typeval === '3' ? reportData :
+                                []
                     }
                     bordered
                     pagination={false}

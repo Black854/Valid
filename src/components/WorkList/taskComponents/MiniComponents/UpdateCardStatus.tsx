@@ -15,9 +15,10 @@ type PropsType = {
     mySysDataIdArray?: any,
     myProcDataIdArray?: any,
     objectType: 'equipment' | 'premises' | 'systems' | 'processes'
+    access: number
 }
 
-export const UpdateCardStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType }) => {
+export const UpdateCardStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access }) => {
     const dispatch: AppDispatch = useDispatch()
 
     const handleLabelSwitch = async (pol: string) => {
@@ -36,10 +37,10 @@ export const UpdateCardStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray
         }
     }
     return data.isCardUpdated === '' ?
-        <Button onClick={() => handleLabelSwitch('1')} type="default" size="small">
+        <Button disabled={access > 4} onClick={() => handleLabelSwitch('1')} type="default" size="small">
             <Text type="warning">Не актуализирована</Text>
         </Button> :
-        <Button onClick={() => handleLabelSwitch('')} type="default" size="small">
+        <Button disabled={access > 4} onClick={() => handleLabelSwitch('')} type="default" size="small">
             <Text type="success">Актуализирована</Text>
         </Button>
 }

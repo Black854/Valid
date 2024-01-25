@@ -14,10 +14,11 @@ type PropsType = {
     myPremDataIdArray?: any,
     mySysDataIdArray?: any,
     myProcDataIdArray?: any,
-    objectType: 'equipment' | 'premises' | 'systems' | 'processes'
+    objectType: 'equipment' | 'premises' | 'systems' | 'processes',
+    access: number
 }
 
-export const LabelStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType }) => {
+export const LabelStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access }) => {
     const dispatch: AppDispatch = useDispatch()
     
     const handleLabelSwitch = async (pol: string) => {
@@ -36,10 +37,10 @@ export const LabelStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myP
         }
     }
     return data.et === '' ?
-        <Button onClick={() => handleLabelSwitch('1')} type="default" size="small">
+        <Button disabled={access > 4} onClick={() => handleLabelSwitch('1')} type="default" size="small">
             <Text type="warning">Не приклеена</Text>
         </Button> :
-        <Button onClick={() => handleLabelSwitch('')} type="default" size="small">
+        <Button disabled={access > 4} onClick={() => handleLabelSwitch('')} type="default" size="small">
             <Text type="success">Приклеена</Text>
         </Button>
 }

@@ -16,13 +16,14 @@ type PropsType = {
     mySysDataIdArray?: any,
     myProcDataIdArray?: any,
     objectType: 'equipment' | 'premises' | 'systems' | 'processes'
+    access: number
 }
 
-export const ProtocolCode: React.FC<PropsType> = ({data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType}) => {
+export const ProtocolCode: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access }) => {
     const dispatch: AppDispatch = useDispatch()
 
     const handleUpdateDocsCode = async (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
-        
+
         if (objectType === 'equipment') {
             await dispatch(updateReestrDocsCodeEquip(rec.id, recordId, text, dataType))
             await dispatch(getCurrentEquipData(myEquipDataIdArray))
@@ -39,10 +40,10 @@ export const ProtocolCode: React.FC<PropsType> = ({data, rec, myEquipDataIdArray
     }
 
     return data.nvp === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(data.id, text, 'nvp'), text: '' }} type="warning">Нет данных</Text> :
-    <Text type="success"
-        editable={{
-            onChange: (text: string) => { handleUpdateDocsCode(data.id, text, 'nvp') }
-        }}>
-        {data.nvp}
-    </Text>
+        <Text type="success"
+            editable={access > 4 ? false : {
+                onChange: (text: string) => { handleUpdateDocsCode(data.id, text, 'nvp') }
+            }}>
+            {data.nvp}
+        </Text>
 }

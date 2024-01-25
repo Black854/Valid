@@ -16,9 +16,10 @@ type PropsType = {
     mySysDataIdArray?: any,
     myProcDataIdArray?: any,
     objectType: 'equipment' | 'premises' | 'systems' | 'processes'
+    access: number
 }
 
-export const ReportCode: React.FC<PropsType> = ({data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType}) => {
+export const ReportCode: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access }) => {
     const dispatch: AppDispatch = useDispatch()
 
     const handleUpdateDocsCode = async (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
@@ -38,10 +39,10 @@ export const ReportCode: React.FC<PropsType> = ({data, rec, myEquipDataIdArray, 
     }
 
     return data.nvo === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(data.id, text, 'nvo'), text: '' }} type="warning">Нет данных</Text> :
-    <Text type="success"
-        editable={{
-            onChange: (text: string) => { handleUpdateDocsCode(data.id, text, 'nvo') }
-        }}>
-        {data.nvo}
-    </Text>
+        <Text type="success"
+            editable={access > 4 ? false : {
+                onChange: (text: string) => { handleUpdateDocsCode(data.id, text, 'nvo') }
+            }}>
+            {data.nvo}
+        </Text>
 }

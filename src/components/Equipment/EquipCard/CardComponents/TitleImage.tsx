@@ -1,11 +1,12 @@
 import { Button, Image, Popconfirm, Typography, message } from "antd"
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import empty from './../../../../img/empty.png'
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/equipmentReducer"
 import { EyeOutlined} from '@ant-design/icons'
 import { AppDispatch } from "../../../../redux/store"
 import Title from "antd/es/typography/Title"
+import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
 const {Text} = Typography
 
 interface DataType {
@@ -34,6 +35,7 @@ type TitleImagePropsType = {
 export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => {
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
+    const access = parseInt(useSelector(getUserDataAccessSelector))
     
     const error = (fileName: string) => {
         messageApi.open({
@@ -89,7 +91,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => 
             </div>
             { !equipObject.foto && <>
                 <input id="uploadPhoto" accept="image/jpeg, image/png" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
-                <Button htmlType="submit" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
+                <Button disabled={access > 3} htmlType="submit" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
                 </>
             }
             { equipObject.foto && id && <>
@@ -100,7 +102,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => 
                         cancelText='Нет'
                         onConfirm={handleDeleteFoto}
                     >
-                        <Button icon={<DeleteOutlined style={{fontSize: '12pt'}} />} danger>Удалить фото</Button>
+                        <Button disabled={access > 3} icon={<DeleteOutlined style={{fontSize: '12pt'}} />} danger>Удалить фото</Button>
                     </Popconfirm>
                 </>  }
         </>

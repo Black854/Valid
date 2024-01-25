@@ -24,6 +24,7 @@ import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/p
 import { ProcTasks } from "./taskComponents/ProcTasks"
 import { SysTasks } from "./taskComponents/SysTasks"
 import { getWorkError } from "../../redux/Selectors/workSelectors"
+import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 
 const { Text } = Typography
 
@@ -63,6 +64,7 @@ const Monitoring: React.FC = () => {
     const procData = useSelector(getProcData)
     const isLoading = useSelector(getIsLoading)
     const allValidators = useSelector(getAllValidatorsSelector)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
 
     const usersFilters = allValidators.map((e: AllValidatorsType) => ({ value: e.fio, text: e.fio }))
 
@@ -232,10 +234,10 @@ const Monitoring: React.FC = () => {
                         columns={columns}
                         expandable={{
                             expandedRowRender: (rec) => {
-                                return rec.objectType === 'premises' ? <PremTasks myPremData={myPremData} error={error} rec={rec} myPremDataIdArray={myPremDataIdArray} /> :
-                                    rec.objectType === 'equipment' ? <EquipTasks myEquipData={myEquipData} error={error} rec={rec} myEquipDataIdArray={myEquipDataIdArray} /> :
-                                        rec.objectType === 'systems' ? <SysTasks mySysData={mySysData} error={error} rec={rec} mySysDataIdArray={mySysDataIdArray} /> :
-                                            rec.objectType === 'processes' ? <ProcTasks myProcData={myProcData} error={error} rec={rec} myProcDataIdArray={myProcDataIdArray} /> :
+                                return rec.objectType === 'premises' ? <PremTasks myPremData={myPremData} error={error} rec={rec} myPremDataIdArray={myPremDataIdArray} access={access} /> :
+                                    rec.objectType === 'equipment' ? <EquipTasks myEquipData={myEquipData} error={error} rec={rec} myEquipDataIdArray={myEquipDataIdArray} access={access} /> :
+                                        rec.objectType === 'systems' ? <SysTasks mySysData={mySysData} error={error} rec={rec} mySysDataIdArray={mySysDataIdArray} access={access} /> :
+                                            rec.objectType === 'processes' ? <ProcTasks myProcData={myProcData} error={error} rec={rec} myProcDataIdArray={myProcDataIdArray} access={access} /> :
                                                 null
                             }
                         }}

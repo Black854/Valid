@@ -16,9 +16,10 @@ type ConvertDateType = {
     objectId: string
     dateType: 'dvp' | 'dvo'
     group: 'equipment' | 'premises' | 'systems' | 'processes'
+    access: number
 }
 
-export const ConvertDate: React.FC<ConvertDateType> = ({id, objectId, date, dateType, group}) => {
+export const ConvertDate: React.FC<ConvertDateType> = ({id, objectId, date, dateType, group, access}) => {
     const [isPopconfirmVisible, setPopconfirmVisible] = useState(false)
     const [selectedDate, setSelectedDate] = useState('')
     const dispatch: AppDispatch = useDispatch()
@@ -76,7 +77,7 @@ export const ConvertDate: React.FC<ConvertDateType> = ({id, objectId, date, date
                         open={isPopconfirmVisible}
 
                     >
-                        <DatePicker size='small' allowClear={false} format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false} onChange={(date) => handleDateChange(date)}  />
+                        <DatePicker disabled={access > 2} size='small' allowClear={false} format={'DD.MM.YYYY'} defaultValue={dayjs(date, dateFormat)} bordered={false} onChange={(date) => handleDateChange(date)}  />
                     </Popconfirm>
         }
     }
