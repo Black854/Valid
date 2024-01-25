@@ -1,12 +1,13 @@
 import { Button, Col, Image, Modal, Popconfirm, Row, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
-import { DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons'
 import pdf from './../../../../img/pdfi.png'
 import video from './../../../../img/video.png'
 import { AppDispatch } from "../../../../redux/store"
-import { getPhotosSelector } from "../../../../redux/Selectors/systemsSelectors";
-import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/Reducers/systemsReducer";
+import { getPhotosSelector } from "../../../../redux/Selectors/systemsSelectors"
+import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/Reducers/systemsReducer"
+import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
 const { Text } = Typography
 
 type PhotosBlockPropsType = {
@@ -27,6 +28,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
 
     const dispatch: AppDispatch = useDispatch()
     const photos = useSelector(getPhotosSelector)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
     const addObjectToPhotos = {
         id: '99999',
         idfromtable: '',
@@ -101,7 +103,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                     cancelText='Нет'
                     onConfirm={() => { handleDeletePhoto(id, e.id) }}
                 >
-                    <Button size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
+                    <Button disabled={access > 3} size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
                 </Popconfirm>
             </Col>
         } else if (e.src.endsWith('.mp4') || e.src.endsWith('.MP4')) {
@@ -137,7 +139,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                     cancelText='Нет'
                     onConfirm={() => { handleDeletePhoto(id, e.id) }}
                 >
-                    <Button size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
+                    <Button disabled={access > 3} size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
                 </Popconfirm>
             </Col>
         } else if (e.id === '99999') {
@@ -157,6 +159,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                     }}
                     type="dashed"
                     onClick={() => fileInputRef.click()}
+                    disabled={access > 3}
                 />
                 <input id="uploadPhoto" accept="image/jpeg, image/png, application/pdf, video/mp4" type="file" style={{ display: 'none' }} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
             </Col>
@@ -175,7 +178,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                     cancelText='Нет'
                     onConfirm={() => { handleDeletePhoto(id, e.id) }}
                 >
-                    <Button size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
+                    <Button disabled={access > 3} size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
                 </Popconfirm>
             </Col>
         }

@@ -1,12 +1,12 @@
 import { Button, Image, Popconfirm, Typography, message } from "antd"
-import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
+import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import empty from './../../../../img/empty.png'
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { EyeOutlined } from '@ant-design/icons';
-import { AppDispatch } from "../../../../redux/store";
-import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/systemsReducer";
-import Title from "antd/es/typography/Title";
+import { useDispatch, useSelector } from "react-redux"
+import { EyeOutlined } from '@ant-design/icons'
+import { AppDispatch } from "../../../../redux/store"
+import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/systemsReducer"
+import Title from "antd/es/typography/Title"
+import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
 const { Text } = Typography
 
 interface DataType {
@@ -35,6 +35,7 @@ type TitleImagePropsType = {
 export const TitleImage: React.FC<TitleImagePropsType> = ({ sysObject, id }) => {
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
+    const access = parseInt(useSelector(getUserDataAccessSelector))
 
     const error = (fileName: string) => {
         messageApi.open({
@@ -75,7 +76,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({ sysObject, id }) => 
         <>
             {contextHolder}
             <div style={{ width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px' }}>
-                <Title editable={{ onChange: (text: string) => handleUpdateName(text) }} style={{ marginBottom: '20px' }} level={4}>{sysObject.name}</Title>
+                <Title editable={access > 3 ? false : { onChange: (text: string) => handleUpdateName(text) }} style={{ marginBottom: '20px' }} level={4}>{sysObject.name}</Title>
                 <Image
                     src={sysObject.foto ? "http://10.85.10.212/ov/" + sysObject.foto : empty}
                     preview={sysObject.foto ? { mask: <><EyeOutlined style={{ fontSize: '12pt' }} /><Text style={{ color: 'white', marginLeft: '10px' }}>Просмотр</Text></> } : false}
@@ -90,7 +91,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({ sysObject, id }) => 
             </div>
             {!sysObject.foto && <>
                 <input id="uploadPhoto" accept="image/jpeg, image/png" type="file" style={{ display: 'none' }} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
-                <Button htmlType="submit" icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
+                <Button disabled={access > 3} htmlType="submit" icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
             </>
             }
             {sysObject.foto && id && <>
@@ -101,7 +102,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({ sysObject, id }) => 
                     cancelText='Нет'
                     onConfirm={handleDeleteFoto}
                 >
-                    <Button icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} danger>Удалить фото</Button>
+                    <Button disabled={access > 3} icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} danger>Удалить фото</Button>
                 </Popconfirm>
             </>}
         </>

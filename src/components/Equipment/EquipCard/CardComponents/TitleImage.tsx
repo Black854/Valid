@@ -76,7 +76,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => 
         <>  
             {contextHolder}
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
-                <Title editable={{onChange: (text: string) => handleUpdateName(text)}} style={{marginBottom: '20px'}} level={4}>{equipObject.name}</Title>
+                <Title editable={access > 3 ? false : {onChange: (text: string) => handleUpdateName(text)}} style={{marginBottom: '20px'}} level={4}>{equipObject.name}</Title>
                 <Image
                     src={equipObject.foto ? "http://10.85.10.212/ov/" + equipObject.foto : empty}
                     preview = { equipObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }

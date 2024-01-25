@@ -97,7 +97,7 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({id, objectId, date
                         cancelText="Нет"
                         open={isPopconfirmVisible}
                         >
-                        <DatePicker disabled={access > 2} style={{ borderColor: '#87d068', accentColor: 'green', color: 'red' }} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} value={dayjs(date, dateFormat)} onChange={(date) => handleDateChange(date)}  /> 
+                        <DatePicker disabled={access > 4} style={{ borderColor: '#87d068', accentColor: 'green', color: 'red' }} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} value={dayjs(date, dateFormat)} onChange={(date) => handleDateChange(date)}  /> 
                     </Popconfirm>
         }
     } else {
