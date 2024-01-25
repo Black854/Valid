@@ -248,7 +248,7 @@ const EquipCard: React.FC = () => {
             {
                 key: '5',
                 label: 'График работ',
-                children: <CardPlans objectName={equipObject.name} objectId={equipObject.id} sp={equipObject.sp} objectType="equipment" />,
+                children: <CardPlans objectName={equipObject.name} objectId={equipObject.id} sp={equipObject.sp} objectType="equipment" access={access} />,
             },
             {
                 key: '6',

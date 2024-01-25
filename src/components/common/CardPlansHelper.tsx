@@ -9,9 +9,10 @@ type PropsType = {
     data: VMPDataType[]
     month: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11'
     sp: string
+    access: number
 }
 
-export const CardPlansHelper: React.FC<PropsType> = ({ data, month, sp }) => {
+export const CardPlansHelper: React.FC<PropsType> = ({ data, month, sp, access }) => {
     const dispatch: AppDispatch = useDispatch()
     const [daysCount, setDaysCount] = useState(parseInt(data[0]?.[month]) as number | null)
     const handleChangeCount = (text: number | null) => {
@@ -38,6 +39,7 @@ export const CardPlansHelper: React.FC<PropsType> = ({ data, month, sp }) => {
                 disabled={parseInt(data[0]?.[month]) === daysCount}
             />}
             onChange={(text: number | null) => handleChangeCount(text)}
+            disabled={access > 1}
         />
     )
 }

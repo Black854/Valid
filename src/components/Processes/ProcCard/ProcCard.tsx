@@ -174,7 +174,7 @@ const ProcCard: React.FC = () => {
             {
                 key: '5',
                 label: 'График работ',
-                children: <CardPlans objectName={procObject.name} objectId={procObject.id} sp={procObject.sp} objectType="processes" />,
+                children: <CardPlans objectName={procObject.name} objectId={procObject.id} sp={procObject.sp} objectType="processes" access={access} />,
             },
             {
               key: '6',

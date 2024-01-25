@@ -174,7 +174,7 @@ const SysCard: React.FC = () => {
             {
                 key: '5',
                 label: 'График работ',
-                children: <CardPlans objectName={sysObject.name} objectId={sysObject.id} sp={sysObject.sp} objectType="systems" />,
+                children: <CardPlans objectName={sysObject.name} objectId={sysObject.id} sp={sysObject.sp} objectType="systems" access={access} />,
             },
             {
                 key: '6',

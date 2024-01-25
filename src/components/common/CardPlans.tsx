@@ -14,9 +14,10 @@ type CardPlansType = {
     objectName: string
     sp: string
     objectType: 'premises' | 'equipment' | 'systems' | 'processes'
+    access: number
 }
 
-export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType, objectName }) => {
+export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType, objectName, access }) => {
     const dispatch: AppDispatch = useDispatch()
     useEffect(() => {
         dispatch(getObjectVMPPlansData(objectId, sp, objectType))
@@ -28,62 +29,62 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType, o
     const data3 = [
         {
             rowName: 'Январь',
-            value: <CardPlansHelper data={data1} month='0' sp={sp} />,
+            value: <CardPlansHelper data={data1} month='0' sp={sp} access={access} />,
             key: '1-0'
         },
         {
             rowName: 'Февраль',
-            value: <CardPlansHelper data={data1} month='1' sp={sp} />,
+            value: <CardPlansHelper data={data1} month='1' sp={sp} access={access} />,
             key: '1-1'
         },
         {
             rowName: 'Март',
-            value: <CardPlansHelper data={data1} month='2' sp={sp} />,
+            value: <CardPlansHelper data={data1} month='2' sp={sp} access={access} />,
             key: '1-2'
         },
         {
             rowName: 'Апрель',
-            value: <CardPlansHelper data={data1} month='3' sp={sp} />,
+            value: <CardPlansHelper data={data1} month='3' sp={sp} access={access} />,
             key: '1-3'
         },
         {
             rowName: 'Май',
-            value: <CardPlansHelper data={data1} month='4' sp={sp} />,
+            value: <CardPlansHelper data={data1} month='4' sp={sp} access={access} />,
             key: '1-4'
         },
         {
             rowName: 'Июнь',
-            value: <CardPlansHelper data={data1} month='5' sp={sp} />,
+            value: <CardPlansHelper data={data1} month='5' sp={sp} access={access} />,
             key: '1-5'
         },
         {
             rowName: 'Июль',
-            value: <CardPlansHelper data={data1} month='6' sp={sp} />,
+            value: <CardPlansHelper data={data1} month='6' sp={sp} access={access} />,
             key: '1-6'
         },
         {
             rowName: 'Август',
-            value: <CardPlansHelper data={data1} month='7' sp={sp} />,
+            value: <CardPlansHelper data={data1} month='7' sp={sp} access={access} />,
             key: '1-7'
         },
         {
             rowName: 'Сентябрь  ',
-            value: <CardPlansHelper data={data1} month='8' sp={sp} />,
+            value: <CardPlansHelper data={data1} month='8' sp={sp} access={access} />,
             key: '1-8'
         },
         {
             rowName: 'Октябрь',
-            value: <CardPlansHelper data={data1} month='9' sp={sp} />,
+            value: <CardPlansHelper data={data1} month='9' sp={sp} access={access} />,
             key: '1-9'
         },
         {
             rowName: 'Ноябрь',
-            value: <CardPlansHelper data={data1} month='10' sp={sp} />,
+            value: <CardPlansHelper data={data1} month='10' sp={sp} access={access} />,
             key: '1-10'
         },
         {
             rowName: 'Декабрь',
-            value: <CardPlansHelper data={data1} month='11' sp={sp} />,
+            value: <CardPlansHelper data={data1} month='11' sp={sp} access={access} />,
             key: '1-11'
         },
     ]
@@ -91,62 +92,62 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType, o
     const data4 = [
         {
             rowName: 'Январь',
-            value: <CardPlansHelper data={data2} month='0' sp={sp} />,
+            value: <CardPlansHelper data={data2} month='0' sp={sp} access={access} />,
             key: '2-0'
         },
         {
             rowName: 'Февраль',
-            value: <CardPlansHelper data={data2} month='1' sp={sp} />,
+            value: <CardPlansHelper data={data2} month='1' sp={sp} access={access} />,
             key: '2-1'
         },
         {
             rowName: 'Март',
-            value: <CardPlansHelper data={data2} month='2' sp={sp} />,
+            value: <CardPlansHelper data={data2} month='2' sp={sp} access={access} />,
             key: '2-2'
         },
         {
             rowName: 'Апрель',
-            value: <CardPlansHelper data={data2} month='3' sp={sp} />,
+            value: <CardPlansHelper data={data2} month='3' sp={sp} access={access} />,
             key: '2-3'
         },
         {
             rowName: 'Май',
-            value: <CardPlansHelper data={data2} month='4' sp={sp} />,
+            value: <CardPlansHelper data={data2} month='4' sp={sp} access={access} />,
             key: '2-4'
         },
         {
             rowName: 'Июнь',
-            value: <CardPlansHelper data={data2} month='5' sp={sp} />,
+            value: <CardPlansHelper data={data2} month='5' sp={sp} access={access} />,
             key: '2-5'
         },
         {
             rowName: 'Июль',
-            value: <CardPlansHelper data={data2} month='6' sp={sp} />,
+            value: <CardPlansHelper data={data2} month='6' sp={sp} access={access} />,
             key: '2-6'
         },
         {
             rowName: 'Август',
-            value: <CardPlansHelper data={data2} month='7' sp={sp} />,
+            value: <CardPlansHelper data={data2} month='7' sp={sp} access={access} />,
             key: '2-7'
         },
         {
             rowName: 'Сентябрь  ',
-            value: <CardPlansHelper data={data2} month='8' sp={sp} />,
+            value: <CardPlansHelper data={data2} month='8' sp={sp} access={access} />,
             key: '2-8'
         },
         {
             rowName: 'Октябрь',
-            value: <CardPlansHelper data={data2} month='9' sp={sp} />,
+            value: <CardPlansHelper data={data2} month='9' sp={sp} access={access} />,
             key: '2-9'
         },
         {
             rowName: 'Ноябрь',
-            value: <CardPlansHelper data={data2} month='10' sp={sp} />,
+            value: <CardPlansHelper data={data2} month='10' sp={sp} access={access} />,
             key: '2-10'
         },
         {
             rowName: 'Декабрь',
-            value: <CardPlansHelper data={data2} month='11' sp={sp} />,
+            value: <CardPlansHelper data={data2} month='11' sp={sp} access={access} />,
             key: '2-11'
         },
     ]
@@ -178,7 +179,7 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType, o
                         pagination={false}
                         size="small"
                     />
-                    {data1.length === 0 && <Button type="primary" size="small" onClick={() => handleCreateObjectPlansData('1')} style={{ marginTop: '20px' }} icon={<PlusOutlined />}>Добавить данные</Button>}
+                    {data1.length === 0 && <Button disabled={access > 1} type="primary" size="small" onClick={() => handleCreateObjectPlansData('1')} style={{ marginTop: '20px' }} icon={<PlusOutlined />}>Добавить данные</Button>}
                 </Col>
                 <Col span={11} push={2}>
                     <Table
@@ -189,7 +190,7 @@ export const CardPlans: React.FC<CardPlansType> = ({ objectId, sp, objectType, o
                         pagination={false}
                         size="small"
                     />
-                    {data2.length === 0 && <Button type="primary" size="small" onClick={() => handleCreateObjectPlansData('3')} style={{ marginTop: '20px' }} icon={<PlusOutlined />}>Добавить данные</Button>}
+                    {data2.length === 0 && <Button disabled={access > 1} type="primary" size="small" onClick={() => handleCreateObjectPlansData('3')} style={{ marginTop: '20px' }} icon={<PlusOutlined />}>Добавить данные</Button>}
                 </Col>
             </Row>
         </Card>
