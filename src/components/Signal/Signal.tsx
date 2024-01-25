@@ -20,6 +20,7 @@ import { getCurrentSysDataSelector, getSysData } from "../../redux/Selectors/sys
 import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/processesSelectors"
 import { addMonths, format, subMonths } from "date-fns"
 import { PlansComponent } from "./PlansComponent"
+import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 
 const { Text } = Typography
 
@@ -46,6 +47,7 @@ const Signal: React.FC = () => {
     const sysData = useSelector(getSysData)
     const procData = useSelector(getProcData)
     const isLoading = useSelector(getIsLoading)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
 
     const premNewData = premData.map(e => ({
         objectType: 'premises' as 'equipment' | 'premises' | 'systems' | 'processes',
@@ -287,7 +289,7 @@ const Signal: React.FC = () => {
                 return <>
                     {fio === '' ? <Text type='warning'>Не в работе</Text> :
                         <Text>{`Выполняет ${fio}`}</Text>}
-                    {fio !== '' && <ProgressHelper type="work" record={record} myEquipData={myEquipData} myPremData={myPremData} myProcData={myProcData} mySysData={mySysData} />}
+                    {fio !== '' && <ProgressHelper type="work" record={record} myEquipData={myEquipData} myPremData={myPremData} myProcData={myProcData} mySysData={mySysData} access={access} />}
                 </>
             },
             width: '12%',

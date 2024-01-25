@@ -29,9 +29,10 @@ type ProgresssHelper = {
     mySysData: SysReestrType[]
     myProcData: ProcReestrType[]
     type: 'work' | 'mon'
+    access: number
 }
 
-export const ProgressHelper: React.FC<ProgresssHelper> = ({ record, myPremData, myEquipData, mySysData, myProcData, type }) => {
+export const ProgressHelper: React.FC<ProgresssHelper> = ({ record, myPremData, myEquipData, mySysData, myProcData, type, access }) => {
     let a: number = 0
     let b: number = 1
     const thisObject = record.objectType === 'premises' ? myPremData.find(e => e.idfromtable === record.id) :
@@ -209,7 +210,7 @@ export const ProgressHelper: React.FC<ProgresssHelper> = ({ record, myPremData, 
                             cancelText='Нет'
                             onConfirm={() => handleSuccessTask(record.id, record.objectType)}
                         >
-                            <Button style={{ display: 'inline' }} size="small" type="link">Завершить задачу</Button>
+                            <Button disabled={access > 1} style={{ display: 'inline' }} size="small" type="link">Завершить задачу</Button>
                         </Popconfirm>
                         <Popconfirm
                             title='Подтвердите изменение'
@@ -218,7 +219,7 @@ export const ProgressHelper: React.FC<ProgresssHelper> = ({ record, myPremData, 
                             cancelText='Нет'
                             onConfirm={() => handleCancelTask(record.id, record.objectType)}
                         >
-                            <Button style={{ display: 'inline' }} size="small" type="link">Отменить задачу</Button>
+                            <Button disabled={access > 1} style={{ display: 'inline' }} size="small" type="link">Отменить задачу</Button>
                         </Popconfirm>
                     </div>
                 </Space>
@@ -235,7 +236,7 @@ export const ProgressHelper: React.FC<ProgresssHelper> = ({ record, myPremData, 
                             cancelText='Нет'
                             onConfirm={() => handleSuccessTask(record.id, record.objectType)}
                         >
-                            <Button style={{ display: 'inline' }} size="small" type="link">Завершить задачу</Button>
+                            <Button disabled={access > 1} style={{ display: 'inline' }} size="small" type="link">Завершить задачу</Button>
                         </Popconfirm>
                         <Popconfirm
                             title='Подтвердите изменение'
@@ -244,7 +245,7 @@ export const ProgressHelper: React.FC<ProgresssHelper> = ({ record, myPremData, 
                             cancelText='Нет'
                             onConfirm={() => handleCancelTask(record.id, record.objectType)}
                         >
-                            <Button style={{ display: 'inline' }} size="small" type="link">Отменить задачу</Button>
+                            <Button disabled={access > 1} style={{ display: 'inline' }} size="small" type="link">Отменить задачу</Button>
                         </Popconfirm>
                     </div>
                 </Space>
@@ -261,7 +262,7 @@ export const ProgressHelper: React.FC<ProgresssHelper> = ({ record, myPremData, 
                             cancelText='Нет'
                             onConfirm={() => handleCancelTask(record.id, record.objectType)}
                         >
-                            <Button style={{ display: 'inline' }} size="small" type="link">Отменить задачу</Button>
+                            <Button disabled={access > 1} style={{ display: 'inline' }} size="small" type="link">Отменить задачу</Button>
                         </Popconfirm >
                     </div>
                 </Space>

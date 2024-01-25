@@ -183,7 +183,7 @@ const Monitoring: React.FC = () => {
         {
             title: <Text strong style={{ fontSize: '12pt' }}>Прогресс</Text>,
             render: (text, record, index) => {
-                return <ProgressHelper type="mon" key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} mySysData={mySysData} myProcData={myProcData} />
+                return <ProgressHelper type="mon" key={index} record={record} myPremData={myPremData} myEquipData={myEquipData} mySysData={mySysData} myProcData={myProcData} access={access} />
             },
             align: 'center',
             width: '10%'
