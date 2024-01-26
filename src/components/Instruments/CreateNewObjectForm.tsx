@@ -8,7 +8,11 @@ import { CustomController } from "../common/FormControls"
 import { NewInstObjectType, createNewObject, instActions } from "../../redux/Reducers/instrumentsReducer"
 import { getInstCreateNewObjectErrorMessage } from "../../redux/Selectors/instrumentsSelectors"
 
-export const NewObjectForm: React.FC = () => {
+type NewObjectFormtype = {
+    access: number
+}
+
+export const NewObjectForm: React.FC<NewObjectFormtype> = ({access}) => {
     const dispatch: AppDispatch = useDispatch()
 
     const { handleSubmit, control, formState: { errors }, reset, getValues } = useForm<NewInstObjectType>()
@@ -49,7 +53,7 @@ export const NewObjectForm: React.FC = () => {
 
     return <>
         {contextHolder}
-        <Button type="link" icon={<PlusOutlined />} onClick={() => setShowForm(true)} />
+        <Button disabled={access > 1} type="link" icon={<PlusOutlined />} onClick={() => setShowForm(true)} />
         <Modal width={550} destroyOnClose centered title='Добавление валидационного прибора в систему' open={showForm} onCancel={() => handleCancel()} footer={[<Button key="close" onClick={() => handleCancel()} type="primary">Отмена</Button>]} >
             <Form style={{ marginTop: '30px' }} layout="horizontal" size="small" onFinish={handleSubmit(submit, error)}>
                 <CustomController control={control} name='name' type='text' label='Наименование' required={true} maxLength={100} />

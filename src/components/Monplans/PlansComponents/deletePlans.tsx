@@ -7,8 +7,9 @@ import { AppDispatch } from "../../../redux/store"
 type DeletePlansType = {
     month: string
     record: PlansType
+    access: number
 }
-export const DeletePlans: React.FC<DeletePlansType> = ({ record, month }) => {
+export const DeletePlans: React.FC<DeletePlansType> = ({ record, month, access }) => {
     const dispatch: AppDispatch = useDispatch()
     const handleDeletePlans = () => {
         dispatch(deletePlans(record.id, record.idfromtable, record.tablename, month))
@@ -21,7 +22,7 @@ export const DeletePlans: React.FC<DeletePlansType> = ({ record, month }) => {
             cancelText='Нет'
             onConfirm={handleDeletePlans}
         >
-            <Button danger type="link" icon={<DeleteOutlined style={{ fontSize: '14pt' }} />} disabled={record.status === 'Выполнено' || !record.name} />
+            <Button danger type="link" icon={<DeleteOutlined style={{ fontSize: '14pt' }} />} disabled={record.status === 'Выполнено' || !record.name || access > 1} />
         </Popconfirm>
     )
 }

@@ -10,9 +10,10 @@ type FioChangerType = {
     startDate: string
     record: any
     date: string
+    access: number
 }
 
-export const DateChanger: React.FC<FioChangerType> = ({ startDate, record, date }) => {
+export const DateChanger: React.FC<FioChangerType> = ({ startDate, record, date, access }) => {
     const [visible, setVisible] = useState(false)
     const [dateArray, setDate] = useState([] as any)
     const dispatch: AppDispatch = useDispatch()
@@ -50,7 +51,7 @@ export const DateChanger: React.FC<FioChangerType> = ({ startDate, record, date 
             value={startDate !== '' ? record.date2 !== '' ? [dayjs(startDate !== '' ? startDate : null, dateFormat), dayjs(record.date2, dateFormat)] : [dayjs(startDate, dateFormat), null] : [null, null]}
             format={dateFormat}
             onChange={(dateArray: any) => dateChangeHandler(dateArray)}
-            disabled={record.status === 'Выполнено' || !record.name}
+            disabled={record.status === 'Выполнено' || !record.name || access > 1}
             status={(startDate !== '') ? '' : 'warning'}
         />
         <Popconfirm

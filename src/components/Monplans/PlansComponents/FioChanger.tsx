@@ -9,10 +9,11 @@ type FioChangerType = {
     record: any
     date: string
     allValidatorsFio: any
+    access: number
 }
 
-export const FioChanger: React.FC<FioChangerType> = ({fio, record, date, allValidatorsFio}) => {
-    
+export const FioChanger: React.FC<FioChangerType> = ({ fio, record, date, allValidatorsFio, access }) => {
+
     const [visible, setVisible] = useState(false)
     const [handleFio, setFio] = useState('')
     const dispatch: AppDispatch = useDispatch()
@@ -31,23 +32,23 @@ export const FioChanger: React.FC<FioChangerType> = ({fio, record, date, allVali
     }
     return (<>
         <Select
-          dropdownStyle={{width: 'auto'}}
-          value={fio}
-          size="small"
-          onChange={handleSelectChange}
-          bordered={true}
-          options={allValidatorsFio}
-          disabled={record.status === 'Выполнено' || !record.name}
-          // loading={isVMPDepartmentLoading}
+            dropdownStyle={{ width: 'auto' }}
+            value={fio}
+            size="small"
+            onChange={handleSelectChange}
+            bordered={true}
+            options={allValidatorsFio}
+            disabled={record.status === 'Выполнено' || !record.name || access > 1}
+        // loading={isVMPDepartmentLoading}
         />
         <Popconfirm
-          title='Подтвердите изменение'
-          description='Вы уверены, что хотите изменить ответственного?'
-          okText='Да'
-          cancelText='Нет'
-          onConfirm={handleUpdateConfirmation}
-          open={visible}
-          onCancel={() => setVisible(false)}
+            title='Подтвердите изменение'
+            description='Вы уверены, что хотите изменить ответственного?'
+            okText='Да'
+            cancelText='Нет'
+            onConfirm={handleUpdateConfirmation}
+            open={visible}
+            onCancel={() => setVisible(false)}
         />
     </>)
 }

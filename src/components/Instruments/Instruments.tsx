@@ -15,6 +15,7 @@ import type { InputRef } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { NewObjectForm } from "./CreateNewObjectForm"
+import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 
 const { Text } = Typography;
 
@@ -38,6 +39,7 @@ const Instruments: React.FC = () => {
     const isLoading = useSelector(getIsLoading)
 
     const errorMessage = useSelector(getInstErrorMessage)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
 
     const [messageApi, contextHolder] = message.useMessage()
 
@@ -208,7 +210,7 @@ const Instruments: React.FC = () => {
                         pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"] }}
                         title={() => <>
                             <Text style={{ fontSize: '13pt' }}>
-                                <NewObjectForm />
+                                <NewObjectForm access={access} />
                                 Валидационные приборы (всего: {instData.length})
                             </Text>
                         </>}

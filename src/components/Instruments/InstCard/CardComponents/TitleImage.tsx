@@ -11,9 +11,10 @@ const {Text} = Typography
 type TitleImagePropsType = {
     instObject: DataType
     id: string
+    access: number
 }
 
-export const TitleImage: React.FC<TitleImagePropsType> = ({instObject, id}) => {
+export const TitleImage: React.FC<TitleImagePropsType> = ({instObject, id, access}) => {
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
     
@@ -56,7 +57,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({instObject, id}) => {
         <>  
             {contextHolder}
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
-                <Title editable={{onChange: (text: string) => handleUpdateName(text)}} style={{marginBottom: '20px'}} level={4}>{instObject.name }</Title>
+                <Title editable={access > 3 ? false : {onChange: (text: string) => handleUpdateName(text)}} style={{marginBottom: '20px'}} level={4}>{instObject.name }</Title>
                 <Image
                     src={instObject.foto ? "http://10.85.10.212/ov/" + instObject.foto : empty}
                     preview = { instObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }
@@ -71,7 +72,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({instObject, id}) => {
             </div>
             { !instObject.foto && <>
                 <input id="uploadPhoto" accept="image/jpeg, image/png" type="file" style={{display: 'none'}} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
-                <Button htmlType="submit" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
+                <Button disabled={access > 3} htmlType="submit" icon={<UploadOutlined style={{fontSize: '12pt'}} />} type="primary" onClick={() => fileInputRef.click()}>Загрузить фото</Button>
                 </>
             }
             { instObject.foto && id && <>
@@ -82,7 +83,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({instObject, id}) => {
                         cancelText='Нет'
                         onConfirm={handleDeleteFoto}
                     >
-                        <Button icon={<DeleteOutlined style={{fontSize: '12pt'}} />} danger>Удалить фото</Button>
+                        <Button disabled={access > 3} icon={<DeleteOutlined style={{fontSize: '12pt'}} />} danger>Удалить фото</Button>
                     </Popconfirm>
                 </>  }
         </>

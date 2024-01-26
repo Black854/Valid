@@ -16,6 +16,7 @@ import type { ColumnType, ColumnsType } from 'antd/es/table'
 import type { FilterConfirmProps } from 'antd/es/table/interface'
 import { defaultPagination } from "../../redux/Reducers/appReducer"
 import { NewObjectForm } from "./CreateNewObjectForm"
+import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 
 const { Text } = Typography
 
@@ -40,6 +41,7 @@ const Equipment: React.FC = () => {
   const isLoading = useSelector(getIsLoading)
 
   const errorMessage = useSelector(getEquipErrorMessage)
+  const access = parseInt(useSelector(getUserDataAccessSelector))
 
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -253,7 +255,7 @@ const Equipment: React.FC = () => {
             pagination={defaultPagination}
             title={() => <>
               <Text style={{ fontSize: '13pt' }}>
-                <NewObjectForm />
+                <NewObjectForm access={access} />
                 Оборудование (всего: {equipData.length})
               </Text>
             </>}

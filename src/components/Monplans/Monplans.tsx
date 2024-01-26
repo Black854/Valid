@@ -15,6 +15,7 @@ import { DocChanger } from "./PlansComponents/DocChanger"
 import 'dayjs/locale/ru'
 import { DateChanger } from "./PlansComponents/Datechanger"
 import { DeletePlans } from "./PlansComponents/DeletePlans"
+import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 
 const { Text } = Typography
 
@@ -24,6 +25,7 @@ const Monplans: React.FC = ({ }) => {
   const dispatch: AppDispatch = useDispatch()
   const monthList = useSelector(getMonthListSelector)
   const allValidators = useSelector(getAllValidatorsSelector)
+  const access = parseInt(useSelector(getUserDataAccessSelector))
   const emptyFioObject = [{ value: '', label: <Text type="warning">Не указано</Text> }]
   const allValidatorsFio = [...emptyFioObject, ...allValidators.map(e => ({ value: e.fio, label: e.fio }))]
   const [modalOpen, setModalOpen] = useState(false)
@@ -135,28 +137,28 @@ const Monplans: React.FC = ({ }) => {
       dataIndex: 'date',
       render: (startObjectDate, record) => {
 
-        return <DateChanger record={record} startDate={startObjectDate} date={date} />
+        return <DateChanger record={record} startDate={startObjectDate} date={date} access={access} />
       },
       align: 'center'
     },
     {
       title: <Text strong style={{ fontSize: '12pt' }}>Ответственный</Text>,
       dataIndex: 'fio',
-      render: (fio, record) => <FioChanger allValidatorsFio={allValidatorsFio} date={date} fio={fio} record={record} key={record.id} />,
+      render: (fio, record) => <FioChanger allValidatorsFio={allValidatorsFio} date={date} fio={fio} record={record} key={record.id} access={access} />,
       width: '10%',
       align: 'center'
     },
     {
       title: <Text strong style={{ fontSize: '12pt' }}>Результат</Text>,
       dataIndex: 'doc',
-      render: (doc, record) => <DocChanger date={date} doc={doc} record={record} key={record.id} />,
+      render: (doc, record) => <DocChanger date={date} doc={doc} record={record} key={record.id} access={access} />,
       sorter: (a, b) => a.doc.localeCompare(b.doc),
       sortDirections: ['ascend', 'descend'],
       width: '12%',
       align: 'center',
     },
     {
-      render: (text, record) => <DeletePlans month={date} record={record} />,
+      render: (text, record) => <DeletePlans month={date} record={record} access={access} />,
       align: 'center',
     },
   ]

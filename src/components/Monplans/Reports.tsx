@@ -10,6 +10,7 @@ import { ColumnsType } from "antd/es/table"
 import empty from './../../img/empty.png'
 import { getAllValidators } from "../../redux/Reducers/appReducer"
 import 'dayjs/locale/ru'
+import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 
 const { Text } = Typography
 
@@ -18,6 +19,7 @@ type MenuItem = Required<MenuProps>['items'][number]
 const Reports: React.FC = ({ }) => {
   const dispatch: AppDispatch = useDispatch()
   const monthList = useSelector(getMonthListSelector)
+  const access = parseInt(useSelector(getUserDataAccessSelector))
   const [modalOpen, setModalOpen] = useState(false)
   const [iframeKey, setIframeKey] = useState(0)
   const params = useParams()
@@ -167,7 +169,7 @@ const Reports: React.FC = ({ }) => {
       title: <Text strong style={{ fontSize: '12pt' }}>Статус</Text>,
       dataIndex: 'status',
       render: (status, record) => status === 'Выполнено' ? <Text type='success'>{status}</Text> :
-        <Text type='warning' editable={{ onChange: (text) => handleUpdateReportStatus(text, record) }}>{status}</Text>,
+        <Text type='warning' editable={access > 1 ? false : { onChange: (text) => handleUpdateReportStatus(text, record) }}>{status}</Text>,
       width: '10%',
       align: 'center',
     },

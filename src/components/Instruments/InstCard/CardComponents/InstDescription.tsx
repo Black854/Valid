@@ -5,7 +5,7 @@ type InstDescriptionsPropsType = {
     data: any
 }
 
-export const InstDescriptions: React.FC<InstDescriptionsPropsType> = ({columns, data}) => {
+export const InstDescriptions: React.FC<InstDescriptionsPropsType> = ({ columns, data }) => {
     return (
         <>
             <Table

@@ -8,9 +8,10 @@ type FioChangerType = {
     doc: string
     record: any
     date: string
+    access: number
 }
 
-export const DocChanger: React.FC<FioChangerType> = ({ doc, record, date }) => {
+export const DocChanger: React.FC<FioChangerType> = ({ doc, record, date, access }) => {
     const options = [{ value: 'Отчет по квалификации', label: 'Отчет по квалификации' }, { value: 'Отчет о периодической оценке', label: 'Отчет о периодической оценке' }]
     const [visible, setVisible] = useState(false)
     const [handleDoc, setDoc] = useState('')
@@ -36,7 +37,7 @@ export const DocChanger: React.FC<FioChangerType> = ({ doc, record, date }) => {
             onChange={handleSelectChange}
             bordered={true}
             options={options}
-            disabled={record.status === 'Выполнено' || !record.name}
+            disabled={record.status === 'Выполнено' || !record.name || access > 1}
         />
         <Popconfirm
             title='Подтвердите изменение'

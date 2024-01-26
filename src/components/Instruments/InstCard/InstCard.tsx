@@ -10,6 +10,7 @@ import { InstDescriptions } from "./CardComponents/InstDescription"
 import { getInstById, getInstCardError, getInstData, getIsLoading } from "../../../redux/Selectors/instrumentsSelectors"
 import { getInstruments, instActions, updateManufacturDate, updateManufacturer, updateName2, updateSerial } from "../../../redux/Reducers/instrumentsReducer"
 import { ConvertDateInst } from "../../common/convertDateInst"
+import { getUserDataAccessSelector } from "../../../redux/Selectors/authSelectors"
 const { Text } = Typography
 
 const InstCard: React.FC = () => {
@@ -27,6 +28,7 @@ const InstCard: React.FC = () => {
     const instObject = useSelector((state: AppStateType) => getInstById(state, id))
 
     const procCardError = useSelector(getInstCardError)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
 
     const [messageApi, contextHolder] = message.useMessage()
 
@@ -69,8 +71,8 @@ const InstCard: React.FC = () => {
         const data = [
             {
                 rowName: 'Назначение прибора',
-                value: instObject.name2 === '' ?    <Text type="warning" editable={{onChange: (text) => handleUpdateName2(text), text: ''}}>Не указано</Text>:
-                                                    <Text editable={{onChange: (text) => handleUpdateName2(text)}}>{instObject.name2}</Text>
+                value: instObject.name2 === '' ?    <Text type="warning" editable={access > 3 ? false : {onChange: (text) => handleUpdateName2(text), text: ''}}>Не указано</Text>:
+                                                    <Text editable={access > 3 ? false : {onChange: (text) => handleUpdateName2(text)}}>{instObject.name2}</Text>
             },
             {
                 rowName: 'Количество',
@@ -86,18 +88,18 @@ const InstCard: React.FC = () => {
             },
             {
                 rowName: 'Производитель',
-                value: instObject.manufacturer === '' ?   <Text type="warning" editable={{onChange: (text) => handleUpdateManufacturer(text), text: ''}}>Не указано</Text>:
-                                                            <Text editable={{onChange: (text) => handleUpdateManufacturer(text)}}>{instObject.manufacturer}</Text>
+                value: instObject.manufacturer === '' ?   <Text type="warning" editable={access > 3 ? false : {onChange: (text) => handleUpdateManufacturer(text), text: ''}}>Не указано</Text>:
+                                                            <Text editable={access > 3 ? false : {onChange: (text) => handleUpdateManufacturer(text)}}>{instObject.manufacturer}</Text>
             },
             {
                 rowName: 'Год изготовления',
-                value: instObject.manufacturdate === '' ?   <Text type="warning" editable={{onChange: (text) => handleUpdateManufacturdate(text), text: ''}}>Не указано</Text>:
-                                                            <Text editable={{onChange: (text) => handleUpdateManufacturdate(text)}}>{instObject.manufacturdate}</Text>
+                value: instObject.manufacturdate === '' ?   <Text type="warning" editable={access > 3 ? false : {onChange: (text) => handleUpdateManufacturdate(text), text: ''}}>Не указано</Text>:
+                                                            <Text editable={access > 3 ? false : {onChange: (text) => handleUpdateManufacturdate(text)}}>{instObject.manufacturdate}</Text>
             },
             {
                 rowName: 'Серийный номер',
-                value: instObject.serial === '' ?   <Text type="warning" editable={{onChange: (text) => handleUpdateSerial(text), text: ''}}>Не указано</Text>:
-                                                    <Text editable={{onChange: (text) => handleUpdateSerial(text)}}>{instObject.serial}</Text>
+                value: instObject.serial === '' ?   <Text type="warning" editable={access > 3 ? false : {onChange: (text) => handleUpdateSerial(text), text: ''}}>Не указано</Text>:
+                                                    <Text editable={access > 3 ? false : {onChange: (text) => handleUpdateSerial(text)}}>{instObject.serial}</Text>
             },
         ]
         
@@ -121,12 +123,12 @@ const InstCard: React.FC = () => {
             {
               key: '2',
               label: 'Техническая информация',
-              children: <TechnicalInfo id={instObject.id} />,
+              children: <TechnicalInfo id={instObject.id} access={access} />,
             },
             {
               key: '3',
               label: 'Медиа файлы',
-              children: <PhotosBlock id={instObject.id} />,
+              children: <PhotosBlock id={instObject.id} access={access} />,
             },
           ]
 
@@ -135,7 +137,7 @@ const InstCard: React.FC = () => {
             {contextHolder}
             <Row style={{padding: '10px 0'}} >
                 <Col span={5} push={1} style={{textAlign: 'center'}} >
-                    <TitleImage instObject={instObject} id={id} />
+                    <TitleImage instObject={instObject} id={id} access={access} />
                 </Col>
                 <Col span={16} push={2} style={{minHeight: '89vh', display: "flex", flexDirection: 'column'}} >
                     <Tabs
