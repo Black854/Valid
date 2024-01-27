@@ -5,12 +5,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getPainterData, setPainterData } from '../../redux/Reducers/appReducer'
 import _ from 'lodash'
 import { Loading } from '../common/Loading'
+import { getUserDataAccessSelector } from '../../redux/Selectors/authSelectors'
 
 const Painter = () => {
   const dispatch = useDispatch()
 
   const themeType = useSelector(getThemeType)
   const painterData = useSelector(getPainterDataSelector)
+  const access = parseInt(useSelector(getUserDataAccessSelector))
   const [elements, setElements] = useState(painterData && painterData.length > 0 ? JSON.parse(painterData) : null)
 
   useEffect(() => {
@@ -60,7 +62,7 @@ const Painter = () => {
             viewBackgroundColor: '#edf2ff',
           },
         }}
-        onChange={(e) => handleUpdateElements(e)}
+        onChange={access > 3 ? undefined : (e) => handleUpdateElements(e)}
         theme={themeType}
         langCode='ru-RU'
       />

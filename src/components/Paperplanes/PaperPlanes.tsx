@@ -1,11 +1,12 @@
-import { DeleteFilled, EyeOutlined, PlusOutlined } from "@ant-design/icons"
+import { DeleteOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons"
 import { Button, Col, Image, Modal, Popconfirm, Row, Typography, message } from "antd"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../redux/store"
 import pdf from './../../img/pdfi.png'
 import { getPaperplanesSelector } from "../../redux/Selectors/paperplanesSelectors"
 import { createPaperplanes, deletePaperplanes, getPaperplanes, setPaperplanesDescription } from "../../redux/Reducers/paperplanesReducer"
+import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 
 const { Text, Title } = Typography
 
@@ -22,6 +23,7 @@ const PaperPlanes: React.FC = () => {
 
     const dispatch: AppDispatch = useDispatch()
     const paperplanes = useSelector(getPaperplanesSelector)
+    const access = parseInt(useSelector(getUserDataAccessSelector))
     const addObjectToPaperplanes = {
         id: '99999',
         planename: '',
@@ -83,7 +85,7 @@ const PaperPlanes: React.FC = () => {
             }
             
             return <Col key={e.id} xs={24} sm={12} md={8} lg={3} style={{ padding: '4px' }}>
-                <Text editable={{ onChange: (text) => { setPdfDescription(e.id, text) } }} style={{ color: 'black', position: 'absolute', top: '3%', left: '5%', width: '80%', zIndex: '1' }}>{e.planename}</Text>
+                <Text editable={access > 3 ? false : { onChange: (text) => { setPdfDescription(e.id, text) } }} style={{ color: 'black', position: 'absolute', top: '3%', left: '5%', width: '80%', zIndex: '1' }}>{e.planename}</Text>
                 <Image preview={false} src={pdf} height='100%' style={{ objectFit: 'cover', cursor: 'pointer' }} onClick={() => showModal(e.id)} />
                 <Modal title="Просмотр документа" open={isModalOpen} onCancel={() => handleCancel(e.id)} footer={[<Button key="close" onClick={() => handleCancel(e.id)} type="primary">Закрыть</Button>]} >
                     <object data={'http://10.85.10.212/ov/' + e.urlplane} type="application/pdf" width="100%" height="600px">
@@ -97,7 +99,7 @@ const PaperPlanes: React.FC = () => {
                     cancelText='Нет'
                     onConfirm={() => { handleDeletePhoto(e.id) }}
                 >
-                    <Button size="small" danger icon={<DeleteFilled />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1' }} />
+                    <Button disabled={access > 3} size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
                 </Popconfirm>
             </Col>
         } else if (e.id === '99999') {
@@ -117,6 +119,7 @@ const PaperPlanes: React.FC = () => {
                     }}
                     type="dashed"
                     onClick={() => fileInputRef.click()}
+                    disabled={access > 3}
                 />
                 <input id="uploadPhoto" accept="image/jpeg, image/png, application/pdf, video/mp4" type="file" style={{ display: 'none' }} onChange={onSelectPhoto} ref={(input) => (fileInputRef = input)} />
             </Col>
@@ -135,7 +138,7 @@ const PaperPlanes: React.FC = () => {
                     cancelText='Нет'
                     onConfirm={() => { handleDeletePhoto(e.id) }}
                 >
-                    <Button size="small" danger icon={<DeleteFilled />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1' }} />
+                    <Button disabled={access > 3} size="small" danger icon={<DeleteOutlined />} shape="circle" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: '1', background: 'none' }} />
                 </Popconfirm>
             </Col>
         }

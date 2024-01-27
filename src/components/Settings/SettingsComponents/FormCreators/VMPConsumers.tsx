@@ -1,24 +1,25 @@
 import { Button, Form, Modal } from "antd"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form"
-import { OrderedListOutlined, PlusOutlined } from "@ant-design/icons"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { OrderedListOutlined } from "@ant-design/icons"
 import { AppDispatch } from "../../../../redux/store"
 import { CustomController } from "../../../common/FormControls"
-import { DepartmentsType, createNewDepartment, setVMPConsumers } from "../../../../redux/Reducers/appReducer"
+import { DepartmentsType, setVMPConsumers } from "../../../../redux/Reducers/appReducer"
 
 interface VMPConsumers {
     VMPname: string,
     departments: DepartmentsType[],
     VMPId: string
     consumers: string
+    access: number
 }
 
 type consumersArray<T> = {
     [key: number]: T
 }
 
-export const VMPConsumers: React.FC<VMPConsumers> = ({VMPname, departments, consumers, VMPId}) => {
+export const VMPConsumers: React.FC<VMPConsumers> = ({VMPname, departments, consumers, VMPId, access}) => {
     const dispatch: AppDispatch = useDispatch()
     const defaultValues = JSON.parse(consumers).reduce((acc: any, currentValue: any) => {
         acc[currentValue] = true
@@ -59,7 +60,7 @@ export const VMPConsumers: React.FC<VMPConsumers> = ({VMPname, departments, cons
         <Modal width={550} destroyOnClose centered title={`Согласователи графика ВМП ${VMPname}`} open={showForm} onCancel={() => handleCancel()} footer={[<Button key="close" onClick={() => handleCancel()} type="primary">Отмена</Button>]} >
             <Form key={formKey} style={{ marginTop: '30px' }} layout="horizontal" size="small" onFinish={handleSubmit(submit)}>
                 {data}
-                <Button style={{ marginTop: '25px' }} size="small" type="primary" htmlType="submit">Изменить список</Button>
+                <Button disabled={access > 1} style={{ marginTop: '25px' }} size="small" type="primary" htmlType="submit">Изменить список</Button>
             </Form>
         </Modal>
     </>

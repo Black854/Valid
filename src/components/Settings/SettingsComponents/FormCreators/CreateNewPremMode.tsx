@@ -5,11 +5,13 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { PlusOutlined } from "@ant-design/icons"
 import { AppDispatch } from "../../../../redux/store"
 import { CustomController } from "../../../common/FormControls"
-import { EquipGroupsType, PremModesType, VMPDepartmentsType, createNewEquipGroup, createNewPremMode, createNewVMPDepartment } from "../../../../redux/Reducers/appReducer"
+import { PremModesType, createNewPremMode } from "../../../../redux/Reducers/appReducer"
 
+type FormPropsType = {
+    access: number
+}
 
-
-export const NewPremMode: React.FC = () => {
+export const NewPremMode: React.FC<FormPropsType> = ({ access }) => {
     const dispatch: AppDispatch = useDispatch()
 
     const { handleSubmit, control, formState: { errors }, setError, reset, getFieldState } = useForm<PremModesType>()
@@ -39,14 +41,14 @@ export const NewPremMode: React.FC = () => {
                 reset()
             }
         } else {
-            setError('low', {'message': 'Минимальное и максимальное значение не могут быть равны'})
-            setError('hight', {'message': 'Минимальное и максимальное значение не могут быть равны'})
+            setError('low', { 'message': 'Минимальное и максимальное значение не могут быть равны' })
+            setError('hight', { 'message': 'Минимальное и максимальное значение не могут быть равны' })
         }
 
     }
 
     return <>
-        <Button type="link" icon={<PlusOutlined />} onClick={() => setShowForm(true)} />
+        <Button disabled={access > 2} type="link" icon={<PlusOutlined />} onClick={() => setShowForm(true)} />
         <Modal width={550} destroyOnClose centered title='Добавление режима температуры/влажности в систему' open={showForm} onCancel={() => handleCancel()} footer={[<Button key="close" onClick={() => handleCancel()} type="primary">Отмена</Button>]} >
             <Form style={{ marginTop: '30px' }} layout="horizontal" size="small" onFinish={handleSubmit(submit)}>
                 <CustomController control={control} name='type' type='select' label='Тип режима' required={true} options={modeTypeOptions} />

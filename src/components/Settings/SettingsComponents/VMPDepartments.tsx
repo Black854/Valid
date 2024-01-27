@@ -10,7 +10,11 @@ import { VMPConsumers } from "./FormCreators/VMPConsumers"
 
 const { Text } = Typography
 
-export const VMPDepartments: React.FC = () => {
+type VMPDepartmentsPropsType = {
+    access: number
+}
+
+export const VMPDepartments: React.FC<VMPDepartmentsPropsType> = ({ access }) => {
     const [messageApi, contextHolder] = message.useMessage()
 
     const error = () => {
@@ -66,41 +70,41 @@ export const VMPDepartments: React.FC = () => {
         {
             title: <Text>Название в меню</Text>,
             dataIndex: 'menuname',
-            render: (text, record) => <Text editable={{ onChange: (text) => { handleChangeMenuname(record.id, text) } }}>{text}</Text>,
+            render: (text, record) => <Text editable={access > 1 ? false : { onChange: (text) => { handleChangeMenuname(record.id, text) } }}>{text}</Text>,
         },
         {
             title: <Text>Подразделение мастер-плана</Text>,
             dataIndex: 'vmpname1',
-            render: (text, record) => <Text editable={{ onChange: (text) => { handleChangeVmpname1(record.id, text) } }}>{text}</Text>,
+            render: (text, record) => <Text editable={access > 1 ? false : { onChange: (text) => { handleChangeVmpname1(record.id, text) } }}>{text}</Text>,
         },
         {
             title: <Text>Наименование в р.п.</Text>,
             dataIndex: 'vmpname2',
-            render: (text, record) => <Text editable={{ onChange: (text) => { handleChangeVmpname2(record.id, text) } }}>{text}</Text>,
+            render: (text, record) => <Text editable={access > 1 ? false : { onChange: (text) => { handleChangeVmpname2(record.id, text) } }}>{text}</Text>,
         },
         {
             title: <Text>Кодировка ВМП</Text>,
             dataIndex: 'code',
-            render: (text, record) => <Text editable={{ onChange: (text) => { handleChangeCode(record.id, text) } }}>{text}</Text>,
+            render: (text, record) => <Text editable={access > 1 ? false : { onChange: (text) => { handleChangeCode(record.id, text) } }}>{text}</Text>,
             align: 'right',
         },
         {
             title: <Text>Кодировка формы графика</Text>,
             dataIndex: 'code2',
-            render: (text, record) => <Text editable={{ onChange: (text) => { handleChangeCode2(record.id, text) } }}>{text}</Text>,
+            render: (text, record) => <Text editable={access > 1 ? false : { onChange: (text) => { handleChangeCode2(record.id, text) } }}>{text}</Text>,
             align: 'left',
         },
         {
             title: <Text>Согласователи</Text>,
             dataIndex: 'isactive',
-            render: (text, record) => <VMPConsumers VMPId={record.id} VMPname={record.vmpname2} departments={departmentsData} consumers={record.consumers} />,
+            render: (text, record) => <VMPConsumers VMPId={record.id} VMPname={record.vmpname2} departments={departmentsData} consumers={record.consumers} access={access} />,
             align: 'center',
         },
         {
             title: <Text>Действия</Text>,
             dataIndex: 'isactive',
             render: (text, record) => <>
-                <Button onClick={() => { handleChangeIsActive(record.id, text === '1' ? '0' : '1') }} size="small" type="link">{text === '0' ? <Text type="success">Деактивировать</Text> : <Text type="warning">Активировать</Text>}</Button>
+                <Button disabled={access > 1} onClick={() => { handleChangeIsActive(record.id, text === '1' ? '0' : '1') }} size="small" type="link">{access > 1 ? text === '0' ? <Text type="secondary">Деактивировать</Text> : <Text type="secondary">Активировать</Text> : text === '0' ? <Text type="success">Деактивировать</Text> : <Text type="warning">Активировать</Text>}</Button>
             </>,
             align: 'right',
         },
@@ -121,7 +125,7 @@ export const VMPDepartments: React.FC = () => {
             pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"] }}
             title={() => <>
                 <Text style={{ fontSize: '13pt' }}>
-                    <NewVMPDepartmentForm />
+                    <NewVMPDepartmentForm access={access} />
                     Настройки графиков ВМП
                 </Text>
             </>}

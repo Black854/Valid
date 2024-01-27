@@ -4,36 +4,39 @@ import { VMPDepartments } from "./SettingsComponents/VMPDepartments"
 import { CodeForms } from "./SettingsComponents/CodeForms"
 import { EquipGroups } from "./SettingsComponents/EquipGroups"
 import { PremModes } from "./SettingsComponents/PremModes"
+import { useSelector } from "react-redux"
+import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 
 const { Title } = Typography
 
 
 const Settings: React.FC = () => {
+    const access = parseInt(useSelector(getUserDataAccessSelector))
     const items: TabsProps['items'] = [
         {
             key: '1',
             label: 'Подразделения и ответственные',
-            children: <Departments />,
+            children: <Departments access={access} />,
         },
         {
             key: '2',
             label: 'Графики ВМП',
-            children: <VMPDepartments />,
+            children: <VMPDepartments access={access} />,
         },
         {
             key: '3',
             label: 'Кодировки печатных форм',
-            children: <CodeForms />,
+            children: <CodeForms access={access} />,
         },
         {
             key: '4',
             label: 'Группы оборудования',
-            children: <EquipGroups />,
+            children: <EquipGroups access={access} />,
         },
         {
             key: '5',
             label: 'Климатические режимы',
-            children: <PremModes />,
+            children: <PremModes access={access} />,
         },
     ]
 

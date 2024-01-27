@@ -1,6 +1,6 @@
 import { Button, Table, Typography, message } from "antd"
 import { ColumnsType } from "antd/es/table"
-import { DepartmentsType, EquipGroupsType, getDepartments, getEquipGroups, setEquipGroupsData } from "../../../redux/Reducers/appReducer"
+import { EquipGroupsType, getEquipGroups, setEquipGroupsData } from "../../../redux/Reducers/appReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { getEquipGroupsIsLoadingSelector, getEquipGroupsSelector } from "../../../redux/Selectors/appSelectors"
 import { useEffect } from "react"
@@ -9,7 +9,11 @@ import { NewEquipGroup } from "./FormCreators/CreateNewEquipGroup"
 
 const { Text } = Typography
 
-export const EquipGroups: React.FC = () => {
+type EquipGroupsPropsType = {
+    access: number
+}
+
+export const EquipGroups: React.FC<EquipGroupsPropsType> = ({ access }) => {
     const [messageApi, contextHolder] = message.useMessage()
 
     const error = () => {
@@ -49,12 +53,12 @@ export const EquipGroups: React.FC = () => {
         {
             title: <Text>Наименование группы</Text>,
             dataIndex: 'name',
-            render: (text, record) => <Text editable={equipGroupsWithoutEdit.includes(text) ? false : { onChange: (text) => { handleChangeName(record.id, text) } }}>{text}</Text>,
+            render: (text, record) => <Text editable={(equipGroupsWithoutEdit.includes(text) || access > 2) ? false : { onChange: (text) => { handleChangeName(record.id, text) } }}>{text}</Text>,
         },
         {
             title: <Text>Видимость в системе</Text>,
             dataIndex: 'isactive',
-            render: (text, record) => <Button size="small" type="link" disabled={equipGroupsWithoutEdit.includes(record.name)} onClick={equipGroupsWithoutEdit.includes(record.name) ? undefined : () => handleChangeIsActive(record.id, text === '0' ? '1' : '0')}>{text === '0' ? <Text type={equipGroupsWithoutEdit.includes(record.name) ? 'secondary' : 'success'}>Деактивировать</Text> : <Text type={equipGroupsWithoutEdit.includes(record.name) ? 'secondary' : 'warning'}>Активировать</Text>}</Button>,
+            render: (text, record) => <Button size="small" type="link" disabled={equipGroupsWithoutEdit.includes(record.name) || access > 2} onClick={equipGroupsWithoutEdit.includes(record.name) ? undefined : () => handleChangeIsActive(record.id, text === '0' ? '1' : '0')}>{access > 2 ? text === '0' ? <Text type='secondary'>Деактивировать</Text> : <Text type='secondary'>Активировать</Text> : text === '0' ? <Text type={equipGroupsWithoutEdit.includes(record.name) ? 'secondary' : 'success'}>Деактивировать</Text> : <Text type={equipGroupsWithoutEdit.includes(record.name) ? 'secondary' : 'warning'}>Активировать</Text>}</Button>,
             align: 'right',
         },
     ]
@@ -74,7 +78,7 @@ export const EquipGroups: React.FC = () => {
             pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"] }}
             title={() => <>
                 <Text style={{ fontSize: '13pt' }}>
-                    <NewEquipGroup />
+                    <NewEquipGroup access={access} />
                     Настройки групп оборудования
                 </Text>
             </>}

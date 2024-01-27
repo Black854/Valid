@@ -15,9 +15,10 @@ type propsType = {
     month: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
     year: string
     fio: string
+    access: number
 }
 
-export const CellRenderHelper: React.FC<propsType> = ({ text, month, year, fio }) => {
+export const CellRenderHelper: React.FC<propsType> = ({ text, month, year, fio, access }) => {
     const [showCreateVacationsModal, setShowCreateVacationsModal] = useState(false)
     const [showEditVacationsModal, setShowEditVacationsModal] = useState(false)
     const [dates, setDates] = useState([] as any)
@@ -118,7 +119,7 @@ export const CellRenderHelper: React.FC<propsType> = ({ text, month, year, fio }
     return text ?
         <>
             <Text>{text}</Text>
-            <Button icon={<EditOutlined />} type="link" size="small" onClick={() => setShowEditVacationsModal(true)} />
+            <Button disabled={access > 2} icon={<EditOutlined />} type="link" size="small" onClick={() => setShowEditVacationsModal(true)} />
             <Modal destroyOnClose centered title={`Редактирование отпуска на ${monthLabel()} ${year}`} open={showEditVacationsModal} onCancel={() => handleCancel('showEditVacationsModal')} footer={[<Button key="close" onClick={() => handleCancel('showEditVacationsModal')} type="primary">Отмена</Button>]} >
                 <Text style={{ display: 'inline-block', marginRight: '10px', marginTop: '10px' }}>Выберите даты отпуска: </Text>
                 <RangePicker disabledDate={disabledDate} allowEmpty={[false, true]} format={'DD.MM.YYYY'} defaultValue={[startDate, endDate]} onChange={(e => setDates(e))} />
@@ -131,12 +132,12 @@ export const CellRenderHelper: React.FC<propsType> = ({ text, month, year, fio }
                 cancelText='Нет'
                 onConfirm={handleDeleteVacationsData}
             >
-                <Button icon={<DeleteOutlined />} danger type="link" size="small" />
+                <Button disabled={access > 2} icon={<DeleteOutlined />} danger type="link" size="small" />
             </Popconfirm>
         </>
         :
         <>
-            <Button icon={<PlusOutlined />} type="link" onClick={() => setShowCreateVacationsModal(true)} />
+            <Button disabled={access > 2} icon={<PlusOutlined />} type="link" onClick={() => setShowCreateVacationsModal(true)} />
             <Modal destroyOnClose centered title={`Добавление отпуска на ${monthLabel()} ${year}`} open={showCreateVacationsModal} onCancel={() => handleCancel('showCreateVacationsModal')} footer={[<Button key="close" onClick={() => handleCancel('showCreateVacationsModal')} type="primary">Отмена</Button>]} >
                 <Text style={{ display: 'inline-block', marginRight: '10px', marginTop: '10px' }}>Выберите даты отпуска: </Text>
                 <RangePicker disabledDate={disabledDate} allowEmpty={[false, true]} format={'DD.MM.YYYY'} defaultValue={[startDate, endDate]} onChange={(e => setDates(e))} />

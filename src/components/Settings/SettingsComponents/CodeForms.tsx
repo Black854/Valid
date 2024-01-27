@@ -9,14 +9,18 @@ import { UploadOutlined } from "@ant-design/icons"
 
 const { Text } = Typography
 
-export const CodeForms: React.FC = () => {
+type CodeFormsPropsType = {
+    access: number
+}
+
+export const CodeForms: React.FC<CodeFormsPropsType> = ({ access }) => {
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
-    
+
     const error = (fileName: string) => {
         messageApi.open({
-          type: 'error',
-          content: `Расширение файла ${fileName} не соответствует разрешенным`,
+            type: 'error',
+            content: `Расширение файла ${fileName} не соответствует разрешенным`,
         })
     }
     useEffect(() => {
@@ -39,7 +43,7 @@ export const CodeForms: React.FC = () => {
         {
             title: <Text>Кодировка печатной формы</Text>,
             dataIndex: 'codeform',
-            render: (text, record) => <Text editable={{ onChange: (text) => { handleUpdateCodeForm(record.id, text) } }}>{text}</Text>,
+            render: (text, record) => <Text editable={access > 2 ? false : { onChange: (text) => { handleUpdateCodeForm(record.id, text) } }}>{text}</Text>,
         },
     ]
 
@@ -61,13 +65,13 @@ export const CodeForms: React.FC = () => {
         },
         {
             title: <Text>Действия</Text>,
-            render: () => <><input id="uploadForm" accept=".pdf" type="file" style={{display: 'none'}} onChange={onSelectFile} ref={(input) => (fileInputRef = input)} />
-            <Button htmlType="submit" icon={<UploadOutlined style={{fontSize: '12pt'}} />} size='small' type="primary" onClick={() => fileInputRef.click()}>Загрузить актуальную форму</Button></>,
+            render: () => <><input id="uploadForm" accept=".pdf" type="file" style={{ display: 'none' }} onChange={onSelectFile} ref={(input) => (fileInputRef = input)} />
+                <Button disabled={access > 2} htmlType="submit" icon={<UploadOutlined style={{ fontSize: '12pt' }} />} size='small' type="primary" onClick={() => fileInputRef.click()}>Загрузить актуальную форму</Button></>,
         },
     ]
-    
+
     let fileInputRef: any = null
-    
+
     const uploadData = [{
         id: '1',
         codeform: '',

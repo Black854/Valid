@@ -9,7 +9,11 @@ import { NewDepartmentForm } from "./FormCreators/CreateNewDepartment"
 
 const { Text } = Typography
 
-export const Departments: React.FC = () => {
+type DepartmentsPropsType = {
+    access: number
+}
+
+export const Departments: React.FC<DepartmentsPropsType> = ({ access }) => {
     const dispatch: AppDispatch = useDispatch()
     useEffect(() => {
         dispatch(getDepartments())
@@ -47,22 +51,22 @@ export const Departments: React.FC = () => {
         {
             title: <Text>Наименование штатной единицы</Text>,
             dataIndex: 'name2',
-            render: (text, record) => <Text editable={{ onChange: (text) => {handleChangeName2(record.id, text)}}}>{text}</Text>,
+            render: (text, record) => <Text editable={access > 2 ? false : { onChange: (text) => { handleChangeName2(record.id, text) } }}>{text}</Text>,
         },
         {
             title: <Text>Должность сотрудника</Text>,
             dataIndex: 'pos',
-            render: (text, record) => <Text editable={{ onChange: (text) => {handleChangePos(record.id, text)}}}>{text}</Text>,
+            render: (text, record) => <Text editable={access > 2 ? false : { onChange: (text) => { handleChangePos(record.id, text) } }}>{text}</Text>,
         },
         {
             title: <Text>Ф.И.О. сотрудника</Text>,
             dataIndex: 'fio',
-            render: (text, record) => <Text editable={{ onChange: (text) => {handleChangeFio(record.id, text)}}}>{text}</Text>,
+            render: (text, record) => <Text editable={access > 2 ? false : { onChange: (text) => { handleChangeFio(record.id, text) } }}>{text}</Text>,
         },
         {
             title: <Text>Действия</Text>,
             dataIndex: 'stat',
-            render: (text, record) => <Button onClick={() => {handleChangeIsActive(record.id, text === '1' ? '' : '1')}} size="small" type="link">{text === '1' ? <Text type="success">Деактивировать</Text> : <Text type="warning">Активировать</Text>}</Button>,
+            render: (text, record) => <Button disabled={access > 2} onClick={() => { handleChangeIsActive(record.id, text === '1' ? '' : '1') }} size="small" type="link">{access > 2 ? text === '1' ? <Text type="secondary">Деактивировать</Text> : <Text type="secondary">Активировать</Text> : text === '1' ? <Text type="success">Деактивировать</Text> : <Text type="warning">Активировать</Text>}</Button>,
             align: 'right',
         },
     ]
@@ -71,7 +75,7 @@ export const Departments: React.FC = () => {
         ...item,
         index: index + 1,
         key: item.id
-      }))
+    }))
 
     return <>
         <Table
@@ -81,7 +85,7 @@ export const Departments: React.FC = () => {
             pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"] }}
             title={() => <>
                 <Text style={{ fontSize: '13pt' }}>
-                    <NewDepartmentForm />
+                    <NewDepartmentForm access={access} />
                     Настройки подразделений
                 </Text>
             </>}

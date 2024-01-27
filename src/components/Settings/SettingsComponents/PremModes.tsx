@@ -9,7 +9,11 @@ import { NewPremMode } from "./FormCreators/CreateNewPremMode"
 
 const { Text } = Typography
 
-export const PremModes: React.FC = () => {
+type PremModesPropsType = {
+    access: number
+}
+
+export const PremModes: React.FC<PremModesPropsType> = ({ access }) => {
     const dispatch: AppDispatch = useDispatch()
     const premModesWithoutEdit = ['1', '8', '9']
     useEffect(() => {
@@ -44,7 +48,7 @@ export const PremModes: React.FC = () => {
         {
             title: <Text>Параметр</Text>,
             dataIndex: 'type',
-            render: (text, record) => <Button size="small" type="default" disabled={premModesWithoutEdit.includes(record.id)} onClick={premModesWithoutEdit.includes(record.id) ? undefined : () => handleChangeType(record.id, text === 't' ? 'h' : 't')}>{text === 't' ? 'Температура' : 'Влажность'}</Button>,
+            render: (text, record) => <Button size="small" type="default" disabled={premModesWithoutEdit.includes(record.id) || access > 2} onClick={premModesWithoutEdit.includes(record.id) ? undefined : () => handleChangeType(record.id, text === 't' ? 'h' : 't')}>{text === 't' ? 'Температура' : 'Влажность'}</Button>,
         },
         {
             title: <Text>Полное значение</Text>,
@@ -55,19 +59,19 @@ export const PremModes: React.FC = () => {
         {
             title: <Text>Начальное значение</Text>,
             dataIndex: 'low',
-            render: (text, record) => <Text editable={ premModesWithoutEdit.includes(record.id) ? false : { onChange: (text) => {handleChangeLow(record.id, text)}}}>{text}</Text>,
+            render: (text, record) => <Text editable={(premModesWithoutEdit.includes(record.id) || access > 2) ? false : { onChange: (text) => { handleChangeLow(record.id, text) } }}>{text}</Text>,
             align: 'right',
         },
         {
             title: <Text>Конечное значение</Text>,
             dataIndex: 'hight',
-            render: (text, record) => <Text editable={ premModesWithoutEdit.includes(record.id) ? false : { onChange: (text) => {handleChangeHight(record.id, text)}}}>{text}</Text>,
+            render: (text, record) => <Text editable={(premModesWithoutEdit.includes(record.id) || access > 2) ? false : { onChange: (text) => { handleChangeHight(record.id, text) } }}>{text}</Text>,
             align: 'left',
         },
         {
             title: <Text>Значение</Text>,
             dataIndex: 'isactive',
-            render: (text, record) => <Button size="small" type="link" disabled={premModesWithoutEdit.includes(record.id)} onClick={ premModesWithoutEdit.includes(record.id) ? undefined : ()=>handleChangeIsActive(record.id, text === '0' ? '1' : '0')}>{text === '0' ? <Text type={premModesWithoutEdit.includes(record.id) ? 'secondary' : 'success'}>Деактивировать</Text> :<Text type={premModesWithoutEdit.includes(record.id) ? 'secondary' : 'warning'}>Активировать</Text>}</Button>,
+            render: (text, record) => <Button size="small" type="link" disabled={premModesWithoutEdit.includes(record.id) || access > 2} onClick={premModesWithoutEdit.includes(record.id) ? undefined : () => handleChangeIsActive(record.id, text === '0' ? '1' : '0')}>{access > 2 ? text === '0' ? <Text type='secondary'>Деактивировать</Text> : <Text type='secondary'>Активировать</Text> : text === '0' ? <Text type={premModesWithoutEdit.includes(record.id) ? 'secondary' : 'success'}>Деактивировать</Text> : <Text type={premModesWithoutEdit.includes(record.id) ? 'secondary' : 'warning'}>Активировать</Text>}</Button>,
             align: 'right',
         },
     ]
@@ -86,13 +90,13 @@ export const PremModes: React.FC = () => {
             pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"] }}
             title={() => <>
                 <Text style={{ fontSize: '13pt' }}>
-                    <NewPremMode />
+                    <NewPremMode access={access} />
                     Настройки режимов температуры/влажности помещений
                 </Text>
             </>}
             size="small"
             loading={premModesIsLoading}
         />
-        <Text type="warning" style={{marginTop: '20px', display: 'inline-block'}}>* Системно запрещено изменение некоторых режимов </Text>
+        <Text type="warning" style={{ marginTop: '20px', display: 'inline-block' }}>* Системно запрещено изменение некоторых режимов </Text>
     </>
 }
