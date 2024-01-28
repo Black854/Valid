@@ -64,7 +64,7 @@ export const SysTasks: React.FC<SysTasks> = ({ mySysDataIdArray, mySysData, rec,
         },
         {
             rowName: 'Дата утверждения протокола',
-            value: <DatePickerForWork date={data[0].dvp} objectId={data.id} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={mySysDataIdArray} access={access} />
+            value: <DatePickerForWork date={data[0].dvp} objectId={data[0].idfromtable} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={mySysDataIdArray} access={access} />
         },
     ]
 
@@ -79,7 +79,7 @@ export const SysTasks: React.FC<SysTasks> = ({ mySysDataIdArray, mySysData, rec,
         },
         {
             rowName: 'Дата утверждения отчета',
-            value: <DatePickerForWork date={data[0].dvo} objectId={data[0].id} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={mySysDataIdArray} access={access} />
+            value: <DatePickerForWork date={data[0].dvo} objectId={data[0].idfromtable} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={mySysDataIdArray} access={access} />
         },
     ]
 
