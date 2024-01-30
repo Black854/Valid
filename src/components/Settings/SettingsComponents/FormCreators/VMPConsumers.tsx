@@ -19,24 +19,24 @@ type consumersArray<T> = {
     [key: number]: T
 }
 
-export const VMPConsumers: React.FC<VMPConsumers> = ({VMPname, departments, consumers, VMPId, access}) => {
+export const VMPConsumers: React.FC<VMPConsumers> = ({ VMPname, departments, consumers, VMPId, access }) => {
     const dispatch: AppDispatch = useDispatch()
     const defaultValues = JSON.parse(consumers).reduce((acc: any, currentValue: any) => {
         acc[currentValue] = true
         return acc
     }, {})
-    const { handleSubmit, control, formState: { errors }, setError, reset, getFieldState } = useForm({defaultValues})
+    const { handleSubmit, control, formState: { errors }, setError, reset, getFieldState } = useForm({ defaultValues })
     const data = departments.sort((a, b) => {
         const nameA = a.fio.toUpperCase()
         const nameB = b.fio.toUpperCase()
         if (nameA < nameB) {
-          return -1
+            return -1
         }
         if (nameA > nameB) {
-          return 1
+            return 1
         }
         return 0
-      }).map(e => <CustomController key={e.id} checked={JSON.parse(consumers).includes(e.id)} control={control} name={e.id} type='checkboxes' label={`${e.fio} - ${e.pos}`} />)
+    }).map(e => <CustomController key={e.id} checked={JSON.parse(consumers).includes(e.id)} control={control} name={e.id} type='checkboxes' label={`${e.fio} - ${e.pos}`} />)
     const [showForm, setShowForm] = useState(false)
     const [formKey, setFormKey] = useState(1)
     const handleCancel = () => {

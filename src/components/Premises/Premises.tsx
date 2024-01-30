@@ -1,4 +1,4 @@
-import { Typography, Col, Image, Row, Spin, Table, Input, Space, Button, message } from "antd"
+import { Typography, Col, Image, Row, Table, Input, Space, Button, message } from "antd"
 import { Content } from "antd/es/layout/layout"
 import { useDispatch, useSelector } from "react-redux"
 import { getPremData, getIsLoading, getPremErrorMessage } from "../../redux/Selectors/premisesSelectors"
@@ -9,11 +9,11 @@ import { NavLink } from "react-router-dom"
 import React, { useEffect, useRef, useState } from "react"
 import { AppDispatch } from "../../redux/store"
 import { getPremises } from "../../redux/Reducers/premisesReducer"
-import { SearchOutlined } from '@ant-design/icons';
-import Highlighter from 'react-highlight-words';
-import type { InputRef } from 'antd';
-import type { ColumnType, ColumnsType } from 'antd/es/table';
-import type { FilterConfirmProps } from 'antd/es/table/interface';
+import { SearchOutlined } from '@ant-design/icons'
+import Highlighter from 'react-highlight-words'
+import type { InputRef } from 'antd'
+import type { ColumnType, ColumnsType } from 'antd/es/table'
+import type { FilterConfirmProps } from 'antd/es/table/interface'
 import { NewObjectForm } from "./CreateNewObjectForm"
 import { defaultPagination } from "../../redux/Reducers/appReducer"
 import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
@@ -57,24 +57,24 @@ const Premises: React.FC = () => {
     }))
 
     type DataType = typeof premNewData[0]
-    type DataIndex = keyof DataType;
+    type DataIndex = keyof DataType
 
     const [searchText, setSearchText] = useState('')
-    const searchInput = useRef<InputRef>(null);
+    const searchInput = useRef<InputRef>(null)
 
     const handleSearch = (
         selectedKeys: string[],
         confirm: (param?: FilterConfirmProps) => void,
         dataIndex: DataIndex,
     ) => {
-        confirm();
+        confirm()
         setSearchText(selectedKeys[0])
-    };
+    }
 
     const handleReset = (clearFilters: () => void) => {
         clearFilters()
         setSearchText('')
-    };
+    }
 
     const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
@@ -107,7 +107,7 @@ const Premises: React.FC = () => {
                     <Button
                         size="small"
                         onClick={() => {
-                            close();
+                            close()
                         }}
                     >
                         Закрыть
@@ -125,7 +125,7 @@ const Premises: React.FC = () => {
                 .includes((value as string).toLowerCase()),
         onFilterDropdownOpenChange: (visible) => {
             if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
+                setTimeout(() => searchInput.current?.select(), 100)
             }
         }
     })

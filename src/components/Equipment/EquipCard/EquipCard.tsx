@@ -18,6 +18,7 @@ import { EquipLabel } from "./CardComponents/EquipLabel"
 import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 import { getUserDataAccessSelector } from "../../../redux/Selectors/authSelectors"
+
 const { Text } = Typography
 
 const EquipCard: React.FC = () => {

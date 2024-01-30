@@ -1,4 +1,4 @@
-import { Typography, Col, Image, Row, Spin, Table, message } from "antd"
+import { Typography, Col, Image, Row, Table, message } from "antd"
 import { Content } from "antd/es/layout/layout"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
@@ -33,14 +33,6 @@ const Signal: React.FC = () => {
         dispatch(getProcesses())
         dispatch(getAllValidators())
     }, [])
-
-    const [messageApi, contextHolder] = message.useMessage()
-    const error = (fileName: string) => {
-        messageApi.open({
-            type: 'error',
-            content: `Расширение файла ${fileName} не соответствует разрешенным`,
-        })
-    }
 
     const premData = useSelector(getPremData)
     const equipData = useSelector(getEquipData)
@@ -311,7 +303,6 @@ const Signal: React.FC = () => {
     ]
     return <>
         <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
-            {contextHolder}
             <Row>
                 <Col span={22} push={1}>
                     <Table

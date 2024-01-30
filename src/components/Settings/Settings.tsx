@@ -9,7 +9,6 @@ import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 
 const { Title } = Typography
 
-
 const Settings: React.FC = () => {
     const access = parseInt(useSelector(getUserDataAccessSelector))
     const items: TabsProps['items'] = [

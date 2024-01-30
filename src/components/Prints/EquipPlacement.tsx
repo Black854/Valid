@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
 import { getDepartments } from "../../redux/Reducers/appReducer"
 import { getEquipment } from "../../redux/Reducers/equipmentReducer"
-import { Button, Col, Menu, Row, Select, Table, Typography } from "antd"
+import { Button, Select, Table, Typography } from "antd"
 import { getEquipData, getIsLoading } from "../../redux/Selectors/equipmentSelectors"
 import { getDepartmentsSelector } from "../../redux/Selectors/appSelectors"
 import { useNavigate, useParams } from "react-router-dom"
@@ -12,7 +12,7 @@ import { useReactToPrint } from "react-to-print"
 import { ColumnsType } from "antd/es/table"
 import { RenderDateHelper } from "../common/renderDateHelper"
 
-const { Text, Title } = Typography
+const { Text } = Typography
 
 interface DataType {
     id: string,

@@ -2,7 +2,6 @@ import { Button, Image, Popconfirm, Typography, message } from "antd"
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import empty from './../../../../img/empty.png'
 import { useDispatch, useSelector } from "react-redux"
-import { useParams } from "react-router-dom"
 import { EyeOutlined} from '@ant-design/icons'
 import { AppDispatch } from "../../../../redux/store"
 import { deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/processesReducer"
@@ -48,17 +47,12 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({procObject, id}) => {
     const onSelectPhoto = (e: any) => {
         if (e.currentTarget.files.length > 0) {
             const fileName = e.currentTarget.files[0].name
-            // Получите расширение файла, разделенное точкой
             const fileExtension = fileName.split('.').pop()
-
-            // Список разрешенных расширений
             const allowedExtensions = ['jpg', 'jpeg', 'png']
 
             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
-                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
                 dispatch(uploadMainPhoto(id, e.currentTarget.files[0]))
             } else {
-                // Файл имеет недопустимое расширение
                 error(fileName)
             }
         }

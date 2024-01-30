@@ -1,5 +1,4 @@
-import { ColumnsType } from "antd/es/table"
-import { Button, Col, Modal, Radio, Row, Table, Typography } from "antd"
+import { Button, Col, Modal, Row, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { AppDispatch } from "../../../../redux/store"

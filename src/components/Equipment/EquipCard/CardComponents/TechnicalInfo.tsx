@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { getTechInfo } from "../../../../redux/Selectors/equipmentSelectors"
 import { getTechnicalInfo, updateTechnicalInfo } from "../../../../redux/Reducers/equipmentReducer"
 import { AppDispatch } from "../../../../redux/store"
+
 const {Text} = Typography
+
 type TechnicalInfoPropsType = {
     id: string
     access: number
@@ -40,8 +42,8 @@ export const TechnicalInfo: React.FC<TechnicalInfoPropsType> = ({ id, access }) 
             columns={columns}
             dataSource={data}
             bordered
-            pagination={false} // Скрыть пагинацию, если есть
-            showHeader={false} // Скрыть заголовки, если есть
+            pagination={false}
+            showHeader={false}
             rowKey='value'
         />
     )

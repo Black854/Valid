@@ -5,7 +5,9 @@ import { AppDispatch } from "../../../../redux/store"
 import { getTechInfo } from "../../../../redux/Selectors/systemsSelectors"
 import { getTechnicalInfo, updateTechnicalInfo } from "../../../../redux/Reducers/systemsReducer"
 import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
+
 const {Text} = Typography
+
 type TechnicalInfoPropsType = {
     id: string
 }
@@ -42,8 +44,8 @@ export const TechnicalInfo: React.FC<TechnicalInfoPropsType> = ({ id }) => {
             columns={columns}
             dataSource={data}
             bordered
-            pagination={false} // Скрыть пагинацию, если есть
-            showHeader={false} // Скрыть заголовки, если есть
+            pagination={false}
+            showHeader={false}
             rowKey='value'
         />
     )

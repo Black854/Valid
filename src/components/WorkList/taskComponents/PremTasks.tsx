@@ -16,6 +16,7 @@ import { useState } from "react"
 import { ProgressStatus } from "./MiniComponents/ProgressStatus"
 import { SeasonSwitcher } from "./MiniComponents/SeasonSwitcher"
 import { UpdateCardStatus } from "./MiniComponents/UpdateCardStatus"
+
 const { Text } = Typography
 
 type PremTasks = {

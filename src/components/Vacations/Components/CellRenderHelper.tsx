@@ -8,6 +8,7 @@ import { AppDispatch } from "../../../redux/store"
 import { useDispatch } from "react-redux"
 
 const { Text } = Typography
+
 const { RangePicker } = DatePicker
 
 type propsType = {
@@ -109,9 +110,9 @@ export const CellRenderHelper: React.FC<propsType> = ({ text, month, year, fio, 
     }
 
     const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-        const currentYear = dayjs().year() // Получаем текущий год
-        const selectedYear = dayjs(current).year() // Получаем год выбранной даты
-        const selectedMonth = dayjs(current).month() // Получаем месяц выбранной даты
+        const currentYear = dayjs().year()
+        const selectedYear = dayjs(current).year()
+        const selectedMonth = dayjs(current).month()
 
         return !(selectedYear === currentYear && selectedMonth === month)
     }

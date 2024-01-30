@@ -23,7 +23,7 @@ export const UpdateCardStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray
 
     const handleLabelSwitch = async (pol: string) => {
         if (objectType === 'equipment') {
-            await dispatch(updateEquipWorkData(data.id, 'isCardUpdated', pol)) //isCardUpdated
+            await dispatch(updateEquipWorkData(data.id, 'isCardUpdated', pol))
             await dispatch(getCurrentEquipData(myEquipDataIdArray))
         } else if (objectType === 'premises') {
             await dispatch(updatePremWorkData(data.id, 'isCardUpdated', pol))

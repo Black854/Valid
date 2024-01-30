@@ -8,6 +8,7 @@ import { AppDispatch } from "../../../../redux/store"
 import { deleteProcDocument, getProcReestrData, updateReestrDocsCodeProc, uploadProcDocument } from "../../../../redux/Reducers/processesReducer"
 import { AddReestrData } from "../../../common/AddReestrData"
 import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
+
 const { Text } = Typography
 
 
@@ -39,7 +40,9 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
     useEffect(() => {
         dispatch(getProcReestrData(id))
     }, [id])
+
     const [messageApi, contextHolder] = message.useMessage()
+
     const error = (fileName: string) => {
         messageApi.open({
             type: 'error',
@@ -78,17 +81,12 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                     const onSelectDocument = (e: any) => {
                         if (e.currentTarget.files.length > 0) {
                             const fileName = e.currentTarget.files[0].name
-                            // Получите расширение файла, разделенное точкой
                             const fileExtension = fileName.split('.').pop()
-
-                            // Список разрешенных расширений
                             const allowedExtensions = ['doc', 'docx']
 
                             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
-                                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
                                 dispatch(uploadProcDocument(id, record.id, 'vp', e.currentTarget.files[0]))
                             } else {
-                                // Файл имеет недопустимое расширение
                                 error(fileName)
                             }
                         }
@@ -134,17 +132,12 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                     const onSelectDocument = (e: any) => {
                         if (e.currentTarget.files.length > 0) {
                             const fileName = e.currentTarget.files[0].name
-                            // Получите расширение файла, разделенное точкой
                             const fileExtension = fileName.split('.').pop()
-
-                            // Список разрешенных расширений
                             const allowedExtensions = ['doc', 'docx']
 
                             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
-                                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
                                 dispatch(uploadProcDocument(id, record.id, 'vo', e.currentTarget.files[0]))
                             } else {
-                                // Файл имеет недопустимое расширение
                                 error(fileName)
                             }
                         }
@@ -162,7 +155,6 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
             title: <Text strong style={{ fontSize: '12pt' }}>Дата</Text>,
             dataIndex: 'dvo',
             sorter: (a, b) => {
-                // Используйте функцию сравнения дат для сортировки
                 const dateA: any = new Date(a.dvo);
                 const dateB: any = new Date(b.dvo);
                 return dateA - dateB;
@@ -182,7 +174,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
             columns={columns}
             dataSource={reestrDataWithoutEmptyRows}
             bordered
-            pagination={false} // Скрыть пагинацию, если есть
+            pagination={false}
             style={{ marginBottom: '60px' }}
             rowKey='id'
             loading={isReestrDataLoading}

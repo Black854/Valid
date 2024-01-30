@@ -11,6 +11,7 @@ import { getInstById, getInstCardError, getInstData, getIsLoading } from "../../
 import { getInstruments, instActions, updateManufacturDate, updateManufacturer, updateName2, updateSerial } from "../../../redux/Reducers/instrumentsReducer"
 import { ConvertDateInst } from "../../common/convertDateInst"
 import { getUserDataAccessSelector } from "../../../redux/Selectors/authSelectors"
+
 const { Text } = Typography
 
 const InstCard: React.FC = () => {

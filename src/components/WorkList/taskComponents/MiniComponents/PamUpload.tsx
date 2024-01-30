@@ -24,7 +24,6 @@ type PropsType = {
 export const PamUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, error, access }) => {
     const dispatch: AppDispatch = useDispatch()
 
-
     if (data.pam !== '') {
         const fileSegments = data.pam.split('/')
         const fileName = fileSegments[fileSegments.length - 1]
@@ -62,14 +61,10 @@ export const PamUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, 
         const onSelectDocument = async (e: any) => {
             if (e.currentTarget.files.length > 0) {
                 const fileName = e.currentTarget.files[0].name
-                // Получите расширение файла, разделенное точкой
                 const fileExtension = fileName.split('.').pop()
-
-                // Список разрешенных расширений
                 const allowedExtensions = ['doc', 'docx']
 
                 if (allowedExtensions.includes(fileExtension.toLowerCase())) {
-                    // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
                     if (objectType === 'equipment') {
                         await dispatch(uploadEquipDocument(rec.id, data.id, 'pam', e.currentTarget.files[0]))
                         await dispatch(getCurrentEquipData(myEquipDataIdArray))
@@ -84,7 +79,6 @@ export const PamUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, 
                         await dispatch(getCurrentProcData(myProcDataIdArray))
                     }
                 } else {
-                    // Файл имеет недопустимое расширение
                     error(fileName)
                 }
             }

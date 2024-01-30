@@ -1,5 +1,4 @@
-import { ColumnsType } from "antd/es/table"
-import { Button, Col, Modal, Radio, Row, Table, Typography } from "antd"
+import { Button, Col, Modal, Row, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { AppDispatch } from "../../../../redux/store"
@@ -9,6 +8,7 @@ import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector } from "..
 import { PrinterOutlined } from '@ant-design/icons'
 import { getSopCodeForm } from "../../../../redux/Reducers/appReducer"
 import { DataType, SysReestrType } from "../../../../redux/Reducers/systemsReducer"
+
 const {Text, Title} = Typography
 
 type CleanPremGroupsPropsType = {
@@ -20,9 +20,11 @@ export const SysLabel: React.FC<CleanPremGroupsPropsType> = ({sysObject, reestrD
 
     const dispatch: AppDispatch = useDispatch()
     const intervals = useSelector(getIntervals)
+    
     useEffect (() => {
         dispatch(getSopCodeForm())
     }, [])
+
     const sopCodeForm = useSelector(getSopCodeFormSelector)
 
     const maxDateObject = reestrData.reduce((max, obj) => {

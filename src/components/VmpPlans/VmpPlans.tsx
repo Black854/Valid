@@ -1,4 +1,4 @@
-import { Button, Col, Menu, MenuProps, Modal, Row, Table, Typography, message } from "antd"
+import { Button, Col, Menu, Modal, Row, Table, Typography, message } from "antd"
 import { PrinterOutlined, CalendarOutlined, FileWordOutlined } from '@ant-design/icons'
 import { NavLink, useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
@@ -10,11 +10,11 @@ import ColumnGroup from "antd/es/table/ColumnGroup"
 import Column from "antd/es/table/Column"
 import { getVMPDataSelector, getVMPErrorMessage } from "../../redux/Selectors/vmpSelectors"
 import { plansDataBuilder } from "./plansDataBuilder"
+
 const { Text } = Typography
 
 const VmpPlans: React.FC = () => {
 
-    type MenuItem = Required<MenuProps>['items'][number]
     const [messageApi, contextHolder] = message.useMessage()
 
     const errorMessage = useSelector(getVMPErrorMessage)
@@ -95,8 +95,6 @@ const VmpPlans: React.FC = () => {
     }
 
     const handleMenuClick = (key: string) => {
-        const year = key.slice(7, 11)
-        const monthNumber = key.slice(11, 13).padStart(2, '0')
         if (key === 'vmpPlanPrint') {
             setVMPPrintModalIsOpen(true)
             setIframeKey(prevKey => prevKey + 1)

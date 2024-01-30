@@ -86,17 +86,12 @@ export const CodeForms: React.FC<CodeFormsPropsType> = ({ access }) => {
     const onSelectFile = (e: any) => {
         if (e.currentTarget.files.length > 0) {
             const fileName = e.currentTarget.files[0].name
-            // Получите расширение файла, разделенное точкой
             const fileExtension = fileName.split('.').pop()
-
-            // Список разрешенных расширений
             const allowedExtensions = ['pdf']
 
             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
-                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
                 dispatch(uploadCodeForm(e.currentTarget.files[0]))
             } else {
-                // Файл имеет недопустимое расширение
                 error(fileName)
             }
         }

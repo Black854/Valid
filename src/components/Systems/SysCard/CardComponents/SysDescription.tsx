@@ -15,8 +15,8 @@ export const SysDescriptions: React.FC<SysDescriptionsPropsType> = ({columns, da
                 columns={columns}
                 dataSource={data}
                 bordered
-                pagination={false} // Скрыть пагинацию, если есть
-                showHeader={false} // Скрыть заголовки, если есть
+                pagination={false}
+                showHeader={false}
                 rowKey='rowName'
                 size="small"
                 loading={isDescriptionLoading}

@@ -1,12 +1,10 @@
-import { Col, Menu, Row, Typography } from "antd"
+import { Col, Menu, Row } from "antd"
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { EquipPlacement } from "./EquipPlacement"
 import { UserActions } from "./UserActions"
 import { UserAccountsActions } from "./UserAccountsActions"
 import { ObjectsWithoutAvatars } from "./ObjectsWithoutAvatar"
-
-const { Text, Title } = Typography
 
 const Prints: React.FC = () => {
     const navigate = useNavigate()
@@ -15,16 +13,6 @@ const Prints: React.FC = () => {
     const handleMenuClick = (param: string) => {
         navigate(`/prints/${param}/`)
     }
-
-    const [key, setKey] = useState(['r1'] as string[])
-
-    useEffect(() => {
-        if (params) {
-            setKey(params.report ? [params.report] : ['r1'])
-        } else {
-            setKey(['r1'])
-        }
-    }, [params])
 
     return <Row style={{ margin: '0px 0 40px 0' }}>
         <Col style={{ marginTop: '10px' }}>
@@ -36,6 +24,7 @@ const Prints: React.FC = () => {
             >
                 <Menu.Item key='r1'>Отчет о местонахождении оборудования</Menu.Item>
                 <Menu.Item key='r4'>Отчет по объектам без аватара</Menu.Item>
+                {/* <Menu.Item key='r4'>Отчет по незапланированным объектам</Menu.Item> */}
                 <Menu.Item key='r2'>Аудит пользовательских операций</Menu.Item>
                 <Menu.Item key='r3'>Аудит учетных записей</Menu.Item>
             </Menu>

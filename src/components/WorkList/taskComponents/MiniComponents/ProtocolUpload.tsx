@@ -61,14 +61,10 @@ export const ProtocolUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdAr
         const onSelectDocument = async (e: any) => {
             if (e.currentTarget.files.length > 0) {
                 const fileName = e.currentTarget.files[0].name
-                // Получите расширение файла, разделенное точкой
                 const fileExtension = fileName.split('.').pop()
-
-                // Список разрешенных расширений
                 const allowedExtensions = ['doc', 'docx']
 
                 if (allowedExtensions.includes(fileExtension.toLowerCase())) {
-                    // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
                     if (objectType === 'equipment') {
                         await dispatch(uploadEquipDocument(rec.id, data.id, 'vp', e.currentTarget.files[0]))
                         await dispatch(getCurrentEquipData(myEquipDataIdArray))
@@ -83,7 +79,6 @@ export const ProtocolUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdAr
                         await dispatch(getCurrentProcData(myProcDataIdArray))
                     }
                 } else {
-                    // Файл имеет недопустимое расширение
                     error(fileName)
                 }
             }

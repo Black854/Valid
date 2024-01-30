@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getDepartmentsSelector, getIntervals, getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
 import { getDepartments, getVMPDepartments } from "../../redux/Reducers/appReducer"
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 import { PlusOutlined } from "@ant-design/icons"
 import { AppDispatch } from "../../redux/store"
 import { CustomController } from "../common/FormControls"
@@ -22,7 +22,7 @@ export const NewObjectForm: React.FC<NewObjectFormtype> = ({access}) => {
         dispatch(getDepartments())
     }, [])
 
-    const { handleSubmit, control, formState: { errors }, reset, getValues } = useForm<NewSysObjectType>()
+    const { handleSubmit, control, reset } = useForm<NewSysObjectType>()
 
     const [showForm, setShowForm] = useState(false)
     const VMPDepartmentData = useSelector(getVMPDepartmentsSelector).filter(e => e.isactive !== '1').map(e => ({ label: e.vmpname1, value: e.vmpname1 }))
@@ -55,17 +55,11 @@ export const NewObjectForm: React.FC<NewObjectFormtype> = ({access}) => {
         reset()
     }
 
-    const error: SubmitErrorHandler<NewSysObjectType> = data => {
-        // data.email && setError(localError + data.email.message)
-        // data.password && setError(localError + data.password.message)
-        // data.rememberMe && setError(localError + data.rememberMe.message)
-    }
-
     return <>
         {contextHolder}
         <Button disabled={access > 1} type="link" icon={<PlusOutlined />} onClick={() => setShowForm(true)} />
         <Modal width={550} destroyOnClose centered title='Добавление объекта в систему' open={showForm} onCancel={() => handleCancel()} footer={[<Button key="close" onClick={() => handleCancel()} type="primary">Отмена</Button>]} >
-            <Form style={{ marginTop: '30px' }} layout="horizontal" size="small" onFinish={handleSubmit(submit, error)}>
+            <Form style={{ marginTop: '30px' }} layout="horizontal" size="small" onFinish={handleSubmit(submit)}>
                 <CustomController control={control} name='name' type='text' label='Наименование' required={true} maxLength={100} />
                 <CustomController control={control} name='spVMP' type='select' label='Подразделение (по ВМП)' required={true} options={VMPDepartmentData} />
                 <CustomController control={control} name='sp' type='select' label='Подразделение (по ответственности)' required={true} options={DepartmentData} />

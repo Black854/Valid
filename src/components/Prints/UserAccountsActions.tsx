@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../redux/store"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { useReactToPrint } from "react-to-print"
 import { PrinterOutlined } from "@ant-design/icons"
 import { Button, Table, Typography } from "antd"
-import { ColumnsType, TablePaginationConfig } from "antd/es/table"
+import { ColumnsType } from "antd/es/table"
 import { UserActionsType, defaultPagination, getUserAccountsActions } from "../../redux/Reducers/appReducer"
 import { getUserAccountsActionsSelector } from "../../redux/Selectors/appSelectors"
 

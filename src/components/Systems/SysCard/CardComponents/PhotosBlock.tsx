@@ -8,6 +8,7 @@ import { AppDispatch } from "../../../../redux/store"
 import { getPhotosSelector } from "../../../../redux/Selectors/systemsSelectors"
 import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/Reducers/systemsReducer"
 import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
+
 const { Text } = Typography
 
 type PhotosBlockPropsType = {
@@ -49,17 +50,12 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
     const onSelectPhoto = (e: any) => {
         if (e.currentTarget.files.length > 0) {
             const fileName = e.currentTarget.files[0].name
-            // Получите расширение файла, разделенное точкой
             const fileExtension = fileName.split('.').pop()
-
-            // Список разрешенных расширений
             const allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'mp4']
 
             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
-                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
                 dispatch(uploadPhotos(id, e.currentTarget.files[0]))
             } else {
-                // Файл имеет недопустимое расширение
                 error(fileName)
             }
         }

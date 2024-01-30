@@ -23,7 +23,7 @@ type ConvertDateType = {
     access: number
 }
 
-export const DatePickerForWork: React.FC<ConvertDateType> = ({id, objectId, date, dateType, group, myDataIdArray, access}) => {
+export const DatePickerForWork: React.FC<ConvertDateType> = ({ id, objectId, date, dateType, group, myDataIdArray, access }) => {
     const [isPopconfirmVisible, setPopconfirmVisible] = useState(false)
     const [selectedDate, setSelectedDate] = useState('')
     const dispatch: AppDispatch = useDispatch()
@@ -37,7 +37,6 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({id, objectId, date
         const date = new Date(selectedDate)
         let formattedSelectedDate = format(date, 'yyyy-MM-dd') // Текущая дата для сравнения с датой объекта
         formattedSelectedDate === '1970-01-01' && (formattedSelectedDate = '')
-        // Закрыть Popconfirm после подтверждения
         setPopconfirmVisible(false)
         if (group === 'premises') {
             await dispatch(updateReestrDatePrem(id, objectId, formattedSelectedDate, dateType))
@@ -58,18 +57,17 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({id, objectId, date
         setPopconfirmVisible(false)
     }
 
-    let dateFormat ="DD.MM.YYYY"
-    
+    let dateFormat = "DD.MM.YYYY"
+
     const disabledDate = (current: any) => {
-        // Получаем текущую дату
         const today = dayjs()
-      
+
         // Сравниваем текущую дату с выбранной датой и заблокируем все даты после сегодняшней
         return current && current > today //добавить  сюда еще блокирование дат раньше предыдущего отчета
     }
 
     if (date) {
-        let parts = date.split('.') // Разделяем строку по точкам
+        let parts = date.split('.')
         if (parts.length === 3) {
             // Проверяем, что строка содержит три части: день, месяц и год
             const day = parts[0]
@@ -80,7 +78,7 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({id, objectId, date
             return <Text>{date}</Text>
         }
 
-        parts = date.split('-') // Разделяем строку по точкам
+        parts = date.split('-')
         if (parts.length === 3) {
             // Проверяем, что строка содержит три части: день, месяц и год
             const year = parts[0]
@@ -89,29 +87,29 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({id, objectId, date
             // Создаем новую дату в формате "dd.MM.yyyy"
             const date = `${day}.${month}.${year}`
             return <Popconfirm
-                        title="Подтверждение изменений"
-                        description="Вы уверены, что хотите изменить данные?"
-                        onConfirm={handleConfirm}
-                        onCancel={handleCancel}
-                        okText="Да"
-                        cancelText="Нет"
-                        open={isPopconfirmVisible}
-                        >
-                        <DatePicker disabled={access > 4} style={{ borderColor: '#87d068', accentColor: 'green', color: 'red' }} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} value={dayjs(date, dateFormat)} onChange={(date) => handleDateChange(date)}  /> 
-                    </Popconfirm>
+                title="Подтверждение изменений"
+                description="Вы уверены, что хотите изменить данные?"
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+                okText="Да"
+                cancelText="Нет"
+                open={isPopconfirmVisible}
+            >
+                <DatePicker disabled={access > 4} style={{ borderColor: '#87d068', accentColor: 'green', color: 'red' }} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} value={dayjs(date, dateFormat)} onChange={(date) => handleDateChange(date)} />
+            </Popconfirm>
         }
     } else {
         return <Popconfirm
-                    title="Подтверждение изменений"
-                    description="Вы уверены, что хотите изменить данные?"
-                    onConfirm={handleConfirm}
-                    onCancel={handleCancel}
-                    okText="Да"
-                    cancelText="Нет"
-                    open={isPopconfirmVisible}
-                    >
-                    <DatePicker disabled={access > 4} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} onChange={(date) => handleDateChange(date)}  />
-                </Popconfirm>
+            title="Подтверждение изменений"
+            description="Вы уверены, что хотите изменить данные?"
+            onConfirm={handleConfirm}
+            onCancel={handleCancel}
+            okText="Да"
+            cancelText="Нет"
+            open={isPopconfirmVisible}
+        >
+            <DatePicker disabled={access > 4} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} onChange={(date) => handleDateChange(date)} />
+        </Popconfirm>
     }
     return <></>
 }

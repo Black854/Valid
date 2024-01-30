@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../../redux/store"
 import { getTechInfo } from "../../../../redux/Selectors/instrumentsSelectors"
 import { getTechnicalInfo, updateTechnicalInfo } from "../../../../redux/Reducers/instrumentsReducer"
+
 const { Text } = Typography
+
 type TechnicalInfoPropsType = {
     id: string
     access: number

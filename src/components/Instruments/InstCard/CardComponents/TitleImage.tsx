@@ -6,6 +6,7 @@ import { EyeOutlined} from '@ant-design/icons'
 import { AppDispatch } from "../../../../redux/store"
 import { DataType, deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/instrumentsReducer"
 import Title from "antd/es/typography/Title"
+
 const {Text} = Typography
 
 type TitleImagePropsType = {

@@ -1,4 +1,3 @@
-
 import { PickerLocale } from 'antd/es/date-picker/generatePicker'
 import CalendarLocale from 'rc-picker/lib/locale/ru_RU';
 

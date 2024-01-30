@@ -7,6 +7,7 @@ import { AppDispatch } from "../../../../redux/store"
 import { DataType, deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/premisesReducer"
 import Title from "antd/es/typography/Title"
 import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
+
 const { Text } = Typography
 
 type TitleImagePropsType = {
@@ -28,17 +29,12 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({ premObject, id }) =>
     const onSelectPhoto = (e: any) => {
         if (e.currentTarget.files.length > 0) {
             const fileName = e.currentTarget.files[0].name
-            // Получите расширение файла, разделенное точкой
             const fileExtension = fileName.split('.').pop()
-
-            // Список разрешенных расширений
             const allowedExtensions = ['jpg', 'jpeg', 'png']
 
             if (allowedExtensions.includes(fileExtension.toLowerCase())) {
-                // Файл соответствует разрешенному расширению, вы можете отправить его на сервер
                 dispatch(uploadMainPhoto(id, e.currentTarget.files[0]))
             } else {
-                // Файл имеет недопустимое расширение
                 error(fileName)
             }
         }

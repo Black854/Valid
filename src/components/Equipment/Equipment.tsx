@@ -1,7 +1,7 @@
-import { Typography, Col, Image, Row, Spin, Table, Button, Space, Input, message } from "antd"
+import { Typography, Col, Image, Row, Table, Button, Space, Input, message } from "antd"
 import { Content } from "antd/es/layout/layout"
 import { useDispatch, useSelector } from "react-redux"
-import { getEquipCreateNewObjectErrorMessage, getEquipData, getEquipErrorMessage, getIsLoading } from "../../redux/Selectors/equipmentSelectors"
+import { getEquipData, getEquipErrorMessage, getIsLoading } from "../../redux/Selectors/equipmentSelectors"
 import { getEquipment } from "../../redux/Reducers/equipmentReducer"
 import { EyeOutlined } from '@ant-design/icons'
 import { RenderDateHelper } from "../common/renderDateHelper"

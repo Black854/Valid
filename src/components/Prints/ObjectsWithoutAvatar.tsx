@@ -1,11 +1,9 @@
 import { AppDispatch } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
-import { getDepartments } from "../../redux/Reducers/appReducer"
 import { getEquipment } from "../../redux/Reducers/equipmentReducer"
-import { Button, Col, Menu, Row, Select, Table, Typography } from "antd"
-import { getEquipData, getIsLoading } from "../../redux/Selectors/equipmentSelectors"
-import { getDepartmentsSelector } from "../../redux/Selectors/appSelectors"
+import { Button, Select, Table, Typography } from "antd"
+import { getEquipData } from "../../redux/Selectors/equipmentSelectors"
 import { NavLink, useNavigate, useParams } from "react-router-dom"
 import { PrinterOutlined } from "@ant-design/icons"
 import { useReactToPrint } from "react-to-print"
@@ -17,7 +15,7 @@ import { getPremises } from "../../redux/Reducers/premisesReducer"
 import { getSystems } from "../../redux/Reducers/systemsReducer"
 import { getProcesses } from "../../redux/Reducers/processesReducer"
 
-const { Text, Title } = Typography
+const { Text } = Typography
 
 interface DataType {
     id: string,
@@ -36,8 +34,6 @@ export const ObjectsWithoutAvatars: React.FC = () => {
     const procData = useSelector(getProcData)
 
     const [filterParam, setFilterParam] = useState('объектам' as string)
-    const navigate = useNavigate()
-    const params = useParams()
 
     useEffect(() => {
         dispatch(getPremises())

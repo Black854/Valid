@@ -1,13 +1,13 @@
 import { Button, Col, Image, Modal, Popconfirm, Row, Typography, message } from "antd"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useRef, useState } from "react"
-import { DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons'
 import pdf from './../../../../img/pdfi.png'
 import video from './../../../../img/video.png'
 import { AppDispatch } from "../../../../redux/store"
-import { getPhotosSelector } from "../../../../redux/Selectors/premisesSelectors";
-import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/Reducers/premisesReducer";
-import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors";
+import { getPhotosSelector } from "../../../../redux/Selectors/premisesSelectors"
+import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/Reducers/premisesReducer"
+import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
 const { Text } = Typography
 
 type PhotosBlockPropsType = {
@@ -41,8 +41,8 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
         }, []
     )
     let photosRenderArray = []
-    photosRenderArray.unshift(...photos);
-    photosRenderArray.unshift(addObjectToPhotos);
+    photosRenderArray.unshift(...photos)
+    photosRenderArray.unshift(addObjectToPhotos)
 
     let fileInputRef: any = null
 
@@ -110,7 +110,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
             const handleCancel = (id: string) => {
                 setModalStates(modalStates.filter(elem => elem !== id))
                 if (videoRef.current) {
-                    videoRef.current.pause();
+                    videoRef.current.pause()
                 }
             }
             const showModal = (id: string) => {

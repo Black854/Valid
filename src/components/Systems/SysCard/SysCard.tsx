@@ -18,6 +18,7 @@ import { SysLabel } from "./CardComponents/SysLabel"
 import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 import { getUserDataAccessSelector } from "../../../redux/Selectors/authSelectors"
+
 const { Text } = Typography
 
 const SysCard: React.FC = () => {
@@ -76,19 +77,7 @@ const SysCard: React.FC = () => {
     if (isLoading) {
         return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
     } else if (sysObject) {
-        interface DataType {
-            ar: string
-            date: string
-            fio: string
-            foto: string
-            groupp: string
-            id: string
-            manual: string
-            name: string
-            sp: string
-            sp2: string
-        }
-
+        
         const handleUpdateDepartment = (text: string) => {
             dispatch(updateDepartment(id, text))
         }
@@ -154,7 +143,7 @@ const SysCard: React.FC = () => {
             {
                 key: '2',
                 label: 'Перечень валидационных работ',
-                children: <CardReestr id={sysObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={sysObject.groupp} />,
+                children: <CardReestr id={sysObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} />,
             },
             {
                 key: '8',

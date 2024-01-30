@@ -5,6 +5,7 @@ import { getTechInfo } from "../../../../redux/Selectors/premisesSelectors"
 import { updateTechnicalInfo } from "../../../../redux/Reducers/premisesReducer"
 import { getPremModesSelector } from "../../../../redux/Selectors/appSelectors"
 import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
+
 const {Text} = Typography
 
 type TechnicalInfoPropsType = {
