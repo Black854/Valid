@@ -223,4 +223,9 @@ export const appAPI = {
             return response.data
         })
     },
+    getLabelTermSettings() {
+        return appInstance.get(`getLabelTermSettings.php`).then(response => {
+            return response.data
+        })
+    },
 }

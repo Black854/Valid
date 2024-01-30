@@ -132,6 +132,7 @@ const initialState = {
     errorMessage: null as string | null,
     successMessage: null as string | null,
     loadingMessage: null as string | null,
+    termSettings: null as string | null,
 }
 
 type InitialStateType = typeof initialState
@@ -185,6 +186,8 @@ export const appReducer = (state = initialState, action: ActionTypes): InitialSt
             return { ...state, successMessage: action.text }
         case 'app/SET_LOADING_MESSAGE':
             return { ...state, loadingMessage: action.text }
+        case 'app/SET_LABEL_TERM_SETTINGS':
+            return {...state, termSettings: action.text}
         default:
             return state
     }
@@ -602,6 +605,17 @@ export const uploadCodeForm = (file: any): ThunkType => async (dispatch) => {
     }
 }
 
+export const getLabelTermSettings = (): ThunkType => async (dispatch) => {
+    const data = await appAPI.getLabelTermSettings()
+    if (data.resultCode === 0) {
+        dispatch(appActions.setLabelTermSettings(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+}
+
 type ActionTypes = InferActionsTypes<typeof appActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
@@ -630,4 +644,5 @@ export const appActions = {
     setErrorMessage: (text: string | null) => ({ type: 'app/SET_ERROR_MESSAGE', text } as const),
     setSuccessMessage: (text: string | null) => ({ type: 'app/SET_SUCCESS_MESSAGE', text } as const),
     setLoadingMessage: (text: string | null) => ({ type: 'app/SET_LOADING_MESSAGE', text } as const),
+    setLabelTermSettings: (text: string | null) => ({ type: 'app/SET_LABEL_TERM_SETTINGS', text } as const),
 }

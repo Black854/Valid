@@ -6,6 +6,7 @@ import { EquipGroups } from "./SettingsComponents/EquipGroups"
 import { PremModes } from "./SettingsComponents/PremModes"
 import { useSelector } from "react-redux"
 import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
+import { OtherSettings } from "./SettingsComponents/OtherSettings"
 
 const { Title } = Typography
 
@@ -36,6 +37,11 @@ const Settings: React.FC = () => {
             key: '5',
             label: 'Климатические режимы',
             children: <PremModes access={access} />,
+        },
+        {
+            key: '6',
+            label: 'Прочее',
+            children: <OtherSettings access={access} />,
         },
     ]
 

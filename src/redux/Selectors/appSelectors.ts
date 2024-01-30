@@ -108,3 +108,7 @@ export const getAppSuccessMessage = (state: AppStateType) => {
 export const getAppLoadingMessage = (state: AppStateType) => {
     return (state.app.loadingMessage)
 }
+
+export const getTermSettingsSelector = (state: AppStateType) => {
+    return (state.app.termSettings)
+}
