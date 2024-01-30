@@ -10,6 +10,7 @@ import ColumnGroup from "antd/es/table/ColumnGroup"
 import Column from "antd/es/table/Column"
 import { getVMPDataSelector, getVMPErrorMessage } from "../../redux/Selectors/vmpSelectors"
 import { plansDataBuilder } from "./plansDataBuilder"
+import { VmpTable } from "./VmpTable"
 
 const { Text } = Typography
 
@@ -132,126 +133,8 @@ const VmpPlans: React.FC = () => {
                 </Menu>
             </Col>
             <Col span={19}>
-                <Table
-                    dataSource={data}
-                    bordered
-                    pagination={false}
-                    title={() => <Text style={{ fontSize: '14pt' }}>График проведения валидационных работ {VMPName} на {params.year} г.</Text>}
-                    size="small"
-                    style={{ marginBottom: '100px' }}
-                    
-                >
-                    <Column title={<Text>№</Text>} dataIndex='index' key="number" align="center" />
-                    <Column
-                        title={<Text>Наименование объекта</Text>}
-                        dataIndex='name'
-                        key="name"
-                        width='35%'
-                        render={(name, record: dataType) => <NavLink to={`/${record.tablename}/${record.idfromtable}`}>{name}</NavLink>}
-                    />
-                    <ColumnGroup title="Период проведения работ/трудозатраты чел/рабочих дней" align="center">
-                        <Column
-                            title={<Text>1</Text>}
-                            dataIndex='0'
-                            key="0"
-                            align="center"
-                            render={(text, record: dataType) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        />
-                        <Column
-                            title={<Text>2</Text>}
-                            dataIndex='1'
-                            key="1"
-                            align="center"
-                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        />
-                        <Column
-                            title={<Text>3</Text>}
-                            dataIndex='2'
-                            key="2"
-                            align="center"
-                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        />
-                        <Column
-                            title={<Text>4</Text>}
-                            dataIndex='3'
-                            key="3"
-                            align="center"
-                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        />
-                        <Column
-                            title={<Text>5</Text>}
-                            dataIndex='4'
-                            key="4"
-                            align="center"
-                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        />
-                        <Column
-                            title={<Text>6</Text>}
-                            dataIndex='5'
-                            key="5"
-                            align="center"
-                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        />
-                        <Column
-                            title={<Text>7</Text>}
-                            dataIndex='6'
-                            key="6"
-                            align="center"
-                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        />
-                        <Column
-                            title={<Text>8</Text>}
-                            dataIndex='7'
-                            key="7"
-                            align="center"
-                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        />
-                        <Column
-                            title={<Text>9</Text>}
-                            dataIndex='8'
-                            key="8"
-                            align="center"
-                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        />
-                        <Column
-                            title={<Text>10</Text>}
-                            dataIndex='9'
-                            key="9"
-                            align="center"
-                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        />
-                        <Column
-                            title={<Text>11</Text>}
-                            dataIndex='10'
-                            key="10"
-                            align="center"
-                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        />
-                        <Column
-                            title={<Text>12</Text>}
-                            dataIndex='11'
-                            key="11"
-                            align="center"
-                            render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        />
-                    </ColumnGroup>
-                    <Column
-                        title={<Text>Отметка о выполнении</Text>}
-                        dataIndex='status'
-                        key="status"
-                        align="center"
-                        width='8%'
-                        render={(status) => <Text type={status === 'Выполнено' ? 'success' : 'warning'}>{status}</Text>}
-                    />
-                    <Column 
-                        title={<Text>Код документа</Text>}
-                        dataIndex='codedoc'
-                        key="codedoc"
-                        align="right"
-                        width='27%'
-                        render={(codedoc: string, record: dataType) => record.vo ? record.vo !== '' && <><Text type={record.status === 'Выполнено' ? 'success' : undefined}>{codedoc}</Text><Button icon={<FileWordOutlined style={{fontSize: '12pt'}} />} type="link" href={'http://10.85.10.212/ov/' + record.vo} /></> : <Text type={record.status === 'Выполнено' ? 'success' : undefined}>{codedoc}</Text> }
-                    />
-                </Table>
+                <VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '1')} params={params} key={VMPName} tableType={1} />
+                <VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '2' || e.typeval === '3')} params={params} key={VMPName} tableType={2} />
 
                 <Modal title="Печать графика ВМП" afterOpenChange={() => handleCancel('VMPPrint')} open={VMPPrintModalIsOpen} onCancel={() => handleCancel('VMPPrint')} footer={[ <Button key="close" onClick={() => handleCancel('VMPPrint')} type="primary">Закрыть</Button> ]} >
                     <iframe key={iframeKey} style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}`}>
