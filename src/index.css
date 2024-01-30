@@ -11,3 +11,47 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.ant-table-wrapper {
+  border-radius: 0px;
+  border-start-start-radius: 0px;
+  border-start-end-radius: 0px;
+}
+
+.ant-table {
+  border-radius: 0px;
+}
+
+.ant-table-container {
+  border-start-start-radius: 0px;
+  border-start-end-radius: 0px;
+}
+
+:where(.css-dev-only-do-not-override-a84779).ant-table-wrapper .ant-table-container {
+  border-start-start-radius: 0px;
+  border-start-end-radius: 0px;
+}
+
+:where(.css-dev-only-do-not-override-a84779).ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:first-child {
+  border-start-start-radius: 0px;
+}
+
+:where(.css-dev-only-do-not-override-a84779).ant-table-wrapper .ant-table {
+  border-radius: 0px;
+}
+
+:where(.css-dev-only-do-not-override-a84779).ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:last-child {
+  border-start-end-radius: 0px;
+}
+
+.vmpTable2 .ant-table-caption {
+  border-right: 2px;
+  border-right: 1px solid #303030;
+  border-bottom: 1px solid #303030;
+}
+
+.vmpTable1 .ant-table-caption {
+  border-right: 2px;
+  border-right: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}

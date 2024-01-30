@@ -69,7 +69,7 @@ const VmpPlans: React.FC = () => {
         11: string
     }
 
-    const data: dataType[] = [...data1, ...data2].map((e, index) => ({ ...e, index: index + 1, key: index + 1}))
+    const data: dataType[] = [...data1, ...data2].map((e, index) => ({ ...e, index: index + 1, key: index + 1 }))
 
     useEffect(() => {
         if (tableName && params.year) {
@@ -136,16 +136,16 @@ const VmpPlans: React.FC = () => {
                 <VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '1')} params={params} key={VMPName} tableType={1} />
                 <VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '2' || e.typeval === '3')} params={params} key={VMPName} tableType={2} />
 
-                <Modal title="Печать графика ВМП" afterOpenChange={() => handleCancel('VMPPrint')} open={VMPPrintModalIsOpen} onCancel={() => handleCancel('VMPPrint')} footer={[ <Button key="close" onClick={() => handleCancel('VMPPrint')} type="primary">Закрыть</Button> ]} >
-                    <iframe key={iframeKey} style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}`}>
+                <Modal title="Печать графика ВМП" afterOpenChange={() => handleCancel('VMPPrint')} open={VMPPrintModalIsOpen} onCancel={() => handleCancel('VMPPrint')} footer={[<Button key="close" onClick={() => handleCancel('VMPPrint')} type="primary">Закрыть</Button>]} >
+                    <iframe key={iframeKey} style={{ width: '100%', height: '360px' }} src={`http://10.85.10.212/ov/api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}`}>
                     </iframe>
                 </Modal>
-                <Modal title="Импорт графика ВМП" afterOpenChange={() => handleCancel('VMPImport')} open={VMPImportModalIsOpen} onCancel={() => handleCancel('VMPImport')} footer={[ <Button key="close" onClick={() => handleCancel('VMPImport')} type="primary">Закрыть</Button> ]} >
-                    <iframe key={iframeKey} style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}&print`}>
+                <Modal title="Импорт графика ВМП" afterOpenChange={() => handleCancel('VMPImport')} open={VMPImportModalIsOpen} onCancel={() => handleCancel('VMPImport')} footer={[<Button key="close" onClick={() => handleCancel('VMPImport')} type="primary">Закрыть</Button>]} >
+                    <iframe key={iframeKey} style={{ width: '100%', height: '360px' }} src={`http://10.85.10.212/ov/api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}&print`}>
                     </iframe>
                 </Modal>
-                <Modal title="Печать отчета о выполненных работах" afterOpenChange={() => handleCancel('VMPReportPrint')} open={vmpReportPrintModalIsOpen} onCancel={() => handleCancel('VMPReportPrint')} footer={[ <Button key="close" onClick={() => handleCancel('VMPReportPrint')} type="primary">Закрыть</Button> ]} >
-                    <iframe key={iframeKey} style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/vmp_report_print.php?tb=${params.number}&y=${params.year}`}>
+                <Modal title="Печать отчета о выполненных работах" afterOpenChange={() => handleCancel('VMPReportPrint')} open={vmpReportPrintModalIsOpen} onCancel={() => handleCancel('VMPReportPrint')} footer={[<Button key="close" onClick={() => handleCancel('VMPReportPrint')} type="primary">Закрыть</Button>]} >
+                    <iframe key={iframeKey} style={{ width: '100%', height: '360px' }} src={`http://10.85.10.212/ov/api/printForms/vmp_report_print.php?tb=${params.number}&y=${params.year}`}>
                     </iframe>
                 </Modal>
             </Col>
