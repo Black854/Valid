@@ -122,6 +122,17 @@ export const deletePlans = (recordId: string, objectId: string, tableName: strin
     }
 }
 
+export const vmpImport = (month: string, year: string, monthYear: string): ThunkType => async (dispatch) => {
+    let data = await plansAPI.vmpImport(month, year, monthYear)
+    if (data.resultCode === 0) {
+        dispatch(plansActions.setPlans(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(plansActions.setPlansErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+}
+
 type ActionTypes = InferActionsTypes<typeof plansActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 

@@ -1,10 +1,10 @@
 import { Col, Image, Menu, MenuProps, Modal, Row, Table, Typography, message } from "antd"
-import { PrinterOutlined, EyeOutlined, CalendarOutlined } from '@ant-design/icons'
+import { PrinterOutlined, EyeOutlined, CalendarOutlined, PlusOutlined, DownloadOutlined } from '@ant-design/icons'
 import { NavLink, useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../redux/store"
 import { useEffect, useState } from "react"
-import { PlansType, getMonthList, getPlans, MonthListItem, plansActions } from "../../redux/Reducers/plansReducer"
+import { PlansType, getMonthList, getPlans, MonthListItem, plansActions, vmpImport } from "../../redux/Reducers/plansReducer"
 import { getMonthListSelector, getPlansError, getPlansSelector } from "../../redux/Selectors/plansSelectors"
 import { ColumnsType } from "antd/es/table"
 import empty from './../../img/empty.png'
@@ -44,7 +44,24 @@ const Monplans: React.FC = ({ }) => {
     year = currentDate.getFullYear().toString()
     month = (currentDate.getMonth() + 1).toString().padStart(2, '0')
   }
+
   date = month + '.' + year
+
+  const handleMenuClick = (key: string) => {
+    const year = key.slice(7, 11)
+    const monthNumber = key.slice(11, 13).padStart(2, '0')
+    if (key === 'item-print') {
+      setModalOpen(true)
+      setIframeKey(prevKey => prevKey + 1)
+    } else if (key === 'item-import') {
+      const year = new Date().getFullYear().toString()
+      dispatch(vmpImport(month, year, date))
+    } else {
+      const url = `/monplans/${year}/${monthNumber}`
+      navigate(url)
+    }
+  }
+
   useEffect(() => {
     dispatch(getMonthList())
     dispatch(getPlans(date))
@@ -68,17 +85,6 @@ const Monplans: React.FC = ({ }) => {
   useEffect(() => {
     dispatch(getAllValidators())
   }, [])
-  const handleMenuClick = (key: string) => {
-    const year = key.slice(7, 11)
-    const monthNumber = key.slice(11, 13).padStart(2, '0')
-    if (key !== 'item-print') {
-      const url = `/monplans/${year}/${monthNumber}`
-      navigate(url)
-    } else {
-      setModalOpen(true)
-      setIframeKey(prevKey => prevKey + 1)
-    }
-  }
 
   let data = useSelector(getPlansSelector)
   data = [...data].sort((a, b) => a.name?.localeCompare(b.name))
@@ -238,6 +244,7 @@ const Monplans: React.FC = ({ }) => {
             selectedKeys={[`ggroup-${year}${month}`]}
             defaultOpenKeys={[`group-${year}`]}
           >
+            
             {items.map((menuItem, index) => {
               if (!menuItem) {
                 return null
@@ -260,7 +267,7 @@ const Monplans: React.FC = ({ }) => {
                 } else if (menuItem.type === 'divider') {
                   return <Menu.Divider key={`divider-${index}`} />
                 } else if ('label' in menuItem) {
-                  return <Menu.Item key={`item-${menuItem.key}`} icon={<PrinterOutlined />}>{menuItem.label}</Menu.Item>
+                  return <><Menu.Item key={`item-${menuItem.key}`} icon={<PrinterOutlined />}>{menuItem.label}</Menu.Item><Menu.Item disabled={access > 1} key='item-import' icon={<DownloadOutlined />}>Импорт из графика ВМП</Menu.Item></>
                 }
               }
               return null

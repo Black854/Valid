@@ -71,4 +71,14 @@ export const plansAPI = {
             return response.data
         })
     },
+    vmpImport(month: string, year: string, monthYear: string) {
+        const requestData = {
+            month,
+            year,
+            monthYear
+        }
+        return plansInstance.post(`vmpImport.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
 }
