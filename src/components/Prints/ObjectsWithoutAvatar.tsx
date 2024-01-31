@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { getEquipment } from "../../redux/Reducers/equipmentReducer"
 import { Button, Select, Table, Typography } from "antd"
 import { getEquipData } from "../../redux/Selectors/equipmentSelectors"
-import { NavLink, useNavigate, useParams } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { PrinterOutlined } from "@ant-design/icons"
 import { useReactToPrint } from "react-to-print"
 import { ColumnsType } from "antd/es/table"
@@ -23,6 +23,7 @@ interface DataType {
     name: string
     nomer: string
     foto: string
+    inv: string
 }
 
 export const ObjectsWithoutAvatars: React.FC = () => {
@@ -56,7 +57,7 @@ export const ObjectsWithoutAvatars: React.FC = () => {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: <Text>№</Text>,
+            title: <Text style={{fontSize: '10pt'}}>№</Text>,
             dataIndex: 'index',
             align: 'center',
             width: '4%',
@@ -64,15 +65,15 @@ export const ObjectsWithoutAvatars: React.FC = () => {
         {
             title: <Text>Подразделение</Text>,
             dataIndex: 'sp2',
-            render: (sp2) => <Text>{sp2}</Text>,
+            render: (sp2, record) => filterParam === 'оборудованию' ? <Text style={{fontSize: '10pt'}}>{record.nomer ? '№ ' + record.nomer + ' ' + sp2 : sp2}</Text> : <Text style={{fontSize: '10pt'}}>{sp2}</Text>,
             align: 'center',
             width: '17%',
         },
         {
             title: <Text>Наименование</Text>,
             dataIndex: 'name',
-            render: (text, record) => <NavLink to={filterParam === 'помещениям' ? `/premises/${record.id}` : filterParam === 'оборудованию' ? `/equipment/${record.id}` : filterParam === 'системам' ? `/systems/${record.id}` : filterParam === 'процессам' ? `/processes/${record.id}` : ''} style={{ fontSize: '12pt', marginLeft: '10px' }}>
-                {text}
+            render: (text, record) => <NavLink to={filterParam === 'помещениям' ? `/premises/${record.id}` : filterParam === 'оборудованию' ? `/equipment/${record.id}` : filterParam === 'системам' ? `/systems/${record.id}` : filterParam === 'процессам' ? `/processes/${record.id}` : ''} style={{ fontSize: '10pt', marginLeft: '10px' }}>
+                {filterParam === 'оборудованию' ? record.inv ? text + ' [' + record.inv + ']' : text : text}
             </NavLink>,
         },
     ]
@@ -84,7 +85,8 @@ export const ObjectsWithoutAvatars: React.FC = () => {
         sp2: e.sp2,
         name: e.name,
         nomer: e.nomer,
-        foto: e.foto
+        foto: e.foto,
+        inv: e.inv
     })).sort((a, b) => {
         const nameA = a.name.toUpperCase()
         const nameB = b.name.toUpperCase()
@@ -109,6 +111,7 @@ export const ObjectsWithoutAvatars: React.FC = () => {
         name: e.class === 'Складские' ? `Помещение ${e.nomer} «${e.name}»` : e.name,
         nomer: e.nomer,
         foto: e.foto,
+        inv: ''
     })).sort((a, b) => {
         const nameA = a.nomer.toUpperCase()
         const nameB = b.nomer.toUpperCase()
@@ -132,7 +135,8 @@ export const ObjectsWithoutAvatars: React.FC = () => {
         sp2: e.sp2,
         name: e.name,
         nomer: e.nomer,
-        foto: e.foto
+        foto: e.foto,
+        inv: ''
     })).sort((a, b) => {
         const nameA = a.name.toUpperCase()
         const nameB = b.name.toUpperCase()
@@ -156,7 +160,8 @@ export const ObjectsWithoutAvatars: React.FC = () => {
         sp2: e.sp2,
         name: e.name,
         nomer: e.nomer,
-        foto: e.foto
+        foto: e.foto,
+        inv: ''
     })).sort((a, b) => {
         const nameA = a.name.toUpperCase()
         const nameB = b.name.toUpperCase()

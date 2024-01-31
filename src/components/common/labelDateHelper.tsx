@@ -1,8 +1,9 @@
 import { addMonths } from 'date-fns'
 import { format } from 'date-fns'
-import { getIntervals } from '../../redux/Selectors/appSelectors'
+import { getIntervalsByAr, getTermSettingsSelector } from '../../redux/Selectors/appSelectors'
 import { useSelector } from 'react-redux'
 import { IntervalsType } from '../../redux/Reducers/appReducer'
+import { AppStateType } from '../../redux/store'
 
 type LabelDateHelperType = {
     date: string
@@ -10,11 +11,11 @@ type LabelDateHelperType = {
 }
 
 export const LabelDateHelper: React.FC<LabelDateHelperType> = ({date, ar}) => {
-    const intervals = useSelector(getIntervals)
-    const mainInterval = intervals.find(e => e.value === ar)
-    let monthCountString = mainInterval?.interval
-    if (monthCountString) {
-        const monthCount = parseInt(monthCountString);
+    let mainInterval = useSelector((state: AppStateType) => getIntervalsByAr(state, ar))
+    const termSettings = useSelector(getTermSettingsSelector)
+    const termSettingsNumber = termSettings ? parseInt(termSettings) : 0
+    if (mainInterval) {
+        const monthCount = parseInt(mainInterval) + termSettingsNumber;
         if (date) {
             const parts = date.split('.') // Разделяем строку по точкам
             if (parts.length === 3) {
@@ -42,11 +43,12 @@ export const LabelDateHelper: React.FC<LabelDateHelperType> = ({date, ar}) => {
     }
 }
 
-export const labelEndDate = (date: string, ar: string, intervals: IntervalsType[]) => {
+export const labelEndDate = (date: string, ar: string, intervals: IntervalsType[], termSettingsNumber: number) => {
     const mainInterval = intervals.find((e: IntervalsType) => e.value === ar)
+    
     let monthCountString = mainInterval?.interval
     if (monthCountString) {
-        const monthCount = parseInt(monthCountString);
+        const monthCount = parseInt(monthCountString) + termSettingsNumber;
         if (date) {
             const parts = date.split('.') // Разделяем строку по точкам
             if (parts.length === 3) {

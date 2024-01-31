@@ -3,8 +3,8 @@ import { AppDispatch } from "./redux/store"
 import { useDispatch, useSelector } from "react-redux"
 import { getIsAuthSelector } from "./redux/Selectors/authSelectors"
 import { loginOfCookieData } from "./redux/Reducers/authReducer"
-import { getAppErrorMessage, getAppLoadingMessage, getAppSuccessMessage, getInitializeAppStatus, getThemeType } from "./redux/Selectors/appSelectors"
-import { appActions, setTheme } from "./redux/Reducers/appReducer"
+import { getAppErrorMessage, getAppLoadingMessage, getAppSuccessMessage, getInitializeAppStatus, getTermSettingsSelector, getThemeType } from "./redux/Selectors/appSelectors"
+import { appActions, getLabelTermSettings, setTheme } from "./redux/Reducers/appReducer"
 import { useEffect } from "react"
 import { App } from "./App"
 import { message } from "antd"
@@ -27,6 +27,11 @@ export const AppContainer: React.FC = () => {
     const errorMessage = useSelector(getAppErrorMessage)
     const successMessage = useSelector(getAppSuccessMessage)
     const loadingMessage = useSelector(getAppLoadingMessage)
+    const termSettings = useSelector(getTermSettingsSelector)
+
+    useEffect(() => {
+        !termSettings && dispatch(getLabelTermSettings())
+    }, [])
 
     const [messageApi, contextHolder] = message.useMessage()
 
@@ -38,7 +43,7 @@ export const AppContainer: React.FC = () => {
                 duration: 7
             })
             dispatch(appActions.setErrorMessage(null))
-        }  else if (loadingMessage) {
+        } else if (loadingMessage) {
             messageApi.open({
                 type: 'loading',
                 content: loadingMessage

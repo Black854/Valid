@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { AppDispatch } from "../../../../redux/store"
 import { format } from 'date-fns'
 import { LabelDateHelper, labelEndDate } from "../../../common/labelDateHelper"
-import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector } from "../../../../redux/Selectors/appSelectors"
+import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector, getTermSettingsSelector } from "../../../../redux/Selectors/appSelectors"
 import { PrinterOutlined } from '@ant-design/icons'
 import { DataType, EquipReestrType } from "../../../../redux/Reducers/equipmentReducer"
 import { getSopCodeForm } from "../../../../redux/Reducers/appReducer"
@@ -23,6 +23,8 @@ export const EquipLabel: React.FC<CleanPremGroupsPropsType> = ({equipObject, ree
         dispatch(getSopCodeForm())
     }, [])
     const sopCodeForm = useSelector(getSopCodeFormSelector)
+    const termSettings = useSelector(getTermSettingsSelector)
+    const termSettingsNumber = termSettings ? parseInt(termSettings) : 0
 
     const numbersToPrint =  equipObject.inv + (equipObject.inv ? ` / ${equipObject.serial}` : `${equipObject.serial}`)
 
@@ -33,7 +35,7 @@ export const EquipLabel: React.FC<CleanPremGroupsPropsType> = ({equipObject, ree
         return currentDate > maxDate ? obj : max;
     }, reestrData[0])
       
-    const labelEndDateToPrint = labelEndDate(maxDateObject.dvo, equipObject.ar, intervals)
+    const labelEndDateToPrint = labelEndDate(maxDateObject.dvo, equipObject.ar, intervals, termSettingsNumber)
 
     const premCurrentDate = new Date(maxDateObject.dvo)
     const formattedPremCurrentDate = format(premCurrentDate, 'dd.MM.yyyy')

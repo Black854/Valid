@@ -1,5 +1,4 @@
 import { Col, Menu, Row } from "antd"
-import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { EquipPlacement } from "./EquipPlacement"
 import { UserActions } from "./UserActions"
@@ -25,6 +24,7 @@ const Prints: React.FC = () => {
                 <Menu.Item key='r1'>Отчет о местонахождении оборудования</Menu.Item>
                 <Menu.Item key='r4'>Отчет по объектам без аватара</Menu.Item>
                 {/* <Menu.Item key='r4'>Отчет по незапланированным объектам</Menu.Item> */}
+                {/* <Menu.Item key='r4'>Отчет по сигнальному листу </Menu.Item> */}
                 <Menu.Item key='r2'>Аудит пользовательских операций</Menu.Item>
                 <Menu.Item key='r3'>Аудит учетных записей</Menu.Item>
             </Menu>

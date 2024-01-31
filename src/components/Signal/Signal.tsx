@@ -21,6 +21,7 @@ import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/p
 import { addMonths, format, subMonths } from "date-fns"
 import { PlansComponent } from "./PlansComponent"
 import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
+import { getIntervals, getTermSettingsSelector } from "../../redux/Selectors/appSelectors"
 
 const { Text } = Typography
 
@@ -39,7 +40,11 @@ const Signal: React.FC = () => {
     const sysData = useSelector(getSysData)
     const procData = useSelector(getProcData)
     const isLoading = useSelector(getIsLoading)
+    const intervals = useSelector(getIntervals)
     const access = parseInt(useSelector(getUserDataAccessSelector))
+
+    const termSettings = useSelector(getTermSettingsSelector)
+    const termSettingsNumber = termSettings ? parseInt(termSettings) : 0
 
     const premNewData = premData.map(e => ({
         objectType: 'premises' as 'equipment' | 'premises' | 'systems' | 'processes',
@@ -53,19 +58,9 @@ const Signal: React.FC = () => {
         date: e.date,
         ar: e.ar,
         foto: e.foto,
-        fio: e.fio
+        fio: e.fio,
     })).filter(e => {
-        let ar = e.ar
-        let monthCount = 0
-        if (ar === '1') { monthCount = 13 }
-        if (ar === '0,5') { monthCount = 13 }
-        else if (ar === '2') { monthCount = 25 }
-        else if (ar === '3') { monthCount = 37 }
-        else if (ar === '4') { monthCount = 37 }
-        else if (ar === '5') { monthCount = 61 }
-        else if (ar === '13') { monthCount = 7 }
-        else if (ar === '14') { monthCount = 61 }
-        else if (ar === '16') { monthCount = 61 }
+        const monthCount = parseInt((intervals.find(el => el.value === e.ar)?.interval || '0')) + termSettingsNumber
         if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
@@ -96,17 +91,7 @@ const Signal: React.FC = () => {
         foto: e.foto,
         fio: e.fio
     })).filter(e => {
-        let ar = e.ar
-        let monthCount = 0
-        if (ar === '1') { monthCount = 13 }
-        if (ar === '0,5') { monthCount = 13 }
-        else if (ar === '2') { monthCount = 25 }
-        else if (ar === '3') { monthCount = 37 }
-        else if (ar === '4') { monthCount = 37 }
-        else if (ar === '5') { monthCount = 61 }
-        else if (ar === '13') { monthCount = 7 }
-        else if (ar === '14') { monthCount = 61 }
-        else if (ar === '16') { monthCount = 61 }
+        const monthCount = parseInt((intervals.find(el => el.value === e.ar)?.interval || '0')) + termSettingsNumber
         if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
@@ -137,17 +122,7 @@ const Signal: React.FC = () => {
         foto: e.foto,
         fio: e.fio
     })).filter(e => {
-        let ar = e.ar
-        let monthCount = 0
-        if (ar === '1') { monthCount = 13 }
-        if (ar === '0,5') { monthCount = 13 }
-        else if (ar === '2') { monthCount = 25 }
-        else if (ar === '3') { monthCount = 37 }
-        else if (ar === '4') { monthCount = 37 }
-        else if (ar === '5') { monthCount = 61 }
-        else if (ar === '13') { monthCount = 7 }
-        else if (ar === '14') { monthCount = 61 }
-        else if (ar === '16') { monthCount = 61 }
+        const monthCount = parseInt((intervals.find(el => el.value === e.ar)?.interval || '0')) + termSettingsNumber
         if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
@@ -178,17 +153,7 @@ const Signal: React.FC = () => {
         foto: e.foto,
         fio: e.fio
     })).filter(e => {
-        let ar = e.ar
-        let monthCount = 0
-        if (ar === '1') { monthCount = 13 }
-        if (ar === '0,5') { monthCount = 13 }
-        else if (ar === '2') { monthCount = 25 }
-        else if (ar === '3') { monthCount = 37 }
-        else if (ar === '4') { monthCount = 37 }
-        else if (ar === '5') { monthCount = 61 }
-        else if (ar === '13') { monthCount = 7 }
-        else if (ar === '14') { monthCount = 61 }
-        else if (ar === '16') { monthCount = 61 }
+        const monthCount = parseInt((intervals.find(el => el.value === e.ar)?.interval || '0')) + termSettingsNumber
         if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
@@ -223,7 +188,7 @@ const Signal: React.FC = () => {
     }, [premData, equipData, sysData, procData])
 
     type DataType = typeof premNewData[0]
-    const data: DataType[] = [...premNewData, ...equipNewData, ...sysNewData, ...procNewData]
+    let data: DataType[] = [...premNewData, ...equipNewData, ...sysNewData, ...procNewData]
 
     const columns: ColumnsType<DataType> = [
         {

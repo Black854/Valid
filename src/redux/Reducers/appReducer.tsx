@@ -99,15 +99,15 @@ const initialState = {
     vmpDepartments: [] as VMPDepartmentsType[],
     intervals: [
         { value: '0', label: 'Не валидируется', interval: '0' },
-        { value: '0,5', label: '1 раз в год c промежуточным контролем', interval: '13' },
-        { value: '13', label: '1 раз в полгода', interval: '7' },
-        { value: '1', label: '1 раз в год', interval: '13' },
-        { value: '2', label: '1 раз в 2 года', interval: '25' },
-        { value: '3', label: '1 раз в 3 года', interval: '37' },
-        { value: '4', label: '1 раз в 3 года (посезонно)', interval: '37' },
-        { value: '5', label: '1 раз в 5 лет', interval: '61' },
-        { value: '14', label: '1 раз в 5 лет (посезонно)', interval: '61' },
-        { value: '16', label: '1 раз в 5 лет (без оформления ПОТС)', interval: '61' },
+        { value: '0,5', label: '1 раз в год c промежуточным контролем', interval: '12' },
+        { value: '13', label: '1 раз в полгода', interval: '6' },
+        { value: '1', label: '1 раз в год', interval: '12' },
+        { value: '2', label: '1 раз в 2 года', interval: '24' },
+        { value: '3', label: '1 раз в 3 года', interval: '36' },
+        { value: '4', label: '1 раз в 3 года (посезонно)', interval: '36' },
+        { value: '5', label: '1 раз в 5 лет', interval: '60' },
+        { value: '14', label: '1 раз в 5 лет (посезонно)', interval: '60' },
+        { value: '16', label: '1 раз в 5 лет (без оформления ПОТС)', interval: '60' },
         { value: '10', label: 'По изменениям (с оформлением ПОТС)', interval: '0' },
         { value: '11', label: 'По изменениям (без оформления ПОТС)', interval: '0' },
         { value: '12', label: 'Законсервировано', interval: '0' },
@@ -607,6 +607,17 @@ export const uploadCodeForm = (file: any): ThunkType => async (dispatch) => {
 
 export const getLabelTermSettings = (): ThunkType => async (dispatch) => {
     const data = await appAPI.getLabelTermSettings()
+    if (data.resultCode === 0) {
+        dispatch(appActions.setLabelTermSettings(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(appActions.setErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+}
+
+export const setLabelTermSettings = (param: string): ThunkType => async (dispatch) => {
+    const data = await appAPI.setLabelTermSettings(param)
     if (data.resultCode === 0) {
         dispatch(appActions.setLabelTermSettings(data.items))
     } else if (data.resultCode === 1) {

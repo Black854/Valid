@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 import { AppDispatch } from "../../../../redux/store"
 import { format } from 'date-fns'
 import { LabelDateHelper, labelEndDate } from "../../../common/labelDateHelper"
-import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector } from "../../../../redux/Selectors/appSelectors"
+import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector, getTermSettingsSelector } from "../../../../redux/Selectors/appSelectors"
 import { PrinterOutlined } from '@ant-design/icons'
 import { getSopCodeForm } from "../../../../redux/Reducers/appReducer"
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
@@ -50,6 +50,8 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
         index: index + 1,
     }))
     const intervals = useSelector(getIntervals)
+    const termSettings = useSelector(getTermSettingsSelector)
+    const termSettingsNumber = termSettings ? parseInt(termSettings) : 0
     const isCleanPremGroupsLoading = useSelector(getIsCleanPremGroupsLoading)
     const cleanTab = useSelector(getCleanTabSelector)
     const handleDeleteCleanPremGroup = (groupId: string) => {
@@ -137,7 +139,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
         return currentDate > maxDate ? obj : max;
     }, reestrData[0])
       
-    const labelEndDateToPrint = labelEndDate(maxDateObject.dvo, premObject.ar, intervals)
+    const labelEndDateToPrint = labelEndDate(maxDateObject.dvo, premObject.ar, intervals, termSettingsNumber)
     const premCurrentDate = new Date(maxDateObject.dvo)
     const formattedPremCurrentDate = format(premCurrentDate, 'dd.MM.yyyy')
     

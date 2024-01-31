@@ -1,9 +1,9 @@
 import { Switch, Typography } from "antd"
 import { useDispatch, useSelector } from "react-redux"
-import { getPremModesIsLoadingSelector, getPremModesSelector, getTermSettingsSelector } from "../../../redux/Selectors/appSelectors"
+import { getTermSettingsSelector } from "../../../redux/Selectors/appSelectors"
 import { useEffect } from "react"
 import { AppDispatch } from "../../../redux/store"
-import { getLabelTermSettings } from "../../../redux/Reducers/appReducer"
+import { getLabelTermSettings, setLabelTermSettings } from "../../../redux/Reducers/appReducer"
 
 const { Text } = Typography
 
@@ -20,12 +20,14 @@ export const OtherSettings: React.FC<PremModesPropsType> = ({ access }) => {
         !termSettings && dispatch(getLabelTermSettings())
     }, [])
 
-    // const handleChangeType = (id: string, type: string) => {
-    //     dispatch(setPremModesData(id, type))
-    // }
+    const handleChangeType = (param: boolean) => {
+        let paramLabel
+        param ? paramLabel = '1' : paramLabel = '0'
+        dispatch(setLabelTermSettings(paramLabel))
+    }
 
     return <>
         <Text style={{fontSize: '14pt', marginTop: '15px', display: 'inline-block', marginRight: '20px'}}>Добавлять 1 месяц к сроку действия валидационного статуса</Text>
-        <Switch size="small" style={{position: 'absolute', top: '24px'}} checked={termSettings ? termSettings === '1' : false} />
+        <Switch disabled={access > 1} size="small" style={{position: 'absolute', top: '24px'}} checked={termSettings ? termSettings === '1' : false} onChange={(param) => handleChangeType(param)} />
     </>
 }

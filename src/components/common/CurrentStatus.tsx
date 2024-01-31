@@ -2,7 +2,7 @@ import { Typography } from "antd"
 import { useSelector } from "react-redux/es/hooks/useSelector"
 import { addMonths } from 'date-fns';
 import { format } from 'date-fns';
-import { getIntervalsByAr } from "../../redux/Selectors/appSelectors";
+import { getIntervalsByAr, getTermSettingsSelector } from "../../redux/Selectors/appSelectors";
 import { AppStateType } from "../../redux/store";
 import { getPremReestrDataSelector } from "../../redux/Selectors/premisesSelectors";
 import { getEquipReestrDataSelector } from "../../redux/Selectors/equipmentSelectors"
@@ -23,6 +23,10 @@ export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio, table}
     const reestrPremData = useSelector(getPremReestrDataSelector)
     const reestrSysData = useSelector(getSysReestrDataSelector)
     const reestrProcData = useSelector(getProcReestrDataSelector)
+    
+    const termSettings = useSelector(getTermSettingsSelector)
+    const termSettingsNumber = termSettings ? parseInt(termSettings) : 0
+
     let reestrData: PremReestrType[] = []
     if (table === 'equipment') {
         reestrData = reestrEquipData
@@ -43,7 +47,7 @@ export const CurrentStatus: React.FC<CurrentStatusPropsType> = ({ar, fio, table}
             return currentDate > maxDate ? obj : max;
         }, reestrData[0]); // Используем первый объект в качестве начальной максимальной даты
         if (interval) {
-            const numInterval = parseInt(interval, 10)
+            const numInterval = parseInt(interval, 10) + termSettingsNumber
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd'); // Текущая дата для сравнения с датой объекта
             if (maxDateObject.dvo !== '') {

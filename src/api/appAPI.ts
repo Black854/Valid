@@ -228,4 +228,12 @@ export const appAPI = {
             return response.data
         })
     },
+    setLabelTermSettings(param: string) {
+        const requestData = {
+            param
+        }
+        return appInstance.post(`setLabelTermSettings.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
 }

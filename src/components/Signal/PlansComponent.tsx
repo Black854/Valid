@@ -38,7 +38,7 @@ export const PlansComponent: React.FC<ProgresssHelper> = ({ record, myPremData, 
                 { month: 'ноябрь', days: thisObject.type1[11] },
                 { month: 'декабрь', days: thisObject.type1[12] },
             ]
-            b = a.filter(e => e.days !== '0').map(e => <Text style={{display: 'inline-block'}}>Квалификация на {e.month} {currentYear}</Text>)
+            b = a.filter(e => e.days !== '0').map(e => <Text style={{display: 'inline-block'}} key={thisObject.idfromtable + e.days + e.month}>Квалификация на {e.month} {currentYear}</Text>)
         }
 
         if (thisObject.type2) {
@@ -56,7 +56,7 @@ export const PlansComponent: React.FC<ProgresssHelper> = ({ record, myPremData, 
                 { month: 'ноябрь', days: thisObject.type2[11] },
                 { month: 'декабрь', days: thisObject.type2[12] },
             ]
-            c = a.filter(e => e.days !== '0').map(e => <Text style={{display: 'inline-block'}}>Оценка на {e.month} {currentYear}</Text>)
+            c = a.filter(e => e.days !== '0').map(e => <Text style={{display: 'inline-block'}} key={thisObject.idfromtable + e.days + e.month}>Оценка на {e.month} {currentYear}</Text>)
         }
 
         return !thisObject.type1 && !thisObject.type2 ? <Text>Не запланировано</Text> : <>{b} {c}</>
