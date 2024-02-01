@@ -59,7 +59,7 @@ export const AppContainer: React.FC = () => {
     }, [errorMessage, successMessage, loadingMessage])
 
     useEffect(() => {
-        !isAuth && !initializeAppStatus ? navigate('/login') : (location.pathname === '/') && navigate('/work')
+        !isAuth ? navigate('/login') : (location.pathname === '/') && navigate('/work')
     }, [isAuth, location.pathname])
 
     return <App contextHolder={contextHolder} theme={theme} themeType={themeType} handleThemeChange={handleThemeChange} />

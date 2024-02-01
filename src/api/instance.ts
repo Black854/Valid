@@ -1,6 +1,11 @@
 import axios from 'axios'
 import { getCookie } from '../components/common/cookie'
 
+// http://validcontrol.ru
+
+export const authInstance = axios.create({
+    baseURL: 'http://10.85.10.212/ov/api/auth/'
+})
 
 export const equipInstance = axios.create({
     baseURL: 'http://10.85.10.212/ov/api/equip/',
