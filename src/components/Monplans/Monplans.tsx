@@ -23,7 +23,7 @@ type MenuItem = Required<MenuProps>['items'][number]
 
 const Monplans: React.FC = ({ }) => {
   const dispatch: AppDispatch = useDispatch()
-  const monthList = useSelector(getMonthListSelector)
+  const monthListRAW = useSelector(getMonthListSelector)
   const allValidators = useSelector(getAllValidatorsSelector)
   const access = parseInt(useSelector(getUserDataAccessSelector))
   const emptyFioObject = [{ value: '', label: <Text type="warning">Не указано</Text> }]
@@ -36,13 +36,18 @@ const Monplans: React.FC = ({ }) => {
   let month: string
   let date: string
 
+  const currentYear = new Date().getFullYear().toString()
+  const currentMonth = (new Date().getMonth() + 1).toString().padStart(2, '0')
+  const currentDate = currentMonth + '.' + currentYear
+
+  const monthList = monthListRAW.filter(e => e.month === currentDate).length > 0 ? monthListRAW : [...monthListRAW, {month: currentDate}]
+
   if (params.year && params.month) {
     year = params.year
     month = params.month?.toString().padStart(2, '0')
   } else {
-    const currentDate = new Date()
-    year = currentDate.getFullYear().toString()
-    month = (currentDate.getMonth() + 1).toString().padStart(2, '0')
+    year = currentYear
+    month = currentMonth
   }
 
   date = month + '.' + year
@@ -267,7 +272,7 @@ const Monplans: React.FC = ({ }) => {
                 } else if (menuItem.type === 'divider') {
                   return <Menu.Divider key={`divider-${index}`} />
                 } else if ('label' in menuItem) {
-                  return <><Menu.Item key={`item-${menuItem.key}`} icon={<PrinterOutlined />}>{menuItem.label}</Menu.Item><Menu.Item disabled={access > 1} key='item-import' icon={<DownloadOutlined />}>Импорт из графика ВМП</Menu.Item></>
+                  return <><Menu.Item key={`item-${menuItem.key}`} icon={<PrinterOutlined />}>{menuItem.label}</Menu.Item><Menu.Item disabled={access > 1 || currentDate !== date} key='item-import' icon={<DownloadOutlined />}>Импорт из графика ВМП</Menu.Item></>
                 }
               }
               return null
