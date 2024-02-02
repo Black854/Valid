@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Button, Col, Image, Menu, MenuProps, Row, Typography } from 'antd'
 import { Header } from "antd/es/layout/layout"
-import logo from './../../img/logo192.png'
+import logo from './../../img/logo.png'
 import { useDispatch, useSelector } from "react-redux"
 import { getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
 import { getVMPDepartments } from "../../redux/Reducers/appReducer"

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import type { FormInstance } from 'antd'
-import { Button, Card, Checkbox, Form, Input, Typography, Space } from 'antd'
+import { Button, Card, Checkbox, Form, Input, Typography, Space, Image } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../../redux/store'
 import { login } from '../../redux/Reducers/authReducer'
 import { getAuthResponseMessage, getIsAuthSelector } from '../../redux/Selectors/authSelectors'
 import { useNavigate } from 'react-router-dom'
 import authImage from '../../img/authImage.jpg'
+import logo from './../../img/logo.png'
 
 const { Text } = Typography
 
@@ -51,10 +52,11 @@ export const Login: React.FC = () => {
 
     return <>
         <Space style={{ display: 'grid', placeItems: 'center', height: '100vh', backgroundImage: `url(${authImage})`, backgroundPosition: 'center' }} >
-            <div>
-                <Text type='warning' style={{fontSize: '22pt'}}>V</Text>
-                <Text style={{fontSize: '16pt', display: 'inline-block', marginBottom: '20px'}}>alidControl - современная система управления валидацией</Text>
-                <Card style={{ minWidth: '300px', backdropFilter: 'blur(5px)', backgroundColor: 'rgba(255, 255, 255, 0.1)', opacity: '0.7', borderColor: 'rgba(255, 255, 255, 0.2)' }} title='Для продолжения, авторизуйтесь'>
+            <div style={{position: 'relative', bottom: '50px'}}>
+                <Image src={logo} style={{ width: '35px', height: '35px', display: 'inline', position: 'relative', bottom: '10px', left: '9px' }} preview={false} />
+                {/* <Text type='warning' style={{fontSize: '22pt'}}>V</Text> */}
+                <Text style={{fontSize: '16pt', display: 'inline-block', marginBottom: '70px'}}>alidControl - современная система управления валидацией</Text>
+                <Card style={{ minWidth: '300px', backdropFilter: 'blur(1px)', backgroundColor: 'rgba(255, 255, 255, 0.1)', opacity: '0.7', borderColor: 'rgba(255, 255, 255, 0.2)' }} title='Для продолжения, авторизуйтесь'>
                     <Form
                         name="normal_login"
                         className="login-form"
