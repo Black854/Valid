@@ -15,7 +15,7 @@ import { getCurrentEquipData, getEquipment } from "../../redux/Reducers/equipmen
 import { EquipTasks } from "./taskComponents/EquipTasks"
 import { PremTasks } from "./taskComponents/PremTasks"
 import { ProgressHelper } from "./taskComponents/ProgressHelper"
-import { getAllValidators } from "../../redux/Reducers/appReducer"
+import { getAllValidators, getLabelTermSettings } from "../../redux/Reducers/appReducer"
 import { getCurrentSysData, getSystems } from "../../redux/Reducers/systemsReducer"
 import { getCurrentProcData, getProcesses } from "../../redux/Reducers/processesReducer"
 import { getCurrentSysDataSelector, getSysData } from "../../redux/Selectors/systemsSelectors"
@@ -36,6 +36,7 @@ export const WorkList: React.FC = () => {
             dispatch(getSystems())
             dispatch(getProcesses())
             dispatch(getAllValidators())
+            dispatch(getLabelTermSettings())
         }
     }, [isAuth])
 

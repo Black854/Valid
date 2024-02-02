@@ -15,9 +15,9 @@ export const Login: React.FC = () => {
     const isAuth = useSelector(getIsAuthSelector)
     const authResponseMessage = useSelector(getAuthResponseMessage)
     const navigate = useNavigate()
-    useEffect(() => {
-        isAuth && navigate('/')
-    }, [isAuth])
+    // useEffect(() => {
+    //     isAuth && navigate('/')
+    // }, [isAuth])
     const dispatch: AppDispatch = useDispatch()
 
     const onFinish = (values: any) => {
@@ -43,7 +43,7 @@ export const Login: React.FC = () => {
         }, [values])
 
         return (
-            <Button type="primary" htmlType="submit" disabled={!submittable}>
+            <Button type="primary" htmlType="submit">
                 Войти
             </Button>
         )
