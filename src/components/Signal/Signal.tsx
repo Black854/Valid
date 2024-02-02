@@ -21,7 +21,7 @@ import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/p
 import { addMonths, format, subMonths } from "date-fns"
 import { PlansComponent } from "./PlansComponent"
 import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
-import { getIntervals, getTermSettingsSelector } from "../../redux/Selectors/appSelectors"
+import { getIntervals, getServerSelector, getTermSettingsSelector } from "../../redux/Selectors/appSelectors"
 
 const { Text } = Typography
 
@@ -42,6 +42,7 @@ const Signal: React.FC = () => {
     const isLoading = useSelector(getIsLoading)
     const intervals = useSelector(getIntervals)
     const access = parseInt(useSelector(getUserDataAccessSelector))
+    const server = useSelector(getServerSelector)
 
     const termSettings = useSelector(getTermSettingsSelector)
     const termSettingsNumber = termSettings ? parseInt(termSettings) : 0
@@ -209,7 +210,7 @@ const Signal: React.FC = () => {
                             borderRadius: '3px',
                             overflow: 'hidden'
                         }}
-                            src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
+                            src={record.foto ? server + record.foto : empty}
                             preview={{ mask: <EyeOutlined style={{ fontSize: '12pt' }} /> }}
                         />
                     </Col>

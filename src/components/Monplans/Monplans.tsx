@@ -8,7 +8,7 @@ import { PlansType, getMonthList, getPlans, MonthListItem, plansActions, vmpImpo
 import { getMonthListSelector, getPlansError, getPlansSelector } from "../../redux/Selectors/plansSelectors"
 import { ColumnsType } from "antd/es/table"
 import empty from './../../img/empty.png'
-import { getAllValidatorsSelector } from "../../redux/Selectors/appSelectors"
+import { getAllValidatorsSelector, getServerSelector } from "../../redux/Selectors/appSelectors"
 import { getAllValidators } from "../../redux/Reducers/appReducer"
 import { FioChanger } from "./PlansComponents/FioChanger"
 import { DocChanger } from "./PlansComponents/DocChanger"
@@ -73,6 +73,7 @@ const Monplans: React.FC = ({ }) => {
   }, [params.year, params.month])
 
   const errorMessage = useSelector(getPlansError)
+  const server = useSelector(getServerSelector)
 
   const [messageApi, contextHolder] = message.useMessage()
 
@@ -127,7 +128,7 @@ const Monplans: React.FC = ({ }) => {
                 borderRadius: '3px',
                 overflow: 'hidden'
               }}
-              src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
+              src={record.foto ? server + record.foto : empty}
               preview={{ mask: <EyeOutlined style={{ fontSize: '12pt' }} /> }}
             />
           </Col>
@@ -290,7 +291,7 @@ const Monplans: React.FC = ({ }) => {
             style={{ marginBottom: '100px' }}
           />
           <Modal open={modalOpen} centered onCancel={() => setModalOpen(false)} afterOpenChange={() => setModalOpen(false)} >
-            <iframe width={450} height={700} key={iframeKey} src={`http://10.85.10.212/ov/api/printForms/monthplan_print.php?y_old=${year}&m_old=${month}`}></iframe>
+            <iframe width={450} height={700} key={iframeKey} src={`${server}api/printForms/monthplan_print.php?y_old=${year}&m_old=${month}`}></iframe>
           </Modal>
         </Col>
       </Row>

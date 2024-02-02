@@ -1,14 +1,17 @@
 import axios from 'axios'
 import { getCookie } from '../components/common/cookie'
 
-// http://validcontrol.ru
+// https://validcontrol.ru
+// http://10.85.10.212/ov
+
+const server = 'https://validcontrol.ru'; // прописать домен сайта
 
 export const authInstance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/auth/'
+    baseURL: server + '/api/auth/'
 })
 
 export const equipInstance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/equip/',
+    baseURL: server + '/api/equip/',
     withCredentials: true,
 })
 
@@ -21,7 +24,7 @@ equipInstance.interceptors.request.use((config) => {
 })
 
 export const appInstance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/common/'
+    baseURL: server + '/api/common/'
 })
 
 appInstance.interceptors.request.use((config) => {
@@ -33,7 +36,7 @@ appInstance.interceptors.request.use((config) => {
 })
 
 export const instInstance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/inst/'
+    baseURL: server + '/api/inst/'
 })
 
 instInstance.interceptors.request.use((config) => {
@@ -45,7 +48,7 @@ instInstance.interceptors.request.use((config) => {
 })
 
 export const plansInstance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/plans/'
+    baseURL: server + '/api/plans/'
 })
 
 plansInstance.interceptors.request.use((config) => {
@@ -57,7 +60,7 @@ plansInstance.interceptors.request.use((config) => {
 })
 
 export const sysInstance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/sys/'
+    baseURL: server + '/api/sys/'
 })
 
 sysInstance.interceptors.request.use((config) => {
@@ -68,7 +71,7 @@ sysInstance.interceptors.request.use((config) => {
     return config;
 })
 export const procInstance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/proc/'
+    baseURL: server + '/api/proc/'
 })
 
 procInstance.interceptors.request.use((config) => {
@@ -80,7 +83,7 @@ procInstance.interceptors.request.use((config) => {
 })
 
 export const premInstance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/prem/'
+    baseURL: server + '/api/prem/'
 })
 
 premInstance.interceptors.request.use((config) => {
@@ -92,7 +95,7 @@ premInstance.interceptors.request.use((config) => {
 })
 
 export const vmpInstance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/vmp/'
+    baseURL: server + '/api/vmp/'
 })
 
 vmpInstance.interceptors.request.use((config) => {
@@ -104,7 +107,7 @@ vmpInstance.interceptors.request.use((config) => {
 })
 
 export const workInstance = axios.create({
-    baseURL: 'http://10.85.10.212/ov/api/work/'
+    baseURL: server + '/api/work/'
 })
 
 workInstance.interceptors.request.use((config) => {

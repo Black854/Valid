@@ -8,6 +8,7 @@ import { AppDispatch } from "../../../../redux/store"
 import { deleteProcDocument, getProcReestrData, updateReestrDocsCodeProc, uploadProcDocument } from "../../../../redux/Reducers/processesReducer"
 import { AddReestrData } from "../../../common/AddReestrData"
 import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
+import { getServerSelector } from "../../../../redux/Selectors/appSelectors"
 
 const { Text } = Typography
 
@@ -35,6 +36,7 @@ type CardReestrPropsType = {
 export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoading, reestrData, group }) => {
     const reestrDataWithoutEmptyRows = reestrData.filter(e => e.dvo !== '')
     const access = parseInt(useSelector(getUserDataAccessSelector))
+    const server = useSelector(getServerSelector)
 
     const dispatch: AppDispatch = useDispatch()
     useEffect(() => {
@@ -65,7 +67,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                         <Text style={{ width: '90%' }} editable={access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvp') }}>
                             {nvp}
                         </Text>
-                        <Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={'http://10.85.10.212/ov/' + record.vp} />
+                        <Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={server + record.vp} />
                         <Popconfirm
                             title='Подтвердите удаление'
                             description='Вы уверены, что хотите удалить документ?'
@@ -116,7 +118,7 @@ export const CardReestr: React.FC<CardReestrPropsType> = ({ id, isReestrDataLoad
                     }
                     return <>
                         <Text style={{ width: '95%' }} editable={access > 2 ? false : { onChange: (text: string) => handleUpdateDocsCode(record.id, text, 'nvo') }}>{nvo}</Text>
-                        <Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={'http://10.85.10.212/ov/' + record.vo} />
+                        <Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={server + record.vo} />
                         <Popconfirm
                             title='Подтвердите удаление'
                             description='Вы уверены, что хотите удалить документ?'

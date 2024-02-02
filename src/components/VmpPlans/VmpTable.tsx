@@ -3,7 +3,7 @@ import { Button, Table, Typography } from "antd"
 import Column from "antd/es/table/Column"
 import ColumnGroup from "antd/es/table/ColumnGroup"
 import { NavLink } from "react-router-dom"
-import { getThemeType } from "../../redux/Selectors/appSelectors"
+import { getServerSelector, getThemeType } from "../../redux/Selectors/appSelectors"
 import { useSelector } from "react-redux"
 
 const { Text } = Typography
@@ -43,6 +43,7 @@ type dataType = {
 export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, tableType }) => {
     
     const themeType = useSelector(getThemeType)
+    const server = useSelector(getServerSelector)
 
     return <>
         <div className={themeType === 'light' ? 'vmpTable1' : 'vmpTable2'}>
@@ -164,7 +165,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                     key="codedoc"
                     align="right"
                     width='27%'
-                    render={(codedoc: string, record: dataType) => record.vo ? record.vo !== '' && <><Text type={record.status === 'Выполнено' ? 'success' : undefined}>{codedoc}</Text><Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={'http://10.85.10.212/ov/' + record.vo} /></> : <Text type={record.status === 'Выполнено' ? 'success' : undefined}>{codedoc}</Text>}
+                    render={(codedoc: string, record: dataType) => record.vo ? record.vo !== '' && <><Text type={record.status === 'Выполнено' ? 'success' : undefined}>{codedoc}</Text><Button icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={server + record.vo} /></> : <Text type={record.status === 'Выполнено' ? 'success' : undefined}>{codedoc}</Text>}
                 />
             </Table>
         </div>

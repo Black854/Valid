@@ -7,6 +7,7 @@ import pdf from './../../img/pdfi.png'
 import { getPaperplanesSelector } from "../../redux/Selectors/paperplanesSelectors"
 import { createPaperplanes, deletePaperplanes, getPaperplanes, setPaperplanesDescription } from "../../redux/Reducers/paperplanesReducer"
 import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
+import { getServerSelector } from "../../redux/Selectors/appSelectors"
 
 const { Text, Title } = Typography
 
@@ -24,6 +25,8 @@ const PaperPlanes: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
     const paperplanes = useSelector(getPaperplanesSelector)
     const access = parseInt(useSelector(getUserDataAccessSelector))
+    const server = useSelector(getServerSelector)
+    
     const addObjectToPaperplanes = {
         id: '99999',
         planename: '',
@@ -88,8 +91,8 @@ const PaperPlanes: React.FC = () => {
                 <Text editable={access > 3 ? false : { onChange: (text) => { setPdfDescription(e.id, text) } }} style={{ color: 'black', position: 'absolute', top: '3%', left: '5%', width: '80%', zIndex: '1' }}>{e.planename}</Text>
                 <Image preview={false} src={pdf} height='100%' style={{ objectFit: 'cover', cursor: 'pointer' }} onClick={() => showModal(e.id)} />
                 <Modal title="Просмотр документа" open={isModalOpen} onCancel={() => handleCancel(e.id)} footer={[<Button key="close" onClick={() => handleCancel(e.id)} type="primary">Закрыть</Button>]} >
-                    <object data={'http://10.85.10.212/ov/' + e.urlplane} type="application/pdf" width="100%" height="600px">
-                        <p>Ваш браузер не поддерживает отображение PDF. Вы можете <a href={'http://10.85.10.212/ov/' + e.urlplane}>скачать его</a>.</p>
+                    <object data={server + e.urlplane} type="application/pdf" width="100%" height="600px">
+                        <p>Ваш браузер не поддерживает отображение PDF. Вы можете <a href={server + e.urlplane}>скачать его</a>.</p>
                     </object>
                 </Modal>
                 <Popconfirm
@@ -127,7 +130,7 @@ const PaperPlanes: React.FC = () => {
             return <Col key={e.id} xs={24} sm={12} md={8} lg={3} style={{ padding: '4px' }}>
                 <Image
                     preview={{ mask: <><EyeOutlined style={{ fontSize: '12pt' }} /><Text style={{ color: 'white', marginLeft: '10px' }}>Просмотр</Text></> }}
-                    src={'http://10.85.10.212/ov/' + e.urlplane}
+                    src={server + e.urlplane}
                     height='100%'
                     style={{ objectFit: 'cover' }}
                 />

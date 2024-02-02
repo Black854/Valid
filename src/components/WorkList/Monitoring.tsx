@@ -16,7 +16,7 @@ import { EquipTasks } from "./taskComponents/EquipTasks"
 import { PremTasks } from "./taskComponents/PremTasks"
 import { ProgressHelper } from "./taskComponents/ProgressHelper"
 import { AllValidatorsType, getAllValidators } from "../../redux/Reducers/appReducer"
-import { getAllValidatorsSelector } from "../../redux/Selectors/appSelectors"
+import { getAllValidatorsSelector, getServerSelector } from "../../redux/Selectors/appSelectors"
 import { getCurrentSysData, getSystems } from "../../redux/Reducers/systemsReducer"
 import { getCurrentProcData, getProcesses } from "../../redux/Reducers/processesReducer"
 import { getCurrentSysDataSelector, getSysData } from "../../redux/Selectors/systemsSelectors"
@@ -65,6 +65,7 @@ const Monitoring: React.FC = () => {
     const isLoading = useSelector(getIsLoading)
     const allValidators = useSelector(getAllValidatorsSelector)
     const access = parseInt(useSelector(getUserDataAccessSelector))
+    const server = useSelector(getServerSelector)
 
     const usersFilters = allValidators.map((e: AllValidatorsType) => ({ value: e.fio, text: e.fio }))
 
@@ -167,7 +168,7 @@ const Monitoring: React.FC = () => {
                             borderRadius: '3px',
                             overflow: 'hidden'
                         }}
-                            src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
+                            src={record.foto ? server + record.foto : empty}
                             preview={{ mask: <EyeOutlined style={{ fontSize: '12pt' }} /> }}
                         />
                     </Col>

@@ -7,7 +7,7 @@ export const authAPI = {
             password,
             rememberMe
         }
-        return authInstance.post(`login.php`, requestData, {}).then(response => {
+        return authInstance.post(`loginApp.php`, requestData, {}).then(response => {
             return response.data
         })
     },

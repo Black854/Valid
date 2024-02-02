@@ -11,6 +11,7 @@ import empty from './../../img/empty.png'
 import { getAllValidators } from "../../redux/Reducers/appReducer"
 import 'dayjs/locale/ru'
 import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
+import { getServerSelector } from "../../redux/Selectors/appSelectors"
 
 const { Text } = Typography
 
@@ -97,6 +98,7 @@ const Reports: React.FC = ({ }) => {
   }
 
   let data = useSelector(getPlansSelector)
+  const server = useSelector(getServerSelector)
   data = [...data].sort((a, b) => a.name?.localeCompare(b.name))
   data = [...data].sort((a, b) => a.sp?.localeCompare(b.sp))
   data = data.map((item, index) => ({
@@ -131,7 +133,7 @@ const Reports: React.FC = ({ }) => {
               borderRadius: '3px',
               overflow: 'hidden'
             }}
-              src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
+              src={record.foto ? server + record.foto : empty}
               preview={{ mask: <EyeOutlined style={{ fontSize: '12pt' }} /> }}
             />
           </Col>
@@ -295,7 +297,7 @@ const Reports: React.FC = ({ }) => {
             style={{ marginBottom: '100px' }}
           />
           <Modal open={modalOpen} centered onCancel={() => setModalOpen(false)} afterOpenChange={() => setModalOpen(false)}>
-            <iframe width={450} height={700} key={iframeKey} src={`http://10.85.10.212/ov/api/printForms/report_print.php?y_old=${year}&m_old=${month}`}></iframe>
+            <iframe width={450} height={700} key={iframeKey} src={`${server}api/printForms/report_print.php?y_old=${year}&m_old=${month}`}></iframe>
           </Modal>
         </Col>
       </Row>

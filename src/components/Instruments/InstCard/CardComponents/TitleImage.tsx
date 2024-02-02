@@ -1,11 +1,12 @@
 import { Button, Image, Popconfirm, Typography, message } from "antd"
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons'
 import empty from './../../../../img/empty.png'
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { EyeOutlined} from '@ant-design/icons'
 import { AppDispatch } from "../../../../redux/store"
 import { DataType, deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/instrumentsReducer"
 import Title from "antd/es/typography/Title"
+import { getServerSelector } from "../../../../redux/Selectors/appSelectors"
 
 const {Text} = Typography
 
@@ -17,6 +18,7 @@ type TitleImagePropsType = {
 
 export const TitleImage: React.FC<TitleImagePropsType> = ({instObject, id, access}) => {
     const dispatch: AppDispatch = useDispatch()
+    const server = useSelector(getServerSelector)
     const [messageApi, contextHolder] = message.useMessage()
     
     const error = (fileName: string) => {
@@ -60,7 +62,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({instObject, id, acces
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
                 <Title editable={access > 3 ? false : {onChange: (text: string) => handleUpdateName(text)}} style={{marginBottom: '20px'}} level={4}>{instObject.name }</Title>
                 <Image
-                    src={instObject.foto ? "http://10.85.10.212/ov/" + instObject.foto : empty}
+                    src={instObject.foto ? server + instObject.foto : empty}
                     preview = { instObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }
                     style={{
                         maxWidth: '100%',

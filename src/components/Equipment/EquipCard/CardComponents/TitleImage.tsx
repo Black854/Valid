@@ -7,6 +7,7 @@ import { EyeOutlined} from '@ant-design/icons'
 import { AppDispatch } from "../../../../redux/store"
 import Title from "antd/es/typography/Title"
 import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
+import { getServerSelector } from "../../../../redux/Selectors/appSelectors"
 const {Text} = Typography
 
 interface DataType {
@@ -36,6 +37,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => 
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
     const access = parseInt(useSelector(getUserDataAccessSelector))
+    const server = useSelector(getServerSelector)
     
     const error = (fileName: string) => {
         messageApi.open({
@@ -73,7 +75,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => 
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
                 <Title editable={access > 3 ? false : {onChange: (text: string) => handleUpdateName(text)}} style={{marginBottom: '20px'}} level={4}>{equipObject.name}</Title>
                 <Image
-                    src={equipObject.foto ? "http://10.85.10.212/ov/" + equipObject.foto : empty}
+                    src={equipObject.foto ? server + equipObject.foto : empty}
                     preview = { equipObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }
                     style={{
                         maxWidth: '100%',

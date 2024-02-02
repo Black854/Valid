@@ -7,6 +7,7 @@ import { AppDispatch } from "../../../../redux/store"
 import { DataType, deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/premisesReducer"
 import Title from "antd/es/typography/Title"
 import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
+import { getServerSelector } from "../../../../redux/Selectors/appSelectors"
 
 const { Text } = Typography
 
@@ -19,6 +20,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({ premObject, id }) =>
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
     const access = parseInt(useSelector(getUserDataAccessSelector))
+    const server = useSelector(getServerSelector)
 
     const error = (fileName: string) => {
         messageApi.open({
@@ -55,7 +57,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({ premObject, id }) =>
             <div style={{ width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px' }}>
                 <Title editable={ access > 3 ? false : { text: premObject.name, onChange: (text: string) => handleUpdateName(text) }} style={{ marginBottom: '20px' }} level={4}>{premObject.class === 'Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name}</Title>
                 <Image
-                    src={premObject.foto ? "http://10.85.10.212/ov/" + premObject.foto : empty}
+                    src={premObject.foto ? server + premObject.foto : empty}
                     preview={premObject.foto ? { mask: <><EyeOutlined style={{ fontSize: '12pt' }} /><Text style={{ color: 'white', marginLeft: '10px' }}>Просмотр</Text></> } : false}
                     style={{
                         maxWidth: '100%',

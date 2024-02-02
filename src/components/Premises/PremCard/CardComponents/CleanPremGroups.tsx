@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 import { AppDispatch } from "../../../../redux/store"
 import { format } from 'date-fns'
 import { LabelDateHelper, labelEndDate } from "../../../common/labelDateHelper"
-import { getDepartmentsSelector, getIntervals, getSopCodeFormSelector, getTermSettingsSelector } from "../../../../redux/Selectors/appSelectors"
+import { getDepartmentsSelector, getIntervals, getServerSelector, getSopCodeFormSelector, getTermSettingsSelector } from "../../../../redux/Selectors/appSelectors"
 import { PrinterOutlined } from '@ant-design/icons'
 import { getSopCodeForm } from "../../../../redux/Reducers/appReducer"
 import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
@@ -45,6 +45,8 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     const cleanGroupLabels = useSelector(getCleanGroupLabelsSelector)
     const cleanPremList = useSelector(getCleanPremListSelector)
     const access = parseInt(useSelector(getUserDataAccessSelector))
+    const server = useSelector(getServerSelector)
+
     const cleanGroupLabelsWithIndex = cleanGroupLabels.map((item, index) => ({
         ...item,
         index: index + 1,
@@ -361,12 +363,12 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
                         {selectedRowKeys.length === 0 ? <Button style={{marginTop: '10px'}} disabled icon={<PrinterOutlined />}>Печать этикетки</Button> :
                                                         <Button style={{marginTop: '10px'}} type="primary" icon={<PrinterOutlined />} onClick={() => setLabelModalOpen(true)}>Печать этикетки</Button>}
                         <Modal title="Печать статусной этикетки" open={labelModalOpen} afterOpenChange={() => handleCancel('label')} onCancel={() => handleCancel('label')} footer={[ <Button key="close" onClick={() => handleCancel('label')} type="primary">Закрыть</Button> ]} >
-                            <iframe key={iframeKey} style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/et.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
+                            <iframe key={iframeKey} style={{width: '100%', height: '360px'}} src={`${server}api/printForms/et.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
                                 &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
                             </iframe>
                         </Modal>
                         <Modal title="Печать рамки для статусной этикетки" afterOpenChange={() => handleCancel('frame')} open={frameModalOpen} onCancel={() => handleCancel('frame')} footer={[ <Button key="close" onClick={() => handleCancel('frame')} type="primary">Закрыть</Button> ]} >
-                            <iframe key={iframeKey} style={{width: '100%', height: '360px'}} src={`http://10.85.10.212/ov/api/printForms/etWithFrames.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
+                            <iframe key={iframeKey} style={{width: '100%', height: '360px'}} src={`${server}api/printForms/etWithFrames.php?code=${maxDateObject.nvo}&name=${premObject.name}&startDate=${formattedPremCurrentDate}
                                 &endDate=${labelEndDateToPrint}&departmentPos=${departmentPos}&departmentFio=${departmentFio}&ovPos=${ovPos}&ovFio=${ovFio}&numbers=${numbersToPrint}&sopCodeForm=${sopCodeForm}`}>
                             </iframe>
                         </Modal>

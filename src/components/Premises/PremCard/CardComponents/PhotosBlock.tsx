@@ -8,6 +8,7 @@ import { AppDispatch } from "../../../../redux/store"
 import { getPhotosSelector } from "../../../../redux/Selectors/premisesSelectors"
 import { deletePhoto, getPhotos, updatePdfDescription, uploadPhotos } from "../../../../redux/Reducers/premisesReducer"
 import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
+import { getServerSelector } from "../../../../redux/Selectors/appSelectors"
 const { Text } = Typography
 
 type PhotosBlockPropsType = {
@@ -29,6 +30,8 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
     const dispatch: AppDispatch = useDispatch()
     const photos = useSelector(getPhotosSelector)
     const access = parseInt(useSelector(getUserDataAccessSelector))
+    const server = useSelector(getServerSelector)
+    
     const addObjectToPhotos = {
         id: '99999',
         idfromtable: '',
@@ -92,8 +95,8 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                 <Text editable={ access > 3 ? false : { onChange: (text) => { setPdfDescription(e.id, text) } }} style={{ color: 'black', position: 'absolute', top: '3%', left: '5%', width: '80%', zIndex: '1' }}>{e.name}</Text>
                 <Image preview={false} src={pdf} height='100%' style={{ objectFit: 'cover', cursor: 'pointer' }} onClick={() => showModal(e.id)} />
                 <Modal title="Просмотр документа" open={isModalOpen} onCancel={() => handleCancel(e.id)} footer={[<Button key="close" onClick={() => handleCancel(e.id)} type="primary">Закрыть</Button>]} >
-                    <object data={'http://10.85.10.212/ov/' + e.src} type="application/pdf" width="100%" height="600px">
-                        <p>Ваш браузер не поддерживает отображение PDF. Вы можете <a href={'http://10.85.10.212/ov/' + e.src}>скачать его</a>.</p>
+                    <object data={server + e.src} type="application/pdf" width="100%" height="600px">
+                        <p>Ваш браузер не поддерживает отображение PDF. Вы можете <a href={server + e.src}>скачать его</a>.</p>
                     </object>
                 </Modal>
                 <Popconfirm
@@ -127,9 +130,9 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
                 <Image preview={false} src={video} height='100%' style={{ objectFit: 'cover', cursor: 'pointer' }} onClick={() => showModal(e.id)} />
                 <Modal title="Просмотр видеозаписи" open={isModalOpen} onCancel={() => handleCancel(e.id)} footer={[<Button key="close" onClick={() => handleCancel(e.id)} type="primary">Закрыть</Button>]} >
                     <video controls width="100%" height="600" ref={videoRef}>
-                        <source src={`http://10.85.10.212/ov/${e.src}`} type="video/mp4" />
+                        <source src={server + e.src} type="video/mp4" />
                         Ваш браузер не поддерживает отображение видео. Вы можете{" "}
-                        <a href={`http://10.85.10.212/ov/${e.src}`}>скачать его</a>.
+                        <a href={server + e.src}>скачать его</a>.
                     </video>
                 </Modal>
                 <Popconfirm
@@ -167,7 +170,7 @@ export const PhotosBlock: React.FC<PhotosBlockPropsType> = ({ id }) => {
             return <Col key={e.id} xs={24} sm={12} md={8} lg={4} style={{ padding: '4px' }}>
                 <Image
                     preview={{ mask: <><EyeOutlined style={{ fontSize: '12pt' }} /><Text style={{ color: 'white', marginLeft: '10px' }}>Просмотр</Text></> }}
-                    src={'http://10.85.10.212/ov/' + e.src}
+                    src={server + e.src}
                     height='100%'
                     style={{ objectFit: 'cover' }}
                 />

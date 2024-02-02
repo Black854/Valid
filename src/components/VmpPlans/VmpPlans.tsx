@@ -1,24 +1,21 @@
-import { Button, Col, Menu, Modal, Row, Table, Typography, message } from "antd"
+import { Button, Col, Menu, Modal, Row, message } from "antd"
 import { PrinterOutlined, CalendarOutlined, FileWordOutlined } from '@ant-design/icons'
-import { NavLink, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
+import { getServerSelector, getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
 import { useEffect, useState } from "react"
 import { AppDispatch } from "../../redux/store"
 import { getVMPData, vmpActions } from "../../redux/Reducers/vmpReducer"
-import ColumnGroup from "antd/es/table/ColumnGroup"
-import Column from "antd/es/table/Column"
 import { getVMPDataSelector, getVMPErrorMessage } from "../../redux/Selectors/vmpSelectors"
 import { plansDataBuilder } from "./plansDataBuilder"
 import { VmpTable } from "./VmpTable"
-
-const { Text } = Typography
 
 const VmpPlans: React.FC = () => {
 
     const [messageApi, contextHolder] = message.useMessage()
 
     const errorMessage = useSelector(getVMPErrorMessage)
+    const server = useSelector(getServerSelector)
 
     useEffect(() => {
         if (errorMessage) {
@@ -137,15 +134,15 @@ const VmpPlans: React.FC = () => {
                 <VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '2' || e.typeval === '3')} params={params} key={VMPName} tableType={2} />
 
                 <Modal title="Печать графика ВМП" afterOpenChange={() => handleCancel('VMPPrint')} open={VMPPrintModalIsOpen} onCancel={() => handleCancel('VMPPrint')} footer={[<Button key="close" onClick={() => handleCancel('VMPPrint')} type="primary">Закрыть</Button>]} >
-                    <iframe key={iframeKey} style={{ width: '100%', height: '360px' }} src={`http://10.85.10.212/ov/api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}`}>
+                    <iframe key={iframeKey} style={{ width: '100%', height: '360px' }} src={`${server}api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}`}>
                     </iframe>
                 </Modal>
                 <Modal title="Импорт графика ВМП" afterOpenChange={() => handleCancel('VMPImport')} open={VMPImportModalIsOpen} onCancel={() => handleCancel('VMPImport')} footer={[<Button key="close" onClick={() => handleCancel('VMPImport')} type="primary">Закрыть</Button>]} >
-                    <iframe key={iframeKey} style={{ width: '100%', height: '360px' }} src={`http://10.85.10.212/ov/api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}&print`}>
+                    <iframe key={iframeKey} style={{ width: '100%', height: '360px' }} src={`${server}api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}&print`}>
                     </iframe>
                 </Modal>
                 <Modal title="Печать отчета о выполненных работах" afterOpenChange={() => handleCancel('VMPReportPrint')} open={vmpReportPrintModalIsOpen} onCancel={() => handleCancel('VMPReportPrint')} footer={[<Button key="close" onClick={() => handleCancel('VMPReportPrint')} type="primary">Закрыть</Button>]} >
-                    <iframe key={iframeKey} style={{ width: '100%', height: '360px' }} src={`http://10.85.10.212/ov/api/printForms/vmp_report_print.php?tb=${params.number}&y=${params.year}`}>
+                    <iframe key={iframeKey} style={{ width: '100%', height: '360px' }} src={`${server}api/printForms/vmp_report_print.php?tb=${params.number}&y=${params.year}`}>
                     </iframe>
                 </Modal>
             </Col>

@@ -23,6 +23,7 @@ import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/p
 import { ProcTasks } from "./taskComponents/ProcTasks"
 import { SysTasks } from "./taskComponents/SysTasks"
 import { getAuthUserNameSelector, getIsAuthSelector, getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
+import { getServerSelector } from "../../redux/Selectors/appSelectors"
 
 const { Text } = Typography
 
@@ -45,6 +46,7 @@ export const WorkList: React.FC = () => {
     const isLoading = useSelector(getIsLoading)
     const AuthUserName = useSelector(getAuthUserNameSelector)
     const access = parseInt(useSelector(getUserDataAccessSelector))
+    const server = useSelector(getServerSelector)
 
     useEffect(() => {
         isAuth && dispatch(getCurrentPremData(myPremDataIdArray))
@@ -166,7 +168,7 @@ export const WorkList: React.FC = () => {
                             borderRadius: '3px',
                             overflow: 'hidden'
                         }}
-                            src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
+                            src={record.foto ? server + record.foto : empty}
                             preview={{ mask: <EyeOutlined style={{ fontSize: '12pt' }} /> }}
                         />
                     </Col>

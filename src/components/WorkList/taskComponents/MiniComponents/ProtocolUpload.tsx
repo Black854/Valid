@@ -1,11 +1,12 @@
 import { Button, Popconfirm, Typography } from "antd"
 import { AppDispatch } from "../../../../redux/store"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { deleteEquipDocument, getCurrentEquipData, uploadEquipDocument } from "../../../../redux/Reducers/equipmentReducer"
 import { DeleteOutlined, FileWordOutlined, UploadOutlined } from "@ant-design/icons"
 import { deletePremDocument, getCurrentPremData, uploadPremDocument } from "../../../../redux/Reducers/premisesReducer"
 import { deleteSysDocument, getCurrentSysData, uploadSysDocument } from "../../../../redux/Reducers/systemsReducer"
 import { deleteProcDocument, getCurrentProcData, uploadProcDocument } from "../../../../redux/Reducers/processesReducer"
+import { getServerSelector } from "../../../../redux/Selectors/appSelectors"
 
 const { Text } = Typography
 
@@ -24,6 +25,7 @@ type PropsType = {
 export const ProtocolUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, error, access }) => {
     const dispatch: AppDispatch = useDispatch()
 
+    const server = useSelector(getServerSelector)
 
     if (data.vp !== '') {
         const fileSegments = data.vp.split('/')
@@ -45,7 +47,7 @@ export const ProtocolUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdAr
         }
         return <>
             <Text type="success" style={{ width: '95%' }}>{fileName}</Text>
-            <Button size="small" icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={'http://10.85.10.212/ov/' + data.vp} />
+            <Button size="small" icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={server + data.vp} />
             <Popconfirm
                 title='Подтвердите удаление'
                 description='Вы уверены, что хотите удалить документ?'

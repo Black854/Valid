@@ -1,6 +1,6 @@
 import { PremReestrType, getCurrentPremData, updatePremWorkData } from "../../../redux/Reducers/premisesReducer"
 import { ExpandedDataType } from "../types"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../redux/store"
 import { PrinterOutlined } from '@ant-design/icons'
 import { Typography, Table, TableColumnsType, Button, Modal, Space, Input, Row, Col } from "antd"
@@ -16,6 +16,7 @@ import { useState } from "react"
 import { ProgressStatus } from "./MiniComponents/ProgressStatus"
 import { SeasonSwitcher } from "./MiniComponents/SeasonSwitcher"
 import { UpdateCardStatus } from "./MiniComponents/UpdateCardStatus"
+import { getServerSelector } from "../../../redux/Selectors/appSelectors"
 
 const { Text } = Typography
 
@@ -30,6 +31,7 @@ type PremTasks = {
 export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremDataIdArray, access }) => {
     const dispatch: AppDispatch = useDispatch()
 
+    const server = useSelector(getServerSelector)
     const thisObject = myPremData.find(e => e.idfromtable === rec.id)
 
     const seasonColumn: TableColumnsType<ExpandedDataType> = [
@@ -204,7 +206,7 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
             value: <>
                 <Button onClick={() => { setBnModalOpen(true) }} style={{ borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
                 <Modal title="Бланк несоответствия" open={BnModalOpen} onCancel={() => handleCancel('BN')} footer={[<Button key="close" onClick={() => handleCancel('BN')} type="primary">Закрыть</Button>]} >
-                    <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`http://10.85.10.212/ov/API/PrintForms/bn.pdf`}></iframe>
+                    <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/bn.pdf`}></iframe>
                 </Modal>
             </>
         },
@@ -216,7 +218,7 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
                     <iframe
                         key={iframeKey}
                         style={{ width: '100%', height: '40vh', marginLeft: '5%' }}
-                        src={`http://10.85.10.212/ov/API/PrintForms/add_b.php?id=${data[0].id}&idfromtable=${data[0].idfromtable}&tp=prem.work&user&stroki=5&typeForm=2`}></iframe>
+                        src={`${server}API/PrintForms/add_b.php?id=${data[0].id}&idfromtable=${data[0].idfromtable}&tp=prem.work&user&stroki=5&typeForm=2`}></iframe>
                 </Modal>
             </>
         },
@@ -228,7 +230,7 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
                     <Input placeholder="Наименование" value={AddName} onChange={(e) => { setAddName(e.currentTarget.value) }} allowClear onPressEnter={() => { data[0].nvp !== '' && AddName !== '' && AddChar !== '' && setTitleListModalOpen(true) }} />
                     <Button onClick={() => { setTitleListModalOpen(true) }} disabled={data[0].nvp === '' || AddName === '' || AddChar === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
                     <Modal afterOpenChange={() => handleCancel('TitleList')} title="Титульные листы приложений" open={TitleListModalOpen} onCancel={() => handleCancel('TitleList')} footer={[<Button key="close" onClick={() => handleCancel('TitleList')} type="primary">Закрыть</Button>]} >
-                        <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`http://10.85.10.212/ov/API/PrintForms/add_any.php?nvp=${data[0].nvp}&name=${AddName}&char=${AddChar}`}></iframe>
+                        <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/add_any.php?nvp=${data[0].nvp}&name=${AddName}&char=${AddChar}`}></iframe>
                     </Modal>
                 </Space.Compact>
             </>
@@ -240,7 +242,7 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
                     <Input placeholder="Буквы через запятую" value={AddsChars} onChange={(e) => { setAddsChars(e.currentTarget.value) }} allowClear onPressEnter={() => { data[0].nvp !== '' && AddsChars !== '' && setTitlesCDListModalOpen(true) }} />
                     <Button onClick={() => { setTitlesCDListModalOpen(true) }} disabled={data[0].nvp === '' || AddsChars === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
                     <Modal afterOpenChange={() => handleCancel('TitlesCDList')} title="Титульные листы приложений на диске" open={TitlesCDListModalOpen} onCancel={() => handleCancel('TitlesCDList')} footer={[<Button key="close" onClick={() => handleCancel('TitlesCDList')} type="primary">Закрыть</Button>]} >
-                        <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`http://10.85.10.212/ov/API/PrintForms/add_cde.php?nvp=${data[0].nvp}&chars=${AddsChars}`}></iframe>
+                        <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/add_cde.php?nvp=${data[0].nvp}&chars=${AddsChars}`}></iframe>
                     </Modal>
                 </Space.Compact>
             </>
@@ -250,7 +252,7 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
             value: <>
                 <Button onClick={() => { setCDConvertModalOpen(true) }} style={{ borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
                 <Modal title="Конверт для диска" open={CDConvertModalOpen} onCancel={() => handleCancel('CDConvert')} footer={[<Button key="close" onClick={() => handleCancel('CDConvert')} type="primary">Закрыть</Button>]} >
-                    <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`http://10.85.10.212/ov/API/PrintForms/CD.pdf`}></iframe>
+                    <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/CD.pdf`}></iframe>
                 </Modal>
             </>,
         },

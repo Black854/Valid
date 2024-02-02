@@ -16,6 +16,7 @@ import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
 import { NewObjectForm } from "./CreateNewObjectForm"
 import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
+import { getServerSelector } from "../../redux/Selectors/appSelectors"
 
 const { Text } = Typography;
 
@@ -40,6 +41,7 @@ const Instruments: React.FC = () => {
 
     const errorMessage = useSelector(getInstErrorMessage)
     const access = parseInt(useSelector(getUserDataAccessSelector))
+    const server = useSelector(getServerSelector)
 
     const [messageApi, contextHolder] = message.useMessage()
 
@@ -158,7 +160,7 @@ const Instruments: React.FC = () => {
                             borderRadius: '3px',
                             overflow: 'hidden'
                         }}
-                            src={record.foto ? "http://10.85.10.212/ov/" + record.foto : empty}
+                            src={record.foto ? server + record.foto : empty}
                             preview={{ mask: <EyeOutlined style={{ fontSize: '12pt' }} /> }}
                         />
                     </Col>

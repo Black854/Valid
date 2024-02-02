@@ -112,3 +112,7 @@ export const getAppLoadingMessage = (state: AppStateType) => {
 export const getTermSettingsSelector = (state: AppStateType) => {
     return (state.app.termSettings)
 }
+
+export const getServerSelector = (state: AppStateType) => {
+    return (state.app.server)
+}
