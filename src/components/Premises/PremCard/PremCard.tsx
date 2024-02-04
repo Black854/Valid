@@ -336,10 +336,10 @@ const PremCard = () => {
                     <Tabs
                         defaultActiveKey="1"
                         items={premObject.class === 'Складские' ?
-                            currentMonth === 0 ?
+                            currentMonth === 11 ?
                                 [...items, ...nextYearItems, ...itemsOfSkladPremises] :
                                 [...items, ...nextYearItems, ...itemsOfSkladPremises] :
-                            currentMonth === 0 ?
+                            currentMonth === 11 ?
                                 [...items, ...itemsOfCleanPremises] :
                                 [...items, ...itemsOfCleanPremises]
                         }

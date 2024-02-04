@@ -252,18 +252,26 @@ const EquipCard: React.FC = () => {
                 label: 'График работ',
                 children: <CardPlans objectName={equipObject.name} objectId={equipObject.id} sp={equipObject.sp} objectType="equipment" access={access} />,
             },
+        ]
+
+        const nextYearItem: TabsProps['items'] = [
             {
                 key: '8',
                 label: <Text>График работ {new Date().getFullYear() + 1}</Text>,
                 children: <NextYearCardPlans objectName={equipObject.name} objectId={equipObject.id} sp={equipObject.sp} objectType="equipment" access={access} />,
-            },
+            }
+        ]
+
+        const labelItem: TabsProps['items'] = [
             {
                 key: '6',
                 label: 'Статусная этикетка',
                 children: <EquipLabel equipObject={equipObject} reestrData={reestrData} />,
                 disabled: equipObject.ar === '0' || equipObject.ar === '12' || equipObject.ar === '15' || equipObject.date === null ? true : false
-            },
+            }
         ]
+        
+        const currentMonth = new Date().getMonth()
 
         return (
             <>
@@ -275,7 +283,7 @@ const EquipCard: React.FC = () => {
                     <Col span={16} push={2} style={{ minHeight: '89vh', display: "flex", flexDirection: 'column' }} >
                         <Tabs
                             defaultActiveKey="1"
-                            items={items}
+                            items={currentMonth === 11 ? [...items, ...nextYearItem, ...labelItem] : [...items, ...labelItem]}
                             indicatorSize={(origin) => origin - 16}
                             style={{ flex: 1 }}
                             type="card"
