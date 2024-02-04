@@ -53,6 +53,7 @@ export type VMPDataTypeForPlansComponent = {
 const initialState = {
     VMPData: [] as VMPDataType[],
     objectVMPPlansData: [] as VMPDataType[],
+    objectNextYearVMPPlansData: [] as VMPDataType[],
     errorMessage: null as string | null,
 }
 
@@ -65,6 +66,8 @@ export const vmpReducer = (state = initialState, action: ActionTypes): InitialSt
             return { ...state, objectVMPPlansData: action.data }
         case 'prem/SET_VMP_ERROR_MESSAGE':
             return {...state, errorMessage: action.text}
+        case 'vmp/SET_OBJECT_NEXT_YEAR_VMP_PLANS_DATA':
+            return {...state, objectNextYearVMPPlansData: action.data}
         default:
             return state
     }
@@ -100,10 +103,48 @@ export const getObjectVMPPlansData = (objectId: string, sp: string, objectType: 
     }
 }
 
+export const getObjectNextYearVMPPlansData = (objectId: string, sp: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
+    let data = await vmpAPI.getObjectNextYearVMPPlansData(objectId, sp, objectType)
+    if (data.resultCode === 0) {
+        dispatch(vmpActions.setObjectNextYearVMPPlansData(data.items))
+    } else if (data.resultCode === 1) {
+        if (objectType === 'equipment') {
+            dispatch(setEquipCardError(data.messages[0]))
+        } else if (objectType === 'premises') {
+            dispatch(setPremCardError(data.messages[0]))
+        } else if (objectType === 'systems') {
+            dispatch(setSysCardError(data.messages[0]))
+        } else if (objectType === 'processes') {
+            dispatch(setProcCardError(data.messages[0]))
+        }
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+}
+
 export const updateVMPPlansData = (daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
     let data = await vmpAPI.updateVMPPlansData(daysCount, month, recordId, sp, objectId, objectType)
     if (data.resultCode === 0) {
         dispatch(getObjectVMPPlansData(objectId, sp, objectType))
+    } else if (data.resultCode === 1) {
+        if (objectType === 'equipment') {
+            dispatch(setEquipCardError(data.messages[0]))
+        } else if (objectType === 'premises') {
+            dispatch(setPremCardError(data.messages[0]))
+        } else if (objectType === 'systems') {
+            dispatch(setSysCardError(data.messages[0]))
+        } else if (objectType === 'processes') {
+            dispatch(setProcCardError(data.messages[0]))
+        } 
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+}
+
+export const updateVMPPlansNextYearData = (daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
+    let data = await vmpAPI.updateVMPPlansNextYearData(daysCount, month, recordId, sp, objectId, objectType)
+    if (data.resultCode === 0) {
+        dispatch(getObjectNextYearVMPPlansData(objectId, sp, objectType))
     } else if (data.resultCode === 1) {
         if (objectType === 'equipment') {
             dispatch(setEquipCardError(data.messages[0]))
@@ -138,11 +179,31 @@ export const createVMPPlansData = (objectName: string, objectId: string, sp: str
     }
 }
 
+export const createNextYearVMPPlansData = (objectName: string, objectId: string, sp: string, typeval: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
+    let data = await vmpAPI.createNextYearVMPPlansData(objectName, objectId, sp, typeval, objectType)
+    if (data.resultCode === 0) {
+        dispatch(getObjectNextYearVMPPlansData(objectId, sp, objectType))
+    } else if (data.resultCode === 1) {
+        if (objectType === 'equipment') {
+            dispatch(setEquipCardError(data.messages[0]))
+        } else if (objectType === 'premises') {
+            dispatch(setPremCardError(data.messages[0]))
+        } else if (objectType === 'systems') {
+            dispatch(setSysCardError(data.messages[0]))
+        } else if (objectType === 'processes') {
+            dispatch(setProcCardError(data.messages[0]))
+        }        
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+}
+
 type ActionTypes = InferActionsTypes<typeof vmpActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 export const vmpActions = {
     setVMPData: (data: VMPDataType[]) => ({ type: 'vmp/SET_VMP_DATA', data } as const),
     setObjectVMPPlansData: (data: VMPDataType[]) => ({ type: 'vmp/SET_OBJECT_VMP_PLANS_DATA', data } as const),
+    setObjectNextYearVMPPlansData: (data: VMPDataType[]) => ({ type: 'vmp/SET_OBJECT_NEXT_YEAR_VMP_PLANS_DATA', data } as const),
     setVMPErrorMessage: (text: string | null) => ({ type: 'prem/SET_VMP_ERROR_MESSAGE', text } as const),
 }

@@ -18,6 +18,7 @@ import { SysLabel } from "./CardComponents/SysLabel"
 import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 import { getUserDataAccessSelector } from "../../../redux/Selectors/authSelectors"
+import { NextYearCardPlans } from "../../common/NextYearCardPlans"
 
 const { Text } = Typography
 
@@ -146,7 +147,7 @@ const SysCard: React.FC = () => {
                 children: <CardReestr id={sysObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} />,
             },
             {
-                key: '8',
+                key: '9',
                 label: 'Взять в работу',
                 children: <AddToMonthPlan id={sysObject.id} objectType="systems" />,
             },
@@ -164,6 +165,11 @@ const SysCard: React.FC = () => {
                 key: '5',
                 label: 'График работ',
                 children: <CardPlans objectName={sysObject.name} objectId={sysObject.id} sp={sysObject.sp} objectType="systems" access={access} />,
+            },
+            {
+                key: '8',
+                label: <Text>График работ {new Date().getFullYear() + 1}</Text>,
+                children: <NextYearCardPlans objectName={sysObject.name} objectId={sysObject.id} sp={sysObject.sp} objectType="systems" access={access} />,
             },
             {
                 key: '6',

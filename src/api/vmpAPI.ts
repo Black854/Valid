@@ -16,6 +16,16 @@ export const vmpAPI = {
             return response.data
         })
     },
+    getObjectNextYearVMPPlansData(objectId: string, sp: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes') {
+        const requestData = {
+            objectId,
+            sp,
+            objectType
+        }
+        return vmpInstance.post(`getObjectNextYearVMPPlansData.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
     updateVMPPlansData(daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes') {
         const requestData = {
             daysCount,
@@ -24,6 +34,17 @@ export const vmpAPI = {
             sp
         }
         return vmpInstance.post(`updateVMPPlansData.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    updateVMPPlansNextYearData(daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes') {
+        const requestData = {
+            daysCount,
+            month,
+            recordId,
+            sp
+        }
+        return vmpInstance.post(`updateVMPPlansNextYearData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
@@ -36,6 +57,18 @@ export const vmpAPI = {
             objectType
         }
         return vmpInstance.post(`createVMPPlansData.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    createNextYearVMPPlansData(objectName: string, objectId: string, sp: string, typeval: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes') {
+        const requestData = {
+            objectName,
+            objectId,
+            sp,
+            typeval,
+            objectType
+        }
+        return vmpInstance.post(`createNextYearVMPPlansData.php`, requestData, {}).then(response => {
             return response.data
         })
     },

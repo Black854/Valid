@@ -20,6 +20,7 @@ import { PremLabel } from "./CardComponents/PremLabel"
 import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 import { getUserDataAccessSelector } from "../../../redux/Selectors/authSelectors"
+import { NextYearCardPlans } from "../../common/NextYearCardPlans"
 
 const { Text } = Typography
 
@@ -287,7 +288,7 @@ const PremCard = () => {
             },
             {
                 key: '5',
-                label: `График ВМП ${new Date().getFullYear()}`,
+                label: `График работ`,
                 children: <CardPlans objectName={premObject.class === 'Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name} objectId={premObject.id} sp={premObject.sp} objectType="premises" access={access} />,
             },
         ]
@@ -295,8 +296,8 @@ const PremCard = () => {
         const nextYearItems = [
             {
                 key: '8',
-                label: <Text type="warning">График ВМП {new Date().getFullYear() + 1}</Text>,
-                children: <CardPlans objectName={premObject.class === 'Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name} objectId={premObject.id} sp={premObject.sp} objectType="premises" access={access} />,
+                label: <Text>График работ {new Date().getFullYear() + 1}</Text>,
+                children: <NextYearCardPlans objectName={premObject.class === 'Складские' ? `Помещение ${premObject.nomer} «${premObject.name}»` : premObject.name} objectId={premObject.id} sp={premObject.sp} objectType="premises" access={access} />,
             },
         ]
 

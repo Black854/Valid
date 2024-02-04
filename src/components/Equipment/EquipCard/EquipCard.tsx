@@ -18,6 +18,7 @@ import { EquipLabel } from "./CardComponents/EquipLabel"
 import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 import { getUserDataAccessSelector } from "../../../redux/Selectors/authSelectors"
+import { NextYearCardPlans } from "../../common/NextYearCardPlans"
 
 const { Text } = Typography
 
@@ -232,7 +233,7 @@ const EquipCard: React.FC = () => {
                 children: <CardReestr id={equipObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={equipObject.groupp} />,
             },
             {
-                key: '8',
+                key: '9',
                 label: 'Взять в работу',
                 children: <AddToMonthPlan id={equipObject.id} objectType="equipment" />,
             },
@@ -250,6 +251,11 @@ const EquipCard: React.FC = () => {
                 key: '5',
                 label: 'График работ',
                 children: <CardPlans objectName={equipObject.name} objectId={equipObject.id} sp={equipObject.sp} objectType="equipment" access={access} />,
+            },
+            {
+                key: '8',
+                label: <Text>График работ {new Date().getFullYear() + 1}</Text>,
+                children: <NextYearCardPlans objectName={equipObject.name} objectId={equipObject.id} sp={equipObject.sp} objectType="equipment" access={access} />,
             },
             {
                 key: '6',

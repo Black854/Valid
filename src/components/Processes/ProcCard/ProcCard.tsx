@@ -18,6 +18,7 @@ import { ProcLabel } from "./CardComponents/ProcLabel"
 import { CardPlans } from "../../common/CardPlans"
 import { AddToMonthPlan } from "../../common/AddToMonthPlan"
 import { getUserDataAccessSelector } from "../../../redux/Selectors/authSelectors"
+import { NextYearCardPlans } from "../../common/NextYearCardPlans"
 
 const { Text } = Typography
 
@@ -158,7 +159,7 @@ const ProcCard: React.FC = () => {
                 children: <CardReestr id={procObject.id} isReestrDataLoading={isReestrDataLoading} reestrData={reestrData} group={procObject.groupp} />,
             },
             {
-                key: '8',
+                key: '9',
                 label: 'Взять в работу',
                 children: <AddToMonthPlan id={procObject.id} objectType="processes" />,
             },
@@ -176,6 +177,11 @@ const ProcCard: React.FC = () => {
                 key: '5',
                 label: 'График работ',
                 children: <CardPlans objectName={procObject.name} objectId={procObject.id} sp={procObject.sp} objectType="processes" access={access} />,
+            },
+            {
+                key: '8',
+                label: <Text>График работ {new Date().getFullYear() + 1}</Text>,
+                children: <NextYearCardPlans objectName={procObject.name} objectId={procObject.id} sp={procObject.sp} objectType="processes" access={access} />,
             },
             {
                 key: '6',
