@@ -53,36 +53,39 @@ export const ChangeList: React.FC<ChangeListPropsType> = ({ VMPName }) => {
             title: <Text strong style={{ fontSize: '12pt' }}>№</Text>,
             dataIndex: 'index',
             render: (text, record) => <Text type={record.print === '1' ? 'secondary' : undefined}>{text}</Text>,
-            align: 'center'
+            align: 'center',
+            width: '3%'
         },
         {
             title: <Text strong style={{ fontSize: '12pt' }}>Версия</Text>,
             dataIndex: 'version',
-            render: (text, record) => <Text editable={record.print === '1' ? false : { onChange: (text) => { handleUpdateChangeListData(record.id, text, 'version') } }} type={record.print === '1' ? 'secondary' : undefined}>{text}</Text>,
-            align: 'center'
+            render: (text, record) => <Text editable={record.print === '1' || access > 1 ? false : { onChange: (text) => { handleUpdateChangeListData(record.id, text, 'version') } }} type={record.print === '1' ? 'secondary' : undefined}>{text}</Text>,
+            align: 'center',
+            width: '5%'
         },
         {
             title: <Text strong style={{ fontSize: '12pt' }}>Дата введения</Text>,
             dataIndex: 'date2',
-            render: (text, record) => <DatePicker disabled={access > 2 || record.print === '1'} size='small' allowClear format={'DD.MM.YYYY'} defaultValue={text ? dayjs(text, dateFormat) : undefined} bordered={false} onChange={(date) => handleUpdateChangeListData(record.id, date ? date.toString() : '', 'date2')} />,
-            align: 'center'
+            render: (text, record) => <DatePicker disabled={access > 1 || record.print === '1'} size='small' allowClear format={'DD.MM.YYYY'} defaultValue={text ? dayjs(text, dateFormat) : undefined} bordered={false} onChange={(date) => handleUpdateChangeListData(record.id, date ? date.toString() : '', 'date2')} />,
+            align: 'center',
+            width: '10%'
         },
         {
             title: <Text strong style={{ fontSize: '12pt' }}>Документ, регламентирующий изменение</Text>,
             dataIndex: 'doc',
-            render: (text, record) => <Text editable={record.print === '1' ? false : { onChange: (text) => { handleUpdateChangeListData(record.id, text, 'doc') } }} type={record.print === '1' ? 'secondary' : undefined}>{text}</Text>,
+            render: (text, record) => <Text editable={record.print === '1' || access > 1 ? false : { onChange: (text) => { handleUpdateChangeListData(record.id, text, 'doc') } }} type={record.print === '1' ? 'secondary' : undefined}>{text}</Text>,
             align: 'center'
         },
         {
             title: <Text strong style={{ fontSize: '12pt' }}>Краткое содержание изменений версии</Text>,
             dataIndex: 'changes',
-            render: (text, record) => <Text editable={record.print === '1' ? false : { onChange: (text) => { handleUpdateChangeListData(record.id, text, 'changes') } }} type={record.print === '1' ? 'secondary' : undefined}>{text}</Text>,
+            render: (text, record) => <Text editable={record.print === '1' || access > 1 ? false : { onChange: (text) => { handleUpdateChangeListData(record.id, text, 'changes') } }} type={record.print === '1' ? 'secondary' : undefined}>{text}</Text>,
             width: '50%'
         },
         {
             dataIndex: 'print',
             align: 'center',
-            render: (print, record) => <Button onClick={() => handleUpdateChangeListData(record.id, print === '1' ? '0' : '1', 'print')} size="small" type={print === '1' ? 'primary' : 'default'}>{print === '1' ? 'Активировать' : 'Деактивировать'}</Button>
+            render: (print, record) => <Button disabled={access > 1} onClick={() => handleUpdateChangeListData(record.id, print === '1' ? '0' : '1', 'print')} size="small" type={print === '1' ? 'primary' : 'default'}>{print === '1' ? 'Активировать' : 'Деактивировать'}</Button>
         }
     ]
 
@@ -92,6 +95,7 @@ export const ChangeList: React.FC<ChangeListPropsType> = ({ VMPName }) => {
                 dataSource={data.reverse()}
                 columns={columns}
                 bordered
+                style={{marginBottom: '60px'}}
                 pagination={{ defaultPageSize: 10, showQuickJumper: true, hideOnSinglePage: true, position: ["topRight"] }}
                 title={() => <Text style={{ fontSize: '14pt' }}>Лист регистрации истории изменений графика ВМП {VMPName} на {params.year} г.</Text>}
                 size="small"
