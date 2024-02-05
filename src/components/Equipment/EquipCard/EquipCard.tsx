@@ -85,24 +85,7 @@ const EquipCard: React.FC = () => {
     if (isLoading) {
         return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
     } else if (equipObject) {
-        interface DataType {
-            ar: string
-            date: string
-            fio: string
-            foto: string
-            groupp: string
-            id: string
-            inv: string
-            manual: string
-            manufacturdate: string
-            manufacturer: string
-            name: string
-            nomer: string
-            sp: string
-            sp2: string
-            serial: string
-        }
-
+        
         const updateDataNomer = (nomer: string) => {
             dispatch(updateNomer(equipObject.id, nomer))
         }

@@ -10,9 +10,10 @@ type PropsType = {
     month: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11'
     sp: string
     access: number
+    objectName: string
 }
 
-export const CardPlansNextYearHelper: React.FC<PropsType> = ({ data, month, sp, access }) => {
+export const CardPlansNextYearHelper: React.FC<PropsType> = ({ data, month, sp, access, objectName }) => {
     const dispatch: AppDispatch = useDispatch()
     const [daysCount, setDaysCount] = useState(parseInt(data[0]?.[month]) as number | null)
     const handleChangeCount = (text: number | null) => {
@@ -20,8 +21,8 @@ export const CardPlansNextYearHelper: React.FC<PropsType> = ({ data, month, sp, 
     }
     const handleSaveData = () => {
         daysCount !== null &&
-        daysCount !== undefined &&
-        dispatch(updateVMPPlansNextYearData(daysCount, parseInt(month) + 1, data[0].id, sp, data[0].idfromtable, data[0].tablename as 'premises' | 'equipment' | 'systems' | 'processes'))
+            daysCount !== undefined &&
+            dispatch(updateVMPPlansNextYearData(daysCount, parseInt(month) + 1, data[0].id, sp, data[0].idfromtable, data[0].tablename as 'premises' | 'equipment' | 'systems' | 'processes', objectName))
     }
     return (
         <InputNumber

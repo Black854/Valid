@@ -26,23 +26,25 @@ export const vmpAPI = {
             return response.data
         })
     },
-    updateVMPPlansData(daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes') {
+    updateVMPPlansData(daysCount: number, month: number, recordId: string, sp: string, objectName: string) {
         const requestData = {
             daysCount,
             month,
             recordId,
-            sp
+            sp,
+            objectName
         }
         return vmpInstance.post(`updateVMPPlansData.php`, requestData, {}).then(response => {
             return response.data
         })
     },
-    updateVMPPlansNextYearData(daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes') {
+    updateVMPPlansNextYearData(daysCount: number, month: number, recordId: string, sp: string, objectName: string) {
         const requestData = {
             daysCount,
             month,
             recordId,
-            sp
+            sp,
+            objectName
         }
         return vmpInstance.post(`updateVMPPlansNextYearData.php`, requestData, {}).then(response => {
             return response.data
@@ -69,6 +71,25 @@ export const vmpAPI = {
             objectType
         }
         return vmpInstance.post(`createNextYearVMPPlansData.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    getVMPChangeList(vmpId: string, vmpYear: string) {
+        const requestData = {
+            vmpId,
+            vmpYear
+        }
+        return vmpInstance.post(`getVMPChangeList.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
+    updateChangeListData(id: string, text: string, type: string) {
+        const requestData = {
+            id,
+            text,
+            type
+        }
+        return vmpInstance.post(`updateChangeListData.php`, requestData, {}).then(response => {
             return response.data
         })
     },

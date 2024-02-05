@@ -1,6 +1,6 @@
 import { Button, Col, Menu, Modal, Row, message } from "antd"
-import { PrinterOutlined, CalendarOutlined, FileWordOutlined } from '@ant-design/icons'
-import { useNavigate, useParams } from "react-router-dom"
+import { PrinterOutlined, CalendarOutlined, FileWordOutlined, FileTextOutlined } from '@ant-design/icons'
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getServerSelector, getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
 import { useEffect, useState } from "react"
@@ -9,6 +9,7 @@ import { getVMPData, vmpActions } from "../../redux/Reducers/vmpReducer"
 import { getVMPDataSelector, getVMPErrorMessage } from "../../redux/Selectors/vmpSelectors"
 import { plansDataBuilder } from "./plansDataBuilder"
 import { VmpTable } from "./VmpTable"
+import { ChangeList } from "./ChangeList"
 
 const VmpPlans: React.FC = () => {
 
@@ -30,6 +31,11 @@ const VmpPlans: React.FC = () => {
 
     const params = useParams()
     const navigate = useNavigate()
+
+    const location = useLocation();
+    const url = location.pathname;
+    const isPageChangeList = url.indexOf('changeList');
+
     const dispatch: AppDispatch = useDispatch()
     const currentYear = new Date().getFullYear()
     const currentMonth = new Date().getMonth() + 1
@@ -102,6 +108,9 @@ const VmpPlans: React.FC = () => {
         } else if (key === 'vmpPlanImport') {
             setVMPImportModalIsOpen(true)
             setIframeKey(prevKey => prevKey + 1)
+        } else if (key === 'changeList') {
+            const url = `/changeList/${params.number}/${params.year}/`
+            navigate(url)
         } else {
             const url = `/vmp/${params.number}/${key}`
             navigate(url)
@@ -117,21 +126,23 @@ const VmpPlans: React.FC = () => {
                     onClick={({ key }) => handleMenuClick(key)}
                     style={{ width: 256 }}
                     defaultOpenKeys={[`yearGroup`]}
-                    selectedKeys={[`${params.year}`]}
+                    selectedKeys={isPageChangeList === 1 ? ['changeList'] : [`${params.year}`]}
                 >
-                    <Menu.Item key='vmpPlanImport' icon={<FileWordOutlined />}>Импорт графика</Menu.Item>
-                    <Menu.Item key='vmpPlanPrint' icon={<PrinterOutlined />}>Печать графика</Menu.Item>
-                    <Menu.Item key='vmpReportPrint' icon={<PrinterOutlined />}>Печать отчёта</Menu.Item>
                     <Menu.SubMenu key='yearGroup' title='Год графика' icon={<CalendarOutlined />}>
                         <Menu.Item key={currentYear - 1}>График на {currentYear - 1} год</Menu.Item>
                         <Menu.Item key={currentYear}>График на {currentYear} год</Menu.Item>
                         {currentDay > 15 && currentMonth === 12 && <Menu.Item key={currentYear + 1}>График на {currentYear + 1} год</Menu.Item>}
                     </Menu.SubMenu>
+                    <Menu.Item key='vmpPlanImport' icon={<FileWordOutlined />}>Импорт графика</Menu.Item>
+                    <Menu.Item key='vmpPlanPrint' icon={<PrinterOutlined />}>Печать графика</Menu.Item>
+                    <Menu.Item key='vmpReportPrint' icon={<PrinterOutlined />}>Печать отчёта</Menu.Item>
+                    <Menu.Item  key='changeList' icon={<FileTextOutlined />}>Лист изменений</Menu.Item>
                 </Menu>
             </Col>
             <Col span={19}>
-                <VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '1')} params={params} key={VMPName} tableType={1} />
-                <VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '2' || e.typeval === '3')} params={params} key={VMPName} tableType={2} />
+                {isPageChangeList === 1 ? <ChangeList VMPName={VMPName} /> : <><VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '1')} params={params} key={VMPName} tableType={1} />
+                <VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '2' || e.typeval === '3')} params={params} key={VMPName} tableType={2} /></> }
+                
 
                 <Modal title="Печать графика ВМП" afterOpenChange={() => handleCancel('VMPPrint')} open={VMPPrintModalIsOpen} onCancel={() => handleCancel('VMPPrint')} footer={[<Button key="close" onClick={() => handleCancel('VMPPrint')} type="primary">Закрыть</Button>]} >
                     <iframe key={iframeKey} style={{ width: '100%', height: '360px' }} src={`${server}api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}`}>

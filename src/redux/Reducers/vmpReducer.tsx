@@ -50,11 +50,25 @@ export type VMPDataTypeForPlansComponent = {
     12: string
 }
 
+export type ChangeListDataType = {
+    id: string
+    type: string
+    year: string
+    changes: string
+    fio: string
+    date: string
+    date2: string
+    version: string
+    doc: string
+    print: string
+}
+
 const initialState = {
     VMPData: [] as VMPDataType[],
     objectVMPPlansData: [] as VMPDataType[],
     objectNextYearVMPPlansData: [] as VMPDataType[],
     errorMessage: null as string | null,
+    vmpChangeList: [] as ChangeListDataType[],
 }
 
 type InitialStateType = typeof initialState
@@ -64,10 +78,12 @@ export const vmpReducer = (state = initialState, action: ActionTypes): InitialSt
             return { ...state, VMPData: action.data }
         case 'vmp/SET_OBJECT_VMP_PLANS_DATA':
             return { ...state, objectVMPPlansData: action.data }
-        case 'prem/SET_VMP_ERROR_MESSAGE':
-            return {...state, errorMessage: action.text}
+        case 'vmp/SET_VMP_ERROR_MESSAGE':
+            return { ...state, errorMessage: action.text }
         case 'vmp/SET_OBJECT_NEXT_YEAR_VMP_PLANS_DATA':
-            return {...state, objectNextYearVMPPlansData: action.data}
+            return { ...state, objectNextYearVMPPlansData: action.data }
+        case 'vmp/SET_VMP_CHANGE_LIST':
+            return {...state, vmpChangeList: action.data}
         default:
             return state
     }
@@ -122,8 +138,8 @@ export const getObjectNextYearVMPPlansData = (objectId: string, sp: string, obje
     }
 }
 
-export const updateVMPPlansData = (daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
-    let data = await vmpAPI.updateVMPPlansData(daysCount, month, recordId, sp, objectId, objectType)
+export const updateVMPPlansData = (daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes', objectName: string): ThunkType => async (dispatch) => {
+    let data = await vmpAPI.updateVMPPlansData(daysCount, month, recordId, sp, objectName)
     if (data.resultCode === 0) {
         dispatch(getObjectVMPPlansData(objectId, sp, objectType))
     } else if (data.resultCode === 1) {
@@ -135,14 +151,14 @@ export const updateVMPPlansData = (daysCount: number, month: number, recordId: s
             dispatch(setSysCardError(data.messages[0]))
         } else if (objectType === 'processes') {
             dispatch(setProcCardError(data.messages[0]))
-        } 
+        }
     } else if (data.resultCode === 2) {
         dispatch(logout())
     }
 }
 
-export const updateVMPPlansNextYearData = (daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
-    let data = await vmpAPI.updateVMPPlansNextYearData(daysCount, month, recordId, sp, objectId, objectType)
+export const updateVMPPlansNextYearData = (daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes', objectName: string): ThunkType => async (dispatch) => {
+    let data = await vmpAPI.updateVMPPlansNextYearData(daysCount, month, recordId, sp, objectName)
     if (data.resultCode === 0) {
         dispatch(getObjectNextYearVMPPlansData(objectId, sp, objectType))
     } else if (data.resultCode === 1) {
@@ -154,7 +170,7 @@ export const updateVMPPlansNextYearData = (daysCount: number, month: number, rec
             dispatch(setSysCardError(data.messages[0]))
         } else if (objectType === 'processes') {
             dispatch(setProcCardError(data.messages[0]))
-        } 
+        }
     } else if (data.resultCode === 2) {
         dispatch(logout())
     }
@@ -173,7 +189,7 @@ export const createVMPPlansData = (objectName: string, objectId: string, sp: str
             dispatch(setSysCardError(data.messages[0]))
         } else if (objectType === 'processes') {
             dispatch(setProcCardError(data.messages[0]))
-        }        
+        }
     } else if (data.resultCode === 2) {
         dispatch(logout())
     }
@@ -192,7 +208,29 @@ export const createNextYearVMPPlansData = (objectName: string, objectId: string,
             dispatch(setSysCardError(data.messages[0]))
         } else if (objectType === 'processes') {
             dispatch(setProcCardError(data.messages[0]))
-        }        
+        }
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+}
+
+export const getVMPChangeList = (vmpId: string, vmpYear: string): ThunkType => async (dispatch) => {
+    let data = await vmpAPI.getVMPChangeList(vmpId, vmpYear)
+    if (data.resultCode === 0) {
+        dispatch(vmpActions.setVMPChangeList(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(vmpActions.setVMPErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+}
+
+export const updateChangeListData = (id: string, text: string, type: string, vmpId: string, vmpYear: string): ThunkType => async (dispatch) => {
+    let data = await vmpAPI.updateChangeListData(id, text, type)
+    if (data.resultCode === 0) {
+        dispatch(getVMPChangeList(vmpId, vmpYear))
+    } else if (data.resultCode === 1) {
+        dispatch(vmpActions.setVMPErrorMessage(data.messages[0]))
     } else if (data.resultCode === 2) {
         dispatch(logout())
     }
@@ -205,5 +243,6 @@ export const vmpActions = {
     setVMPData: (data: VMPDataType[]) => ({ type: 'vmp/SET_VMP_DATA', data } as const),
     setObjectVMPPlansData: (data: VMPDataType[]) => ({ type: 'vmp/SET_OBJECT_VMP_PLANS_DATA', data } as const),
     setObjectNextYearVMPPlansData: (data: VMPDataType[]) => ({ type: 'vmp/SET_OBJECT_NEXT_YEAR_VMP_PLANS_DATA', data } as const),
-    setVMPErrorMessage: (text: string | null) => ({ type: 'prem/SET_VMP_ERROR_MESSAGE', text } as const),
+    setVMPErrorMessage: (text: string | null) => ({ type: 'vmp/SET_VMP_ERROR_MESSAGE', text } as const),
+    setVMPChangeList: (data: ChangeListDataType[]) => ({ type: 'vmp/SET_VMP_CHANGE_LIST', data } as const),
 }

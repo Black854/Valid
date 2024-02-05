@@ -9,6 +9,7 @@ import { Result404 } from './components/common/Results/404'
 import ruRU from 'antd/es/locale/ru_RU'
 import { Login } from './components/Login/Login'
 import { Loading } from './components/common/Loading'
+import { ChangeList } from './components/VmpPlans/ChangeList'
 
 const Prints = lazy(() => import('./components/Prints/Prints').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
 const Equipment = lazy(() => import('./components/Equipment/Equipment').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
@@ -73,6 +74,7 @@ export const App: React.FC<AppPropsType> = ({handleThemeChange, themeType, theme
             <Route path="/settings" element={<Suspense fallback={<Loading />}><Settings /></Suspense>} />
             <Route path="/prints" element={<Suspense fallback={<Loading />}><Prints /></Suspense>} />
             <Route path="/prints/:report/:page?" element={<Suspense fallback={<Loading />}><Prints /></Suspense>} />
+            <Route path="/changeList/:number/:year" element={<Suspense fallback={<Loading />}><VmpPlans /></Suspense>} />
             <Route path="*" element={<Result404 />} />
           </Routes>
           <FloatButton.BackTop />

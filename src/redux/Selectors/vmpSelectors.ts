@@ -15,3 +15,7 @@ export const getObjectNextYEarVMPPlansDataSelector = (state: AppStateType) => {
 export const getVMPErrorMessage = (state: AppStateType) => {
     return (state.vmp.errorMessage)
 }
+
+export const getVMPChangeListSelector = (state: AppStateType) => {
+    return (state.vmp.vmpChangeList)
+}
