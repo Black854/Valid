@@ -126,7 +126,7 @@ const VmpPlans: React.FC = () => {
     const autoCreateGraph = async () => {
         if (tableName && params.year) {
             await dispatch(startAutoCreateGraph(tableName, params.year))
-            setOpenAutoCreateConfirm(true)
+            setOpenAutoCreateConfirm(false)
         }
     }
 
