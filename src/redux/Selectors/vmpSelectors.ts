@@ -19,3 +19,7 @@ export const getVMPErrorMessage = (state: AppStateType) => {
 export const getVMPChangeListSelector = (state: AppStateType) => {
     return (state.vmp.vmpChangeList)
 }
+
+export const getIsAutoCreateGraphLoading = (state: AppStateType) => {
+    return (state.vmp.isAutoCreateGraphLoading)
+}

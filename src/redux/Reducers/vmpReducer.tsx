@@ -69,6 +69,7 @@ const initialState = {
     objectNextYearVMPPlansData: [] as VMPDataType[],
     errorMessage: null as string | null,
     vmpChangeList: [] as ChangeListDataType[],
+    isAutoCreateGraphLoading: false
 }
 
 type InitialStateType = typeof initialState
@@ -84,13 +85,15 @@ export const vmpReducer = (state = initialState, action: ActionTypes): InitialSt
             return { ...state, objectNextYearVMPPlansData: action.data }
         case 'vmp/SET_VMP_CHANGE_LIST':
             return {...state, vmpChangeList: action.data}
+        case 'vmp/SET_IS_AUTO_CREATE_GRAPH_LOADING':
+            return {...state, isAutoCreateGraphLoading: action.status}
         default:
             return state
     }
 }
 
 export const getVMPData = (tablename: string, year: string): ThunkType => async (dispatch) => {
-    let data = await vmpAPI.getVMPData(tablename, year)
+    const data = await vmpAPI.getVMPData(tablename, year)
     if (data.resultCode === 0) {
         dispatch(vmpActions.setVMPData(data.items))
     } else if (data.resultCode === 1) {
@@ -101,7 +104,7 @@ export const getVMPData = (tablename: string, year: string): ThunkType => async 
 }
 
 export const getObjectVMPPlansData = (objectId: string, sp: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
-    let data = await vmpAPI.getObjectVMPPlansData(objectId, sp, objectType)
+    const data = await vmpAPI.getObjectVMPPlansData(objectId, sp, objectType)
     if (data.resultCode === 0) {
         dispatch(vmpActions.setObjectVMPPlansData(data.items))
     } else if (data.resultCode === 1) {
@@ -120,7 +123,7 @@ export const getObjectVMPPlansData = (objectId: string, sp: string, objectType: 
 }
 
 export const getObjectNextYearVMPPlansData = (objectId: string, sp: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
-    let data = await vmpAPI.getObjectNextYearVMPPlansData(objectId, sp, objectType)
+    const data = await vmpAPI.getObjectNextYearVMPPlansData(objectId, sp, objectType)
     if (data.resultCode === 0) {
         dispatch(vmpActions.setObjectNextYearVMPPlansData(data.items))
     } else if (data.resultCode === 1) {
@@ -139,7 +142,7 @@ export const getObjectNextYearVMPPlansData = (objectId: string, sp: string, obje
 }
 
 export const updateVMPPlansData = (daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes', objectName: string): ThunkType => async (dispatch) => {
-    let data = await vmpAPI.updateVMPPlansData(daysCount, month, recordId, sp, objectName)
+    const data = await vmpAPI.updateVMPPlansData(daysCount, month, recordId, sp, objectName)
     if (data.resultCode === 0) {
         dispatch(getObjectVMPPlansData(objectId, sp, objectType))
     } else if (data.resultCode === 1) {
@@ -158,7 +161,7 @@ export const updateVMPPlansData = (daysCount: number, month: number, recordId: s
 }
 
 export const updateVMPPlansNextYearData = (daysCount: number, month: number, recordId: string, sp: string, objectId: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes', objectName: string): ThunkType => async (dispatch) => {
-    let data = await vmpAPI.updateVMPPlansNextYearData(daysCount, month, recordId, sp, objectName)
+    const data = await vmpAPI.updateVMPPlansNextYearData(daysCount, month, recordId, sp, objectName)
     if (data.resultCode === 0) {
         dispatch(getObjectNextYearVMPPlansData(objectId, sp, objectType))
     } else if (data.resultCode === 1) {
@@ -177,7 +180,7 @@ export const updateVMPPlansNextYearData = (daysCount: number, month: number, rec
 }
 
 export const createVMPPlansData = (objectName: string, objectId: string, sp: string, typeval: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
-    let data = await vmpAPI.createVMPPlansData(objectName, objectId, sp, typeval, objectType)
+    const data = await vmpAPI.createVMPPlansData(objectName, objectId, sp, typeval, objectType)
     if (data.resultCode === 0) {
         dispatch(getObjectVMPPlansData(objectId, sp, objectType))
     } else if (data.resultCode === 1) {
@@ -196,7 +199,7 @@ export const createVMPPlansData = (objectName: string, objectId: string, sp: str
 }
 
 export const createNextYearVMPPlansData = (objectName: string, objectId: string, sp: string, typeval: string, objectType: 'premises' | 'equipment' | 'systems' | 'processes'): ThunkType => async (dispatch) => {
-    let data = await vmpAPI.createNextYearVMPPlansData(objectName, objectId, sp, typeval, objectType)
+    const data = await vmpAPI.createNextYearVMPPlansData(objectName, objectId, sp, typeval, objectType)
     if (data.resultCode === 0) {
         dispatch(getObjectNextYearVMPPlansData(objectId, sp, objectType))
     } else if (data.resultCode === 1) {
@@ -215,7 +218,7 @@ export const createNextYearVMPPlansData = (objectName: string, objectId: string,
 }
 
 export const getVMPChangeList = (vmpId: string, vmpYear: string): ThunkType => async (dispatch) => {
-    let data = await vmpAPI.getVMPChangeList(vmpId, vmpYear)
+    const data = await vmpAPI.getVMPChangeList(vmpId, vmpYear)
     if (data.resultCode === 0) {
         dispatch(vmpActions.setVMPChangeList(data.items))
     } else if (data.resultCode === 1) {
@@ -226,7 +229,7 @@ export const getVMPChangeList = (vmpId: string, vmpYear: string): ThunkType => a
 }
 
 export const updateChangeListData = (id: string, text: string, type: string, vmpId: string, vmpYear: string): ThunkType => async (dispatch) => {
-    let data = await vmpAPI.updateChangeListData(id, text, type)
+    const data = await vmpAPI.updateChangeListData(id, text, type)
     if (data.resultCode === 0) {
         dispatch(getVMPChangeList(vmpId, vmpYear))
     } else if (data.resultCode === 1) {
@@ -234,6 +237,26 @@ export const updateChangeListData = (id: string, text: string, type: string, vmp
     } else if (data.resultCode === 2) {
         dispatch(logout())
     }
+}
+
+export const startAutoCreateGraph = (tablename: string, year: string): ThunkType => async (dispatch) => {
+    dispatch(vmpActions.setIsAutoCreateGraphLoading(true))
+    const data = await vmpAPI.startAutoCreateGraph(tablename, year)
+    if (data.resultCode === 0) {
+        const data = await vmpAPI.getVMPData(tablename, year)
+        if (data.resultCode === 0) {
+            dispatch(vmpActions.setVMPData(data.items))
+        } else if (data.resultCode === 1) {
+            dispatch(vmpActions.setVMPErrorMessage(data.messages[0]))
+        } else if (data.resultCode === 2) {
+            dispatch(logout())
+        }
+    } else if (data.resultCode === 1) {
+        dispatch(vmpActions.setVMPErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(vmpActions.setIsAutoCreateGraphLoading(false))
 }
 
 type ActionTypes = InferActionsTypes<typeof vmpActions>
@@ -245,4 +268,5 @@ export const vmpActions = {
     setObjectNextYearVMPPlansData: (data: VMPDataType[]) => ({ type: 'vmp/SET_OBJECT_NEXT_YEAR_VMP_PLANS_DATA', data } as const),
     setVMPErrorMessage: (text: string | null) => ({ type: 'vmp/SET_VMP_ERROR_MESSAGE', text } as const),
     setVMPChangeList: (data: ChangeListDataType[]) => ({ type: 'vmp/SET_VMP_CHANGE_LIST', data } as const),
+    setIsAutoCreateGraphLoading: (status: boolean) => ({ type: 'vmp/SET_IS_AUTO_CREATE_GRAPH_LOADING', status } as const),
 }

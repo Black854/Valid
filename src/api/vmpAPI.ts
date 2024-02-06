@@ -93,4 +93,13 @@ export const vmpAPI = {
             return response.data
         })
     },
+    startAutoCreateGraph(tablename: string, year: string) {
+        const requestData = {
+            tablename,
+            year,
+        }
+        return vmpInstance.post(`startAutoCreateGraph.php`, requestData, {}).then(response => {
+            return response.data
+        })
+    },
 }
