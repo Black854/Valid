@@ -37,7 +37,7 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
     if (record.objectType === 'premises') {
         if (thisObject?.typeval === '1') {
             if (record.class === 'Чистые' || record.class === 'Контролируемые') {
-                b = 7
+                b = 8
                 a += thisObject?.vp !== '' ? 1 : 0
                 a += thisObject?.nvp !== '' ? 1 : 0
                 a += thisObject?.dvp !== '' ? 1 : 0
@@ -45,9 +45,10 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
                 a += thisObject?.nvo !== '' ? 1 : 0
                 a += thisObject?.dvo !== '' ? 1 : 0
                 a += thisObject?.et !== '' ? 1 : 0
+                a += thisObject?.isCardUpdated !== '' ? 1 : 0
             } else {
                 if (record.mode === '2 - 8 ºC' || record.mode === 'минус 30 - 35 ºC') {
-                    b = 10
+                    b = 11
                     a += thisObject?.vp !== '' ? 1 : 0
                     a += thisObject?.nvp !== '' ? 1 : 0
                     a += thisObject?.dvp !== '' ? 1 : 0
@@ -58,8 +59,9 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
                     a += thisObject?.pam !== '' ? 1 : 0
                     a += thisObject?.pam2 !== '' ? 1 : 0
                     a += thisObject?.season !== '0' ? 1 : 0
+                    a += thisObject?.isCardUpdated !== '' ? 1 : 0
                 } else {
-                    b = 8
+                    b = 9
                     a += thisObject?.vp !== '' ? 1 : 0
                     a += thisObject?.nvp !== '' ? 1 : 0
                     a += thisObject?.dvp !== '' ? 1 : 0
@@ -68,6 +70,7 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
                     a += thisObject?.dvo !== '' ? 1 : 0
                     a += thisObject?.et !== '' ? 1 : 0
                     a += thisObject?.season !== '0' ? 1 : 0
+                    a += thisObject?.isCardUpdated !== '' ? 1 : 0
                 }
             }
         } else if (thisObject?.typeval === '3') {
@@ -96,7 +99,7 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
     } else if (record.objectType === 'equipment') {
         if (thisObject?.typeval === '1') {
             if (record.class === 'Термостаты') {
-                b = 9
+                b = 10
                 a += thisObject?.vp !== '' ? 1 : 0
                 a += thisObject?.nvp !== '' ? 1 : 0
                 a += thisObject?.dvp !== '' ? 1 : 0
@@ -106,8 +109,9 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
                 a += thisObject?.pam !== '' ? 1 : 0
                 a += thisObject?.pam2 !== '' ? 1 : 0
                 a += thisObject?.et !== '' ? 1 : 0
+                a += thisObject?.isCardUpdated !== '' ? 1 : 0
             } else if (record.class === 'Термоконтейнеры') {
-                b = 7
+                b = 8
                 a += thisObject?.vp !== '' ? 1 : 0
                 a += thisObject?.nvp !== '' ? 1 : 0
                 a += thisObject?.dvp !== '' ? 1 : 0
@@ -115,8 +119,9 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
                 a += thisObject?.nvo !== '' ? 1 : 0
                 a += thisObject?.dvo !== '' ? 1 : 0
                 a += thisObject?.pam !== '' ? 1 : 0
+                a += thisObject?.isCardUpdated !== '' ? 1 : 0
             } else {
-                b = 7
+                b = 8
                 a += thisObject?.vp !== '' ? 1 : 0
                 a += thisObject?.nvp !== '' ? 1 : 0
                 a += thisObject?.dvp !== '' ? 1 : 0
@@ -124,6 +129,7 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
                 a += thisObject?.nvo !== '' ? 1 : 0
                 a += thisObject?.dvo !== '' ? 1 : 0
                 a += thisObject?.et !== '' ? 1 : 0
+                a += thisObject?.isCardUpdated !== '' ? 1 : 0
             }
         } else if (thisObject?.typeval === '3') {
             if (record.class === 'Термоконтейнеры') {
@@ -141,7 +147,7 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
         }
     } else if (record.objectType === 'systems') {
         if (thisObject?.typeval === '1') {
-            b = 7
+            b = 8
             a += thisObject?.vp !== '' ? 1 : 0
             a += thisObject?.nvp !== '' ? 1 : 0
             a += thisObject?.dvp !== '' ? 1 : 0
@@ -149,6 +155,7 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
             a += thisObject?.nvo !== '' ? 1 : 0
             a += thisObject?.dvo !== '' ? 1 : 0
             a += thisObject?.et !== '' ? 1 : 0
+            a += thisObject?.isCardUpdated !== '' ? 1 : 0
         } else if (thisObject?.typeval === '3') {
             b = 4
             a += thisObject?.vo !== '' ? 1 : 0
@@ -158,13 +165,14 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
         }
     } else if (record.objectType === 'processes') {
         if (thisObject?.typeval === '1') {
-            b = 6
+            b = 7
             a += thisObject?.vp !== '' ? 1 : 0
             a += thisObject?.nvp !== '' ? 1 : 0
             a += thisObject?.dvp !== '' ? 1 : 0
             a += thisObject?.vo !== '' ? 1 : 0
             a += thisObject?.nvo !== '' ? 1 : 0
             a += thisObject?.dvo !== '' ? 1 : 0
+            a += thisObject?.isCardUpdated !== '' ? 1 : 0
         } else if (thisObject?.typeval === '3') {
             b = 3
             a += thisObject?.vo !== '' ? 1 : 0

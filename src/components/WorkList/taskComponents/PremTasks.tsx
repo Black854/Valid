@@ -1,9 +1,7 @@
-import { PremReestrType, getCurrentPremData, updatePremWorkData } from "../../../redux/Reducers/premisesReducer"
-import { ExpandedDataType } from "../types"
-import { useDispatch, useSelector } from "react-redux"
-import { AppDispatch } from "../../../redux/store"
+import { PremReestrType } from "../../../redux/Reducers/premisesReducer"
+import { useSelector } from "react-redux"
 import { PrinterOutlined } from '@ant-design/icons'
-import { Typography, Table, TableColumnsType, Button, Modal, Space, Input, Row, Col } from "antd"
+import { Typography, Table, Button, Modal, Space, Input, Row, Col } from "antd"
 import { DatePickerForWork } from "./MiniComponents/DatePickerForWork"
 import { ProtocolUpload } from "./MiniComponents/ProtocolUpload"
 import { ProtocolCode } from "./MiniComponents/ProtocolCode"
@@ -29,40 +27,9 @@ type PremTasks = {
 }
 
 export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremDataIdArray, access }) => {
-    const dispatch: AppDispatch = useDispatch()
 
     const server = useSelector(getServerSelector)
     const thisObject = myPremData.find(e => e.idfromtable === rec.id)
-
-    const seasonColumn: TableColumnsType<ExpandedDataType> = [
-        {
-            title: 'Сезон',
-            dataIndex: 'season',
-            key: 'season',
-            align: 'center',
-            render: (season, record) => {
-                const handleLabelSwitch = async (pol: string) => {
-                    await dispatch(updatePremWorkData(record.id, 'season', pol))
-                    await dispatch(getCurrentPremData(myPremDataIdArray))
-                }
-                return season === '0' ?
-                    <Button onClick={() => handleLabelSwitch('1')} type="default">
-                        <Text type="warning">Не указан</Text>
-                    </Button> :
-                    season === '1' ?
-                        <Button onClick={() => handleLabelSwitch('2')} type="default">
-                            <Text type="success">Вне сезонов</Text>
-                        </Button> :
-                        season === '2' ?
-                            <Button onClick={() => handleLabelSwitch('3')} type="default">
-                                <Text type="success">Зима</Text>
-                            </Button> :
-                            <Button onClick={() => handleLabelSwitch('0')} type="default">
-                                <Text type="success">Лето</Text>
-                            </Button>
-            }
-        },
-    ]
 
     let data: any = [{
         key: '1',
