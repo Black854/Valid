@@ -338,9 +338,9 @@ const PremCard = () => {
                         items={premObject.class === 'Складские' ?
                             currentMonth === 11 ?
                                 [...items, ...nextYearItems, ...itemsOfSkladPremises] :
-                                [...items, ...nextYearItems, ...itemsOfSkladPremises] :
+                                [...items, ...itemsOfSkladPremises] :
                             currentMonth === 11 ?
-                                [...items, ...itemsOfCleanPremises] :
+                                [...items, ...nextYearItems, ...itemsOfCleanPremises] :
                                 [...items, ...itemsOfCleanPremises]
                         }
                         indicatorSize={(origin) => origin - 16}
