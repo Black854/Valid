@@ -144,7 +144,7 @@ const VmpPlans: React.FC = () => {
                     <Menu.SubMenu key='yearGroup' title='Год графика' icon={<CalendarOutlined />}>
                         <Menu.Item key={currentYear - 1}>График на {currentYear - 1} год</Menu.Item>
                         <Menu.Item key={currentYear}>График на {currentYear} год</Menu.Item>
-                        {currentDay > 15 && currentMonth === 12 && <Menu.Item key={currentYear + 1}>График на {currentYear + 1} год</Menu.Item>}
+                        {currentMonth === 12 && <Menu.Item key={currentYear + 1}>График на {currentYear + 1} год</Menu.Item>}
                     </Menu.SubMenu>
                     <Menu.Item disabled={isPageChangeList === 1} key='vmpPlanImport' icon={<FileWordOutlined />}>Импорт графика в Word</Menu.Item>
                     <Menu.Item disabled={isPageChangeList === 1} key='vmpPlanPrint' icon={<PrinterOutlined />}>Печать графика</Menu.Item>

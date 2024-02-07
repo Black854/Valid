@@ -108,9 +108,7 @@ const initialState = {
         { value: '4', label: '1 раз в 3 года (посезонно)', interval: '36' },
         { value: '5', label: '1 раз в 5 лет', interval: '60' },
         { value: '14', label: '1 раз в 5 лет (посезонно)', interval: '60' },
-        { value: '16', label: '1 раз в 5 лет (без оформления ПОТС)', interval: '60' },
-        { value: '10', label: 'По изменениям (с оформлением ПОТС)', interval: '0' },
-        { value: '11', label: 'По изменениям (без оформления ПОТС)', interval: '0' },
+        { value: '11', label: 'По изменениям', interval: '0' },
         { value: '12', label: 'Законсервировано', interval: '0' },
         { value: '15', label: 'Списано', interval: '0' }
     ] as IntervalsType[],

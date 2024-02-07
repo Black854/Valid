@@ -62,7 +62,7 @@ const Signal: React.FC = () => {
         fio: e.fio,
     })).filter(e => {
         const monthCount = parseInt((intervals.find(el => el.value === e.ar)?.interval || '0')) + termSettingsNumber
-        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
+        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
 
@@ -73,7 +73,7 @@ const Signal: React.FC = () => {
             const resultObjectDateWithoutOneMonth = subMonths(resultObjectDate, 1) // Прибавляем monthCount месяцев
             const formattedObjectDateWithoutOneMonth = format(resultObjectDateWithoutOneMonth, 'yyyyMMdd') // дата объекта минус 1 месяц для сравнения
             return (formattedCurrentDate >= formattedObjectDate) || (formattedObjectDate > formattedCurrentDate && formattedCurrentDate >= formattedObjectDateWithoutOneMonth)
-        } else if ((e.date === null || e.date === '') && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
+        } else if ((e.date === null || e.date === '') && e.ar !== '0' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             return e.date === null || e.date === ''
         }
     })
@@ -93,7 +93,7 @@ const Signal: React.FC = () => {
         fio: e.fio
     })).filter(e => {
         const monthCount = parseInt((intervals.find(el => el.value === e.ar)?.interval || '0')) + termSettingsNumber
-        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
+        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
 
@@ -104,7 +104,7 @@ const Signal: React.FC = () => {
             const resultObjectDateWithoutOneMonth = subMonths(resultObjectDate, 1) // Прибавляем monthCount месяцев
             const formattedObjectDateWithoutOneMonth = format(resultObjectDateWithoutOneMonth, 'yyyyMMdd') // дата объекта минус 1 месяц для сравнения
             return (formattedCurrentDate >= formattedObjectDate) || (formattedObjectDate > formattedCurrentDate && formattedCurrentDate >= formattedObjectDateWithoutOneMonth)
-        } else if ((e.date === null || e.date === '') && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
+        } else if ((e.date === null || e.date === '') && e.ar !== '0' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             return e.date === null || e.date === ''
         }
     })
@@ -124,7 +124,7 @@ const Signal: React.FC = () => {
         fio: e.fio
     })).filter(e => {
         const monthCount = parseInt((intervals.find(el => el.value === e.ar)?.interval || '0')) + termSettingsNumber
-        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
+        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
 
@@ -135,7 +135,7 @@ const Signal: React.FC = () => {
             const resultObjectDateWithoutOneMonth = subMonths(resultObjectDate, 1) // Прибавляем monthCount месяцев
             const formattedObjectDateWithoutOneMonth = format(resultObjectDateWithoutOneMonth, 'yyyyMMdd') // дата объекта минус 1 месяц для сравнения
             return (formattedCurrentDate >= formattedObjectDate) || (formattedObjectDate > formattedCurrentDate && formattedCurrentDate >= formattedObjectDateWithoutOneMonth)
-        } else if ((e.date === null || e.date === '') && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
+        } else if ((e.date === null || e.date === '') && e.ar !== '0' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             return e.date === null || e.date === ''
         }
     })
@@ -155,7 +155,7 @@ const Signal: React.FC = () => {
         fio: e.fio
     })).filter(e => {
         const monthCount = parseInt((intervals.find(el => el.value === e.ar)?.interval || '0')) + termSettingsNumber
-        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
+        if (e.date !== null && e.date !== '' && e.ar !== '0' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             const currentDate = new Date()
             const formattedCurrentDate = format(currentDate, 'yyyyMMdd') // Текущая дата для сравнения с датой объекта
 
@@ -166,7 +166,7 @@ const Signal: React.FC = () => {
             const resultObjectDateWithoutOneMonth = subMonths(resultObjectDate, 1) // Прибавляем monthCount месяцев
             const formattedObjectDateWithoutOneMonth = format(resultObjectDateWithoutOneMonth, 'yyyyMMdd') // дата объекта минус 1 месяц для сравнения
             return (formattedCurrentDate >= formattedObjectDate) || (formattedObjectDate > formattedCurrentDate && formattedCurrentDate >= formattedObjectDateWithoutOneMonth)
-        } else if ((e.date === null || e.date === '') && e.ar !== '0' && e.ar !== '10' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
+        } else if ((e.date === null || e.date === '') && e.ar !== '0' && e.ar !== '11' && e.ar !== '12' && e.ar !== '15') {
             return e.date === null || e.date === ''
         }
     })
