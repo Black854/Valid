@@ -167,8 +167,8 @@ const VmpPlans: React.FC = () => {
                 />
                 {isPageChangeList === 1 ? <ChangeList VMPName={VMPName} /> :
                     <>
-                        <VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '1')} params={params} key={VMPName} tableType={1} />
-                        <VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '2' || e.typeval === '3')} params={params} key={VMPName} tableType={2} />
+                        <VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '1')} params={params} key={VMPName + '1'} tableType={1} />
+                        <VmpTable VMPName={VMPName} data={data.filter(e => e.typeval === '2' || e.typeval === '3')} params={params} key={VMPName + '2'} tableType={2} />
                     </>}
                 <Modal title="Печать графика ВМП" afterOpenChange={() => handleCancel('VMPPrint')} open={VMPPrintModalIsOpen} onCancel={() => handleCancel('VMPPrint')} footer={[<Button key="close" onClick={() => handleCancel('VMPPrint')} type="primary">Закрыть</Button>]} >
                     <iframe key={iframeKey} style={{ width: '100%', height: '360px' }} src={`${server}api/printForms/vmp_print.php?tb=${params.number}&y=${params.year}`}>
