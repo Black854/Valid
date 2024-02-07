@@ -21,16 +21,16 @@ const Prints: React.FC = () => {
                 selectedKeys={[`${params.report ? params.report : 'r1'}`]}
             >
                 <Menu.Item key='r1'>Отчет о местонахождении оборудования</Menu.Item>
-                <Menu.Item key='r4'>Отчет по объектам без аватара</Menu.Item>
+                <Menu.Item key='r2'>Отчет по объектам без аватара</Menu.Item>
+                <Menu.Item key='r3'>Аудит пользовательских операций</Menu.Item>
                 {/* <Menu.Item key='r4'>Отчет по незапланированным объектам</Menu.Item> */}
                 {/* <Menu.Item key='r4'>Отчет по сигнальному листу </Menu.Item> */}
-                <Menu.Item key='r2'>Аудит пользовательских операций</Menu.Item>
             </Menu>
         </Col>
         <Col span={18} push={1}>
-            {params.report ? (params.report === null || params.report === 'r1') && <EquipPlacement /> : <EquipPlacement />}
-            {params.report && params.report === 'r2' && <UserActions /> }
-            {params.report && params.report === 'r4' && <ObjectsWithoutAvatars /> }
+            {params.report && (params.report === null || params.report === 'r1') && <EquipPlacement />}
+            {params.report && params.report === 'r2' && <ObjectsWithoutAvatars />}
+            {params.report && params.report === 'r3' && <UserActions />}
         </Col>
     </Row>
 }
