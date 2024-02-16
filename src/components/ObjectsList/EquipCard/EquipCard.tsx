@@ -85,7 +85,7 @@ const EquipCard: React.FC = () => {
     if (isLoading) {
         return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
     } else if (equipObject) {
-        
+
         const updateDataNomer = (nomer: string) => {
             dispatch(updateNomer(equipObject.id, nomer))
         }
@@ -253,32 +253,28 @@ const EquipCard: React.FC = () => {
                 disabled: equipObject.ar === '0' || equipObject.ar === '12' || equipObject.ar === '15' || equipObject.date === null ? true : false
             }
         ]
-        
+
         const currentMonth = new Date().getMonth()
 
-        return (
-            <>
-                {contextHolder}
-                <Row style={{ padding: '10px 0' }} >
-                    <Col span={5} push={1} style={{ textAlign: 'center' }} >
-                        <TitleImage equipObject={equipObject} id={id} />
-                    </Col>
-                    <Col span={16} push={2} style={{ minHeight: '89vh', display: "flex", flexDirection: 'column' }} >
-                        <Tabs
-                            defaultActiveKey="1"
-                            items={currentMonth === 11 ? [...items, ...nextYearItem, ...labelItem] : [...items, ...labelItem]}
-                            indicatorSize={(origin) => origin - 16}
-                            style={{ flex: 1 }}
-                            type="card"
-                        />
-                    </Col>
-                </Row>
-            </>
-        )
+        return <>
+            {contextHolder}
+            <Row style={{ padding: '10px 0' }} >
+                <Col span={5} push={1} style={{ textAlign: 'center' }} >
+                    <TitleImage equipObject={equipObject} id={id} />
+                </Col>
+                <Col span={16} push={2} style={{ minHeight: '89vh', display: "flex", flexDirection: 'column' }} >
+                    <Tabs
+                        defaultActiveKey="1"
+                        items={currentMonth === 11 ? [...items, ...nextYearItem, ...labelItem] : [...items, ...labelItem]}
+                        indicatorSize={(origin) => origin - 16}
+                        style={{ flex: 1 }}
+                        type="card"
+                    />
+                </Col>
+            </Row>
+        </>
     } else {
-        return (
-            <Text type="danger" style={{ fontSize: '12pt', textAlign: 'center', padding: '20px' }}>Внимание! Запрошенный Вами объект не существует!</Text>
-        )
+        return <Text type="danger" style={{ fontSize: '12pt', textAlign: 'center', padding: '20px' }}>Внимание! Запрошенный Вами объект не существует!</Text>
     }
 }
 

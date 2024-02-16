@@ -1,6 +1,6 @@
 import { ColumnsType } from "antd/es/table"
 import { Button, Checkbox, Col, Form, Input, Modal, Popconfirm, Row, Table, Typography } from "antd"
-import { CleanGroupLabelsType, DataType, PremReestrType, createCleanPremGroup, deleteCleanPremGroup, editCleanPremGroup, getCleanGroupLabels, getCleanPremList } from "../../../../redux/Reducers/premisesReducer"
+import { CleanGroupLabelsType, PremDataType, PremReestrType, createCleanPremGroup, deleteCleanPremGroup, editCleanPremGroup, getCleanGroupLabels, getCleanPremList } from "../../../../redux/Reducers/premisesReducer"
 import { useDispatch, useSelector } from "react-redux"
 import { getCleanGroupLabelsSelector, getCleanPremListSelector, getCleanTabSelector, getIsCleanPremGroupsLoading } from "../../../../redux/Selectors/premisesSelectors"
 import { useEffect, useState } from "react"
@@ -17,7 +17,7 @@ const {Text, Title} = Typography
 
 type CleanPremGroupsPropsType = {
     id: string
-    premObject: DataType
+    premObject: PremDataType
     reestrData: PremReestrType[]
 }
 

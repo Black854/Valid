@@ -23,23 +23,24 @@ import { NextYearCardPlans } from "../../common/NextYearCardPlans"
 const { Text } = Typography
 
 const ProcCard: React.FC = () => {
-    const dispatch: AppDispatch = useDispatch()
-    const params = useParams()
-    let id: string
-    if (params.id === undefined) {
-        id = 'none'
-    } else {
-        id = params.id
-    }
 
     const procData = useSelector(getProcData)
     const isLoading = useSelector(getIsLoading)
-    const procObject = useSelector((state: AppStateType) => getProcById(state, id))
-    const departments = useSelector(getDepartmentsSelector)
-    const VMPDepartments = useSelector(getVMPDepartmentsSelector)
+    const departments = useSelector(getDepartmentsSelector).filter(e => e.stat === '1').map((e: any) => ({ value: e.name, label: e.name }))
+    const VMPDepartments = useSelector(getVMPDepartmentsSelector).filter(e => e.isactive !== '1').map((e: any) => ({ value: e.vmpname1, label: e.vmpname1 }))
     const isReestrDataLoading = useSelector(getIsReestrDataLoading)
     const reestrData = useSelector(getProcReestrDataSelector)
     const access = parseInt(useSelector(getUserDataAccessSelector))
+    const procCardError = useSelector(getProcCardError)
+
+    const params = useParams()
+    const id = params.id === undefined ? 'none' : params.id
+
+    const procObject = useSelector((state: AppStateType) => getProcById(state, id))
+
+    const dispatch: AppDispatch = useDispatch()
+
+    const [messageApi, contextHolder] = message.useMessage()
 
     useEffect(() => {
         if (procData.length === 0) {
@@ -50,13 +51,10 @@ const ProcCard: React.FC = () => {
             dispatch(getVMPDepartments())
         }
     }, [dispatch, procData, departments, VMPDepartments])
+
     useEffect(() => {
         dispatch(getProcReestrData(id))
     }, [id])
-
-    const procCardError = useSelector(getProcCardError)
-
-    const [messageApi, contextHolder] = message.useMessage()
 
     useEffect(() => {
         if (procCardError) {
@@ -69,27 +67,9 @@ const ProcCard: React.FC = () => {
         }
     }, [procCardError])
 
-    let filteredDepartments = departments.filter(e => e.stat === '1')
-    let departmentData = filteredDepartments.map((e: any) => ({ value: e.name, label: e.name }))
-
-    let filteredVMPDepartments = VMPDepartments.filter(e => e.isactive !== '1')
-    let VMPDepartmentData = filteredVMPDepartments.map((e: any) => ({ value: e.vmpname1, label: e.vmpname1 }))
-
     if (isLoading) {
         return <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} />
     } else if (procObject) {
-        interface DataType {
-            ar: string
-            date: string
-            fio: string
-            foto: string
-            groupp: string
-            id: string
-            manual: string
-            name: string
-            sp: string
-            sp2: string
-        }
 
         const handleUpdateDepartment = (text: string) => {
             dispatch(updateDepartment(id, text))
@@ -109,7 +89,7 @@ const ProcCard: React.FC = () => {
                     onChange={handleUpdateVMPDepartment}
                     size="small"
                     bordered={false}
-                    options={VMPDepartmentData}
+                    options={VMPDepartments}
                     disabled={access > 3}
                 />
             },
@@ -122,7 +102,7 @@ const ProcCard: React.FC = () => {
                     onChange={handleUpdateDepartment}
                     size="small"
                     bordered={false}
-                    options={departmentData}
+                    options={departments}
                     disabled={access > 3}
                 />
             },
@@ -179,7 +159,7 @@ const ProcCard: React.FC = () => {
                 children: <CardPlans objectName={procObject.name} objectId={procObject.id} sp={procObject.sp} objectType="processes" access={access} />,
             }
         ]
-        
+
         const nextYearItem: TabsProps['items'] = [
             {
                 key: '8',
@@ -196,32 +176,28 @@ const ProcCard: React.FC = () => {
                 disabled: procObject.ar === '0' || procObject.ar === '12' || procObject.ar === '15' || procObject.date === null ? true : false
             }
         ]
-        
+
         const currentMonth = new Date().getMonth()
 
-        return (
-            <>
-                {contextHolder}
-                <Row style={{ padding: '10px 0' }} >
-                    <Col span={5} push={1} style={{ textAlign: 'center' }} >
-                        <TitleImage procObject={procObject} id={id} />
-                    </Col>
-                    <Col span={16} push={2} style={{ minHeight: '89vh', display: "flex", flexDirection: 'column' }} >
-                        <Tabs
-                            defaultActiveKey="1"
-                            items={currentMonth === 11 ? [...items, ...nextYearItem, ...labelItem] : [...items, ...labelItem]}
-                            indicatorSize={(origin) => origin - 16}
-                            style={{ flex: 1 }}
-                            type="card"
-                        />
-                    </Col>
-                </Row>
-            </>
-        )
+        return <>
+            {contextHolder}
+            <Row style={{ padding: '10px 0' }} >
+                <Col span={5} push={1} style={{ textAlign: 'center' }} >
+                    <TitleImage procObject={procObject} id={id} />
+                </Col>
+                <Col span={16} push={2} style={{ minHeight: '89vh', display: "flex", flexDirection: 'column' }} >
+                    <Tabs
+                        defaultActiveKey="1"
+                        items={currentMonth === 11 ? [...items, ...nextYearItem, ...labelItem] : [...items, ...labelItem]}
+                        indicatorSize={(origin) => origin - 16}
+                        style={{ flex: 1 }}
+                        type="card"
+                    />
+                </Col>
+            </Row>
+        </>
     } else {
-        return (
-            <Text type="danger" style={{ fontSize: '12pt', textAlign: 'center', padding: '20px' }}>Внимание! Запрошенный Вами объект не существует!</Text>
-        )
+        return <Text type="danger" style={{ fontSize: '12pt', textAlign: 'center', padding: '20px' }}>Внимание! Запрошенный Вами объект не существует!</Text>
     }
 
 }

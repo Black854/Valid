@@ -4,7 +4,7 @@ import empty from './../../../../img/empty.png'
 import { useDispatch, useSelector } from "react-redux"
 import { EyeOutlined } from '@ant-design/icons'
 import { AppDispatch } from "../../../../redux/store"
-import { DataType, deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/premisesReducer"
+import { PremDataType, deleteMainPhoto, updateName, uploadMainPhoto } from "../../../../redux/Reducers/premisesReducer"
 import Title from "antd/es/typography/Title"
 import { getUserDataAccessSelector } from "../../../../redux/Selectors/authSelectors"
 import { getServerSelector } from "../../../../redux/Selectors/appSelectors"
@@ -12,7 +12,7 @@ import { getServerSelector } from "../../../../redux/Selectors/appSelectors"
 const { Text } = Typography
 
 type TitleImagePropsType = {
-    premObject: DataType
+    premObject: PremDataType
     id: string
 }
 

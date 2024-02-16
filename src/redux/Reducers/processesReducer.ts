@@ -4,7 +4,7 @@ import { processesAPI } from "../../api/processesAPI"
 import { VMPDataTypeForPlansComponent } from "./vmpReducer"
 import { logout } from "./authReducer"
 
-export type DataType = {
+export type ProcDataType = {
     id: string
     sp: string
     sp2: string
@@ -50,7 +50,7 @@ export type ProcReestrType = {
 }
 
 let initialState = {
-    data: [] as DataType[],
+    data: [] as ProcDataType[],
     reestrData: [] as ProcReestrType[],
     isLoading: false,
     technicalInfo: '',
@@ -355,7 +355,7 @@ type ActionTypes = InferActionsTypes<typeof procActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 export const procActions = {
-    pushProcessesData: (data: DataType[]) => ({ type: 'proc/PUSH_PROC_DATA', data } as const),
+    pushProcessesData: (data: ProcDataType[]) => ({ type: 'proc/PUSH_PROC_DATA', data } as const),
     pushReestrData: (data: ProcReestrType[]) => ({ type: 'proc/PUSH_REESTR_DATA', data } as const),
     setIsLoading: (data: boolean) => ({ type: 'proc/IS_LOADING', data } as const),
     setTechnicalInfo: (text: string) => ({ type: 'proc/SET_TECH_INFO', text } as const),

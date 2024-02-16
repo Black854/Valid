@@ -4,7 +4,7 @@ import { AppStateType, InferActionsTypes } from "../store"
 import { VMPDataTypeForPlansComponent } from "./vmpReducer"
 import { logout } from "./authReducer"
 
-export type DataType = {
+export type SysDataType = {
     id: string
     sp: string
     sp2: string
@@ -50,7 +50,7 @@ export type SysReestrType = {
 }
 
 let initialState = {
-    data: [] as DataType[],
+    data: [] as SysDataType[],
     reestrData: [] as SysReestrType[],
     isLoading: false,
     technicalInfo: '',
@@ -423,7 +423,7 @@ type ActionTypes = InferActionsTypes<typeof sysActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 export const sysActions = {
-    pushSystemsData: (data: DataType[]) => ({ type: 'sys/PUSH_SYS_DATA', data } as const),
+    pushSystemsData: (data: SysDataType[]) => ({ type: 'sys/PUSH_SYS_DATA', data } as const),
     pushReestrData: (data: SysReestrType[]) => ({ type: 'sys/PUSH_REESTR_DATA', data } as const),
     setIsLoading: (data: boolean) => ({ type: 'sys/IS_LOADING', data } as const),
     setTechnicalInfo: (text: string) => ({ type: 'sys/SET_TECH_INFO', text } as const),

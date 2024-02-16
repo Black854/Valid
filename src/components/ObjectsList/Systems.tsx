@@ -1,4 +1,4 @@
-import { Typography, Col, Image, Row, Spin, Table, Button, Input, Space, message } from "antd"
+import { Typography, Col, Image, Row, Table, Input, Space, Button, message } from "antd"
 import { Content } from "antd/es/layout/layout"
 import { useDispatch, useSelector } from "react-redux"
 import { EyeOutlined } from '@ant-design/icons'
@@ -7,14 +7,14 @@ import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
 import React, { useEffect, useRef, useState } from "react"
 import { AppDispatch } from "../../redux/store"
-import { getIsLoading, getProcData, getProcErrorMessage } from "../../redux/Selectors/processesSelectors"
-import { getProcesses } from "../../redux/Reducers/processesReducer"
+import { getIsLoading, getSysData, getSysErrorMessage } from "../../redux/Selectors/systemsSelectors"
+import { getSystems } from "../../redux/Reducers/systemsReducer"
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import type { InputRef } from 'antd';
 import type { ColumnType, ColumnsType } from 'antd/es/table';
 import type { FilterConfirmProps } from 'antd/es/table/interface';
-import { NewObjectForm } from "./CreateNewObjectForm"
+import { NewSysObjectForm } from "./NewObjectForms/NewSysObjectForm"
 import { defaultPagination } from "../../redux/Reducers/appReducer"
 import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 import { getServerSelector } from "../../redux/Selectors/appSelectors"
@@ -35,13 +35,13 @@ interface DataType {
 
 type DataIndex = keyof DataType;
 
-const Processes: React.FC = () => {
+const Systems: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
 
-    const procData = useSelector(getProcData)
+    const sysData = useSelector(getSysData)
     const isLoading = useSelector(getIsLoading)
 
-    const errorMessage = useSelector(getProcErrorMessage)
+    const errorMessage = useSelector(getSysErrorMessage)
     const access = parseInt(useSelector(getUserDataAccessSelector))
     const server = useSelector(getServerSelector)
 
@@ -57,11 +57,10 @@ const Processes: React.FC = () => {
         }
     }, [errorMessage])
 
-    if (procData.length === 0 && isLoading === false && !errorMessage) {
-        dispatch(getProcesses())
+    if (sysData.length === 0 && isLoading === false && !errorMessage) {
+        dispatch(getSystems())
     }
-
-    const procNewData = procData.map(e => ({
+    const sysNewData = sysData.map(e => ({
         id: e.id,
         key: e.id,
         sp2: e.sp2,
@@ -74,7 +73,7 @@ const Processes: React.FC = () => {
         foto: e.foto
     }))
 
-    const [searchText, setSearchText] = useState('')
+    const [searchText, setSearchText] = useState('');
     const searchInput = useRef<InputRef>(null);
 
     const handleSearch = (
@@ -82,13 +81,13 @@ const Processes: React.FC = () => {
         confirm: (param?: FilterConfirmProps) => void,
         dataIndex: DataIndex,
     ) => {
-        confirm()
+        confirm();
         setSearchText(selectedKeys[0])
     };
 
     const handleReset = (clearFilters: () => void) => {
-        clearFilters()
-        setSearchText('')
+        clearFilters();
+        setSearchText('');
     };
 
     const getColumnSearchProps = (dataIndex: DataIndex): ColumnType<DataType> => ({
@@ -147,12 +146,12 @@ const Processes: React.FC = () => {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: <Text>№</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>№</Text>,
             dataIndex: 'index',
             align: 'center'
         },
         {
-            title: <Text>Наименование</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Наименование</Text>,
             dataIndex: 'name',
             render: (text, record) => (
                 <Row>
@@ -184,7 +183,7 @@ const Processes: React.FC = () => {
             ...getColumnSearchProps('name'),
         },
         {
-            title: <Text>Подразделение</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Подразделение</Text>,
             dataIndex: 'sp2',
             filters: [
                 { text: 'МБЛ', value: 'МБЛ' },
@@ -202,7 +201,7 @@ const Processes: React.FC = () => {
             align: 'center',
         },
         {
-            title: <Text>Дата (до)</Text>,
+            title: <Text strong style={{ fontSize: '12pt' }}>Дата (до)</Text>,
             dataIndex: 'date',
             render: (date, record) => { return <RenderDateHelper date={date} record={record} /> },
             width: '10%',
@@ -210,7 +209,7 @@ const Processes: React.FC = () => {
         },
     ]
 
-    const data: DataType[] = procNewData.map((item, index) => ({
+    const data: DataType[] = sysNewData.map((item, index) => ({
         ...item,
         index: index + 1,
     }))
@@ -227,8 +226,8 @@ const Processes: React.FC = () => {
                         pagination={defaultPagination}
                         title={() => <>
                             <Text style={{ fontSize: '13pt' }}>
-                                <NewObjectForm access={access} />
-                                Процессы (всего: {procData.length})
+                                <NewSysObjectForm access={access} />
+                                Компьютеризированные и инженерные системы (всего: {sysData.length})
                             </Text>
                         </>}
                         size="small"
@@ -241,4 +240,4 @@ const Processes: React.FC = () => {
     </>
 }
 
-export default Processes
+export default Systems

@@ -7,12 +7,12 @@ import { LabelDateHelper, labelEndDate } from "../../../common/labelDateHelper"
 import { getDepartmentsSelector, getIntervals, getServerSelector, getSopCodeFormSelector, getTermSettingsSelector } from "../../../../redux/Selectors/appSelectors"
 import { PrinterOutlined } from '@ant-design/icons'
 import { getSopCodeForm } from "../../../../redux/Reducers/appReducer"
-import { DataType, SysReestrType } from "../../../../redux/Reducers/systemsReducer"
+import { SysDataType, SysReestrType } from "../../../../redux/Reducers/systemsReducer"
 
 const {Text, Title} = Typography
 
 type CleanPremGroupsPropsType = {
-    sysObject: DataType
+    sysObject: SysDataType
     reestrData: SysReestrType[]
 }
 

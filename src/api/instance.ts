@@ -5,7 +5,7 @@ import { getCookie } from '../components/common/cookie'
 // http://10.85.10.212/ov
 // http://localhost:81/ov
 
-const server = 'http://localhost:81/ov'; // прописать домен сайта
+const server = 'http://10.85.10.212/ov'; // прописать домен сайта
 
 export const authInstance = axios.create({
     baseURL: server + '/api/auth/'

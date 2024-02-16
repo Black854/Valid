@@ -4,7 +4,7 @@ import { AppStateType, InferActionsTypes } from "../store"
 import { VMPDataTypeForPlansComponent } from "./vmpReducer"
 import { logout } from "./authReducer"
 
-export type DataType = {
+export type EquipDataType = {
     id: string
     sp: string
     sp2: string
@@ -58,7 +58,7 @@ export type NewEquipObjectType = {
 }
 
 let initialState = {
-    data: [] as DataType[],
+    data: [] as EquipDataType[],
     reestrData: [] as EquipReestrType[],
     isLoading: false,
     technicalInfo: '',
@@ -436,7 +436,7 @@ type ActionTypes = InferActionsTypes<typeof equipActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 export const equipActions = {
-    pushEquipmentData: (data: DataType[]) => ({ type: 'equip/PUSH_EQ_DATA', data } as const),
+    pushEquipmentData: (data: EquipDataType[]) => ({ type: 'equip/PUSH_EQ_DATA', data } as const),
     pushReestrData: (data: EquipReestrType[]) => ({ type: 'equip/PUSH_REESTR_DATA', data } as const),
     setIsLoading: (data: boolean) => ({ type: 'equip/IS_LOADING', data } as const),
     setTechnicalInfo: (text: string) => ({ type: 'equip/SET_TECH_INFO', text } as const),

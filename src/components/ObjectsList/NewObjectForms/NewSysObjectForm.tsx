@@ -1,20 +1,26 @@
 import { Button, Form, Modal, message } from "antd"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { getDepartmentsSelector, getIntervals, getVMPDepartmentsSelector } from "../../redux/Selectors/appSelectors"
-import { getDepartments, getVMPDepartments } from "../../redux/Reducers/appReducer"
+import { getDepartmentsSelector, getIntervals, getVMPDepartmentsSelector } from "../../../redux/Selectors/appSelectors"
+import { getDepartments, getVMPDepartments } from "../../../redux/Reducers/appReducer"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PlusOutlined } from "@ant-design/icons"
-import { AppDispatch } from "../../redux/store"
-import { CustomController } from "../common/FormControls"
-import { NewSysObjectType, createNewObject, sysActions } from "../../redux/Reducers/systemsReducer"
-import { getSysCreateNewObjectErrorMessage } from "../../redux/Selectors/systemsSelectors"
+import { AppDispatch } from "../../../redux/store"
+import { CustomController } from "../../common/FormControls"
+import { NewSysObjectType, createNewObject, sysActions } from "../../../redux/Reducers/systemsReducer"
+import { getSysCreateNewObjectErrorMessage } from "../../../redux/Selectors/systemsSelectors"
 
 type NewObjectFormtype = {
     access: number
 }
 
-export const NewObjectForm: React.FC<NewObjectFormtype> = ({access}) => {
+export const NewSysObjectForm: React.FC<NewObjectFormtype> = ({ access }) => {
+
+    const VMPDepartmentData = useSelector(getVMPDepartmentsSelector).filter(e => e.isactive !== '1').map(e => ({ label: e.vmpname1, value: e.vmpname1 }))
+    const DepartmentData = useSelector(getDepartmentsSelector).filter(e => e.stat === '1').map(e => ({ label: e.name, value: e.name }))
+    const IntervalsData = useSelector(getIntervals).map(e => ({ label: e.label, value: e.value }))
+    const sysCreateNewObjectErrorMessage = useSelector(getSysCreateNewObjectErrorMessage)
+
     const dispatch: AppDispatch = useDispatch()
 
     useEffect(() => {
@@ -25,11 +31,6 @@ export const NewObjectForm: React.FC<NewObjectFormtype> = ({access}) => {
     const { handleSubmit, control, reset } = useForm<NewSysObjectType>()
 
     const [showForm, setShowForm] = useState(false)
-    const VMPDepartmentData = useSelector(getVMPDepartmentsSelector).filter(e => e.isactive !== '1').map(e => ({ label: e.vmpname1, value: e.vmpname1 }))
-    const DepartmentData = useSelector(getDepartmentsSelector).filter(e => e.stat === '1').map(e => ({ label: e.name, value: e.name }))
-    const IntervalsData = useSelector(getIntervals).map(e => ({ label: e.label, value: e.value }))
-
-    const sysCreateNewObjectErrorMessage = useSelector(getSysCreateNewObjectErrorMessage)
 
     const [messageApi, contextHolder] = message.useMessage()
 

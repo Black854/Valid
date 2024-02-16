@@ -15,7 +15,7 @@ import type { InputRef } from 'antd'
 import type { ColumnType, ColumnsType } from 'antd/es/table'
 import type { FilterConfirmProps } from 'antd/es/table/interface'
 import { defaultPagination } from "../../redux/Reducers/appReducer"
-import { NewObjectForm } from "./CreateNewObjectForm"
+import { NewEquipObjectForm } from "./NewObjectForms/NewEquipObjectForm"
 import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 import { getServerSelector } from "../../redux/Selectors/appSelectors"
 
@@ -36,32 +36,12 @@ interface DataType {
 type DataIndex = keyof DataType
 
 const Equipment: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch()
-
-  const equipData = useSelector(getEquipData)
+  
   const isLoading = useSelector(getIsLoading)
-
   const errorMessage = useSelector(getEquipErrorMessage)
   const access = parseInt(useSelector(getUserDataAccessSelector))
   const server = useSelector(getServerSelector)
-
-  const [messageApi, contextHolder] = message.useMessage()
-
-  useEffect(() => {
-    if (errorMessage) {
-      messageApi.open({
-        type: 'error',
-        content: errorMessage,
-        duration: 7
-      })
-    }
-  }, [errorMessage])
-
-  if (equipData.length === 0 && isLoading === false && !errorMessage) {
-    dispatch(getEquipment())
-  }
-
-  const equipNewData = equipData.map(e => ({
+  const equipNewData = useSelector(getEquipData).map(e => ({
     id: e.id,
     key: e.id,
     sp2: e.sp2,
@@ -73,6 +53,18 @@ const Equipment: React.FC = () => {
     ar: e.ar,
     foto: e.foto
   }))
+  
+  const dispatch: AppDispatch = useDispatch()
+
+  const [messageApi, contextHolder] = message.useMessage()
+
+  useEffect(() => {
+    errorMessage && messageApi.open({ type: 'error', content: errorMessage, duration: 7 })
+  }, [errorMessage])
+
+  if (equipNewData.length === 0 && isLoading === false && !errorMessage) {
+    dispatch(getEquipment())
+  }
 
   const [searchText, setSearchText] = useState('')
   const searchInput = useRef<InputRef>(null)
@@ -257,8 +249,8 @@ const Equipment: React.FC = () => {
             pagination={defaultPagination}
             title={() => <>
               <Text style={{ fontSize: '13pt' }}>
-                <NewObjectForm access={access} />
-                Оборудование (всего: {equipData.length})
+                <NewEquipObjectForm access={access} />
+                Оборудование (всего: {equipNewData.length})
               </Text>
             </>}
             size="small"

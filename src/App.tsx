@@ -4,22 +4,22 @@ import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import { Header1 } from './components/Header/Header'
 import { CustomFooter } from './components/Footer/Footer'
-import { WorkList } from './components/WorkList/WorkList'
+import { WorkList } from './components/WorkList/MyTasksContainer'
 import { Result404 } from './components/common/Results/404'
 import ruRU from 'antd/es/locale/ru_RU'
 import { Login } from './components/Login/Login'
 import { Loading } from './components/common/Loading'
 
 const Prints = lazy(() => import('./components/Prints/Prints').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
-const Equipment = lazy(() => import('./components/Equipment/Equipment').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
-const EquipCard = lazy(() => import('./components/Equipment/EquipCard/EquipCard').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
-const Premises = lazy(() => import('./components/Premises/Premises').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
-const PremCard = lazy(() => import('./components/Premises/PremCard/PremCard').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
-const Monitoring = lazy(() => import('./components/WorkList/Monitoring').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
-const Systems = lazy(() => import('./components/Systems/Systems').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
-const SysCard = lazy(() => import('./components/Systems/SysCard/SysCard').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
-const Processes = lazy(() => import('./components/Processes/Processes').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
-const ProcCard = lazy(() => import('./components/Processes/ProcCard/ProcCard').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
+const Equipment = lazy(() => import('./components/ObjectsList/Equipment').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
+const EquipCard = lazy(() => import('./components/ObjectsList/EquipCard/EquipCard').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
+const Premises = lazy(() => import('./components/ObjectsList/Premises').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
+const PremCard = lazy(() => import('./components/ObjectsList/PremCard/PremCard').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
+const Monitoring = lazy(() => import('./components/WorkList/AllTasksContainer').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
+const Systems = lazy(() => import('./components/ObjectsList/Systems').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
+const SysCard = lazy(() => import('./components/ObjectsList/SysCard/SysCard').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
+const Processes = lazy(() => import('./components/ObjectsList/Processes').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
+const ProcCard = lazy(() => import('./components/ObjectsList/ProcCard/ProcCard').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
 const PaperPlanes = lazy(() => import('./components/Paperplanes/PaperPlanes').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
 const Vacations = lazy(() => import('./components/Vacations/Vacations').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))
 const Settings = lazy(() => import('./components/Settings/Settings').then(module => ({ default: module.default } as { default: React.ComponentType<any> })))

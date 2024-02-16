@@ -1,5 +1,4 @@
-import { Typography, Col, Image, Row, Spin, Table, message } from "antd"
-import { Content } from "antd/es/layout/layout"
+import { Typography, Col, Image, Row, Spin, message } from "antd"
 import type { ColumnsType } from 'antd/es/table'
 import { useDispatch, useSelector } from "react-redux"
 import { getPremData, getIsLoading, getCurrentPremDataSelector } from "../../redux/Selectors/premisesSelectors"
@@ -9,26 +8,42 @@ import empty from './../../img/empty.png'
 import { NavLink } from "react-router-dom"
 import React, { useEffect } from "react"
 import { AppDispatch } from "../../redux/store"
-import { getCurrentPremData, getPremises } from "../../redux/Reducers/premisesReducer"
+import { PremDataType, getCurrentPremData, getPremises } from "../../redux/Reducers/premisesReducer"
 import { getCurrentEquipDataSelector, getEquipData } from "../../redux/Selectors/equipmentSelectors"
-import { getCurrentEquipData, getEquipment } from "../../redux/Reducers/equipmentReducer"
-import { EquipTasks } from "./taskComponents/EquipTasks"
-import { PremTasks } from "./taskComponents/PremTasks"
+import { EquipDataType, getCurrentEquipData, getEquipment } from "../../redux/Reducers/equipmentReducer"
 import { ProgressHelper } from "./taskComponents/ProgressHelper"
 import { AllValidatorsType, getAllValidators } from "../../redux/Reducers/appReducer"
 import { getAllValidatorsSelector, getServerSelector } from "../../redux/Selectors/appSelectors"
-import { getCurrentSysData, getSystems } from "../../redux/Reducers/systemsReducer"
-import { getCurrentProcData, getProcesses } from "../../redux/Reducers/processesReducer"
+import { SysDataType, getCurrentSysData, getSystems } from "../../redux/Reducers/systemsReducer"
+import { ProcDataType, getCurrentProcData, getProcesses } from "../../redux/Reducers/processesReducer"
 import { getCurrentSysDataSelector, getSysData } from "../../redux/Selectors/systemsSelectors"
 import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/processesSelectors"
-import { ProcTasks } from "./taskComponents/ProcTasks"
-import { SysTasks } from "./taskComponents/SysTasks"
 import { getWorkError } from "../../redux/Selectors/workSelectors"
 import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
+import { Tasks } from "./Tasks"
 
 const { Text } = Typography
 
 const Monitoring: React.FC = () => {
+
+    const premData = useSelector(getPremData)
+    const equipData = useSelector(getEquipData)
+    const sysData = useSelector(getSysData)
+    const procData = useSelector(getProcData)
+    const isLoading = useSelector(getIsLoading)
+    const usersFilters = useSelector(getAllValidatorsSelector).map((e: AllValidatorsType) => ({ value: e.fio, text: e.fio }))
+    const access = parseInt(useSelector(getUserDataAccessSelector))
+    const server = useSelector(getServerSelector)
+    const myPremData = useSelector(getCurrentPremDataSelector)
+    const myEquipData = useSelector(getCurrentEquipDataSelector)
+    const mySysData = useSelector(getCurrentSysDataSelector)
+    const myProcData = useSelector(getCurrentProcDataSelector)
+    const workError = useSelector(getWorkError)
+
+    const dispatch: AppDispatch = useDispatch()
+
+    const [messageApi, contextHolder] = message.useMessage()
+
     useEffect(() => {
         dispatch(getPremises())
         dispatch(getEquipment())
@@ -37,18 +52,27 @@ const Monitoring: React.FC = () => {
         dispatch(getAllValidators())
     }, [])
 
-    const dispatch: AppDispatch = useDispatch()
-    const [messageApi, contextHolder] = message.useMessage()
+    useEffect(() => {
+        dispatch(getCurrentPremData(myPremDataIdArray))
+    }, [premData])
 
-    const workError = useSelector(getWorkError)
 
     useEffect(() => {
-        if (workError) {
-            messageApi.open({
-                type: 'error',
-                content: workError,
-            })
-        }
+        dispatch(getCurrentEquipData(myEquipDataIdArray))
+    }, [equipData])
+
+
+    useEffect(() => {
+        dispatch(getCurrentSysData(mySysDataIdArray))
+    }, [sysData])
+
+
+    useEffect(() => {
+        dispatch(getCurrentProcData(myProcDataIdArray))
+    }, [procData])
+
+    useEffect(() => {
+        workError && messageApi.open({ type: 'error', content: workError })
     }, [workError])
 
     const error = (fileName: string) => {
@@ -58,95 +82,36 @@ const Monitoring: React.FC = () => {
         })
     }
 
-    const premData = useSelector(getPremData)
-    const equipData = useSelector(getEquipData)
-    const sysData = useSelector(getSysData)
-    const procData = useSelector(getProcData)
-    const isLoading = useSelector(getIsLoading)
-    const allValidators = useSelector(getAllValidatorsSelector)
-    const access = parseInt(useSelector(getUserDataAccessSelector))
-    const server = useSelector(getServerSelector)
+    const newDataFunc = (data: EquipDataType[] | PremDataType[] | SysDataType[] | ProcDataType[], objectType: 'equipment' | 'premises' | 'systems' | 'processes') => {
+        const mappedData = data.map(e => ({ mode: 'none', groupp: 'none', class: 'none', ...e }))
+        return mappedData.map(e => ({
+            objectType: objectType,
+            id: e.id,
+            key: objectType === 'equipment' ? 'equip' + e.id : objectType === 'premises' ? 'prem' + e.id : objectType === 'systems' ? 'sys' + e.id : 'proc' + e.id,
+            sp2: e.sp2,
+            name: e.name,
+            nomer: objectType === 'equipment' || objectType === 'premises' ? e.nomer : 'none',
+            class: objectType === 'equipment' ? e.groupp : objectType === 'premises' ? e.class : 'none',
+            mode: objectType === 'premises' ? e.mode : 'none',
+            date: e.date,
+            ar: e.ar,
+            foto: e.foto,
+            fio: e.fio
+        })).filter(e => e.fio !== '')
+    }
 
-    const usersFilters = allValidators.map((e: AllValidatorsType) => ({ value: e.fio, text: e.fio }))
-
-    const premNewData = premData.map(e => ({
-        objectType: 'premises' as 'equipment' | 'premises' | 'systems' | 'processes',
-        id: e.id,
-        key: 'prem' + e.id,
-        sp2: e.sp2,
-        name: e.name,
-        nomer: e.nomer,
-        class: e.class,
-        mode: e.mode,
-        date: e.date,
-        ar: e.ar,
-        foto: e.foto,
-        fio: e.fio
-    })).filter(e => e.fio !== '')
-
-    const equipNewData = equipData.map(e => ({
-        objectType: 'equipment' as 'equipment' | 'premises' | 'systems' | 'processes',
-        id: e.id,
-        key: 'equip' + e.id,
-        sp2: e.sp2,
-        name: e.name,
-        nomer: e.nomer,
-        class: e.groupp,
-        mode: 'none',
-        date: e.date,
-        ar: e.ar,
-        foto: e.foto,
-        fio: e.fio
-    })).filter(e => e.fio !== '')
-
-    const sysNewData = sysData.map(e => ({
-        objectType: 'systems' as 'equipment' | 'premises' | 'systems' | 'processes',
-        id: e.id,
-        key: 'sys' + e.id,
-        sp2: e.sp2,
-        name: e.name,
-        nomer: 'none',
-        class: 'none',
-        mode: 'none',
-        date: e.date,
-        ar: e.ar,
-        foto: e.foto,
-        fio: e.fio
-    })).filter(e => e.fio !== '')
-
-    const procNewData = procData.map(e => ({
-        objectType: 'processes' as 'equipment' | 'premises' | 'systems' | 'processes',
-        id: e.id,
-        key: 'proc' + e.id,
-        sp2: e.sp2,
-        name: e.name,
-        nomer: 'none',
-        class: 'none',
-        mode: 'none',
-        date: e.date,
-        ar: e.ar,
-        foto: e.foto,
-        fio: e.fio
-    })).filter(e => e.fio !== '')
+    const equipNewData = newDataFunc(equipData, 'equipment')
+    const premNewData = newDataFunc(premData, 'premises')
+    const sysNewData = newDataFunc(sysData, 'systems')
+    const procNewData = newDataFunc(procData, 'processes')
 
     const myPremDataIdArray = premNewData.map(e => e.id)
     const myEquipDataIdArray = equipNewData.map(e => e.id)
     const mySysDataIdArray = sysNewData.map(e => e.id)
     const myProcDataIdArray = procNewData.map(e => e.id)
 
-    const myPremData = useSelector(getCurrentPremDataSelector)
-    const myEquipData = useSelector(getCurrentEquipDataSelector)
-    const mySysData = useSelector(getCurrentSysDataSelector)
-    const myProcData = useSelector(getCurrentProcDataSelector)
-
-    useEffect(() => {
-        dispatch(getCurrentPremData(myPremDataIdArray))
-        dispatch(getCurrentEquipData(myEquipDataIdArray))
-        dispatch(getCurrentSysData(mySysDataIdArray))
-        dispatch(getCurrentProcData(myProcDataIdArray))
-    }, [premData, equipData, sysData, procData])
-
     type DataType = typeof premNewData[0]
+
     const data: DataType[] = [...premNewData, ...equipNewData, ...sysNewData, ...procNewData]
 
     const columns: ColumnsType<DataType> = [
@@ -226,31 +191,24 @@ const Monitoring: React.FC = () => {
             align: 'center'
         },
     ]
+
     return isLoading ? <Spin size="large" style={{ width: '60px', height: '60px', margin: '30px auto 10px auto' }} /> :
-        <Content style={{ padding: '20px 0', marginBottom: '60px' }}>
-            {contextHolder}
-            <Row>
-                <Col span={22} push={1}>
-                    <Table
-                        columns={columns}
-                        expandable={{
-                            expandedRowRender: (rec) => {
-                                return rec.objectType === 'premises' ? <PremTasks myPremData={myPremData} error={error} rec={rec} myPremDataIdArray={myPremDataIdArray} access={access} /> :
-                                    rec.objectType === 'equipment' ? <EquipTasks myEquipData={myEquipData} error={error} rec={rec} myEquipDataIdArray={myEquipDataIdArray} access={access} /> :
-                                        rec.objectType === 'systems' ? <SysTasks mySysData={mySysData} error={error} rec={rec} mySysDataIdArray={mySysDataIdArray} access={access} /> :
-                                            rec.objectType === 'processes' ? <ProcTasks myProcData={myProcData} error={error} rec={rec} myProcDataIdArray={myProcDataIdArray} access={access} /> :
-                                                null
-                            }
-                        }}
-                        dataSource={data}
-                        bordered={false}
-                        pagination={false}
-                        title={() => <Text style={{ fontSize: '14pt' }}>Все задачи (всего: {data.length})</Text>}
-                        size="small"
-                    />
-                </Col>
-            </Row>
-        </Content>
+        <Tasks columns={columns}
+            error={error}
+            data={data}
+            isLoading={isLoading}
+            myPremData={myPremData}
+            myEquipData={myEquipData}
+            mySysData={mySysData}
+            myProcData={myProcData}
+            access={access}
+            myPremDataIdArray={myPremDataIdArray}
+            myEquipDataIdArray={myEquipDataIdArray}
+            mySysDataIdArray={mySysDataIdArray}
+            myProcDataIdArray={myProcDataIdArray}
+            contextHolder={contextHolder}
+            tasksType="Все задачи"
+        />
 }
 
 export default Monitoring

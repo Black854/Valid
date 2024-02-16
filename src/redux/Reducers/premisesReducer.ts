@@ -4,7 +4,7 @@ import { AppStateType, InferActionsTypes } from "../store"
 import { VMPDataTypeForPlansComponent } from "./vmpReducer"
 import { logout } from "./authReducer"
 
-export type DataType = {
+export type PremDataType = {
     mode: string
     class: string
     nomer: string
@@ -97,7 +97,7 @@ export type NewPremObjectType = {
 }
 
 let initialState = {
-    data: [] as DataType[],
+    data: [] as PremDataType[],
     reestrData: [] as PremReestrType[],
     isLoading: false,
     technicalInfo: null as TechnicalInfoType | null,
@@ -558,7 +558,7 @@ type ActionTypes = InferActionsTypes<typeof premActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 export const premActions = {
-    pushPremisesData: (data: DataType[]) => ({ type: 'prem/PUSH_PREM_DATA', data } as const),
+    pushPremisesData: (data: PremDataType[]) => ({ type: 'prem/PUSH_PREM_DATA', data } as const),
     pushReestrData: (data: PremReestrType[]) => ({ type: 'prem/PUSH_REESTR_DATA', data } as const),
     setIsLoading: (data: boolean) => ({ type: 'prem/IS_LOADING', data } as const),
     setTechnicalInfo: (data: TechnicalInfoType) => ({ type: 'prem/SET_TECH_INFO', data } as const),

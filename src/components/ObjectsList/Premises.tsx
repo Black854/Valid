@@ -14,7 +14,7 @@ import Highlighter from 'react-highlight-words'
 import type { InputRef } from 'antd'
 import type { ColumnType, ColumnsType } from 'antd/es/table'
 import type { FilterConfirmProps } from 'antd/es/table/interface'
-import { NewObjectForm } from "./CreateNewObjectForm"
+import { NewPremObjectForm } from "./NewObjectForms/NewPremObjectForm"
 import { defaultPagination } from "../../redux/Reducers/appReducer"
 import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 import { getServerSelector } from "../../redux/Selectors/appSelectors"
@@ -229,7 +229,7 @@ const Premises: React.FC = () => {
                         pagination={defaultPagination}
                         title={() => <>
                             <Text style={{ fontSize: '13pt' }}>
-                                <NewObjectForm access={access} />
+                                <NewPremObjectForm access={access} />
                                 Помещения (всего: {premData.length})
                             </Text>
                         </>}
