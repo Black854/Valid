@@ -33,7 +33,11 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     } else {
         numbersToPrint = <Text type="danger" style={{fontSize: '9pt'}}>Помещения не выбраны</Text>
     }
+    
+    const widthScreen = window.innerWidth
+
     const dispatch: AppDispatch = useDispatch()
+
     useEffect(
         () => {
             dispatch(getCleanPremList(id))
@@ -62,23 +66,23 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
 
     const columns: ColumnsType<CleanGroupLabelsType> = [
         {
-            title: <Text strong style={{fontSize: '12pt'}}>№</Text>,
+            title: <Text strong style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>№</Text>,
             dataIndex: 'index',
             align: 'center'
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Кол-во</Text>,
+            title: <Text strong style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Кол-во</Text>,
             dataIndex: 'count',
             align: 'center',
             render: (count) => <Text>{`${count} шт`}</Text>
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Номера помещений</Text>,
+            title: <Text strong style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Номера помещений</Text>,
             dataIndex: 'numbers',
             render: (numbers) => <Text>{`№ ${numbers}`}</Text>
         },
         {
-            title: <Text strong style={{fontSize: '12pt'}}>Действия</Text>,
+            title: <Text strong style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Действия</Text>,
             render: (text, record, index) =>    <Row>
                                                     <Col span={22} push={1} style={{display: 'flex', flexDirection: 'column'}}>
                                                         <Button
@@ -206,7 +210,7 @@ export const CleanPremGroups: React.FC<CleanPremGroupsPropsType> = ({id, premObj
     
     return (
         <Row>
-            <Col span={14}>           
+            <Col span={14} sm={12}>           
                 <Button disabled={access > 2} size="small" type="primary" icon={<PlusOutlined />} style={cleanGroupLabelsWithIndex.length > 0 ? {position: 'absolute', top: '10px', zIndex: '1'} : {marginBottom: '10px'}} onClick={() => setShowModal(true)}>Добавить этикетку</Button>
                 <Table
                     columns={columns}

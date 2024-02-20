@@ -38,6 +38,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => 
     const [messageApi, contextHolder] = message.useMessage()
     const access = parseInt(useSelector(getUserDataAccessSelector))
     const server = useSelector(getServerSelector)
+    const widthScreen = window.innerWidth
     
     const error = (fileName: string) => {
         messageApi.open({
@@ -73,7 +74,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({equipObject, id}) => 
         <>  
             {contextHolder}
             <div style={{width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px'}}>
-                <Title editable={access > 3 ? false : {onChange: (text: string) => handleUpdateName(text)}} style={{marginBottom: '20px'}} level={4}>{equipObject.name}</Title>
+                <Title editable={access > 3 ? false : {onChange: (text: string) => handleUpdateName(text)}} style={{marginBottom: '20px'}} level={widthScreen < 1370 ? 5 : widthScreen < 1605 ? 4 : 4} >{equipObject.name}</Title>
                 <Image
                     src={equipObject.foto ? server + equipObject.foto : empty}
                     preview = { equipObject.foto ? {mask: <><EyeOutlined style={{fontSize: '12pt'}} /><Text style={{color: 'white', marginLeft: '10px'}}>Просмотр</Text></>} : false  }

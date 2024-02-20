@@ -36,6 +36,7 @@ type TitleImagePropsType = {
 export const TitleImage: React.FC<TitleImagePropsType> = ({ sysObject, id }) => {
     const dispatch: AppDispatch = useDispatch()
     const [messageApi, contextHolder] = message.useMessage()
+    const widthScreen = window.innerWidth
     const access = parseInt(useSelector(getUserDataAccessSelector))
     const server = useSelector(getServerSelector)
 
@@ -73,7 +74,7 @@ export const TitleImage: React.FC<TitleImagePropsType> = ({ sysObject, id }) => 
         <>
             {contextHolder}
             <div style={{ width: '100%', textAlign: 'center', marginBottom: '20px', marginTop: '20px' }}>
-                <Title editable={access > 3 ? false : { onChange: (text: string) => handleUpdateName(text) }} style={{ marginBottom: '20px' }} level={4}>{sysObject.name}</Title>
+                <Title editable={access > 3 ? false : { onChange: (text: string) => handleUpdateName(text) }} style={{ marginBottom: '20px' }} level={widthScreen < 1370 ? 5 : widthScreen < 1605 ? 4 : 4} >{sysObject.name}</Title>
                 <Image
                     src={sysObject.foto ? server + sysObject.foto : empty}
                     preview={sysObject.foto ? { mask: <><EyeOutlined style={{ fontSize: '12pt' }} /><Text style={{ color: 'white', marginLeft: '10px' }}>Просмотр</Text></> } : false}
