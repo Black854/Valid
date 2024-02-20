@@ -12,8 +12,7 @@ export const authInstance = axios.create({
 })
 
 export const equipInstance = axios.create({
-    baseURL: server + '/api/equip/',
-    withCredentials: true,
+    baseURL: server + '/api/equip/'
 })
 
 equipInstance.interceptors.request.use((config) => {
