@@ -13,6 +13,8 @@ type PropsType = {
 
 export const SeasonSwitcher: React.FC<PropsType> = ({ data, myPremDataIdArray, access }) => {
     const dispatch: AppDispatch = useDispatch()
+    
+    const widthScreen = window.innerWidth
 
     const handleLabelSwitch = async (pol: string) => {
         await dispatch(updatePremWorkData(data.id, 'season', pol))

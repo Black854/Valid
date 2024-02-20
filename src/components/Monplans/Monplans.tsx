@@ -112,7 +112,7 @@ const Monplans: React.FC = ({ }) => {
       dataIndex: 'sp',
       sorter: (a, b) => a.sp.localeCompare(b.sp),
       sortDirections: ['ascend', 'descend'],
-      width: '5%',
+      width: '6%',
       align: 'center',
     },
     {

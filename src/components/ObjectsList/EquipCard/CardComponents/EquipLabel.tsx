@@ -62,7 +62,7 @@ export const EquipLabel: React.FC<EquipLabelPropsType> = ({equipObject, reestrDa
     }
     return (
         <Row>
-            <Col span={10}>
+            <Col span={10} sm={13}>
                 <div style={{border: '1px solid black', margin: '0', padding: '0', backgroundColor: 'white', width: '120mm', marginBottom: '20px'}}>
                     <table border={1} style={{borderCollapse: 'collapse', margin: '2mm 2mm 0mm 2mm', color: 'black', fontSize: '9pt', fontFamily: 'TimesNewRoman', lineHeight: '3.5mm'}}>
                         <tr>

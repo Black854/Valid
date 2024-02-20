@@ -80,14 +80,13 @@ const Vacations: React.FC = () => {
                         bordered
                         pagination={false}
                         rowKey='rowName'
-                        title={() => <Text style={{ fontSize: '14pt' }}>График отпусков</Text>}
+                        title={() => <Text style={{ fontSize: '14pt' }}>График отпусков на {year} г.</Text>}
                         size="small"
                         loading={vacationsIsLoading}
                     >
                         <Column
-                            title={<Text>Ф.И.О. сотрудника</Text>}
+                            title={<Text style={{display: 'block', textAlign: 'center'}}>Ф.И.О. сотрудника</Text>}
                             dataIndex='fio'
-                            align="center"
                             key="fio"
                             render={(fio) => <Text style={{ fontSize: '13pt' }}>{fio}</Text>}
                         />

@@ -143,8 +143,7 @@ const Monitoring: React.FC = () => {
                         </NavLink>
                     </Col>
                 </Row>),
-            sorter: (a, b) => a.name.localeCompare(b.name),
-            width: '50%'
+            sorter: (a, b) => a.name.localeCompare(b.name)
         },
         {
             title: <Text strong style={{ fontSize: '12pt' }}>Прогресс</Text>,
@@ -163,7 +162,8 @@ const Monitoring: React.FC = () => {
             align: 'center',
             filters: usersFilters,
             onFilter: (value: any, record) => record.fio.indexOf(value) === 0,
-            sorter: (a, b) => a.fio.localeCompare(b.fio)
+            sorter: (a, b) => a.fio.localeCompare(b.fio),
+            width: '12%'
         },
         {
             title: <Text strong style={{ fontSize: '12pt' }}>Подразделение</Text>,
@@ -180,7 +180,7 @@ const Monitoring: React.FC = () => {
             onFilter: (value: any, record) => record.sp2.indexOf(value) === 0,
             sorter: (a, b) => a.sp2.localeCompare(b.sp2),
             sortDirections: ['descend'],
-            width: '12%',
+            width: '12.5%',
             align: 'center',
         },
         {

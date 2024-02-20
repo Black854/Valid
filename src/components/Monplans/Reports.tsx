@@ -118,7 +118,7 @@ const Reports: React.FC = ({ }) => {
       dataIndex: 'sp',
       sorter: (a, b) => a.sp.localeCompare(b.sp),
       sortDirections: ['ascend', 'descend'],
-      width: '5%',
+      width: '6%',
       align: 'center',
     },
     {
@@ -154,13 +154,14 @@ const Reports: React.FC = ({ }) => {
       dataIndex: 'date',
       render: (startObjectDate, record) => startObjectDate ? record.date2 ? <Text type={record.status === 'Выполнено' ? "success" : "warning"}>{startObjectDate} - {record.date2}</Text> :
         <Text type={record.status === 'Выполнено' ? "success" : "warning"}>{startObjectDate}</Text> : <Text type="warning">Не указаны</Text>,
+      width: '7%',
       align: 'center'
     },
     {
       title: <Text strong style={{ fontSize: '12pt' }}>Ответственный</Text>,
       dataIndex: 'fio',
       render: (fio, record) => fio ? <Text type={record.status === 'Выполнено' ? "success" : "warning"}>{fio}</Text> : <Text type="warning">Не указано</Text>,
-      width: '10%',
+      width: '10.5%',
       align: 'center'
     },
     {

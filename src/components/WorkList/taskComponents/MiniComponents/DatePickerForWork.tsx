@@ -13,6 +13,8 @@ import { getCurrentProcData, updateReestrDateProc } from '../../../../redux/Redu
 dayjs.locale('ru')
 const { Text } = Typography
 
+const widthScreen = window.innerWidth
+
 type ConvertDateType = {
     date: string | undefined
     id: string
@@ -108,7 +110,7 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({ id, objectId, dat
             cancelText="Нет"
             open={isPopconfirmVisible}
         >
-            <DatePicker disabled={access > 4} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} onChange={(date) => handleDateChange(date)} />
+            <DatePicker style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }} disabled={access > 4} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} onChange={(date) => handleDateChange(date)} />
         </Popconfirm>
     }
     return <></>

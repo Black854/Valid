@@ -20,6 +20,8 @@ type PropsType = {
 
 export const UpdateCardStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access }) => {
     const dispatch: AppDispatch = useDispatch()
+    
+    const widthScreen = window.innerWidth
 
     const handleLabelSwitch = async (pol: string) => {
         if (objectType === 'equipment') {
@@ -38,9 +40,9 @@ export const UpdateCardStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray
     }
     return data.isCardUpdated === '' ?
         <Button disabled={access > 4} onClick={() => handleLabelSwitch('1')} type="default" size="small">
-            <Text type="warning">Не актуализирована</Text>
+            <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} type="warning">Не актуализирована</Text>
         </Button> :
         <Button disabled={access > 4} onClick={() => handleLabelSwitch('')} type="default" size="small">
-            <Text type="success">Актуализирована</Text>
+            <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} type="success">Актуализирована</Text>
         </Button>
 }

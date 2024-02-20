@@ -3,7 +3,7 @@ import { getCookie } from '../components/common/cookie'
 
 // https://validcontrol.ru
 // http://10.85.10.212/ov
-// http://localhost:81/ov
+// http://localhost:81/ov  http://is.kphk.kz:81/ov/
 
 const server = 'http://10.85.10.212/ov'; // прописать домен сайта
 

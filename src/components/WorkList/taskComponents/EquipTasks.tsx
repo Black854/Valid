@@ -28,6 +28,8 @@ type EquipTasks = {
 export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipData, rec, error, access }) => {
     const thisObject = myEquipData.find(e => e.idfromtable === rec.id)
 
+    const widthScreen = window.innerWidth
+
     const server = useSelector(getServerSelector)
 
     let data: any = [{
@@ -51,7 +53,7 @@ export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipDa
     const columns = [
         {
             dataIndex: 'rowName',
-            render: (rowName: string) => <Text style={{ fontSize: '12pt' }} >{rowName}</Text>,
+            render: (rowName: string) => <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }} >{rowName}</Text>,
         },
         {
             dataIndex: 'value',
@@ -61,58 +63,58 @@ export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipDa
 
     const protoData = [
         {
-            rowName: 'Статус загрузки протокола',
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Статус загрузки протокола</Text>,
             value: <ProtocolUpload data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} error={error} objectType='equipment' access={access} />
         },
         {
-            rowName: 'Код протокола',
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Код протокола</Text>,
             value: <ProtocolCode data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' access={access} />
         },
         {
-            rowName: 'Дата утверждения протокола',
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Дата утверждения протокола</Text>,
             value: <DatePickerForWork date={data[0].dvp} objectId={data[0].idfromtable} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myEquipDataIdArray} access={access} />
         },
     ]
 
     const reportData = [
         {
-            rowName: 'Статус загрузки отчета',
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Статус загрузки отчета</Text>,
             value: <ReportUpload data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} error={error} objectType='equipment' access={access} />
         },
         {
-            rowName: 'Код отчета',
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Код отчета</Text>,
             value: <ReportCode data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' access={access} />
         },
         {
-            rowName: 'Дата утверждения отчета',
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Дата утверждения отчета</Text>,
             value: <DatePickerForWork date={data[0].dvo} objectId={data[0].idfromtable} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myEquipDataIdArray} access={access} />
         },
     ]
 
     const labelData = [
         {
-            rowName: 'Статус этикетки',
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Статус этикетки</Text>,
             value: <LabelStatus data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' access={access} />
         },
     ]
 
     const PamUploaderData = [
         {
-            rowName: 'Статус загрузки памятки',
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Статус загрузки памятки</Text>,
             value: <PamUpload data={data[0]} rec={rec} myEquipDataIdArray={myEquipDataIdArray} error={error} objectType='equipment' access={access} />
         }
     ]
 
     const PamData = [
         {
-            rowName: 'Статус памятки',
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Статус памятки</Text>,
             value: <PamStatus data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' access={access} />
         }
     ]
 
     const updateCardData = [
         {
-            rowName: 'Карточка актуализирована',
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Карточка актуализирована</Text>,
             value: <UpdateCardStatus data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' access={access} />
         }
     ]
@@ -120,7 +122,7 @@ export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipDa
     const AddsColumns = [
         {
             dataIndex: 'rowName',
-            render: (rowName: string) => <Text style={{ fontSize: '12pt' }} >{rowName}</Text>,
+            render: (rowName: string) => <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }} >{rowName}</Text>,
         },
         {
             dataIndex: 'value',
@@ -161,18 +163,18 @@ export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipDa
 
     const AddsData = [
         {
-            rowName: <Text style={{ fontSize: '12pt' }}>Бланк несоответствия</Text>,
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Бланк несоответствия</Text>,
             value: <>
-                <Button onClick={() => { setBnModalOpen(true) }} style={{ borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
+                <Button style={widthScreen < 1370 ? { fontSize: '9pt', borderRadius: '0', width: '100%' } : widthScreen < 1605 ? { borderRadius: '0', width: '100%' } : { fontSize: '12pt', borderRadius: '0', width: '100%' }} onClick={() => { setBnModalOpen(true) }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
                 <Modal title="Бланк несоответствия" open={BnModalOpen} onCancel={() => handleCancel('BN')} footer={[<Button key="close" onClick={() => handleCancel('BN')} type="primary">Закрыть</Button>]} >
                     <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/bn.pdf`}></iframe>
                 </Modal>
             </>
         },
         {
-            rowName: <Text style={{ fontSize: '12pt' }}>Протокол обучения персонала</Text>,
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Протокол обучения персонала</Text>,
             value: <>
-                <Button onClick={() => { setTeachProtocolModalOpen(true) }} disabled={data[0].nvp === '' || data[0].dvp === ''} style={{ borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
+                <Button style={widthScreen < 1370 ? { fontSize: '9pt', borderRadius: '0', width: '100%' } : widthScreen < 1605 ? { borderRadius: '0', width: '100%' } : { fontSize: '12pt', borderRadius: '0', width: '100%' }} onClick={() => { setTeachProtocolModalOpen(true) }} disabled={data[0].nvp === '' || data[0].dvp === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
                 <Modal afterOpenChange={() => handleCancel('TeachProtocol')} title="Протокол обучения персонала" open={TeachProtocolModalOpen} onCancel={() => handleCancel('TeachProtocol')} footer={[<Button key="close" onClick={() => handleCancel('TeachProtocol')} type="primary">Закрыть</Button>]} >
                     <iframe
                         key={iframeKey}
@@ -182,12 +184,12 @@ export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipDa
             </>
         },
         {
-            rowName: <Text style={{ fontSize: '12pt' }}>Титульные листы приложений</Text>,
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Титульные листы приложений</Text>,
             value: <>
                 <Space.Compact style={{ width: '100%' }}>
-                    <Input placeholder="Буква" value={AddChar} onChange={(e) => { setAddChar(e.currentTarget.value) }} style={{ width: '140px' }} allowClear />
-                    <Input placeholder="Наименование" value={AddName} onChange={(e) => { setAddName(e.currentTarget.value) }} allowClear onPressEnter={() => { data[0].nvp !== '' && AddName !== '' && AddChar !== '' && setTitleListModalOpen(true) }} />
-                    <Button onClick={() => { setTitleListModalOpen(true) }} disabled={data[0].nvp === '' || AddName === '' || AddChar === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
+                    <Input style={widthScreen < 1370 ? { fontSize: '9pt', width: '120px' } : widthScreen < 1605 ? { width: '140px' } : { fontSize: '12pt', width: '140px' }} placeholder="Буква" value={AddChar} onChange={(e) => { setAddChar(e.currentTarget.value) }} allowClear={widthScreen > 1370} />
+                    <Input style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} placeholder="Наименование" value={AddName} onChange={(e) => { setAddName(e.currentTarget.value) }} allowClear={widthScreen > 1370} onPressEnter={() => { data[0].nvp !== '' && AddName !== '' && AddChar !== '' && setTitleListModalOpen(true) }} />
+                    <Button style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} onClick={() => { setTitleListModalOpen(true) }} disabled={data[0].nvp === '' || AddName === '' || AddChar === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
                     <Modal afterOpenChange={() => handleCancel('TitleList')} title="Титульные листы приложений" open={TitleListModalOpen} onCancel={() => handleCancel('TitleList')} footer={[<Button key="close" onClick={() => handleCancel('TitleList')} type="primary">Закрыть</Button>]} >
                         <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/add_any.php?nvp=${data[0].nvp}&name=${AddName}&char=${AddChar}`}></iframe>
                     </Modal>
@@ -195,25 +197,25 @@ export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipDa
             </>
         },
         {
-            rowName: <Text style={{ fontSize: '12pt' }}>Титульный лист (для диска)</Text>,
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Титульный лист (для диска)</Text>,
             value: <>
-            <Space.Compact style={{ width: '100%' }}>
-                <Input placeholder="Буквы через запятую" value={AddsChars} onChange={(e) => { setAddsChars(e.currentTarget.value) }} allowClear onPressEnter={() => { data[0].nvp !== '' && AddsChars !== '' && setTitlesCDListModalOpen(true) }} />
-                <Button onClick={() => { setTitlesCDListModalOpen(true) }} disabled={data[0].nvp === '' || AddsChars === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
-                <Modal afterOpenChange={() => handleCancel('TitlesCDList')} title="Титульные листы приложений на диске" open={TitlesCDListModalOpen} onCancel={() => handleCancel('TitlesCDList')} footer={[<Button key="close" onClick={() => handleCancel('TitlesCDList')} type="primary">Закрыть</Button>]} >
-                    <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/add_cde.php?nvp=${data[0].nvp}&chars=${AddsChars}`}></iframe>
-                </Modal>
-            </Space.Compact>
-        </>
+                <Space.Compact style={{ width: '100%' }}>
+                    <Input style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} placeholder="Буквы через запятую" value={AddsChars} onChange={(e) => { setAddsChars(e.currentTarget.value) }} allowClear onPressEnter={() => { data[0].nvp !== '' && AddsChars !== '' && setTitlesCDListModalOpen(true) }} />
+                    <Button style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} onClick={() => { setTitlesCDListModalOpen(true) }} disabled={data[0].nvp === '' || AddsChars === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
+                    <Modal afterOpenChange={() => handleCancel('TitlesCDList')} title="Титульные листы приложений на диске" open={TitlesCDListModalOpen} onCancel={() => handleCancel('TitlesCDList')} footer={[<Button key="close" onClick={() => handleCancel('TitlesCDList')} type="primary">Закрыть</Button>]} >
+                        <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/add_cde.php?nvp=${data[0].nvp}&chars=${AddsChars}`}></iframe>
+                    </Modal>
+                </Space.Compact>
+            </>
         },
         {
-            rowName: <Text style={{ fontSize: '12pt' }}>Конверт для диска</Text>,
+            rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Конверт для диска</Text>,
             value: <>
-            <Button onClick={() => { setCDConvertModalOpen(true) }} style={{ borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
-            <Modal title="Конверт для диска" open={CDConvertModalOpen} onCancel={() => handleCancel('CDConvert')} footer={[<Button key="close" onClick={() => handleCancel('CDConvert')} type="primary">Закрыть</Button>]} >
-                <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/CD.pdf`}></iframe>
-            </Modal>
-        </>,
+                <Button style={widthScreen < 1370 ? { fontSize: '9pt', borderRadius: '0', width: '100%' } : widthScreen < 1605 ? { borderRadius: '0', width: '100%' } : { fontSize: '12pt', borderRadius: '0', width: '100%' }} onClick={() => { setCDConvertModalOpen(true) }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
+                <Modal title="Конверт для диска" open={CDConvertModalOpen} onCancel={() => handleCancel('CDConvert')} footer={[<Button key="close" onClick={() => handleCancel('CDConvert')} type="primary">Закрыть</Button>]} >
+                    <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/CD.pdf`}></iframe>
+                </Modal>
+            </>,
         },
     ]
 
@@ -227,9 +229,9 @@ export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipDa
                     columns={columns}
                     dataSource={
                         thisObject?.typeval === '1' ?
-                            rec.class === 'Термостаты' ? [...protoData, ...reportData, ...PamUploaderData, ...PamData,  ...updateCardData, ...labelData] :
+                            rec.class === 'Термостаты' ? [...protoData, ...reportData, ...PamUploaderData, ...PamData, ...updateCardData, ...labelData] :
                                 rec.class === 'Термоконтейнеры' ? [...protoData, ...reportData, ...PamData, ...updateCardData] :
-                                    [...protoData, ...reportData,  ...updateCardData, ...labelData] :
+                                    [...protoData, ...reportData, ...updateCardData, ...labelData] :
                             thisObject?.typeval === '3' ?
                                 rec.class === 'Термоконтейнеры' ? [...reportData] :
                                     [...reportData, ...labelData] :
@@ -242,7 +244,7 @@ export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipDa
                     size="small"
                 />
             </Col>
-            <Col span={9} push={2}>
+            <Col span={9} sm={10} push={2}>
                 <Table
                     columns={AddsColumns}
                     dataSource={AddsData}

@@ -93,7 +93,7 @@ export const defaultPagination = { defaultPageSize: 10, showQuickJumper: true, h
 
 const initialState = {
     isInitialized: false,
-    server: 'http://10.85.10.212/ov/', // https://validcontrol.ru/   http://10.85.10.212/ov/ http://localhost:81/ov/
+    server: 'http://10.85.10.212/ov/', // https://validcontrol.ru/   http://10.85.10.212/ov/ http://localhost:81/ov/ http://is.kphk.kz:81/ov/
     themeType: 'dark' as 'dark' | 'light',
     equipGroups: [] as EquipGroupsType[],
     departments: [] as DepartmentsType[],

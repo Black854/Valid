@@ -26,6 +26,8 @@ export const ProtocolUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdAr
     const dispatch: AppDispatch = useDispatch()
 
     const server = useSelector(getServerSelector)
+    
+    const widthScreen = window.innerWidth
 
     if (data.vp !== '') {
         const fileSegments = data.vp.split('/')
@@ -46,7 +48,7 @@ export const ProtocolUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdAr
             }
         }
         return <>
-            <Text type="success" style={{ width: '95%' }}>{fileName}</Text>
+            <Text type="success" style={widthScreen < 1370 ? { fontSize: '10pt', width: '95%' } : widthScreen < 1605 ? { width: '95%' } : { fontSize: '12pt', width: '95%' }}>{fileName}</Text>
             <Button size="small" icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={server + data.vp} />
             <Popconfirm
                 title='Подтвердите удаление'
@@ -86,7 +88,7 @@ export const ProtocolUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdAr
             }
         }
         return <>
-            <Text type="warning">Не загружен</Text>
+            <Text type="warning" style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Не загружен</Text>
             <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{ display: 'none' }} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
             <Button disabled={access > 4} size="small" icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} />
         </>

@@ -329,10 +329,10 @@ const PremCard = () => {
         return <>
             {contextHolder}
             <Row style={{ padding: '10px 0' }} >
-                <Col span={5} push={1} style={{ textAlign: 'center' }} >
+                <Col span={5} sm={4} push={1} style={{ textAlign: 'center' }} >
                     <TitleImage premObject={premObject} id={id} />
                 </Col>
-                <Col span={16} push={2} style={{ minHeight: '89vh', display: "flex", flexDirection: 'column' }} >
+                <Col span={16} sm={17} push={2} style={{ minHeight: '89vh', display: "flex", flexDirection: 'column' }} >
                     <Tabs
                         defaultActiveKey="1"
                         items={premObject.class === 'Складские' ?

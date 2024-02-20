@@ -71,7 +71,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                         key="0"
                         align="center"
                         render={(text, record: dataType) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        width='2.3%'
+                        width='2.5%'
                     />
                     <Column
                         title={<Text>2</Text>}
@@ -79,7 +79,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                         key="1"
                         align="center"
                         render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        width='2.3%'
+                        width='2.5%'
                     />
                     <Column
                         title={<Text>3</Text>}
@@ -87,7 +87,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                         key="2"
                         align="center"
                         render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        width='2.3%'
+                        width='2.5%'
                     />
                     <Column
                         title={<Text>4</Text>}
@@ -95,7 +95,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                         key="3"
                         align="center"
                         render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        width='2.3%'
+                        width='2.5%'
                     />
                     <Column
                         title={<Text>5</Text>}
@@ -103,7 +103,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                         key="4"
                         align="center"
                         render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        width='2.3%'
+                        width='2.5%'
                     />
                     <Column
                         title={<Text>6</Text>}
@@ -111,7 +111,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                         key="5"
                         align="center"
                         render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        width='2.3%'
+                        width='2.5%'
                     />
                     <Column
                         title={<Text>7</Text>}
@@ -119,7 +119,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                         key="6"
                         align="center"
                         render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        width='2.3%'
+                        width='2.5%'
                     />
                     <Column
                         title={<Text>8</Text>}
@@ -127,7 +127,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                         key="7"
                         align="center"
                         render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        width='2.3%'
+                        width='2.5%'
                     />
                     <Column
                         title={<Text>9</Text>}
@@ -135,7 +135,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                         key="8"
                         align="center"
                         render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        width='2.3%'
+                        width='2.5%'
                     />
                     <Column
                         title={<Text>10</Text>}
@@ -143,7 +143,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                         key="9"
                         align="center"
                         render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        width='2.3%'
+                        width='2.5%'
                     />
                     <Column
                         title={<Text>11</Text>}
@@ -151,7 +151,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                         key="10"
                         align="center"
                         render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        width='2.3%'
+                        width='2.5%'
                     />
                     <Column
                         title={<Text>12</Text>}
@@ -159,7 +159,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                         key="11"
                         align="center"
                         render={(text) => text !== '0' ? <Text>{text}</Text> : <Text></Text>}
-                        width='2.3%'
+                        width='2.5%'
                     />
                 </ColumnGroup>
                 <Column
@@ -167,7 +167,7 @@ export const VmpTable: React.FC<VmpTablePropsType> = ({ data, VMPName, params, t
                     dataIndex='status'
                     key="status"
                     align="center"
-                    width='8%'
+                    width='8.5%'
                     render={(status) => <Text type={status === 'Выполнено' ? 'success' : 'warning'}>{status}</Text>}
                 />
                 <Column

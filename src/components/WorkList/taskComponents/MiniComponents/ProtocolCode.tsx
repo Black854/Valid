@@ -21,6 +21,8 @@ type PropsType = {
 
 export const ProtocolCode: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access }) => {
     const dispatch: AppDispatch = useDispatch()
+    
+    const widthScreen = window.innerWidth
 
     const handleUpdateDocsCode = async (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
 
@@ -39,8 +41,9 @@ export const ProtocolCode: React.FC<PropsType> = ({ data, rec, myEquipDataIdArra
         }
     }
 
-    return data.nvp === '' ? <Text editable={{ onChange: (text: string) => handleUpdateDocsCode(data.id, text, 'nvp'), text: '' }} type="warning">Нет данных</Text> :
+    return data.nvp === '' ? <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} editable={{ onChange: (text: string) => handleUpdateDocsCode(data.id, text, 'nvp'), text: '' }} type="warning">Нет данных</Text> :
         <Text type="success"
+            style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }}
             editable={access > 4 ? false : {
                 onChange: (text: string) => { handleUpdateDocsCode(data.id, text, 'nvp') }
             }}>

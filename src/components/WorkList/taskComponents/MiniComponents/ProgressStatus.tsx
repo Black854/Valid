@@ -28,6 +28,7 @@ type ProgresssHelper = {
 }
 
 export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, myEquipData, mySysData, myProcData }) => {
+    const widthScreen = window.innerWidth
     let a: number = 0
     let b: number = 1
     const thisObject = record.objectType === 'premises' ? myPremData?.find(e => e.idfromtable === record.id) :
@@ -182,5 +183,5 @@ export const ProgressStatus: React.FC<ProgresssHelper> = ({ record, myPremData, 
     }
 
     let c = Math.round((a / b) * 100)
-    return <Progress type="dashboard" size={250} percent={c} status={c === 100 ? 'success' : 'normal'} success={{ percent: record.objectType === 'processes' ? c >= 50 ? c : 0 : 0 }} />
+    return <Progress type="dashboard" size={widthScreen < 1370 ? 220 : widthScreen < 1605 ? 250 : 250 } percent={c} status={c === 100 ? 'success' : 'normal'} success={{ percent: record.objectType === 'processes' ? c >= 50 ? c : 0 : 0 }} />
 }
