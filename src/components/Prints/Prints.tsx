@@ -28,6 +28,7 @@ const Prints: React.FC = () => {
             </Menu>
         </Col>
         <Col span={18} push={1}>
+            {!params.report && <EquipPlacement />}
             {params.report && (params.report === null || params.report === 'r1') && <EquipPlacement />}
             {params.report && params.report === 'r2' && <ObjectsWithoutAvatars />}
             {params.report && params.report === 'r3' && <UserActions />}
