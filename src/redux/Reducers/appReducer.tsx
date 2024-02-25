@@ -8,6 +8,7 @@ import { getProcReestrData } from "./processesReducer";
 import { getSysReestrData } from "./systemsReducer";
 import { TablePaginationConfig } from "antd";
 import { logout } from "./authReducer";
+import { setCookie } from "../../components/common/cookie";
 
 export type EquipGroupsType = {
     id: string
@@ -93,7 +94,7 @@ export const defaultPagination = { defaultPageSize: 10, showQuickJumper: true, h
 
 const initialState = {
     isInitialized: false,
-    server: 'http://10.85.10.212/ov/', // https://validcontrol.ru/   http://10.85.10.212/ov/ http://localhost:81/ov/ http://is.kphk.kz:81/ov/
+    server: 'https://validcontrol.ru/', // https://validcontrol.ru/ для глобальной версии, http://is.kphk.kz:81/ov/ для рабочей ОВ версии, http://10.85.10.212/ov/ для разработки
     themeType: 'dark' as 'dark' | 'light',
     equipGroups: [] as EquipGroupsType[],
     departments: [] as DepartmentsType[],
@@ -304,6 +305,7 @@ export const deleteVacationsData = (fio: string, month: string): ThunkType => as
 
 export const setTheme = (themeType: 'dark' | 'light'): ThunkType => async (dispatch) => {
     dispatch(appActions.setTheme(themeType))
+    setCookie('theme', themeType, 30)
 }
 
 export const getPainterData = (): ThunkType => async (dispatch) => {

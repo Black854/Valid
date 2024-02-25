@@ -2,7 +2,7 @@ import { ThunkAction } from "redux-thunk"
 import { AppStateType, InferActionsTypes } from "../store"
 import { authAPI } from "../../api/authAPI"
 import { deleteCookie, getCookie, setCookie } from "../../components/common/cookie"
-import { setIsInitializedAppStatus } from "./appReducer"
+import { setIsInitializedAppStatus, setTheme } from "./appReducer"
 
 type AuthResponseDataType = {
     login: string
@@ -64,12 +64,12 @@ export const login = (userName: string, password: string, remember: boolean | un
     const data = await authAPI.login(userName, password, rememberMe)
     if (data.resultCode === 0) {
         Promise.all([
-            setCookie('login', data.userData.login, 7),
-            setCookie('userName', data.userData.fio, 7),
-            setCookie('access', data.userData.access, 7),
-            setCookie('position', data.userData.position, 7),
-            setCookie('sp', data.userData.sp, 7),
-            setCookie('token', data.userData.token, 7),
+            setCookie('login', data.userData.login, 30),
+            setCookie('userName', data.userData.fio, 30),
+            setCookie('access', data.userData.access, 30),
+            setCookie('position', data.userData.position, 30),
+            setCookie('sp', data.userData.sp, 30),
+            setCookie('token', data.userData.token, 30),
         ]).then(() => {
             dispatch(authActions.setUserData(data.userData))
             dispatch(setIsInitializedAppStatus(true))
@@ -87,7 +87,8 @@ export const logout = (): ThunkType => async (dispatch) => {
         deleteCookie('access'),
         deleteCookie('position'),
         deleteCookie('sp'),
-        deleteCookie('token')
+        deleteCookie('token'),
+        deleteCookie('theme')
     ]).then(() => {
         dispatch(authActions.deleteUserData())
         dispatch(setIsInitializedAppStatus(true))
@@ -102,6 +103,7 @@ export const loginOfCookieData = (): ThunkType => async (dispatch) => {
     const position = getCookie('position')
     const sp = getCookie('sp')
     const token = getCookie('token')
+    const theme = getCookie('theme') as 'dark' | 'light'
 
     if (login && fio && access && position && sp && token) {
         const data = {
@@ -113,6 +115,7 @@ export const loginOfCookieData = (): ThunkType => async (dispatch) => {
             token
         }
         dispatch(authActions.setUserData(data))
+        dispatch(setTheme(theme))
     }
     dispatch(setIsInitializedAppStatus(true))
 }
