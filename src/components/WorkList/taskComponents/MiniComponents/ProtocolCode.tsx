@@ -1,10 +1,14 @@
-import { Typography } from "antd"
+import { Popover, Typography } from "antd"
 import { AppDispatch } from "../../../../redux/store"
 import { useDispatch } from "react-redux"
 import { getCurrentEquipData, updateReestrDocsCodeEquip } from "../../../../redux/Reducers/equipmentReducer"
 import { getCurrentPremData, updateReestrDocsCodePrem } from "../../../../redux/Reducers/premisesReducer"
 import { getCurrentSysData, updateReestrDocsCodeSys } from "../../../../redux/Reducers/systemsReducer"
 import { getCurrentProcData, updateReestrDocsCodeProc } from "../../../../redux/Reducers/processesReducer"
+import { Icon } from 'react-icons-kit'
+import {ic_info_outline} from 'react-icons-kit/md/ic_info_outline'
+import { WorkChangesDataType } from "../../../../redux/Reducers/workReducer"
+import { TaskChanges } from "./TaskChanges"
 
 const { Text } = Typography
 
@@ -17,11 +21,12 @@ type PropsType = {
     myProcDataIdArray?: any,
     objectType: 'equipment' | 'premises' | 'systems' | 'processes'
     access: number
+    changes: WorkChangesDataType | undefined
 }
 
-export const ProtocolCode: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access }) => {
+export const ProtocolCode: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access, changes }) => {
     const dispatch: AppDispatch = useDispatch()
-    
+
     const widthScreen = window.innerWidth
 
     const handleUpdateDocsCode = async (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
@@ -41,12 +46,15 @@ export const ProtocolCode: React.FC<PropsType> = ({ data, rec, myEquipDataIdArra
         }
     }
 
-    return data.nvp === '' ? <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} editable={{ onChange: (text: string) => handleUpdateDocsCode(data.id, text, 'nvp'), text: '' }} type="warning">Нет данных</Text> :
-        <Text type="success"
-            style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }}
-            editable={access > 4 ? false : {
-                onChange: (text: string) => { handleUpdateDocsCode(data.id, text, 'nvp') }
-            }}>
-            {data.nvp}
-        </Text>
+    return data.nvp === '' ? <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }} editable={{ onChange: (text: string) => handleUpdateDocsCode(data.id, text, 'nvp'), text: '' }} type="warning">Нет данных</Text> :
+        <>
+            <Text type="success"
+                style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }}
+                editable={access > 4 ? false : {
+                    onChange: (text: string) => { handleUpdateDocsCode(data.id, text, 'nvp') }
+                }}>
+                {data.nvp}
+            </Text>
+            {changes && <TaskChanges changes={changes} key={changes.id} />}
+        </>
 }

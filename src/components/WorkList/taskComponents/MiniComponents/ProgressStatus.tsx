@@ -3,6 +3,7 @@ import { PremReestrType } from "../../../../redux/Reducers/premisesReducer"
 import { ProcReestrType } from "../../../../redux/Reducers/processesReducer"
 import { SysReestrType } from "../../../../redux/Reducers/systemsReducer"
 import { Progress } from "antd"
+import { WorkChangesDataType } from "../../../../redux/Reducers/workReducer"
 
 type RecordType = {
     objectType: "equipment" | "premises" | "systems" | "processes"

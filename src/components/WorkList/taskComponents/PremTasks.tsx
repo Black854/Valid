@@ -15,6 +15,7 @@ import { ProgressStatus } from "./MiniComponents/ProgressStatus"
 import { SeasonSwitcher } from "./MiniComponents/SeasonSwitcher"
 import { UpdateCardStatus } from "./MiniComponents/UpdateCardStatus"
 import { getServerSelector } from "../../../redux/Selectors/appSelectors"
+import { WorkChangesDataType } from "../../../redux/Reducers/workReducer"
 
 const { Text } = Typography
 
@@ -24,9 +25,10 @@ type PremTasks = {
     rec: any
     error: (fileName: string) => void
     access: number
+    tasksChanges: WorkChangesDataType[] | null
 }
 
-export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremDataIdArray, access }) => {
+export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremDataIdArray, access, tasksChanges }) => {
 
     const server = useSelector(getServerSelector)
     
@@ -66,65 +68,65 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
     const protoData = [
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Статус загрузки протокола</Text>,
-            value: <ProtocolUpload data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} error={error} objectType='premises' access={access} />
+            value: <ProtocolUpload changes={tasksChanges?.find(e => e.taskChangeType === 'vp')} data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} error={error} objectType='premises' access={access} />
         },
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Код протокола</Text>,
-            value: <ProtocolCode data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
+            value: <ProtocolCode changes={tasksChanges?.find(e => e.taskChangeType === 'nvp')} data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
         },
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Дата утверждения протокола</Text>,
-            value: <DatePickerForWork date={data[0].dvp} objectId={data[0].idfromtable} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myPremDataIdArray} access={access} />
+            value: <DatePickerForWork changes={tasksChanges?.find(e => e.taskChangeType === 'dvp')} date={data[0].dvp} objectId={data[0].idfromtable} dateType='dvp' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myPremDataIdArray} access={access} />
         },
     ]
 
     const reportData = [
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Статус загрузки отчета</Text>,
-            value: <ReportUpload data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} error={error} objectType='premises' access={access} />
+            value: <ReportUpload changes={tasksChanges?.find(e => e.taskChangeType === 'vo')} data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} error={error} objectType='premises' access={access} />
         },
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Код отчета</Text>,
-            value: <ReportCode data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
+            value: <ReportCode changes={tasksChanges?.find(e => e.taskChangeType === 'nvo')} data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
         },
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Дата утверждения отчета</Text>,
-            value: <DatePickerForWork date={data[0].dvo} objectId={data[0].idfromtable} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myPremDataIdArray} access={access} />
+            value: <DatePickerForWork changes={tasksChanges?.find(e => e.taskChangeType === 'dvo')} date={data[0].dvo} objectId={data[0].idfromtable} dateType='dvo' id={data[0].id} key={data[0].id} group={rec.objectType} myDataIdArray={myPremDataIdArray} access={access} />
         },
     ]
 
     const labelData = [
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Статус этикетки</Text>,
-            value: <LabelStatus data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
+            value: <LabelStatus changes={tasksChanges?.find(e => e.taskChangeType === 'et')} data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
         },
     ]
 
     const PamUploaderData = [
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Статус загрузки памятки</Text>,
-            value: <PamUpload data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} error={error} objectType='premises' access={access} />
+            value: <PamUpload changes={tasksChanges?.find(e => e.taskChangeType === 'pam')} data={data[0]} rec={rec} myPremDataIdArray={myPremDataIdArray} error={error} objectType='premises' access={access} />
         }
     ]
 
     const PamData = [
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Статус памятки</Text>,
-            value: <PamStatus data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
+            value: <PamStatus changes={tasksChanges?.find(e => e.taskChangeType === 'pam2')} data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
         }
     ]
 
     const seasonData = [
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Сезонность</Text>,
-            value: <SeasonSwitcher data={data[0]} myPremDataIdArray={myPremDataIdArray} access={access} />
+            value: <SeasonSwitcher changes={tasksChanges?.find(e => e.taskChangeType === 'season')} data={data[0]} myPremDataIdArray={myPremDataIdArray} access={access} />
         }
     ]
 
     const updateCardData = [
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Карточка актуализирована</Text>,
-            value: <UpdateCardStatus data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
+            value: <UpdateCardStatus changes={tasksChanges?.find(e => e.taskChangeType === 'card')} data={data[0]} myPremDataIdArray={myPremDataIdArray} objectType='premises' access={access} />
         }
     ]
 
@@ -174,7 +176,7 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Бланк несоответствия</Text>,
             value: <>
-                <Button onClick={() => { setBnModalOpen(true) }} style={widthScreen < 1370 ? { fontSize: '9pt', borderRadius: '0', width: '100%' } : widthScreen < 1605 ? { borderRadius: '0', width: '100%' } : { fontSize: '12pt', borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
+                <Button onClick={() => { setBnModalOpen(true) }} style={widthScreen < 1370 ? { fontSize: '9pt', borderRadius: '0', width: '100%' } : widthScreen < 1605 ? { borderRadius: '0', width: '100%' } : { borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
                 <Modal title="Бланк несоответствия" open={BnModalOpen} onCancel={() => handleCancel('BN')} footer={[<Button key="close" onClick={() => handleCancel('BN')} type="primary">Закрыть</Button>]} >
                     <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/bn.pdf`}></iframe>
                 </Modal>
@@ -183,7 +185,7 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Протокол обучения персонала</Text>,
             value: <>
-                <Button onClick={() => { setTeachProtocolModalOpen(true) }} disabled={data[0].nvp === '' || data[0].dvp === ''}  style={widthScreen < 1370 ? { fontSize: '9pt', borderRadius: '0', width: '100%' } : widthScreen < 1605 ? { borderRadius: '0', width: '100%' } : { fontSize: '12pt', borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
+                <Button onClick={() => { setTeachProtocolModalOpen(true) }} disabled={data[0].nvp === '' || data[0].dvp === ''}  style={widthScreen < 1370 ? { fontSize: '9pt', borderRadius: '0', width: '100%' } : widthScreen < 1605 ? { borderRadius: '0', width: '100%' } : { borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
                 <Modal afterOpenChange={() => handleCancel('TeachProtocol')} title="Протокол обучения персонала" open={TeachProtocolModalOpen} onCancel={() => handleCancel('TeachProtocol')} footer={[<Button key="close" onClick={() => handleCancel('TeachProtocol')} type="primary">Закрыть</Button>]} >
                     <iframe
                         key={iframeKey}
@@ -196,9 +198,9 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Титульные листы приложений</Text>,
             value: <>
                 <Space.Compact style={{ width: '100%' }}>
-                    <Input style={widthScreen < 1370 ? { fontSize: '9pt', width: '120px' } : widthScreen < 1605 ? { width: '140px' } : { fontSize: '12pt', width: '140px' }} placeholder="Буква" value={AddChar} onChange={(e) => { setAddChar(e.currentTarget.value) }} allowClear={widthScreen > 1370} />
-                    <Input style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} placeholder="Наименование" value={AddName} onChange={(e) => { setAddName(e.currentTarget.value) }} allowClear={widthScreen > 1370} onPressEnter={() => { data[0].nvp !== '' && AddName !== '' && AddChar !== '' && setTitleListModalOpen(true) }} />
-                    <Button style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} onClick={() => { setTitleListModalOpen(true) }} disabled={data[0].nvp === '' || AddName === '' || AddChar === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
+                    <Input style={widthScreen < 1370 ? { fontSize: '9pt', width: '120px' } : widthScreen < 1605 ? { width: '140px' } : { width: '140px' }} placeholder="Буква" value={AddChar} onChange={(e) => { setAddChar(e.currentTarget.value) }} allowClear={widthScreen > 1370} />
+                    <Input style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? { } : { }} placeholder="Наименование" value={AddName} onChange={(e) => { setAddName(e.currentTarget.value) }} allowClear={widthScreen > 1370} onPressEnter={() => { data[0].nvp !== '' && AddName !== '' && AddChar !== '' && setTitleListModalOpen(true) }} />
+                    <Button style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? { } : { }} onClick={() => { setTitleListModalOpen(true) }} disabled={data[0].nvp === '' || AddName === '' || AddChar === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
                     <Modal afterOpenChange={() => handleCancel('TitleList')} title="Титульные листы приложений" open={TitleListModalOpen} onCancel={() => handleCancel('TitleList')} footer={[<Button key="close" onClick={() => handleCancel('TitleList')} type="primary">Закрыть</Button>]} >
                         <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/add_any.php?nvp=${data[0].nvp}&name=${AddName}&char=${AddChar}`}></iframe>
                     </Modal>
@@ -209,8 +211,8 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Титульный лист (для диска)</Text>,
             value: <>
                 <Space.Compact style={{ width: '100%' }}>
-                    <Input style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} placeholder="Буквы через запятую" value={AddsChars} onChange={(e) => { setAddsChars(e.currentTarget.value) }} allowClear onPressEnter={() => { data[0].nvp !== '' && AddsChars !== '' && setTitlesCDListModalOpen(true) }} />
-                    <Button style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} onClick={() => { setTitlesCDListModalOpen(true) }} disabled={data[0].nvp === '' || AddsChars === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
+                    <Input style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? { } : { }} placeholder="Буквы через запятую" value={AddsChars} onChange={(e) => { setAddsChars(e.currentTarget.value) }} allowClear onPressEnter={() => { data[0].nvp !== '' && AddsChars !== '' && setTitlesCDListModalOpen(true) }} />
+                    <Button style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? { } : { }} onClick={() => { setTitlesCDListModalOpen(true) }} disabled={data[0].nvp === '' || AddsChars === ''} type='primary' icon={<PrinterOutlined />} >Печать</Button>
                     <Modal afterOpenChange={() => handleCancel('TitlesCDList')} title="Титульные листы приложений на диске" open={TitlesCDListModalOpen} onCancel={() => handleCancel('TitlesCDList')} footer={[<Button key="close" onClick={() => handleCancel('TitlesCDList')} type="primary">Закрыть</Button>]} >
                         <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/add_cde.php?nvp=${data[0].nvp}&chars=${AddsChars}`}></iframe>
                     </Modal>
@@ -220,7 +222,7 @@ export const PremTasks: React.FC<PremTasks> = ({ myPremData, error, rec, myPremD
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Конверт для диска</Text>,
             value: <>
-                <Button onClick={() => { setCDConvertModalOpen(true) }} style={widthScreen < 1370 ? { fontSize: '9pt', borderRadius: '0', width: '100%' } : widthScreen < 1605 ? { borderRadius: '0', width: '100%' } : { fontSize: '12pt', borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
+                <Button onClick={() => { setCDConvertModalOpen(true) }} style={widthScreen < 1370 ? { fontSize: '9pt', borderRadius: '0', width: '100%' } : widthScreen < 1605 ? { borderRadius: '0', width: '100%' } : { borderRadius: '0', width: '100%' }} type='primary' icon={<PrinterOutlined />} >Печать</Button>
                 <Modal title="Конверт для диска" open={CDConvertModalOpen} onCancel={() => handleCancel('CDConvert')} footer={[<Button key="close" onClick={() => handleCancel('CDConvert')} type="primary">Закрыть</Button>]} >
                     <iframe key={iframeKey} style={{ width: '90%', height: '70vh', marginLeft: '5%' }} src={`${server}API/PrintForms/CD.pdf`}></iframe>
                 </Modal>

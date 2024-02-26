@@ -20,6 +20,8 @@ import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/p
 import { getAuthUserNameSelector, getIsAuthSelector, getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 import { getServerSelector } from "../../redux/Selectors/appSelectors"
 import { Tasks } from "./Tasks"
+import { getWorkChangesSelector } from "../../redux/Selectors/workSelectors"
+import { getWorkChanges } from "../../redux/Reducers/workReducer"
 
 const { Text } = Typography
 
@@ -38,6 +40,7 @@ export const WorkList: React.FC = () => {
     const myEquipData = useSelector(getCurrentEquipDataSelector)
     const mySysData = useSelector(getCurrentSysDataSelector)
     const myProcData = useSelector(getCurrentProcDataSelector)
+    const tasksChanges = useSelector(getWorkChangesSelector)
 
     const dispatch: AppDispatch = useDispatch()
 
@@ -51,6 +54,7 @@ export const WorkList: React.FC = () => {
             dispatch(getProcesses())
             dispatch(getAllValidators())
             dispatch(getLabelTermSettings())
+            dispatch(getWorkChanges())
         }
     }, [isAuth])
 
@@ -193,6 +197,7 @@ export const WorkList: React.FC = () => {
             myProcDataIdArray={myProcDataIdArray}
             contextHolder={contextHolder}
             tasksType="Мои задачи"
+            tasksChanges={tasksChanges}
         />
     </>
 }

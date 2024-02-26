@@ -1,4 +1,4 @@
-import { Button, Popconfirm, Typography } from "antd"
+import { Button, Popconfirm, Popover, Typography } from "antd"
 import { AppDispatch } from "../../../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
 import { deleteEquipDocument, getCurrentEquipData, uploadEquipDocument } from "../../../../redux/Reducers/equipmentReducer"
@@ -7,6 +7,8 @@ import { deletePremDocument, getCurrentPremData, uploadPremDocument } from "../.
 import { deleteSysDocument, getCurrentSysData, uploadSysDocument } from "../../../../redux/Reducers/systemsReducer"
 import { deleteProcDocument, getCurrentProcData, uploadProcDocument } from "../../../../redux/Reducers/processesReducer"
 import { getServerSelector } from "../../../../redux/Selectors/appSelectors"
+import { WorkChangesDataType } from "../../../../redux/Reducers/workReducer"
+import { TaskChanges } from "./TaskChanges"
 
 const { Text } = Typography
 
@@ -20,13 +22,14 @@ type PropsType = {
     objectType: 'equipment' | 'premises' | 'systems' | 'processes'
     error: (fileName: string) => void
     access: number
+    changes: WorkChangesDataType | undefined
 }
 
-export const ProtocolUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, error, access }) => {
+export const ProtocolUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, error, access, changes }) => {
     const dispatch: AppDispatch = useDispatch()
 
     const server = useSelector(getServerSelector)
-    
+
     const widthScreen = window.innerWidth
 
     if (data.vp !== '') {
@@ -48,7 +51,7 @@ export const ProtocolUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdAr
             }
         }
         return <>
-            <Text type="success" style={widthScreen < 1370 ? { fontSize: '10pt', width: '95%' } : widthScreen < 1605 ? { width: '95%' } : { fontSize: '12pt', width: '95%' }}>{fileName}</Text>
+            <Text type="success" style={widthScreen < 1370 ? { fontSize: '10pt', width: '95%' } : widthScreen < 1605 ? { width: '95%' } : { fontSize: '11pt', width: '95%' }}>{fileName}</Text>
             <Button size="small" icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={server + data.vp} />
             <Popconfirm
                 title='Подтвердите удаление'
@@ -59,6 +62,8 @@ export const ProtocolUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdAr
             >
                 <Button disabled={access > 4} size="small" danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
             </Popconfirm>
+            {changes && <TaskChanges changes={changes} key={changes.id} />}
+
         </>
     } else {
         let uploadDocumentRef: any = null
@@ -88,7 +93,7 @@ export const ProtocolUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdAr
             }
         }
         return <>
-            <Text type="warning" style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Не загружен</Text>
+            <Text type="warning" style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }}>Не загружен</Text>
             <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{ display: 'none' }} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
             <Button disabled={access > 4} size="small" icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} />
         </>

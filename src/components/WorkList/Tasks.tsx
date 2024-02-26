@@ -3,7 +3,6 @@ import { EquipTasks } from "./taskComponents/EquipTasks"
 import { SysTasks } from "./taskComponents/SysTasks"
 import { ProcTasks } from "./taskComponents/ProcTasks"
 import { ColumnsType } from "antd/es/table"
-import { AnyObject } from "antd/es/_util/type"
 import { Typography, Table, Row, Col } from "antd"
 import { PremReestrType } from "../../redux/Reducers/premisesReducer"
 import { EquipReestrType } from "../../redux/Reducers/equipmentReducer"
@@ -11,6 +10,7 @@ import { SysReestrType } from "../../redux/Reducers/systemsReducer"
 import { ProcReestrType } from "../../redux/Reducers/processesReducer"
 import { Content } from "antd/es/layout/layout"
 import { JSXElementConstructor, ReactElement } from "react"
+import { WorkChangesDataType } from "../../redux/Reducers/workReducer"
 
 const { Text } = Typography
 
@@ -45,6 +45,7 @@ interface TasksPropsType {
     isLoading: boolean
     contextHolder: ReactElement<any, string | JSXElementConstructor<any>>
     tasksType: string
+    tasksChanges:  WorkChangesDataType[]
 }
 
 export const Tasks: React.FC<TasksPropsType> = (props) => {
@@ -57,10 +58,10 @@ export const Tasks: React.FC<TasksPropsType> = (props) => {
                         columns={props.columns}
                         expandable={{
                             expandedRowRender: (rec) => {
-                                return rec.objectType === 'premises' ? <PremTasks myPremData={props.myPremData} error={props.error} rec={rec} myPremDataIdArray={props.myPremDataIdArray} access={props.access} /> :
-                                    rec.objectType === 'equipment' ? <EquipTasks myEquipData={props.myEquipData} error={props.error} rec={rec} myEquipDataIdArray={props.myEquipDataIdArray} access={props.access} /> :
-                                        rec.objectType === 'systems' ? <SysTasks mySysData={props.mySysData} error={props.error} rec={rec} mySysDataIdArray={props.mySysDataIdArray} access={props.access} /> :
-                                            rec.objectType === 'processes' ? <ProcTasks myProcData={props.myProcData} error={props.error} rec={rec} myProcDataIdArray={props.myProcDataIdArray} access={props.access} /> :
+                                return rec.objectType === 'premises' ? <PremTasks tasksChanges={props.tasksChanges.filter(e => e.objectType === 'premises' && e.objectId === rec.id)} myPremData={props.myPremData} error={props.error} rec={rec} myPremDataIdArray={props.myPremDataIdArray} access={props.access} /> :
+                                    rec.objectType === 'equipment' ? <EquipTasks tasksChanges={props.tasksChanges.filter(e => e.objectType === 'equipment' && e.objectId === rec.id)} myEquipData={props.myEquipData} error={props.error} rec={rec} myEquipDataIdArray={props.myEquipDataIdArray} access={props.access} /> :
+                                        rec.objectType === 'systems' ? <SysTasks tasksChanges={props.tasksChanges.filter(e => e.objectType === 'systems' && e.objectId === rec.id)} mySysData={props.mySysData} error={props.error} rec={rec} mySysDataIdArray={props.mySysDataIdArray} access={props.access} /> :
+                                            rec.objectType === 'processes' ? <ProcTasks tasksChanges={props.tasksChanges.filter(e => e.objectType === 'processes' && e.objectId === rec.id)} myProcData={props.myProcData} error={props.error} rec={rec} myProcDataIdArray={props.myProcDataIdArray} access={props.access} /> :
                                                 null
                             }
                         }}

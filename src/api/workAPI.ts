@@ -19,4 +19,9 @@ export const workAPI = {
             return response.data
         })
     },
+    getWorkChanges () {
+        return workInstance.get(`getWorkChanges.php`).then (response => {
+            return response.data
+        })
+    },
 }

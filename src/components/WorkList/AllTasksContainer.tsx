@@ -18,9 +18,10 @@ import { SysDataType, getCurrentSysData, getSystems } from "../../redux/Reducers
 import { ProcDataType, getCurrentProcData, getProcesses } from "../../redux/Reducers/processesReducer"
 import { getCurrentSysDataSelector, getSysData } from "../../redux/Selectors/systemsSelectors"
 import { getCurrentProcDataSelector, getProcData } from "../../redux/Selectors/processesSelectors"
-import { getWorkError } from "../../redux/Selectors/workSelectors"
+import { getWorkChangesSelector, getWorkError } from "../../redux/Selectors/workSelectors"
 import { getUserDataAccessSelector } from "../../redux/Selectors/authSelectors"
 import { Tasks } from "./Tasks"
+import { getWorkChanges } from "../../redux/Reducers/workReducer"
 
 const { Text } = Typography
 
@@ -39,6 +40,7 @@ const Monitoring: React.FC = () => {
     const mySysData = useSelector(getCurrentSysDataSelector)
     const myProcData = useSelector(getCurrentProcDataSelector)
     const workError = useSelector(getWorkError)
+    const tasksChanges = useSelector(getWorkChangesSelector)
 
     const dispatch: AppDispatch = useDispatch()
 
@@ -50,6 +52,7 @@ const Monitoring: React.FC = () => {
         dispatch(getSystems())
         dispatch(getProcesses())
         dispatch(getAllValidators())
+        dispatch(getWorkChanges())
     }, [])
 
     useEffect(() => {
@@ -208,6 +211,7 @@ const Monitoring: React.FC = () => {
             myProcDataIdArray={myProcDataIdArray}
             contextHolder={contextHolder}
             tasksType="Все задачи"
+            tasksChanges={tasksChanges}
         />
 }
 

@@ -7,8 +7,18 @@ import { getSystems } from "./systemsReducer"
 import { getProcesses } from "./processesReducer"
 import { logout } from "./authReducer"
 
+export type WorkChangesDataType = {
+    id: string
+    taskChangeType: 'vp' | 'nvp' | 'dvp' | 'vo' | 'nvo' | 'dvo' | 'pam' | 'pam2' | 'et' | 'card' | 'season'
+    changeTime: string
+    fio: string
+    objectType: 'equipment' | 'premises' | 'systems' | 'processes'
+    objectId: string
+}
+
 const initialState = {
-    errorMessage: null as string | null
+    errorMessage: null as string | null,
+    workChanges: [] as WorkChangesDataType[]
 }
 
 type InitialStateType = typeof initialState
@@ -16,6 +26,8 @@ export const workReducer = (state = initialState, action: ActionTypes): InitialS
     switch (action.type) {
         case 'work/SET_WORK_ERROR_MESSAGE':
             return { ...state, errorMessage: action.text }
+        case 'work/SET_WORK_CHANGES_DATA':
+            return { ...state, workChanges: action.items }
         default:
             return state
     }
@@ -49,9 +61,21 @@ export const setCancelTask = (objectId: string, objectType: 'equipment' | 'premi
     }
 }
 
+export const getWorkChanges = (): ThunkType => async (dispatch) => {
+    let data = await workAPI.getWorkChanges()
+    if (data.resultCode === 0) {
+        dispatch(workActions.setWorkChangesData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(workActions.setWorkErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+}
+
 type ActionTypes = InferActionsTypes<typeof workActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
 const workActions = {
     setWorkErrorMessage: (text: string | null) => ({ type: 'work/SET_WORK_ERROR_MESSAGE', text } as const),
+    setWorkChangesData: (items: WorkChangesDataType[]) => ({ type: 'work/SET_WORK_CHANGES_DATA', items } as const),
 }

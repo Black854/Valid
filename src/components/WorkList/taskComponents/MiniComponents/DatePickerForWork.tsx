@@ -9,6 +9,8 @@ import 'dayjs/locale/ru'
 import { getCurrentEquipData, updateReestrDateEquip } from '../../../../redux/Reducers/equipmentReducer'
 import { getCurrentSysData, updateReestrDateSys } from '../../../../redux/Reducers/systemsReducer'
 import { getCurrentProcData, updateReestrDateProc } from '../../../../redux/Reducers/processesReducer'
+import { WorkChangesDataType } from '../../../../redux/Reducers/workReducer'
+import { TaskChanges } from './TaskChanges'
 
 dayjs.locale('ru')
 const { Text } = Typography
@@ -23,9 +25,10 @@ type ConvertDateType = {
     group: 'equipment' | 'premises' | 'systems' | 'processes'
     myDataIdArray: string[]
     access: number
+    changes: WorkChangesDataType | undefined
 }
 
-export const DatePickerForWork: React.FC<ConvertDateType> = ({ id, objectId, date, dateType, group, myDataIdArray, access }) => {
+export const DatePickerForWork: React.FC<ConvertDateType> = ({ id, objectId, date, dateType, group, myDataIdArray, access, changes }) => {
     const [isPopconfirmVisible, setPopconfirmVisible] = useState(false)
     const [selectedDate, setSelectedDate] = useState('')
     const dispatch: AppDispatch = useDispatch()
@@ -88,17 +91,20 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({ id, objectId, dat
             const day = parts[2]
             // Создаем новую дату в формате "dd.MM.yyyy"
             const date = `${day}.${month}.${year}`
-            return <Popconfirm
-                title="Подтверждение изменений"
-                description="Вы уверены, что хотите изменить данные?"
-                onConfirm={handleConfirm}
-                onCancel={handleCancel}
-                okText="Да"
-                cancelText="Нет"
-                open={isPopconfirmVisible}
-            >
-                <DatePicker disabled={access > 4} style={{ borderColor: '#87d068', accentColor: 'green', color: 'red' }} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} value={dayjs(date, dateFormat)} onChange={(date) => handleDateChange(date)} />
-            </Popconfirm>
+            return <>
+                <Popconfirm
+                    title="Подтверждение изменений"
+                    description="Вы уверены, что хотите изменить данные?"
+                    onConfirm={handleConfirm}
+                    onCancel={handleCancel}
+                    okText="Да"
+                    cancelText="Нет"
+                    open={isPopconfirmVisible}
+                >
+                    <DatePicker disabled={access > 4} style={{ borderColor: '#87d068', accentColor: 'green', color: 'red' }} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} value={dayjs(date, dateFormat)} onChange={(date) => handleDateChange(date)} />
+                </Popconfirm>
+                {changes && <TaskChanges changes={changes} key={changes.id} />}
+            </>
         }
     } else {
         return <Popconfirm
@@ -110,7 +116,7 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({ id, objectId, dat
             cancelText="Нет"
             open={isPopconfirmVisible}
         >
-            <DatePicker style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }} disabled={access > 4} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} onChange={(date) => handleDateChange(date)} />
+            <DatePicker style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }} disabled={access > 4} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} onChange={(date) => handleDateChange(date)} />
         </Popconfirm>
     }
     return <></>

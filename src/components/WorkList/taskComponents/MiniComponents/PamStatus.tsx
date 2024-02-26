@@ -5,6 +5,8 @@ import { getCurrentEquipData, updateEquipWorkData } from "../../../../redux/Redu
 import { getCurrentPremData, updatePremWorkData } from "../../../../redux/Reducers/premisesReducer"
 import { getCurrentSysData, updateSysWorkData } from "../../../../redux/Reducers/systemsReducer"
 import { getCurrentProcData, updateProcWorkData } from "../../../../redux/Reducers/processesReducer"
+import { WorkChangesDataType } from "../../../../redux/Reducers/workReducer"
+import { TaskChanges } from "./TaskChanges"
 
 const { Text } = Typography
 
@@ -16,11 +18,12 @@ type PropsType = {
     myProcDataIdArray?: any,
     objectType: 'equipment' | 'premises' | 'systems' | 'processes'
     access: number
+    changes: WorkChangesDataType | undefined
 }
 
-export const PamStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access }) => {
+export const PamStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access, changes }) => {
     const dispatch: AppDispatch = useDispatch()
-    
+
     const widthScreen = window.innerWidth
 
     const handleLabelSwitch = async (pol: string) => {
@@ -40,9 +43,12 @@ export const PamStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myPre
     }
     return data.pam2 === '' ?
         <Button disabled={access > 4} onClick={() => handleLabelSwitch('1')} type="default" size="small">
-            <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }} type="warning">Не приклеена</Text>
+            <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }} type="warning">Не приклеена</Text>
         </Button> :
-        <Button disabled={access > 4} onClick={() => handleLabelSwitch('')} type="default" size="small">
-            <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }} type="success">Приклеена</Text>
-        </Button>
+        <>
+            <Button disabled={access > 4} onClick={() => handleLabelSwitch('')} type="default" size="small">
+                <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }} type="success">Приклеена</Text>
+            </Button>
+            {changes && <TaskChanges changes={changes} key={changes.id} />}
+        </>
 }

@@ -5,6 +5,8 @@ import { getCurrentEquipData, updateReestrDocsCodeEquip } from "../../../../redu
 import { getCurrentPremData, updateReestrDocsCodePrem } from "../../../../redux/Reducers/premisesReducer"
 import { getCurrentSysData, updateReestrDocsCodeSys } from "../../../../redux/Reducers/systemsReducer"
 import { getCurrentProcData, updateReestrDocsCodeProc } from "../../../../redux/Reducers/processesReducer"
+import { WorkChangesDataType } from "../../../../redux/Reducers/workReducer"
+import { TaskChanges } from "./TaskChanges"
 
 const { Text } = Typography
 
@@ -17,11 +19,12 @@ type PropsType = {
     myProcDataIdArray?: any,
     objectType: 'equipment' | 'premises' | 'systems' | 'processes'
     access: number
+    changes: WorkChangesDataType | undefined
 }
 
-export const ReportCode: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access }) => {
+export const ReportCode: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, access, changes }) => {
     const dispatch: AppDispatch = useDispatch()
-    
+
     const widthScreen = window.innerWidth
 
     const handleUpdateDocsCode = async (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
@@ -40,12 +43,15 @@ export const ReportCode: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray,
         }
     }
 
-    return data.nvo === '' ? <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }} editable={{ onChange: (text: string) => handleUpdateDocsCode(data.id, text, 'nvo'), text: '' }} type="warning">Нет данных</Text> :
-        <Text type="success"
-            style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }}
-            editable={access > 4 ? false : {
-                onChange: (text: string) => { handleUpdateDocsCode(data.id, text, 'nvo') }
-            }}>
-            {data.nvo}
-        </Text>
+    return data.nvo === '' ? <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }} editable={{ onChange: (text: string) => handleUpdateDocsCode(data.id, text, 'nvo'), text: '' }} type="warning">Нет данных</Text> :
+        <>
+            <Text type="success"
+                style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }}
+                editable={access > 4 ? false : {
+                    onChange: (text: string) => { handleUpdateDocsCode(data.id, text, 'nvo') }
+                }}>
+                {data.nvo}
+            </Text>
+            {changes && <TaskChanges changes={changes} key={changes.id} />}
+        </>
 }

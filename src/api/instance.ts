@@ -5,7 +5,7 @@ import { getCookie } from '../components/common/cookie'
 // http://is.kphk.kz:81/ov/ для рабочей версии ОВ
 // http://10.85.10.212/ov для разработки
 
-const server = 'https://validcontrol.ru'; // прописать домен сайта
+const server = 'http://10.85.10.212/ov'; // прописать домен сайта
 
 export const authInstance = axios.create({
     baseURL: server + '/api/auth/'

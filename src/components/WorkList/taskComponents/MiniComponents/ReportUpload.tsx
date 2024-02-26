@@ -7,6 +7,8 @@ import { deleteProcDocument, getCurrentProcData, uploadProcDocument } from "../.
 import { deleteSysDocument, getCurrentSysData, uploadSysDocument } from "../../../../redux/Reducers/systemsReducer"
 import { deletePremDocument, getCurrentPremData, uploadPremDocument } from "../../../../redux/Reducers/premisesReducer"
 import { getServerSelector } from "../../../../redux/Selectors/appSelectors"
+import { WorkChangesDataType } from "../../../../redux/Reducers/workReducer"
+import { TaskChanges } from "./TaskChanges"
 
 const { Text } = Typography
 
@@ -20,9 +22,10 @@ type PropsType = {
     objectType: 'equipment' | 'premises' | 'systems' | 'processes'
     error: (fileName: string) => void
     access: number
+    changes: WorkChangesDataType | undefined
 }
 
-export const ReportUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, error, access }) => {
+export const ReportUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray, myPremDataIdArray, mySysDataIdArray, myProcDataIdArray, objectType, error, access, changes }) => {
     const dispatch: AppDispatch = useDispatch()
 
     const server = useSelector(getServerSelector)
@@ -48,7 +51,7 @@ export const ReportUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArra
             }
         }
         return <>
-            <Text style={widthScreen < 1370 ? { fontSize: '10pt', width: '95%' } : widthScreen < 1605 ? { width: '95%' } : { fontSize: '12pt', width: '95%' }} type="success" >{fileName}</Text>
+            <Text style={widthScreen < 1370 ? { fontSize: '10pt', width: '95%' } : widthScreen < 1605 ? { width: '95%' } : { fontSize: '11pt', width: '95%' }} type="success" >{fileName}</Text>
             <Button size="small" icon={<FileWordOutlined style={{ fontSize: '12pt' }} />} type="link" href={server + data.vo} />
             <Popconfirm
                 title='Подтвердите удаление'
@@ -59,6 +62,7 @@ export const ReportUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArra
             >
                 <Button disabled={access > 4} size="small" danger icon={<DeleteOutlined style={{ fontSize: '12pt' }} />} type="link" />
             </Popconfirm>
+            {changes && <TaskChanges changes={changes} key={changes.id} />}
         </>
     } else {
         let uploadDocumentRef: any = null
@@ -88,7 +92,7 @@ export const ReportUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArra
             }
         }
         return <>
-            <Text type="warning" style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? { } : { fontSize: '12pt' }}>Не загружен</Text>
+            <Text type="warning" style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }}>Не загружен</Text>
             <input id="uploadDocument" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" type="file" style={{ display: 'none' }} onChange={onSelectDocument} ref={(input) => (uploadDocumentRef = input)} />
             <Button disabled={access > 4} size="small" icon={<UploadOutlined style={{ fontSize: '12pt' }} />} type="link" onClick={() => uploadDocumentRef.click()} />
         </>

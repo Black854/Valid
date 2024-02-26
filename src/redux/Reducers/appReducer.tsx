@@ -94,7 +94,7 @@ export const defaultPagination = { defaultPageSize: 10, showQuickJumper: true, h
 
 const initialState = {
     isInitialized: false,
-    server: 'https://validcontrol.ru/', // https://validcontrol.ru/ для глобальной версии, http://is.kphk.kz:81/ov/ для рабочей ОВ версии, http://10.85.10.212/ov/ для разработки
+    server: 'http://10.85.10.212/ov/', // https://validcontrol.ru/ для глобальной версии, http://is.kphk.kz:81/ov/ для рабочей ОВ версии, http://10.85.10.212/ov/ для разработки
     themeType: 'dark' as 'dark' | 'light',
     equipGroups: [] as EquipGroupsType[],
     departments: [] as DepartmentsType[],
