@@ -1,11 +1,11 @@
 import { Button, Popconfirm, Typography } from "antd"
 import { AppDispatch } from "../../../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
-import { deleteEquipDocument, getCurrentEquipData, uploadEquipDocument } from "../../../../redux/Reducers/equipmentReducer"
+import { deleteEquipDocument, getCurrentEquipData, uploadEquipTaskDocument } from "../../../../redux/Reducers/equipmentReducer"
 import { DeleteOutlined, FileWordOutlined, UploadOutlined } from "@ant-design/icons"
-import { deleteProcDocument, getCurrentProcData, uploadProcDocument } from "../../../../redux/Reducers/processesReducer"
-import { deleteSysDocument, getCurrentSysData, uploadSysDocument } from "../../../../redux/Reducers/systemsReducer"
-import { deletePremDocument, getCurrentPremData, uploadPremDocument } from "../../../../redux/Reducers/premisesReducer"
+import { deleteProcDocument, getCurrentProcData, uploadProcTaskDocument } from "../../../../redux/Reducers/processesReducer"
+import { deleteSysDocument, getCurrentSysData, uploadSysTaskDocument } from "../../../../redux/Reducers/systemsReducer"
+import { deletePremDocument, getCurrentPremData, uploadPremTaskDocument } from "../../../../redux/Reducers/premisesReducer"
 import { getServerSelector } from "../../../../redux/Selectors/appSelectors"
 import { WorkChangesDataType } from "../../../../redux/Reducers/workReducer"
 import { TaskChanges } from "./TaskChanges"
@@ -74,16 +74,16 @@ export const ReportUpload: React.FC<PropsType> = ({ data, rec, myEquipDataIdArra
 
                 if (allowedExtensions.includes(fileExtension.toLowerCase())) {
                     if (objectType === 'equipment') {
-                        await dispatch(uploadEquipDocument(rec.id, data.id, 'vo', e.currentTarget.files[0]))
+                        await dispatch(uploadEquipTaskDocument(rec.id, data.id, 'vo', e.currentTarget.files[0]))
                         await dispatch(getCurrentEquipData(myEquipDataIdArray))
                     } else if (objectType === 'premises') {
-                        await dispatch(uploadPremDocument(rec.id, data.id, 'vo', e.currentTarget.files[0]))
+                        await dispatch(uploadPremTaskDocument(rec.id, data.id, 'vo', e.currentTarget.files[0]))
                         await dispatch(getCurrentPremData(myPremDataIdArray))
                     } else if (objectType === 'systems') {
-                        await dispatch(uploadSysDocument(rec.id, data.id, 'vo', e.currentTarget.files[0]))
+                        await dispatch(uploadSysTaskDocument(rec.id, data.id, 'vo', e.currentTarget.files[0]))
                         await dispatch(getCurrentSysData(mySysDataIdArray))
                     } else if (objectType === 'processes') {
-                        await dispatch(uploadProcDocument(rec.id, data.id, 'vo', e.currentTarget.files[0]))
+                        await dispatch(uploadProcTaskDocument(rec.id, data.id, 'vo', e.currentTarget.files[0]))
                         await dispatch(getCurrentProcData(myProcDataIdArray))
                     }
                 } else {

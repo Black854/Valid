@@ -43,12 +43,12 @@ export const LabelStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray, myP
     }
     return data.et === '' ?
         <Button disabled={access > 4} onClick={() => handleLabelSwitch('1')} type="default" size="small">
-            <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }} type="warning">Не приклеена</Text>
+            <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : {}} type="warning">Не приклеена</Text>
         </Button> :
         <>
             <Button disabled={access > 4} onClick={() => handleLabelSwitch('')} type="default" size="small">
-                <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }} type="success">Приклеена</Text>
+                <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : {}} type="success">Приклеена</Text>
             </Button>
-            {changes && <TaskChanges changes={changes} key={changes.id} />}
+            {changes && <TaskChanges changes={changes} key={changes.id} style={{position: 'relative', bottom: '2px', left: '6px'}} />}
         </>
 }

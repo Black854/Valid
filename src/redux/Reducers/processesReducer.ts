@@ -3,6 +3,7 @@ import { AppStateType, InferActionsTypes } from "../store"
 import { processesAPI } from "../../api/processesAPI"
 import { VMPDataTypeForPlansComponent } from "./vmpReducer"
 import { logout } from "./authReducer"
+import { getWorkChanges } from "./workReducer"
 
 export type ProcDataType = {
     id: string
@@ -280,6 +281,20 @@ export const updateReestrDateProc = (id: string, procId: string, date: string, d
     dispatch(procActions.setIsReestrDataLoading(false))
 }
 
+export const updateReestrDateProcTask = (id: string, procId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
+    dispatch(procActions.setIsReestrDataLoading(true))
+    let data = await processesAPI.updateReestrDateTask(id, procId, date, dateType)
+    if (data.resultCode === 0) {
+        dispatch(procActions.pushReestrData(data.items))
+        dispatch(getWorkChanges())
+    } else if (data.resultCode === 1) {
+        dispatch(procActions.setProcCardError(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(procActions.setIsReestrDataLoading(false))
+}
+
 export const updateReestrDocsCodeProc = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
     dispatch(procActions.setIsReestrDataLoading(true))
     let data = await processesAPI.updateReestrDocsCode(id, recordId, text, dataType)
@@ -293,11 +308,39 @@ export const updateReestrDocsCodeProc = (id: string, recordId: string, text: str
     dispatch(procActions.setIsReestrDataLoading(false))
 }
 
+export const updateReestrDocsCodeProcTask = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
+    dispatch(procActions.setIsReestrDataLoading(true))
+    let data = await processesAPI.updateReestrDocsCodeTask(id, recordId, text, dataType)
+    if (data.resultCode === 0) {
+        dispatch(procActions.pushReestrData(data.items))
+        dispatch(getWorkChanges())
+    } else if (data.resultCode === 1) {
+        dispatch(procActions.setProcCardError(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(procActions.setIsReestrDataLoading(false))
+}
+
 export const uploadProcDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
     dispatch(procActions.setIsReestrDataLoading(true))
     let data = await processesAPI.uploadDocument(objectId, recordId, dataType, file)
     if (data.resultCode === 0) {
         dispatch(procActions.pushReestrData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(procActions.setProcCardError(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(procActions.setIsReestrDataLoading(false))
+}
+
+export const uploadProcTaskDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
+    dispatch(procActions.setIsReestrDataLoading(true))
+    let data = await processesAPI.uploadTaskDocument(objectId, recordId, dataType, file)
+    if (data.resultCode === 0) {
+        dispatch(procActions.pushReestrData(data.items))
+        dispatch(getWorkChanges())
     } else if (data.resultCode === 1) {
         dispatch(procActions.setProcCardError(data.messages[0]))
     } else if (data.resultCode === 2) {
@@ -331,7 +374,14 @@ export const getCurrentProcData = (myProcDataIdArray: Array<string>): ThunkType 
 }
 
 export const updateProcWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2' | 'isCardUpdated', text: string): ThunkType => async (dispatch) => {
-    await processesAPI.updateProcWorkData(recordId, changeParam, text)
+    let data = await processesAPI.updateProcWorkData(recordId, changeParam, text)
+    if (data.resultCode === 0) {
+        dispatch(getWorkChanges())
+    } else if (data.resultCode === 1) {
+        // dispatch(workActions.setWorkErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const createNewObject = (data: NewProcObjectType): ThunkType => async (dispatch) => {

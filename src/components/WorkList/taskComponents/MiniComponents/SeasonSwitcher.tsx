@@ -33,19 +33,19 @@ export const SeasonSwitcher: React.FC<PropsType> = ({ data, myPremDataIdArray, a
                 <Button disabled={access > 4} onClick={() => handleLabelSwitch('2')} type="default" size="small">
                     <Text type="success">Вне сезонов</Text>
                 </Button>
-                {changes && <TaskChanges changes={changes} key={changes.id} />}
+                {changes && <TaskChanges changes={changes} key={changes.id} style={{position: 'relative', bottom: '2px', left: '6px'}} />}
             </> :
             data.season === '2' ?
                 <>
                     <Button disabled={access > 4} onClick={() => handleLabelSwitch('3')} type="default" size="small">
                         <Text type="success">Зима</Text>
                     </Button>
-                    {changes && <TaskChanges changes={changes} key={changes.id} />}
+                    {changes && <TaskChanges changes={changes} key={changes.id} style={{position: 'relative', bottom: '2px', left: '6px'}} />}
                 </> :
                 <>
                     <Button disabled={access > 4} onClick={() => handleLabelSwitch('0')} type="default" size="small">
                         <Text type="success">Лето</Text>
                     </Button>
-                    {changes && <TaskChanges changes={changes} key={changes.id} />}
+                    {changes && <TaskChanges changes={changes} key={changes.id} style={{position: 'relative', bottom: '2px', left: '6px'}} />}
                 </>
 }

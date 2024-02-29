@@ -3,6 +3,7 @@ import { equipmentAPI } from "../../api/equipmentAPI"
 import { AppStateType, InferActionsTypes } from "../store"
 import { VMPDataTypeForPlansComponent } from "./vmpReducer"
 import { logout } from "./authReducer"
+import { getWorkChanges, workActions } from "./workReducer"
 
 export type EquipDataType = {
     id: string
@@ -361,6 +362,20 @@ export const updateReestrDateEquip = (id: string, equipId: string, date: string,
     dispatch(equipActions.setIsReestrDataLoading(false))
 }
 
+export const updateReestrDateEquipTask = (id: string, equipId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
+    dispatch(equipActions.setIsReestrDataLoading(true))
+    let data = await equipmentAPI.updateReestrDateTask(id, equipId, date, dateType)
+    if (data.resultCode === 0) {
+        dispatch(equipActions.pushReestrData(data.items))
+        dispatch(getWorkChanges())
+    } else if (data.resultCode === 1) {
+        dispatch(equipActions.setEquipCardError(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(equipActions.setIsReestrDataLoading(false))
+}
+
 export const updateReestrDocsCodeEquip = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
     dispatch(equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.updateReestrDocsCode(id, recordId, text, dataType)
@@ -374,11 +389,39 @@ export const updateReestrDocsCodeEquip = (id: string, recordId: string, text: st
     dispatch(equipActions.setIsReestrDataLoading(false))
 }
 
+export const updateReestrDocsCodeEquipTask = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
+    dispatch(equipActions.setIsReestrDataLoading(true))
+    let data = await equipmentAPI.updateReestrDocsCodeTask(id, recordId, text, dataType)
+    if (data.resultCode === 0) {
+        dispatch(equipActions.pushReestrData(data.items))
+        dispatch(getWorkChanges())
+    } else if (data.resultCode === 1) {
+        dispatch(equipActions.setEquipCardError(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(equipActions.setIsReestrDataLoading(false))
+}
+
 export const uploadEquipDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
     dispatch(equipActions.setIsReestrDataLoading(true))
     let data = await equipmentAPI.uploadDocument(objectId, recordId, dataType, file)
     if (data.resultCode === 0) {
         dispatch(equipActions.pushReestrData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(equipActions.setEquipCardError(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(equipActions.setIsReestrDataLoading(false))
+}
+
+export const uploadEquipTaskDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
+    dispatch(equipActions.setIsReestrDataLoading(true))
+    let data = await equipmentAPI.uploadTaskDocument(objectId, recordId, dataType, file)
+    if (data.resultCode === 0) {
+        dispatch(equipActions.pushReestrData(data.items))
+        dispatch(getWorkChanges())
     } else if (data.resultCode === 1) {
         dispatch(equipActions.setEquipCardError(data.messages[0]))
     } else if (data.resultCode === 2) {
@@ -412,7 +455,14 @@ export const getCurrentEquipData = (myEquipDataIdArray: Array<string>): ThunkTyp
 }
 
 export const updateEquipWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2' | 'isCardUpdated', text: string): ThunkType => async (dispatch) => {
-    await equipmentAPI.updateEquipWorkData(recordId, changeParam, text)
+    let data = await equipmentAPI.updateEquipWorkData(recordId, changeParam, text)
+    if (data.resultCode === 0) {
+        dispatch(getWorkChanges())
+    } else if (data.resultCode === 1) {
+        // dispatch(workActions.setWorkErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const createNewObject = (data: NewEquipObjectType): ThunkType => async (dispatch) => {

@@ -119,6 +119,16 @@ export const premisesAPI = {
             return response.data
         })
     },
+    updateReestrDateTask (id: string, premId: string, date: string, dateType: 'dvo' | 'dvp') {
+        let data = new FormData()
+        data.append("id", id)
+        data.append("premId", premId)
+        data.append("date", date)
+        data.append("dateType", dateType)
+        return premInstance.post(`updateReestrDateTask.php`, data, {}).then (response => {
+            return response.data
+        })
+    },
     updateReestrDocsCode (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp') {
         let data = new FormData()
         data.append("id", id)
@@ -126,6 +136,16 @@ export const premisesAPI = {
         data.append("text", text)
         data.append("dataType", dataType)
         return premInstance.post(`updateReestrDocsCode.php`, data, {}).then (response => {
+            return response.data
+        })
+    },
+    updateReestrDocsCodeTask (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp') {
+        let data = new FormData()
+        data.append("id", id)
+        data.append("recordId", recordId)
+        data.append("text", text)
+        data.append("dataType", dataType)
+        return premInstance.post(`updateReestrDocsCodeTask.php`, data, {}).then (response => {
             return response.data
         })
     },
@@ -146,6 +166,16 @@ export const premisesAPI = {
         data.append("dataType", dataType)
         data.append("file", file)
         return premInstance.post(`uploadDocument.php`, data, { headers: {'Content-Type': 'multipart/form-data'} }).then (response => {
+            return response.data
+        })
+    },
+    uploadTaskDocument (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any) {
+        let data = new FormData()
+        data.append("objectId", objectId)
+        data.append("recordId", recordId)
+        data.append("dataType", dataType)
+        data.append("file", file)
+        return premInstance.post(`uploadTaskDocument.php`, data, { headers: {'Content-Type': 'multipart/form-data'} }).then (response => {
             return response.data
         })
     },

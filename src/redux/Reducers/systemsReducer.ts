@@ -3,6 +3,7 @@ import { systemsAPI } from "../../api/systemsAPI"
 import { AppStateType, InferActionsTypes } from "../store"
 import { VMPDataTypeForPlansComponent } from "./vmpReducer"
 import { logout } from "./authReducer"
+import { getWorkChanges } from "./workReducer"
 
 export type SysDataType = {
     id: string
@@ -348,6 +349,20 @@ export const updateReestrDateSys = (id: string, sysId: string, date: string, dat
     dispatch(sysActions.setIsReestrDataLoading(false))
 }
 
+export const updateReestrDateSysTask = (id: string, sysId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
+    dispatch(sysActions.setIsReestrDataLoading(true))
+    let data = await systemsAPI.updateReestrDateTask(id, sysId, date, dateType)
+    if (data.resultCode === 0) {
+        dispatch(sysActions.pushReestrData(data.items))
+        dispatch(getWorkChanges())
+    } else if (data.resultCode === 1) {
+        dispatch(sysActions.setSysCardError(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(sysActions.setIsReestrDataLoading(false))
+}
+
 export const updateReestrDocsCodeSys = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
     dispatch(sysActions.setIsReestrDataLoading(true))
     let data = await systemsAPI.updateReestrDocsCode(id, recordId, text, dataType)
@@ -361,11 +376,39 @@ export const updateReestrDocsCodeSys = (id: string, recordId: string, text: stri
     dispatch(sysActions.setIsReestrDataLoading(false))
 }
 
+export const updateReestrDocsCodeSysTask = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
+    dispatch(sysActions.setIsReestrDataLoading(true))
+    let data = await systemsAPI.updateReestrDocsCodeTask(id, recordId, text, dataType)
+    if (data.resultCode === 0) {
+        dispatch(sysActions.pushReestrData(data.items))
+        dispatch(getWorkChanges())
+    } else if (data.resultCode === 1) {
+        dispatch(sysActions.setSysCardError(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(sysActions.setIsReestrDataLoading(false))
+}
+
 export const uploadSysDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
     dispatch(sysActions.setIsReestrDataLoading(true))
     let data = await systemsAPI.uploadDocument(objectId, recordId, dataType, file)
     if (data.resultCode === 0) {
         dispatch(sysActions.pushReestrData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(sysActions.setSysCardError(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(sysActions.setIsReestrDataLoading(false))
+}
+
+export const uploadSysTaskDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
+    dispatch(sysActions.setIsReestrDataLoading(true))
+    let data = await systemsAPI.uploadTaskDocument(objectId, recordId, dataType, file)
+    if (data.resultCode === 0) {
+        dispatch(sysActions.pushReestrData(data.items))
+        dispatch(getWorkChanges())
     } else if (data.resultCode === 1) {
         dispatch(sysActions.setSysCardError(data.messages[0]))
     } else if (data.resultCode === 2) {
@@ -399,7 +442,14 @@ export const getCurrentSysData = (mySysDataIdArray: Array<string>): ThunkType =>
 }
 
 export const updateSysWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2' | 'isCardUpdated', text: string): ThunkType => async (dispatch) => {
-    await systemsAPI.updateSysWorkData(recordId, changeParam, text)
+    let data = await systemsAPI.updateSysWorkData(recordId, changeParam, text)
+    if (data.resultCode === 0) {
+        dispatch(getWorkChanges())
+    } else if (data.resultCode === 1) {
+        // dispatch(workActions.setWorkErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const createNewObject = (data: NewSysObjectType): ThunkType => async (dispatch) => {

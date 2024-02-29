@@ -3,6 +3,7 @@ import { premisesAPI } from "../../api/premisesAPI"
 import { AppStateType, InferActionsTypes } from "../store"
 import { VMPDataTypeForPlansComponent } from "./vmpReducer"
 import { logout } from "./authReducer"
+import { getWorkChanges } from "./workReducer"
 
 export type PremDataType = {
     mode: string
@@ -404,11 +405,39 @@ export const updateReestrDatePrem = (id: string, premId: string, date: string, d
     dispatch(premActions.setIsReestrDataLoading(false))
 }
 
+export const updateReestrDatePremTask = (id: string, premId: string, date: string, dateType: 'dvp' | 'dvo'): ThunkType => async (dispatch) => {
+    dispatch(premActions.setIsReestrDataLoading(true))
+    let data = await premisesAPI.updateReestrDateTask(id, premId, date, dateType)
+    if (data.resultCode === 0) {
+        dispatch(premActions.pushReestrData(data.items))
+        dispatch(getWorkChanges())
+    } else if (data.resultCode === 1) {
+        dispatch(premActions.setPremCardError(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(premActions.setIsReestrDataLoading(false))
+}
+
 export const updateReestrDocsCodePrem = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
     dispatch(premActions.setIsReestrDataLoading(true))
     let data = await premisesAPI.updateReestrDocsCode(id, recordId, text, dataType)
     if (data.resultCode === 0) {
         dispatch(premActions.pushReestrData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(premActions.setPremCardError(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(premActions.setIsReestrDataLoading(false))
+}
+
+export const updateReestrDocsCodePremTask = (id: string, recordId: string, text: string, dataType: 'nvo' | 'nvp'): ThunkType => async (dispatch) => {
+    dispatch(premActions.setIsReestrDataLoading(true))
+    let data = await premisesAPI.updateReestrDocsCodeTask(id, recordId, text, dataType)
+    if (data.resultCode === 0) {
+        dispatch(premActions.pushReestrData(data.items))
+        dispatch(getWorkChanges())
     } else if (data.resultCode === 1) {
         dispatch(premActions.setPremCardError(data.messages[0]))
     } else if (data.resultCode === 2) {
@@ -435,6 +464,20 @@ export const uploadPremDocument = (objectId: string, recordId: string, dataType:
     let data = await premisesAPI.uploadDocument(objectId, recordId, dataType, file)
     if (data.resultCode === 0) {
         dispatch(premActions.pushReestrData(data.items))
+    } else if (data.resultCode === 1) {
+        dispatch(premActions.setPremCardError(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
+    dispatch(premActions.setIsReestrDataLoading(false))
+}
+
+export const uploadPremTaskDocument = (objectId: string, recordId: string, dataType: 'vo' | 'vp' | 'pam', file: any): ThunkType => async (dispatch) => {
+    dispatch(premActions.setIsReestrDataLoading(true))
+    let data = await premisesAPI.uploadTaskDocument(objectId, recordId, dataType, file)
+    if (data.resultCode === 0) {
+        dispatch(premActions.pushReestrData(data.items))
+        dispatch(getWorkChanges())
     } else if (data.resultCode === 1) {
         dispatch(premActions.setPremCardError(data.messages[0]))
     } else if (data.resultCode === 2) {
@@ -534,7 +577,14 @@ export const getCurrentPremData = (myPremDataIdArray: Array<string>): ThunkType 
 }
 
 export const updatePremWorkData = (recordId: string, changeParam: 'et' | 'season' | 'pam2' | 'isCardUpdated', text: string): ThunkType => async (dispatch) => {
-    await premisesAPI.updatePremWorkData(recordId, changeParam, text)
+    let data = await premisesAPI.updatePremWorkData(recordId, changeParam, text)
+    if (data.resultCode === 0) {
+        dispatch(getWorkChanges())
+    } else if (data.resultCode === 1) {
+        // dispatch(workActions.setWorkErrorMessage(data.messages[0]))
+    } else if (data.resultCode === 2) {
+        dispatch(logout())
+    }
 }
 
 export const createNewObject = (data: NewPremObjectType): ThunkType => async (dispatch) => {

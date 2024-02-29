@@ -44,13 +44,13 @@ export const UpdateCardStatus: React.FC<PropsType> = ({ data, myEquipDataIdArray
     return data.isCardUpdated === '' ?
         <>
             <Button disabled={access > 4} onClick={() => handleLabelSwitch('1')} type="default" size="small">
-                <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }} type="warning">Не актуализирована</Text>
+                <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : {}} type="warning">Не актуализирована</Text>
             </Button>
         </> :
         <>
             <Button disabled={access > 4} onClick={() => handleLabelSwitch('')} type="default" size="small">
-                <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }} type="success">Актуализирована</Text>
+                <Text style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : {}} type="success">Актуализирована</Text>
             </Button>
-            {changes && <TaskChanges changes={changes} key={changes.id} />}
+            {changes && <TaskChanges changes={changes} key={changes.id} style={{position: 'relative', bottom: '2px', left: '6px'}} />}
         </>
 }

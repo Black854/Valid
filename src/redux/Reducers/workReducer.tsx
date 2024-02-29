@@ -9,7 +9,7 @@ import { logout } from "./authReducer"
 
 export type WorkChangesDataType = {
     id: string
-    taskChangeType: 'vp' | 'nvp' | 'dvp' | 'vo' | 'nvo' | 'dvo' | 'pam' | 'pam2' | 'et' | 'card' | 'season'
+    taskChangeType: 'vp' | 'nvp' | 'dvp' | 'vo' | 'nvo' | 'dvo' | 'pam' | 'pam2' | 'et' | 'isCardUpdated' | 'season'
     changeTime: string
     fio: string
     objectType: 'equipment' | 'premises' | 'systems' | 'processes'
@@ -75,7 +75,7 @@ export const getWorkChanges = (): ThunkType => async (dispatch) => {
 type ActionTypes = InferActionsTypes<typeof workActions>
 type ThunkType = ThunkAction<void, AppStateType, unknown, ActionTypes>
 
-const workActions = {
+export const workActions = {
     setWorkErrorMessage: (text: string | null) => ({ type: 'work/SET_WORK_ERROR_MESSAGE', text } as const),
     setWorkChangesData: (items: WorkChangesDataType[]) => ({ type: 'work/SET_WORK_CHANGES_DATA', items } as const),
 }

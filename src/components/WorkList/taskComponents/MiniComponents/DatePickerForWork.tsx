@@ -3,12 +3,12 @@ import { format } from 'date-fns'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../../../redux/store'
-import { getCurrentPremData, updateReestrDatePrem } from '../../../../redux/Reducers/premisesReducer'
+import { getCurrentPremData, updateReestrDatePremTask } from '../../../../redux/Reducers/premisesReducer'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
-import { getCurrentEquipData, updateReestrDateEquip } from '../../../../redux/Reducers/equipmentReducer'
-import { getCurrentSysData, updateReestrDateSys } from '../../../../redux/Reducers/systemsReducer'
-import { getCurrentProcData, updateReestrDateProc } from '../../../../redux/Reducers/processesReducer'
+import { getCurrentEquipData, updateReestrDateEquipTask } from '../../../../redux/Reducers/equipmentReducer'
+import { getCurrentSysData, updateReestrDateSysTask } from '../../../../redux/Reducers/systemsReducer'
+import { getCurrentProcData, updateReestrDateProcTask } from '../../../../redux/Reducers/processesReducer'
 import { WorkChangesDataType } from '../../../../redux/Reducers/workReducer'
 import { TaskChanges } from './TaskChanges'
 
@@ -44,16 +44,16 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({ id, objectId, dat
         formattedSelectedDate === '1970-01-01' && (formattedSelectedDate = '')
         setPopconfirmVisible(false)
         if (group === 'premises') {
-            await dispatch(updateReestrDatePrem(id, objectId, formattedSelectedDate, dateType))
+            await dispatch(updateReestrDatePremTask(id, objectId, formattedSelectedDate, dateType))
             await dispatch(getCurrentPremData(myDataIdArray))
         } else if (group === 'equipment') {
-            await dispatch(updateReestrDateEquip(id, objectId, formattedSelectedDate, dateType))
+            await dispatch(updateReestrDateEquipTask(id, objectId, formattedSelectedDate, dateType))
             await dispatch(getCurrentEquipData(myDataIdArray))
         } else if (group === 'systems') {
-            await dispatch(updateReestrDateSys(id, objectId, formattedSelectedDate, dateType))
+            await dispatch(updateReestrDateSysTask(id, objectId, formattedSelectedDate, dateType))
             await dispatch(getCurrentSysData(myDataIdArray))
         } else if (group === 'processes') {
-            await dispatch(updateReestrDateProc(id, objectId, formattedSelectedDate, dateType))
+            await dispatch(updateReestrDateProcTask(id, objectId, formattedSelectedDate, dateType))
             await dispatch(getCurrentProcData(myDataIdArray))
         }
     }
@@ -103,7 +103,7 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({ id, objectId, dat
                 >
                     <DatePicker disabled={access > 4} style={{ borderColor: '#87d068', accentColor: 'green', color: 'red' }} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} value={dayjs(date, dateFormat)} onChange={(date) => handleDateChange(date)} />
                 </Popconfirm>
-                {changes && <TaskChanges changes={changes} key={changes.id} />}
+                {changes && <TaskChanges changes={changes} key={changes.id} style={{position: 'relative', bottom: '2px', left: '6px'}} />}
             </>
         }
     } else {
@@ -116,7 +116,7 @@ export const DatePickerForWork: React.FC<ConvertDateType> = ({ id, objectId, dat
             cancelText="Нет"
             open={isPopconfirmVisible}
         >
-            <DatePicker style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { fontSize: '11pt' }} disabled={access > 4} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} onChange={(date) => handleDateChange(date)} />
+            <DatePicker style={widthScreen < 1370 ? { fontSize: '10pt' } : widthScreen < 1605 ? {} : { }} disabled={access > 4} size='small' status={date === '' ? 'warning' : undefined} allowClear disabledDate={disabledDate} format={'DD.MM.YYYY'} onChange={(date) => handleDateChange(date)} />
         </Popconfirm>
     }
     return <></>

@@ -1,10 +1,10 @@
 import { Typography } from "antd"
 import { AppDispatch } from "../../../../redux/store"
 import { useDispatch } from "react-redux"
-import { getCurrentEquipData, updateReestrDocsCodeEquip } from "../../../../redux/Reducers/equipmentReducer"
-import { getCurrentPremData, updateReestrDocsCodePrem } from "../../../../redux/Reducers/premisesReducer"
-import { getCurrentSysData, updateReestrDocsCodeSys } from "../../../../redux/Reducers/systemsReducer"
-import { getCurrentProcData, updateReestrDocsCodeProc } from "../../../../redux/Reducers/processesReducer"
+import { getCurrentEquipData, updateReestrDocsCodeEquipTask } from "../../../../redux/Reducers/equipmentReducer"
+import { getCurrentPremData, updateReestrDocsCodePremTask } from "../../../../redux/Reducers/premisesReducer"
+import { getCurrentSysData, updateReestrDocsCodeSysTask } from "../../../../redux/Reducers/systemsReducer"
+import { getCurrentProcData, updateReestrDocsCodeProcTask } from "../../../../redux/Reducers/processesReducer"
 import { WorkChangesDataType } from "../../../../redux/Reducers/workReducer"
 import { TaskChanges } from "./TaskChanges"
 
@@ -29,16 +29,16 @@ export const ReportCode: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray,
 
     const handleUpdateDocsCode = async (recordId: string, text: string, dataType: 'nvp' | 'nvo') => {
         if (objectType === 'equipment') {
-            await dispatch(updateReestrDocsCodeEquip(rec.id, recordId, text, dataType))
+            await dispatch(updateReestrDocsCodeEquipTask(rec.id, recordId, text, dataType))
             await dispatch(getCurrentEquipData(myEquipDataIdArray))
         } else if (objectType === 'premises') {
-            await dispatch(updateReestrDocsCodePrem(rec.id, recordId, text, dataType))
+            await dispatch(updateReestrDocsCodePremTask(rec.id, recordId, text, dataType))
             await dispatch(getCurrentPremData(myPremDataIdArray))
         } else if (objectType === 'systems') {
-            await dispatch(updateReestrDocsCodeSys(rec.id, recordId, text, dataType))
+            await dispatch(updateReestrDocsCodeSysTask(rec.id, recordId, text, dataType))
             await dispatch(getCurrentSysData(mySysDataIdArray))
         } else if (objectType === 'processes') {
-            await dispatch(updateReestrDocsCodeProc(rec.id, recordId, text, dataType))
+            await dispatch(updateReestrDocsCodeProcTask(rec.id, recordId, text, dataType))
             await dispatch(getCurrentProcData(myProcDataIdArray))
         }
     }
@@ -52,6 +52,6 @@ export const ReportCode: React.FC<PropsType> = ({ data, rec, myEquipDataIdArray,
                 }}>
                 {data.nvo}
             </Text>
-            {changes && <TaskChanges changes={changes} key={changes.id} />}
+            {changes && <TaskChanges changes={changes} key={changes.id} style={{position: 'relative', bottom: '2px', left: '4px'}} />}
         </>
 }

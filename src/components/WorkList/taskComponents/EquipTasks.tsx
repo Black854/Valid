@@ -117,7 +117,7 @@ export const EquipTasks: React.FC<EquipTasks> = ({ myEquipDataIdArray, myEquipDa
     const updateCardData = [
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Карточка актуализирована</Text>,
-            value: <UpdateCardStatus changes={tasksChanges?.find(e => e.taskChangeType === 'card')} data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' access={access} />
+            value: <UpdateCardStatus changes={tasksChanges?.find(e => e.taskChangeType === 'isCardUpdated')} data={data[0]} myEquipDataIdArray={myEquipDataIdArray} objectType='equipment' access={access} />
         }
     ]
 

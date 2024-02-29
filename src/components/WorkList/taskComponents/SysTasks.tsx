@@ -102,7 +102,7 @@ export const SysTasks: React.FC<SysTasks> = ({ mySysDataIdArray, mySysData, rec,
     const updateCardData = [
         {
             rowName: <Text style={widthScreen < 1370 ? { fontSize: '9pt' } : widthScreen < 1605 ? {} : { fontSize: '12pt' }}>Карточка актуализирована</Text>,
-            value: <UpdateCardStatus changes={tasksChanges?.find(e => e.taskChangeType === 'card')} data={data[0]} mySysDataIdArray={mySysDataIdArray} objectType='systems' access={access} />
+            value: <UpdateCardStatus changes={tasksChanges?.find(e => e.taskChangeType === 'isCardUpdated')} data={data[0]} mySysDataIdArray={mySysDataIdArray} objectType='systems' access={access} />
         }
     ]
 
